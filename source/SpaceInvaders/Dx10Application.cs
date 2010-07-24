@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Globalization;
-using Engine;
 using SlimDX;
 using SlimDX.Direct3D10;
 using SlimDX.DXGI;
