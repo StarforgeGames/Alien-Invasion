@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceInvaders", "SpaceInvaders\SpaceInvaders.csproj", "{D0C1E553-1429-4490-B25A-05C55B019E46}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game", "Game\Game.csproj", "{EB0EE324-D5BA-456A-84ED-BFDE30680E01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,14 @@ Global
 		{D0C1E553-1429-4490-B25A-05C55B019E46}.Release|x64.Build.0 = Release|x64
 		{D0C1E553-1429-4490-B25A-05C55B019E46}.Release|x86.ActiveCfg = Release|x86
 		{D0C1E553-1429-4490-B25A-05C55B019E46}.Release|x86.Build.0 = Release|x86
+		{EB0EE324-D5BA-456A-84ED-BFDE30680E01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB0EE324-D5BA-456A-84ED-BFDE30680E01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB0EE324-D5BA-456A-84ED-BFDE30680E01}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EB0EE324-D5BA-456A-84ED-BFDE30680E01}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EB0EE324-D5BA-456A-84ED-BFDE30680E01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB0EE324-D5BA-456A-84ED-BFDE30680E01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB0EE324-D5BA-456A-84ED-BFDE30680E01}.Release|x64.ActiveCfg = Release|Any CPU
+		{EB0EE324-D5BA-456A-84ED-BFDE30680E01}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

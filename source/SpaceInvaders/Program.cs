@@ -5,6 +5,7 @@ using System.Windows.Forms;
 
 namespace SpaceInvaders
 {
+
     static class Program
     {
         /// <summary>
@@ -18,4 +19,5 @@ namespace SpaceInvaders
             app.Run();
         }
     }
+
 }

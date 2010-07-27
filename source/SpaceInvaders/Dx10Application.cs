@@ -21,7 +21,7 @@ namespace SpaceInvaders
         public RenderTargetView RenderTargetView { get; set; }
         public Texture2D BackBuffer { get; set; }
 
-        public Font Font { get; set; }
+        public Font DebugFont { get; set; }
         public GameTimer Timer { get; set; }
         public string FrameStats { get; set; }
 
@@ -35,8 +35,8 @@ namespace SpaceInvaders
 
         public Dx10Application()
         {
-            this.GameTitle = "Dx10 Application";
-            this.ShowFps = true;
+            GameTitle = "Dx10 Application";
+            ShowFps = true;
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace SpaceInvaders
                 FaceName = "Arial"
             };
 
-            Font = new Font(Device, fontDesc);
+            DebugFont = new Font(Device, fontDesc);
             Timer = new GameTimer();
             FrameStats = String.Empty;
         }
@@ -93,11 +93,10 @@ namespace SpaceInvaders
             Device dev;
             SwapChain sc;
             Device.CreateWithSwapChain(null, DriverType.Hardware, flags, swapDesc, out dev, out sc);
-
             Device = dev;
             this.SwapChain = sc;
 
-            //Stops Alt+enter from causing fullscreen skrewiness.
+            // Stops Alt + Enter from causing fullscreen skrewiness.
             Factory factory = SwapChain.GetParent<Factory>();
             factory.SetWindowAssociation(RenderForm.Handle, WindowAssociationFlags.IgnoreAll);
 
@@ -142,7 +141,7 @@ namespace SpaceInvaders
 
             if (ShowFps) {
                 Rectangle r = new Rectangle(5, 5, 0, 0);
-                Font.Draw(null, FrameStats, r, FontDrawFlags.NoClip, new Color4(Color.Yellow));
+                DebugFont.Draw(null, FrameStats, r, FontDrawFlags.NoClip, new Color4(Color.Yellow));
             }
 
             SwapChain.Present(0, PresentFlags.None);
@@ -167,7 +166,7 @@ namespace SpaceInvaders
         /// </summary>
         public void Dispose()
         {
-            Font.Dispose();
+            DebugFont.Dispose();
             RenderTargetView.Dispose();
             BackBuffer.Dispose();
             Device.Dispose();
