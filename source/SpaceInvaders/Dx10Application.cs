@@ -137,14 +137,15 @@ namespace SpaceInvaders
         /// </summary>
         public virtual void Render()
         {
-            Device.ClearRenderTargetView(RenderTargetView, Color.Black);
-
             if (ShowFps) {
                 Rectangle r = new Rectangle(5, 5, 0, 0);
                 DebugFont.Draw(null, FrameStats, r, FontDrawFlags.NoClip, new Color4(Color.Yellow));
             }
 
             SwapChain.Present(0, PresentFlags.None);
+
+            // Clear afterwards so the RenderBehaviour's drawing is not undone before it was presented
+            Device.ClearRenderTargetView(RenderTargetView, Color.Black);
         }
 
         /// <summary>

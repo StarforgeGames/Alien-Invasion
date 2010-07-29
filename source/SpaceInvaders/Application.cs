@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Game;
+﻿using Game;
 
 namespace SpaceInvaders
 {
@@ -11,12 +7,17 @@ namespace SpaceInvaders
     /// </summary>
     class Application : Dx10Application
     {
-        public GameLogic Game { get; set; }
+        public BaseGame Game { get; set; }
 
         public Application()
         {
             this.GameTitle = "Space Invaders";
-            Game = new GameLogic();
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            Game = new BaseGame(Device);
         }
 
         public override void Update(float deltaTime)

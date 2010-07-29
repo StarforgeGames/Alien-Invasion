@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Game.Entities;
-using Game.Behaviours;
+using Device = SlimDX.Direct3D10.Device;
 
 namespace Game
 {
 
-    public class GameLogic
+    public class BaseGame
     {
-        List<Entity> entities;
+        public static Device D3DDevice { get; set; }
 
-        public GameLogic()
+        private List<Entity> entities;
+
+        public BaseGame(Device device)
         {
+            D3DDevice = device;
+
             entities = new List<Entity>();
             entities.Add(new Player());
         }
