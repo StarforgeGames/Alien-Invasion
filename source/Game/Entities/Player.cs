@@ -7,34 +7,14 @@ using Game.Behaviours;
 namespace Game.Entities
 {
 
-    public class Player : IBehaviour
+    class Player : Entity
     {
-        List<IBehaviour> behaviours;
-
         public Player()
+            : base()
         {
-            behaviours = new List<IBehaviour>();
-            behaviours.Add(new SpatialBehaviour());
-            behaviours.Add(new RenderBehaviour());
+            behaviours.Add(new SpatialBehaviour(this));
+            behaviours.Add(new RenderBehaviour(this));
         }
-
-        #region IBehaviour Members
-
-        public void OnUpdate(float deltaTime)
-        {
-            foreach (IBehaviour b in behaviours) {
-                b.OnUpdate(deltaTime);
-            }
-        }
-
-        public void OnMessage(Message msg)
-        {
-            foreach (IBehaviour b in behaviours) {
-                b.OnMessage(msg);
-            }
-        }
-
-        #endregion
     }
 
 }

@@ -43,6 +43,7 @@
     <Compile Include="Behaviours\IBehaviour.cs" />
     <Compile Include="Behaviours\RenderBehaviour.cs" />
     <Compile Include="Behaviours\SpatialBehaviour.cs" />
+    <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="GameLogic.cs" />
     <Compile Include="Message.cs" />

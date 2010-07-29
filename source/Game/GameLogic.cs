@@ -10,18 +10,18 @@ namespace Game
 
     public class GameLogic
     {
-        List<IBehaviour> entities;
+        List<Entity> entities;
 
         public GameLogic()
         {
-            entities = new List<IBehaviour>();
+            entities = new List<Entity>();
             entities.Add(new Player());
         }
 
         public void Update(float deltaTime)
         {
-            foreach (IBehaviour entity in entities) {
-                entity.OnUpdate(deltaTime);
+            foreach (Entity entity in entities) {
+                entity.Update(deltaTime);
             }
         }
     }
