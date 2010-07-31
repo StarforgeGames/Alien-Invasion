@@ -1,4 +1,5 @@
 ﻿using Game;
+using Graphics;
 
 namespace SpaceInvaders
 {
@@ -8,6 +9,7 @@ namespace SpaceInvaders
     class Application : Dx10Application
     {
         public BaseGame Game { get; set; }
+        public Renderer Renderer { get; set; }
 
         public Application()
         {
@@ -17,7 +19,8 @@ namespace SpaceInvaders
         public override void Initialize()
         {
             base.Initialize();
-            Game = new BaseGame(Device);
+            Game = new BaseGame();
+            Renderer = new Renderer(Device);
         }
 
         public override void Update(float deltaTime)
@@ -26,6 +29,11 @@ namespace SpaceInvaders
 
             int deltaMilliseconds = (int) deltaTime * 1000;
             Game.Update(deltaMilliseconds);
+        }
+
+        protected override void OnRender(float deltaTime)
+        {
+            Renderer.Render(deltaTime);
         }
     }
 }

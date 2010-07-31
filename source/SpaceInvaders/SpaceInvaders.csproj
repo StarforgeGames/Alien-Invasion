@@ -98,6 +98,10 @@
       <Project>{EB0EE324-D5BA-456A-84ED-BFDE30680E01}</Project>
       <Name>Game</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Graphics\Graphics.csproj">
+      <Project>{272620DF-6615-4809-AFD8-B9F277307120}</Project>
+      <Name>Graphics</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

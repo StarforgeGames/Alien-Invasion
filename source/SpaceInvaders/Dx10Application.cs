@@ -135,18 +135,23 @@ namespace SpaceInvaders
         /// <summary>
         /// Draw the scene.
         /// </summary>
-        public virtual void Render()
+        public void Render(float deltaTime)
         {
+            Device.ClearRenderTargetView(RenderTargetView, Color.Black);
+
             if (ShowFps) {
                 Rectangle r = new Rectangle(5, 5, 0, 0);
                 DebugFont.Draw(null, FrameStats, r, FontDrawFlags.NoClip, new Color4(Color.Yellow));
             }
+            OnRender(deltaTime);
 
             SwapChain.Present(0, PresentFlags.None);
-
-            // Clear afterwards so the RenderBehaviour's drawing is not undone before it was presented
-            Device.ClearRenderTargetView(RenderTargetView, Color.Black);
         }
+
+        /// <summary>
+        /// Provides an entry point for the game rendering stuff.
+        /// </summary>
+        protected abstract void OnRender(float deltaTime);
 
         /// <summary>
         /// Run main loop.
@@ -157,8 +162,9 @@ namespace SpaceInvaders
 
             MessagePump.Run(RenderForm, () => {
                 Timer.Tick();
-                Update(Timer.DeltaTime);
-                Render();
+                float deltaTime = Timer.DeltaTime;
+                Update(deltaTime);
+                Render(deltaTime);
             });
         }
 

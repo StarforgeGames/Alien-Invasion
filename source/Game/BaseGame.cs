@@ -1,20 +1,15 @@
 ﻿using System.Collections.Generic;
 using Game.Entities;
-using Device = SlimDX.Direct3D10.Device;
 
 namespace Game
 {
 
     public class BaseGame
     {
-        public static Device D3DDevice { get; set; }
-
         private List<Entity> entities;
 
-        public BaseGame(Device device)
+        public BaseGame()
         {
-            D3DDevice = device;
-
             entities = new List<Entity>();
             entities.Add(new Player());
         }
