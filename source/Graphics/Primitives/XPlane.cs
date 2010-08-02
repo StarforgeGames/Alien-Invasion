@@ -30,11 +30,12 @@ namespace Graphics.Primitives
                 new InputElement("COLOR", 0, Format.R32G32B32A32_Float, 16, 0) 
             });
 
-            var stream = new DataStream(3 * 32, true, true);
+            var stream = new DataStream(4 * 32, true, true);
             stream.WriteRange(new[] {
-                new Vector4(0.0f, 0.5f, 0.5f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
-                new Vector4(0.5f, -0.5f, 0.5f, 1.0f), new Vector4(0.0f, 1.0f, 0.0f, 1.0f),
-                new Vector4(-0.5f, -0.5f, 0.5f, 1.0f), new Vector4(0.0f, 0.0f, 1.0f, 1.0f)
+                new Vector4(-0.5f, -0.5f, 0.5f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
+                new Vector4(-0.5f, 0.5f, 0.5f, 1.0f), new Vector4(0.0f, 1.0f, 0.0f, 1.0f),
+                new Vector4(0.5f, -0.5f, 0.5f, 1.0f), new Vector4(0.0f, 0.0f, 1.0f, 1.0f),
+                new Vector4(0.5f, 0.5f, 0.5f, 1.0f), new Vector4(1.0f, 1.0f, 0.0f, 1.0f)
             });
             stream.Position = 0;
 
@@ -42,7 +43,7 @@ namespace Graphics.Primitives
                 BindFlags = BindFlags.VertexBuffer,
                 CpuAccessFlags = CpuAccessFlags.None,
                 OptionFlags = ResourceOptionFlags.None,
-                SizeInBytes = 3 * 32,
+                SizeInBytes = 4 * 32,
                 Usage = ResourceUsage.Default
             });
             stream.Dispose();
@@ -53,12 +54,12 @@ namespace Graphics.Primitives
         public void Render()
         {
             Renderer.Device.InputAssembler.SetInputLayout(layout);
-            Renderer.Device.InputAssembler.SetPrimitiveTopology(PrimitiveTopology.TriangleList);
+            Renderer.Device.InputAssembler.SetPrimitiveTopology(PrimitiveTopology.TriangleStrip);
             Renderer.Device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, 32, 0));
 
             for (int i = 0; i < technique.Description.PassCount; ++i) {
                 pass.Apply();
-                Renderer.Device.Draw(3, 0);
+                Renderer.Device.Draw(4, 0);
             }
         }
 
