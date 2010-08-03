@@ -3,14 +3,13 @@ using SlimDX;
 using SlimDX.D3DCompiler;
 using SlimDX.Direct3D10;
 using SlimDX.DXGI;
-using System.Collections;
 using Buffer = SlimDX.Direct3D10.Buffer;
 
 namespace Graphics.Primitives
 {
-
+  
     /// <summary>
-    /// Class to create a plane. It's called XPlane to make it sound cool... Just kidding: It's to avoid naming 
+    /// Class to create a plane. It's called XPlane to make it sound cool... Just kidding. It's to avoid naming 
     /// conflicts with SlimDX or other graphics APIs.
     /// </summary>
     class XPlane : IRenderable
