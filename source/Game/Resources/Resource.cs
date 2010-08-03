@@ -7,7 +7,7 @@ using System.IO;
 namespace Game.Resources
 {
 
-    public struct Resource
+    public class Resource
     {
         private int id;
         public int ID

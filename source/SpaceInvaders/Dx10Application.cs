@@ -45,6 +45,9 @@ namespace SpaceInvaders
         public virtual void Initialize()
         {
             RenderForm = new RenderForm(GameTitle);
+            RenderForm.Width = 800;
+            RenderForm.Height = 600;
+
             initializeDirect3D();
 
             FontDescription fontDesc = new FontDescription() {

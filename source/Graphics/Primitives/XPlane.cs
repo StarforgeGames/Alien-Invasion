@@ -50,7 +50,7 @@ namespace Graphics.Primitives
             stream.Write<Vector2>(new Vector2(1.0f, 0.0f));
             stream.Position = 0;
 
-            ShaderResourceView myTexture = ShaderResourceView.FromFile(Renderer.Device, "texture.bmp");
+            ShaderResourceView myTexture = ShaderResourceView.FromFile(Renderer.Device, @"Gfx\player.png");
             EffectResourceVariable resource = effect.GetVariableByName("tex2D").AsResource();
             resource.SetResource(myTexture);
 
