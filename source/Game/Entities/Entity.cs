@@ -4,7 +4,7 @@ using Game.Behaviours;
 namespace Game.Entities
 {
 
-    class Entity
+    public class Entity
     {
         public Dictionary<string, string> Attributes { get; set; }
         protected List<IBehaviour> behaviours;
@@ -20,9 +20,9 @@ namespace Game.Entities
             behaviours.Add(behaviour);
         }
 
-        public void RemoveBehaviour(IBehaviour behaviour)
+        public bool RemoveBehaviour(IBehaviour behaviour)
         {
-            behaviours.Remove(behaviour);
+            return behaviours.Remove(behaviour);
         }
 
         public void SendMessage(Message msg)

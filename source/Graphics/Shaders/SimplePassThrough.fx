@@ -10,38 +10,38 @@ struct VS_IN
 {
 	float4 pos : POSITION;
 	float4 col : COLOR;
-	float2 Tex : TEXCOORD;
+	float2 tex : TEXCOORD;
 };
 
 struct PS_IN
 {
 	float4 pos : SV_POSITION;
 	float4 col : COLOR;
-	float2 Tex : TEXCOORD;
+	float2 tex : TEXCOORD;
 };
 
-PS_IN VS( VS_IN input )
+PS_IN VS(VS_IN input)
 {
 	PS_IN output = (PS_IN)0;
 	
 	output.pos = input.pos;
 	output.col = input.col;
-	output.Tex = input.Tex;
+	output.tex = input.tex;
 	
 	return output;
 }
 
-float4 PS( PS_IN input ) : SV_Target
+float4 PS(PS_IN input) : SV_Target
 {
 	return input.col;
 }
 
-float4 textured( PS_IN input ) : SV_Target
+float4 textured(PS_IN input) : SV_Target
 {
-	return tex2D.Sample( linearSampler, input.Tex );
+	return tex2D.Sample(linearSampler, input.tex);
 }
 
-float4 noTexture( PS_IN input ) : SV_Target
+float4 noTexture(PS_IN input) : SV_Target
 {
 	return input.col;
 }

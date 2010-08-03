@@ -11,6 +11,8 @@ namespace Game.Behaviours
         public SpatialBehaviour(Entity entity)
         {
             this.entity = entity;
+            entity.Attributes.Add("PositionX", "0");
+            entity.Attributes.Add("PositionY", "0");
         }
 
         #region IBehaviour Members

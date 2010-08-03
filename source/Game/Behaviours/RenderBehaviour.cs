@@ -1,5 +1,6 @@
 ﻿using System;
 using Game.Entities;
+using Game.Resources;
 
 namespace Game.Behaviours
 {
@@ -8,9 +9,12 @@ namespace Game.Behaviours
     {
         private Entity entity;
 
-        public RenderBehaviour(Entity entity)
+        public RenderBehaviour(Entity entity, string sprite)
         {
             this.entity = entity;
+            Resource res = BaseGame.Resources.GetResource(sprite);
+            entity.Attributes.Add("Sprite", sprite);
+            entity.Attributes.Add("SpriteResourceID", res.ID.ToString());
         }
 
         #region IBehaviour Members
