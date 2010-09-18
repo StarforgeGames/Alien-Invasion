@@ -57,6 +57,7 @@ namespace Game.Resources
                 FileStream file = new FileStream(name, FileMode.Open);
 
                 size = file.Length;
+                buffer = new byte[size];
                 
                 try {
                     int check = file.Read(buffer, 0, (int)size);

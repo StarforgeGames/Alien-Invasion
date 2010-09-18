@@ -4,6 +4,7 @@ using SlimDX.D3DCompiler;
 using SlimDX.Direct3D10;
 using SlimDX.DXGI;
 using Buffer = SlimDX.Direct3D10.Buffer;
+using Resource = Game.Resources.Resource;
 
 namespace Graphics.Primitives
 {
@@ -19,8 +20,9 @@ namespace Graphics.Primitives
         private Buffer vertices;
         private InputLayout layout;
 
-        public XPlane()
-        {     
+        public XPlane(Resource sprite)
+        {
+            // TODO: Construction needs to be heavily optimized!
             var effect = Effect.FromFile(Renderer.Device, @"Shaders\SimplePassThrough.fx", "fx_4_0", ShaderFlags.None,
                 EffectFlags.None, null, null);
             technique = effect.GetTechniqueByName("Full");
@@ -55,7 +57,7 @@ namespace Graphics.Primitives
             stream.Write<Vector2>(new Vector2(1.0f, 0.0f));
             stream.Position = 0;
 
-            ShaderResourceView myTexture = ShaderResourceView.FromFile(Renderer.Device, @"Gfx\player.png");
+            ShaderResourceView myTexture = ShaderResourceView.FromMemory(Renderer.Device, sprite.Buffer);
             EffectResourceVariable resource = effect.GetVariableByName("tex2D").AsResource();
             resource.SetResource(myTexture);
 
