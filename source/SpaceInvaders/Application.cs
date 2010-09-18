@@ -3,6 +3,7 @@ using Graphics;
 
 namespace SpaceInvaders
 {
+
     /// <summary>
     /// Concrete class for the game.
     /// </summary>
@@ -36,4 +37,5 @@ namespace SpaceInvaders
             Renderer.Render(deltaTime);
         }
     }
+
 }
