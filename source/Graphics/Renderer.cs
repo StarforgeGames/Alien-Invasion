@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Device = SlimDX.Direct3D10.Device;
-using SlimDX.DXGI;
+﻿using System.Collections.Generic;
+using Game;
 using Graphics.Primitives;
+using Device = SlimDX.Direct3D10.Device;
+using Resource = Game.Resources.Resource;
 
 namespace Graphics
 {
@@ -18,7 +16,10 @@ namespace Graphics
         {
             Renderer.Device = device;
             ScreenObjects = new List<IRenderable>();
-            ScreenObjects.Add(new XPlane());
+
+            // TODO: Makeshift solution. Needs to come from BaseGame somehow.
+            Resource sprite = BaseGame.Resources.GetResource(@"Gfx\player.png");
+            ScreenObjects.Add(new XPlane(sprite));
         }
 
         public void Render(float deltaTime)
