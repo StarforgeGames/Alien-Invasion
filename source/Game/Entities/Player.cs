@@ -9,7 +9,7 @@ namespace Game.Entities
             : base()
         {
             behaviours.Add(new SpatialBehaviour(this));
-            behaviours.Add(new RenderBehaviour(this, "texture.bmp"));
+            behaviours.Add(new RenderBehaviour(this, @"Gfx\player.png"));
         }
     }
 

@@ -27,25 +27,30 @@ namespace Graphics.Primitives
             pass = technique.GetPassByIndex(0);
             layout = new InputLayout(Renderer.Device, pass.Description.Signature, new[] {
                 new InputElement("POSITION", 0, Format.R32G32B32A32_Float, 0, 0),
-                new InputElement("COLOR", 0, Format.R32G32B32A32_Float, 16, 0), 
+                new InputElement("COLOR", 0, Format.R32G32B32A32_Float, 16, 0),// TODO: Obsolete with sprites => remove
                 new InputElement("TEXCOORD", 0, Format.R32G32_Float, 32, 0)
             });
 
             var stream = new DataStream(4 * 40, true, true);
 
-            stream.Write<Vector4>(new Vector4(-0.5f, -0.5f, 0.5f, 1.0f));
+            // hack to scale sprite to its original size
+            // TODO: Generalize this code so it reads the sprites' size dynamically
+            float widthRatio = 75f / 800f;
+            float heightRatio = 75f / 600f;
+
+            stream.Write<Vector4>(new Vector4(-1f * widthRatio, -1f * heightRatio, 0.5f, 1.0f));
             stream.Write<Vector4>(new Vector4(1.0f, 0.0f, 0.0f, 1.0f));
             stream.Write<Vector2>(new Vector2(0.0f, 1.0f));
 
-            stream.Write<Vector4>(new Vector4(-0.5f, 0.5f, 0.5f, 1.0f));
+            stream.Write<Vector4>(new Vector4(-1f * widthRatio, 1f * heightRatio, 0.5f, 1.0f));
             stream.Write<Vector4>(new Vector4(0.0f, 1.0f, 0.0f, 1.0f));
             stream.Write<Vector2>(new Vector2(0.0f, 0.0f));
 
-            stream.Write<Vector4>(new Vector4(0.5f, -0.5f, 0.5f, 1.0f));
+            stream.Write<Vector4>(new Vector4(1f * widthRatio, -1f * heightRatio, 0.5f, 1.0f));
             stream.Write<Vector4>(new Vector4(0.0f, 0.0f, 1.0f, 1.0f));
             stream.Write<Vector2>(new Vector2(1.0f, 1.0f));
 
-            stream.Write<Vector4>(new Vector4(0.5f, 0.5f, 0.5f, 1.0f));
+            stream.Write<Vector4>(new Vector4(1f * widthRatio, 1f * heightRatio, 0.5f, 1.0f));
             stream.Write<Vector4>(new Vector4(1.0f, 1.0f, 0.0f, 1.0f));
             stream.Write<Vector2>(new Vector2(1.0f, 0.0f));
             stream.Position = 0;
