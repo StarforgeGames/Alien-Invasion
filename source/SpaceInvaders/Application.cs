@@ -10,7 +10,7 @@ namespace SpaceInvaders
     class Application : Dx10Application
     {
         public BaseGame Game { get; set; }
-        public Renderer Renderer { get; set; }
+        private Renderer renderer;
 
         public Application()
         {
@@ -21,7 +21,7 @@ namespace SpaceInvaders
         {
             base.Initialize();
             Game = new BaseGame();
-            Renderer = new Renderer(Device);
+          //  renderer = new Renderer();
         }
 
         public override void Update(float deltaTime)
@@ -34,7 +34,7 @@ namespace SpaceInvaders
 
         protected override void OnRender(float deltaTime)
         {
-            Renderer.Render(deltaTime);
+      //      Renderer.Render(deltaTime);
         }
     }
 
