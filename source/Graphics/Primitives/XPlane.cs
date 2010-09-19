@@ -22,7 +22,7 @@ namespace Graphics.Primitives
 
         public XPlane(Resource sprite)
         {
-            // TODO: Construction needs to be heavily optimized!
+        /*    // TODO: Construction needs to be heavily optimized!
             var effect = Effect.FromFile(Renderer.Device, @"Shaders\SimplePassThrough.fx", "fx_4_0", ShaderFlags.None,
                 EffectFlags.None, null, null);
             technique = effect.GetTechniqueByName("Full");
@@ -69,21 +69,21 @@ namespace Graphics.Primitives
                 Usage = ResourceUsage.Default
             });
 
-            stream.Dispose();
+            stream.Dispose();*/
         }
 
         #region IRenderable Members
 
         public void Render()
         {
-            Renderer.Device.InputAssembler.SetInputLayout(layout);
+       /*     Renderer.Device.InputAssembler.SetInputLayout(layout);
             Renderer.Device.InputAssembler.SetPrimitiveTopology(PrimitiveTopology.TriangleStrip);
             Renderer.Device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, 40, 0));
 
             for (int i = 0; i < technique.Description.PassCount; ++i) {
                 pass.Apply();
                 Renderer.Device.Draw(4, 0);
-            }
+            }*/
         }
 
         #endregion
