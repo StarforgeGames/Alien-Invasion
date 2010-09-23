@@ -93,9 +93,10 @@ namespace SpaceInvaders
 #if DEBUG
             flags |= DeviceCreationFlags.Debug;
 #endif
+
             Device dev;
             SwapChain sc;
-            Device.CreateWithSwapChain(null, DriverType.Hardware, flags, swapDesc, out dev, out sc);
+            Device.CreateWithSwapChain(null, DriverType.Warp, flags, swapDesc, out dev, out sc);
             Device = dev;
             this.SwapChain = sc;
 
