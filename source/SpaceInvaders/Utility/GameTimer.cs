@@ -112,16 +112,21 @@ namespace SpaceInvaders
             QueryPerformanceCounter(out currTime);
             currentTime = currTime;
 
+            float currDelta;
+
             // Time difference between this frame and the previous
-            DeltaTime = (float)((currentTime - previousTime) * secondsPerCount);
+            currDelta = (float)((currentTime - previousTime) * secondsPerCount);
 
             // Prepare for next frame
             previousTime = currentTime;
 
             // Force non-negative.  The DXSDK's CDXUTTimer mentions that if the processor goes into a power save mode 
             // or we get shuffled to another processor, then DeltaTime can be negative.
-            if (DeltaTime < 0.0)
+            if (currDelta < 0.0f)
                 DeltaTime = 0.0f;
+            else
+                DeltaTime = currDelta;
+
         }
 
         /// <summary>
