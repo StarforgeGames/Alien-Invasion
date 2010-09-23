@@ -99,8 +99,10 @@ namespace Graphics
             Device.CreateWithSwapChain(null, DriverType.Hardware, flags, currentDescription, out device, out swapChain);
 
             // Stops Alt + Enter from causing fullscreen skrewiness.
-            Factory factory = swapChain.GetParent<Factory>();
-            factory.SetWindowAssociation(renderFrame.Handle, WindowAssociationFlags.IgnoreAltEnter);
+            using (Factory factory = swapChain.GetParent<Factory>())
+            {
+                factory.SetWindowAssociation(renderFrame.Handle, WindowAssociationFlags.IgnoreAltEnter);
+            }
         }
 
         private SwapChainDescription GetDefaultSwapChainDescription(Control control)
@@ -166,6 +168,9 @@ namespace Graphics
 
         public void Dispose()
         {
+            Stop();
+            renderThread.Join();
+
             device.Dispose();
             swapChain.Dispose();
         }

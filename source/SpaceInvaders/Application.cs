@@ -1,5 +1,9 @@
 ﻿using Game;
 using Graphics;
+using System.Windows.Forms;
+using System.Drawing;
+using System;
+using SlimDX.Windows;
 
 namespace SpaceInvaders
 {
@@ -7,34 +11,50 @@ namespace SpaceInvaders
     /// <summary>
     /// Concrete class for the game.
     /// </summary>
-    class Application : Dx10Application
+    class Application
     {
         public BaseGame Game { get; set; }
         private Renderer renderer;
 
+        private GameTimer timer = new GameTimer();
+
+        Form form = new Form();
+
         public Application()
-        {
-            this.GameTitle = "Space Invaders";
-        }
+        {      
+            form.Size = new Size(800, 600);
+            form.Text = "Space Invaders";
 
-        public override void Initialize()
-        {
-            base.Initialize();
+            Button button = new Button();
+            form.Controls.Add(button);
+
+            renderer = new Graphics.Renderer(form);
+            renderer.Start();
+
             Game = new BaseGame();
-          //  renderer = new Renderer();
         }
 
-        public override void Update(float deltaTime)
+        public void Update(float deltaTime)
         {
-            base.Update(deltaTime);
-
             int deltaMilliseconds = (int) deltaTime * 1000;
             Game.Update(deltaMilliseconds);
         }
 
-        protected override void OnRender(float deltaTime)
+        /// <summary>
+        /// Run main loop.
+        /// </summary>
+        public void Run()
         {
-      //      Renderer.Render(deltaTime);
+            timer.Reset();
+
+            MessagePump.Run(form, () =>
+            {
+                timer.Tick();
+                float deltaTime = timer.DeltaTime;
+                Update(deltaTime);
+            });
+
+            renderer.Dispose();
         }
     }
 
