@@ -96,7 +96,16 @@ namespace Graphics
 #endif
             flags |= DeviceCreationFlags.SingleThreaded;
 
-            Device.CreateWithSwapChain(null, DriverType.Hardware, flags, currentDescription, out device, out swapChain);
+            DriverType type;
+
+#if SOFTWARE
+            type = DriverType.Warp;
+#else
+            type = DriverType.Hardware;
+#endif
+
+
+            Device.CreateWithSwapChain(null, type, flags, currentDescription, out device, out swapChain);
 
             // Stops Alt + Enter from causing fullscreen skrewiness.
             Factory factory = swapChain.GetParent<Factory>();
