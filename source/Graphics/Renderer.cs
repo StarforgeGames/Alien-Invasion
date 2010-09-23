@@ -21,7 +21,7 @@ namespace Graphics
         private Device device;
         private SwapChain swapChain;
         private Thread renderThread;
-        private bool isRendering;
+        public bool IsRendering { get; private set; }
         private RenderTargetView[] views;
 
         private const uint CommandsPerFrame = 3;
@@ -45,6 +45,7 @@ namespace Graphics
             
 
             renderFrame.Resize += new EventHandler(RenderFrame_Resize);
+
         }
 
         void RenderFrame_Resize(object sender, EventArgs e)
@@ -142,13 +143,13 @@ namespace Graphics
 
         public void Start()
         {
-            isRendering = true;
+            IsRendering = true;
             renderThread.Start();
         }
 
         public void Stop()
         {
-            isRendering = false;
+            IsRendering = false;
         }
 
         private void renderLoop()
@@ -156,20 +157,27 @@ namespace Graphics
             Color4 color = new Color4(Color.DarkBlue);
             Random rand = new Random(2434545);
 
-            while (isRendering)
+            try
             {
-                if (!commandQueue.Empty)
+                while (IsRendering)
                 {
-                    commandQueue.Execute(CommandsPerFrame);
-                    color = new Color4((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
-                }
+                    if (!commandQueue.Empty)
+                    {
+                        commandQueue.Execute(CommandsPerFrame);
+                        color = new Color4((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
+                    }
 
-                device.ClearRenderTargetView(
-                    views[0],
-                    color);
-                
-                swapChain.Present(0, PresentFlags.None);
-                
+                    device.ClearRenderTargetView(
+                        views[0],
+                        color);
+
+                    swapChain.Present(0, PresentFlags.None);
+
+                }
+            }
+            catch (SlimDX.DXGI.DXGIException e)
+            {
+                IsRendering = false;
             }
         }
 
