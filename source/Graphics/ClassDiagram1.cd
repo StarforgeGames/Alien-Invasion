@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Graphics.Resources.AResource">
+    <Position X="9.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAgAAAIAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Resources\AResource.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Graphics.Resources.ResourceHandle">
+    <Position X="3" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgACAAAAAACAAAgQAQAAAAAAFBAAABQACAEIAAAA=</HashCode>
+      <FileName>Resources\ResourceHandle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics.Resources.ResourceManager">
+    <Position X="7.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAiAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Resources\ResourceManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics.Resources.ABasicLoader">
+    <Position X="7" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAggCAAAAAAAAIAAAAIAAAAAAAAAAACAEAAAAAAAA=</HashCode>
+      <FileName>Resources\ABasicLoader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Struct Name="Graphics.Resources.ResourceProperties">
+    <Position X="4.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Resources\ResourceProperties.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="Graphics.Resources.IResourceLoader">
+    <Position X="4.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAggCAAAAAAAAAAAAAIAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Resources\ResourceManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Graphics.Resources.IEvent">
+    <Position X="1" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAQAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Resources\IEvent.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Graphics.Resources.ResourceState">
+    <Position X="1" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAEAAAIAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Resources\ResourceHandle.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

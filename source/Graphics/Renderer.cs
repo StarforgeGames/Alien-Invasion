@@ -175,7 +175,7 @@ namespace Graphics
 
                 }
             }
-            catch (SlimDX.DXGI.DXGIException e)
+            catch (SlimDX.DXGI.DXGIException)
             {
                 IsRendering = false;
             }
