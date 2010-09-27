@@ -115,7 +115,7 @@ namespace SpaceInvaders
         /// <summary>
         /// Updates the scene every tick.
         /// </summary>
-        /// <param name="deltaTime">Time that passed since last update.</param>
+        /// <param file="deltaTime">Time that passed since last update.</param>
         public virtual void Update(float deltaTime)
         {
             if (ShowFps) {

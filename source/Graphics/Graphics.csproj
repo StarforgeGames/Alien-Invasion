@@ -76,12 +76,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Resources\IEvent.cs" />
+    <Compile Include="Resources\ABasicLoader.cs" />
+    <Compile Include="Resources\ResourceProperties.cs" />
+    <Compile Include="Resources\AsyncLoader.cs" />
     <Compile Include="CommandQueue.cs" />
     <Compile Include="Counter.cs" />
     <Compile Include="IRenderable.cs" />
     <Compile Include="Primitives\XPlane.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\AResource.cs" />
+    <Compile Include="Resources\ResourceHandle.cs" />
+    <Compile Include="Resources\ResourceManager.cs" />
     <Compile Include="Sprites\BaseSprite.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +104,9 @@
     <Content Include="Shaders\SimplePassThrough.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
