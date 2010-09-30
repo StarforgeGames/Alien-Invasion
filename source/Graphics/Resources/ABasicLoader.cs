@@ -10,7 +10,7 @@ namespace Graphics.Resources
     {
 
 
-        abstract protected AResource DoLoad(FileInfo file);
+        abstract protected AResource DoLoad(string name);
 
         abstract protected void DoUnload(AResource resource);
 
@@ -40,7 +40,7 @@ namespace Graphics.Resources
             {
                 resourceHandle.resources[resourceHandle.InactiveSlot].status = ResourceState.Loading;
                 resourceHandle.resources[resourceHandle.InactiveSlot].resource
-                    = DoLoad(resourceHandle.File);
+                    = DoLoad(resourceHandle.Name);
                 resourceHandle.resources[resourceHandle.InactiveSlot].status = ResourceState.Ready;
                 resourceHandle.Swap();
             }
@@ -73,7 +73,7 @@ namespace Graphics.Resources
                 DoUnload(resourceHandle.resources[resourceHandle.InactiveSlot].resource);
                 resourceHandle.resources[resourceHandle.InactiveSlot].status = ResourceState.Loading;
                 resourceHandle.resources[resourceHandle.InactiveSlot].resource
-                    = DoLoad(resourceHandle.File);
+                    = DoLoad(resourceHandle.Name);
                 resourceHandle.resources[resourceHandle.InactiveSlot].status = ResourceState.Ready;
                 resourceHandle.Swap();
             }
@@ -87,7 +87,7 @@ namespace Graphics.Resources
 
         #region IResourceLoader Members
 
-        abstract public string FileType
+        abstract public string Type
         {
             get;
         }

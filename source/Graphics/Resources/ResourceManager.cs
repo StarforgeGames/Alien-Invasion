@@ -7,10 +7,9 @@ using System.IO;
 namespace Graphics.Resources
 {
 
-    public interface IResourceLoader
+    public interface IResourceLoader : ILoader
     {
-
-        string FileType
+        string Type
         {
             get;
         }
@@ -19,32 +18,76 @@ namespace Graphics.Resources
         {
             get;
         }
-        void Load(ResourceHandle resourceHandle);
-        void Unload(ResourceHandle resourceHandle);
-
-        void Reload(ResourceHandle resourceHandle);
-
-        void Load(ResourceHandle resourceHandle, IEvent evt);
-        void Unload(ResourceHandle resourceHandle, IEvent evt);
-
-        void Reload(ResourceHandle resourceHandle, IEvent evt);
     }
-    
 
-    class ResourceManager
+    public class ResourceManager
     {
-        Dictionary<FileInfo, ResourceHandle> resources;
-        List<AsyncLoader> Loaders { get; set; }
-        public ResourceManager()
+        Dictionary<string, Dictionary<string, ResourceHandle>> resources = new Dictionary<string,Dictionary<string, ResourceHandle>>();
+        Dictionary<string, IResourceLoader> Loaders { get; set; }
+
+        public IAsyncExecuter AsyncExecuter
         {
-            Loaders = new List<AsyncLoader>();
+            get;
+            private set;
+        }
+    
+        public ResourceManager(IAsyncExecuter executer)
+        {
+            AsyncExecuter = executer;
+            Loaders = new Dictionary<string, IResourceLoader>();
         }
 
-        public ResourceHandle GetResource(FileInfo name)
+        public ResourceHandle GetResource(string name, string type)
         {
-            throw new NotImplementedException();
-            // suche loader
-            return new ResourceHandle(name, null);
+            return GetResource(new ResourceIdentifier(name, type));
+        }
+
+        public ResourceHandle GetResource(ResourceIdentifier identifier)
+        {
+            try
+            {
+                var resourcesOfSameType = resources[identifier.Type];
+                if (resourcesOfSameType.ContainsKey(identifier.Name))
+                {
+                    ResourceHandle handle = resourcesOfSameType[identifier.Name];
+                    return handle;
+                }
+                else
+                {
+                    ResourceHandle handle = new ResourceHandle(identifier.Name, Loaders[identifier.Type]);
+                    lock (resourcesOfSameType)
+                    {
+                        resourcesOfSameType.Add(identifier.Name, handle);
+                    }
+                    return handle;
+                }
+            }
+            catch (Exception e)
+            {
+                
+                throw new NotSupportedException("No loader available for type! \r\n\r\nMessage: " + e.Message);
+            }
+        }
+
+        public void AddLoader(IResourceLoader loader)
+        {
+            lock (Loaders)
+            {
+                Loaders.Add(loader.Type, new AsyncLoader(loader, AsyncExecuter));
+                lock (resources)
+                {
+                    resources.Add(loader.Type, new Dictionary<string, ResourceHandle>());
+                }
+            }
+            
+        }
+
+        public void RemoveLoader(string type)
+        {
+            lock (Loaders)
+            {
+                Loaders.Remove(type);
+            }
         }
     }
 }
