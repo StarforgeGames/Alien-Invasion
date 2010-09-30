@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System;
 using SlimDX.Windows;
+using Graphics.Resources;
 
 namespace SpaceInvaders
 {
@@ -17,6 +18,7 @@ namespace SpaceInvaders
         private Renderer renderer;
 
         private GameTimer timer = new GameTimer();
+        private ResourceManager resourceManager;
 
         Form form = new Form();
 
@@ -32,6 +34,8 @@ namespace SpaceInvaders
             renderer.Start();
 
             Game = new BaseGame();
+            resourceManager = new ResourceManager(new ThreadPoolExecuter());
+
         }
 
         public void Update(float deltaTime)
