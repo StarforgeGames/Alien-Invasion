@@ -5,28 +5,82 @@ using System.Text;
 
 namespace Graphics.Resources
 {
-    class AsyncLoader
+    class AsyncLoader : IResourceLoader
     {
         IResourceLoader loader;
+        IAsyncExecuter executer;
 
-        AsyncLoader(IResourceLoader loader)
+        public AsyncLoader(IResourceLoader loader, IAsyncExecuter executer)
         {
             this.loader = loader;
+            this.executer = executer;
         }
 
-        public string[]  FileTypes
+
+        #region IResourceLoader Members
+
+        public string Type
         {
-            get { throw new NotImplementedException(); }
+            get { return loader.Type; }
         }
 
-        public void Load(string name, ref AResource resource)
+        public AResource Default
         {
-            throw new NotImplementedException();
+            get { return loader.Default; }
         }
 
-        public void Unload(ref AResource resource)
+        #endregion
+
+        #region ILoader Members
+
+        public void Load(ResourceHandle resourceHandle)
         {
-            throw new NotImplementedException();
+            executer.Execute(() =>
+            {
+                loader.Load(resourceHandle);
+            });
         }
+
+        public void Load(ResourceHandle resourceHandle, IEvent evt)
+        {
+            executer.Execute(() =>
+            {
+                loader.Load(resourceHandle, evt);
+            });
+        }
+
+        public void Reload(ResourceHandle resourceHandle)
+        {
+            executer.Execute(() =>
+            {
+                loader.Reload(resourceHandle);
+            });
+        }
+
+        public void Reload(ResourceHandle resourceHandle, IEvent evt)
+        {
+            executer.Execute(() =>
+            {
+                loader.Reload(resourceHandle, evt);
+            });
+        }
+
+        public void Unload(ResourceHandle resourceHandle)
+        {
+            executer.Execute(() =>
+            {
+                loader.Unload(resourceHandle);
+            });
+        }
+
+        public void Unload(ResourceHandle resourceHandle, IEvent evt)
+        {
+            executer.Execute(() =>
+            {
+                loader.Unload(resourceHandle, evt);
+            });
+        }
+
+        #endregion
     }
 }

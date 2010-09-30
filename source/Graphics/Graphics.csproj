@@ -76,8 +76,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Resources\IAsyncExecuter.cs" />
     <Compile Include="Resources\IEvent.cs" />
     <Compile Include="Resources\ABasicLoader.cs" />
+    <Compile Include="Resources\ILoader.cs" />
+    <Compile Include="Resources\ResourceIdentifier.cs" />
     <Compile Include="Resources\ResourceProperties.cs" />
     <Compile Include="Resources\AsyncLoader.cs" />
     <Compile Include="CommandQueue.cs" />
@@ -90,6 +93,7 @@
     <Compile Include="Resources\ResourceHandle.cs" />
     <Compile Include="Resources\ResourceManager.cs" />
     <Compile Include="Sprites\BaseSprite.cs" />
+    <Compile Include="ThreadPoolExecuter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Game\Game.csproj">

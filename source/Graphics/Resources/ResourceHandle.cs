@@ -19,14 +19,12 @@ namespace Graphics.Resources
         private int slot = 0;
         private int pendingSlot = 0;
         private int pendingOperation = 0;
-        private FileInfo file;
+        private string name;
 
-        public ResourceHandle(FileInfo file, IResourceLoader resourceLoader)
+        public ResourceHandle(string name, IResourceLoader resourceLoader)
         {
-            this.file = file;
+            this.name = name;
             this.resourceLoader = resourceLoader;
-
-            throw new NotImplementedException("noch nicht sicher, ob der resource loader gespeichert wird");
         }
 
         internal int ActiveSlot
@@ -45,11 +43,11 @@ namespace Graphics.Resources
             }
         }
 
-        public FileInfo File
+        public string Name
         {
             get
             {
-                return file;
+                return name;
             }
         }
 
@@ -91,14 +89,11 @@ namespace Graphics.Resources
                 switch (resources[InactiveSlot].status)
                 {
                     case ResourceState.Empty:
-                        //load
-                        //swap
-                        throw new NotImplementedException();
+                        resourceLoader.Load(this);
+                        return;
                     case ResourceState.Ready:
-                        //unload
-                        //load
-                        //swap
-                        throw new NotImplementedException();
+                        resourceLoader.Reload(this);
+                        return;
                     case ResourceState.Loading:
                         throw new NotSupportedException("tried to load resource while loading");
                     case ResourceState.Unloading:
@@ -107,9 +102,26 @@ namespace Graphics.Resources
                         throw new NotSupportedException("this should never occur!");
                 }
             }
-            else
+        }
+
+        public void Load(IEvent evt)
+        {
+            while ((Interlocked.CompareExchange(ref pendingOperation, 1, 0) == 1));
+
+            switch (resources[InactiveSlot].status)
             {
-                return;
+                case ResourceState.Empty:
+                    resourceLoader.Load(this, evt);
+                    return;
+                case ResourceState.Ready:
+                    resourceLoader.Reload(this, evt);
+                    return;
+                case ResourceState.Loading:
+                    throw new NotSupportedException("tried to load resource while loading");
+                case ResourceState.Unloading:
+                    throw new NotSupportedException("tried to load resource while unloading");
+                default:
+                    throw new NotSupportedException("this should never occur!");
             }
         }
 
@@ -120,16 +132,15 @@ namespace Graphics.Resources
                 switch (resources[InactiveSlot].status)
                 {
                     case ResourceState.Ready:
-                        // unload
-                        throw new NotImplementedException();
-                    
+                        resourceLoader.Unload(this);
+                        return;
                     case ResourceState.Empty:
                         switch (resources[ActiveSlot].status)
                         {
                             case ResourceState.Ready:
                                 Swap();
-                                //unload
-                                throw new NotImplementedException();
+                                resourceLoader.Unload(this);
+                                return;
                             case ResourceState.Empty:
                                 return;
                             case ResourceState.Loading:
@@ -138,9 +149,8 @@ namespace Graphics.Resources
                                 throw new NotSupportedException("tried to unload resource while unloading");
                             
                             default:
-                                break;
+                                throw new NotSupportedException("this should never occur!");
                         }
-                        break;
 
                     case ResourceState.Loading:
                         throw new NotSupportedException("tried to unload resource while loading");
@@ -149,11 +159,41 @@ namespace Graphics.Resources
                     default:
                         throw new NotSupportedException("this should never occur!");
                 }
-                throw new System.NotImplementedException();
             }
-            else
+        }
+
+        public void Unload(IEvent evt)
+        {
+            while ((Interlocked.CompareExchange(ref pendingOperation, 1, 0) == 1)) ;
+
+            switch (resources[InactiveSlot].status)
             {
-                return;
+                case ResourceState.Ready:
+                    resourceLoader.Unload(this, evt);
+                    return;
+                case ResourceState.Empty:
+                    switch (resources[ActiveSlot].status)
+                    {
+                        case ResourceState.Ready:
+                            Swap();
+                            resourceLoader.Unload(this, evt);
+                            return;
+                        case ResourceState.Empty:
+                            return;
+                        case ResourceState.Loading:
+                            throw new NotSupportedException("tried to unload resource while loading");
+                        case ResourceState.Unloading:
+                            throw new NotSupportedException("tried to unload resource while unloading");
+                        default:
+                            throw new NotSupportedException("this should never occur!");
+                    }
+
+                case ResourceState.Loading:
+                    throw new NotSupportedException("tried to unload resource while loading");
+                case ResourceState.Unloading:
+                    throw new NotSupportedException("tried to unload resource while unloading");
+                default:
+                    throw new NotSupportedException("this should never occur!");
             }
         }
 
