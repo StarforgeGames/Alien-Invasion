@@ -3,17 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Game
+namespace Game.Messages
 {
-
-    public enum MessageType
-    {
-
-    }
 
     public class Message
     {
-        public MessageType Type { get; set; }
+        public int Type { get; set; }
     }
 
 }

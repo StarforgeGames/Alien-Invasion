@@ -5,6 +5,7 @@ using System.Drawing;
 using System;
 using SlimDX.Windows;
 using Graphics.Resources;
+using SpaceInvaders.Input;
 
 namespace SpaceInvaders
 {
@@ -21,19 +22,25 @@ namespace SpaceInvaders
         private ResourceManager resourceManager;
 
         Form form = new Form();
+        IKeyboardHandler keyHandler;
 
         public Application()
         {      
             form.Size = new Size(800, 600);
             form.Text = "Space Invaders";
 
-            Button button = new Button();
-            form.Controls.Add(button);
+            //Button button = new Button();
+            //form.Controls.Add(button);
 
             renderer = new Graphics.Renderer(form);
             renderer.Start();
 
             Game = new BaseGame();
+
+            keyHandler = new KeyboardHandler(Game.PlayerInterpreter);
+            form.KeyDown += new KeyEventHandler(keyHandler.OnKeyDown);
+            form.KeyUp += new KeyEventHandler(keyHandler.OnKeyUp);
+
             resourceManager = new ResourceManager(new ThreadPoolExecuter());
 
         }

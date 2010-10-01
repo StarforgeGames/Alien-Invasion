@@ -5,11 +5,11 @@ namespace Game.Entities
 
     class Player : Entity
     {
-        public Player()
+        public Player() 
             : base()
         {
-            behaviours.Add(new SpatialBehaviour(this));
-            behaviours.Add(new RenderBehaviour(this, @"Gfx\player.png"));
+            AddBehaviour(new SpatialBehaviour(this, 1f, 50f, 50f));
+            AddBehaviour(new RenderBehaviour(this, @"Gfx\player.png"));
         }
     }
 

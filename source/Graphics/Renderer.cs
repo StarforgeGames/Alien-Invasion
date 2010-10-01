@@ -1,15 +1,11 @@
-﻿using System.Collections.Generic;
-using Game;
-using Graphics.Primitives;
-using SlimDX.Direct3D10;
-using Game.Resources;
-using System;
-using System.Windows.Forms;
-using SlimDX.DXGI;
-using SlimDX;
-using Device = SlimDX.Direct3D10.Device;
-using System.Threading;
+﻿using System;
 using System.Drawing;
+using System.Threading;
+using System.Windows.Forms;
+using SlimDX;
+using SlimDX.Direct3D10;
+using SlimDX.DXGI;
+using Device = SlimDX.Direct3D10.Device;
 
 namespace Graphics
 {

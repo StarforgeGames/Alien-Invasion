@@ -1,10 +1,5 @@
-﻿using System;
-using SlimDX;
-using SlimDX.D3DCompiler;
-using SlimDX.Direct3D10;
-using SlimDX.DXGI;
+﻿using SlimDX.Direct3D10;
 using Buffer = SlimDX.Direct3D10.Buffer;
-using Resource = Game.Resources.Resource;
 
 namespace Graphics.Primitives
 {
@@ -15,10 +10,10 @@ namespace Graphics.Primitives
     /// </summary>
     class XPlane : IRenderable
     {
-        private EffectTechnique technique;
+        /*private EffectTechnique technique;
         private EffectPass pass;
         private Buffer vertices;
-        private InputLayout layout;
+        private InputLayout layout;*/
 
         public XPlane(Resource sprite)
         {
