@@ -1,23 +1,21 @@
 ﻿using System.Collections.Generic;
 using Game.Entities;
-using Game.Resources;
+using Game.Input;
 
 namespace Game
 {
 
     public class BaseGame
     {
-        public static ResourceCache Resources { get; set; }
-
         public List<Entity> Entities { get; set; }
+        public CommandInterpreter PlayerInterpreter { get; set; }
 
         public BaseGame()
         {
-            Resources = new ResourceCache();
-
             Entities = new List<Entity>();
-            Entities.Add(new Player());
-
+            Entity player = new Player();
+            Entities.Add(player);
+            PlayerInterpreter = new CommandInterpreter(player);
         }
 
         public void Update(float deltaTime)

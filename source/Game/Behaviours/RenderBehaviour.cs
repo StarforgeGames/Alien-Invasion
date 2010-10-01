@@ -1,20 +1,33 @@
 ﻿using System;
 using Game.Entities;
-using Game.Resources;
+using Game.Messages;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Game.Behaviours
 {
 
     class RenderBehaviour : IBehaviour
     {
+        List<Type> supportedMessages = new List<Type>() { };
+        public ReadOnlyCollection<Type> SupportedMessages
+        {
+            get
+            {
+                return supportedMessages.AsReadOnly();
+            }
+        }
+
         private Entity entity;
+
+        public readonly int Key_Sprite;
 
         public RenderBehaviour(Entity entity, string sprite)
         {
             this.entity = entity;
-            Resource res = BaseGame.Resources.GetResource(sprite);
-            entity.Attributes.Add("Sprite", sprite);
-            entity.Attributes.Add("SpriteResourceID", res.ID.ToString());
+
+            Key_Sprite = entity.NextAttributeID;
+            entity.AddAttribute(Key_Sprite, sprite);
         }
 
         #region IBehaviour Members
