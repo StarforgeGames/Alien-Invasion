@@ -12,20 +12,25 @@ namespace Game.Behaviours
     class CombatBehaviour : IBehaviour
     {
         public readonly int Key_IsDead;
+        public readonly int Key_IsFiring;
+        public readonly int Key_FiringSpeed;
 
         private Entity entity;
-        private float firingSpeed;
-        private bool isFiring = false;
 
         private Process process = null;
 
         public CombatBehaviour(Entity entity, float firingSpeed)
         {
             this.entity = entity;
-            this.firingSpeed = firingSpeed;
 
             Key_IsDead = entity.NextAttributeID;
             entity.AddAttribute(Key_IsDead, false);
+
+            Key_IsFiring = entity.NextAttributeID;
+            entity.AddAttribute(Key_IsFiring, false);
+
+            Key_FiringSpeed = entity.NextAttributeID;
+            entity.AddAttribute(Key_FiringSpeed, firingSpeed);
         }
 
         #region IBehaviour Members
@@ -43,8 +48,11 @@ namespace Game.Behaviours
 
         public void OnUpdate(float deltaTime)
         {
+            bool isFiring = ((Attribute<bool>) entity.GetAttribute(Key_IsFiring)).Value;
+
             if (isFiring && process == null) {
-                process = new FireWeaponProcess(entity, firingSpeed);
+                Attribute<float> firingSpeed = (Attribute<float>)entity.GetAttribute(Key_FiringSpeed);
+                process = new FireWeaponProcess(entity, firingSpeed.Value);
                 entity.Game.ProcessManager.Attach(process);
             }
             else if (!isFiring && process != null) {
@@ -56,12 +64,16 @@ namespace Game.Behaviours
         public void OnMessage(Messages.Message msg)
         {
             switch (msg.Type) {
-                case FireWeaponMessage.START_FIRING:
-                    isFiring = true;
+                case FireWeaponMessage.START_FIRING: {
+                    Attribute<bool> isFiring = (Attribute<bool>)entity.GetAttribute(Key_IsFiring);
+                    isFiring.Value = true;
                     break;
-                case FireWeaponMessage.STOP_FIRING:
-                    isFiring = false;
+                }
+                case FireWeaponMessage.STOP_FIRING: {
+                    Attribute<bool> isFiring = (Attribute<bool>)entity.GetAttribute(Key_IsFiring);
+                    isFiring.Value = false;
                     break;
+                }
             }
         }
 
