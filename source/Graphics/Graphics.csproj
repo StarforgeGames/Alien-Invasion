@@ -76,10 +76,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Resources\AWiper.cs" />
+    <Compile Include="Resources\Debug\DebugWiper.cs" />
+    <Compile Include="Resources\Debug\ResourceManagementMonitor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Resources\Debug\ResourceManagementMonitor.Designer.cs">
+      <DependentUpon>ResourceManagementMonitor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Resources\IAsyncExecuter.cs" />
     <Compile Include="Resources\IEvent.cs" />
-    <Compile Include="Resources\ABasicLoader.cs" />
+    <Compile Include="Resources\Loaders\ABasicLoader.cs" />
     <Compile Include="Resources\ILoader.cs" />
+    <Compile Include="Resources\Loaders\DummyLoader.cs" />
     <Compile Include="Resources\ResourceIdentifier.cs" />
     <Compile Include="Resources\ResourceProperties.cs" />
     <Compile Include="Resources\AsyncLoader.cs" />
@@ -110,7 +119,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
+    <None Include="Resources\ClassDiagram1.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Debug\ResourceManagementMonitor.resx">
+      <DependentUpon>ResourceManagementMonitor.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace Graphics.Resources
+namespace Graphics.Resources.Loaders
 {
     public abstract class ABasicLoader : IResourceLoader
     {

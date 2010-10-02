@@ -24,6 +24,7 @@ namespace Graphics.Resources
     {
         Dictionary<string, Dictionary<string, ResourceHandle>> resources = new Dictionary<string,Dictionary<string, ResourceHandle>>();
         Dictionary<string, IResourceLoader> Loaders { get; set; }
+        List<AWiper> wipers = new List<AWiper>();
 
         public IAsyncExecuter AsyncExecuter
         {
@@ -88,6 +89,20 @@ namespace Graphics.Resources
             {
                 Loaders.Remove(type);
             }
+        }
+
+        public void AddWiper(AWiper wiper)
+        {
+            wiper.SetResources(resources);
+            wiper.Start();
+            wipers.Add(wiper);
+        }
+
+        public void RemoveWiper(AWiper wiper)
+        {
+            wipers.Remove(wiper);
+            wiper.Stop();
+            wiper.SetResources(null);
         }
     }
 }
