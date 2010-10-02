@@ -20,10 +20,6 @@ namespace Game.Behaviours
             }
         }
 
-        // Message Types
-        public const int START_MOVING = 1;
-        public const int STOP_MOVING = 2;
-
         // Attribute Keys
         public readonly int Key_PositionX;
         public readonly int Key_PositionY;
@@ -52,37 +48,39 @@ namespace Game.Behaviours
         public void OnUpdate(float deltaTime)
         {            
             if (isMoving) {
-                float timeInSeconds = deltaTime / 1000;
-
                 switch (direction) {
                     case Direction.North: {
                         Attribute<float> posY = (Attribute<float>)entity.GetAttribute(Key_PositionY);
-                        posY.Value += (speed * timeInSeconds);
+                        posY.Value += (speed * deltaTime);
                         break;
                     }
                     case Direction.East: {
                         Attribute<float> posX = (Attribute<float>)entity.GetAttribute(Key_PositionX);
-                        posX.Value += (speed * timeInSeconds);
+                        posX.Value += (speed * deltaTime);
                         break;
                     }
                     case Direction.South: {
                         Attribute<float> posY = (Attribute<float>)entity.GetAttribute(Key_PositionY);
-                        posY.Value -= (speed * timeInSeconds);
+                        posY.Value -= (speed * deltaTime);
                         break;
                     }
                     case Direction.West: {
                         Attribute<float> posX = (Attribute<float>)entity.GetAttribute(Key_PositionX);
-                        posX.Value -= (speed * timeInSeconds);
+                        posX.Value -= (speed * deltaTime);
                         break;
                     }
                 }
+
+                Attribute<float> x = (Attribute<float>)entity.GetAttribute(Key_PositionX);
+                Attribute<float> y = (Attribute<float>)entity.GetAttribute(Key_PositionY);
+                Console.WriteLine("Moved " + direction.ToString() + " to (" + x.Value + "/" + y.Value + ")");
             }
         }
 
         public void OnMessage(Message msg)
         {
             switch (msg.Type) {
-                case START_MOVING:
+                case MoveMessage.START_MOVING:
                     if (msg is MoveMessage) {
                         MoveMessage moveMsg = (MoveMessage)msg;
 
@@ -90,7 +88,7 @@ namespace Game.Behaviours
                         this.direction = moveMsg.Direction;
                     }
                     break;
-                case STOP_MOVING:
+                case MoveMessage.STOP_MOVING:
                     isMoving = false;
                     break;
             }

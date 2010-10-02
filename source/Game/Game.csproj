@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseGame.cs" />
+    <Compile Include="Behaviours\CombatBehaviour.cs" />
     <Compile Include="Behaviours\IBehaviour.cs" />
     <Compile Include="Behaviours\RenderBehaviour.cs" />
     <Compile Include="Behaviours\SpatialBehaviour.cs" />
@@ -82,8 +83,12 @@
     <Compile Include="Entities\IAttribute.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Input\CommandInterpreter.cs" />
+    <Compile Include="Messages\FireWeaponMessage.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MoveMessage.cs" />
+    <Compile Include="Processes\FireWeaponProcess.cs" />
+    <Compile Include="Processes\Process.cs" />
+    <Compile Include="ProcessManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

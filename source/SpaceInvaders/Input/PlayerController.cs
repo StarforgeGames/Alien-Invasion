@@ -8,11 +8,11 @@ using Game.Messages;
 
 namespace SpaceInvaders.Input
 {
-    class KeyboardHandler : IKeyboardHandler
+    class PlayerController : IKeyboardHandler
     {
         private CommandInterpreter interpreter;
 
-        public KeyboardHandler(CommandInterpreter interpreter)
+        public PlayerController(CommandInterpreter interpreter)
         {
             this.interpreter = interpreter;
         }
@@ -42,6 +42,9 @@ namespace SpaceInvaders.Input
                 case Keys.Right:
                     interpreter.StartMoving(Direction.East);
                     break;
+                case Keys.Space:
+                    interpreter.StartFiringWeapon();
+                    break;
             }
         }
 
@@ -65,6 +68,9 @@ namespace SpaceInvaders.Input
                     goto case Keys.Left;
                 case Keys.Right:
                     goto case Keys.Left;
+                case Keys.Space:
+                    interpreter.StopFiringWeapon();
+                    break;
             }
         }
 

@@ -17,16 +17,20 @@ namespace Game.Messages
 
     class MoveMessage : Message
     {
+        // Event Message Types
+        public const string START_MOVING = "actor_start_moving";
+        public const string STOP_MOVING = "actor_stop_moving";
+
         public Direction Direction { get; set; }
 
         public MoveMessage() {
-            Type = SpatialBehaviour.STOP_MOVING;
+            Type = STOP_MOVING;
         }
 
         public MoveMessage(Direction direction)
         {
             Direction = direction;
-            Type = SpatialBehaviour.START_MOVING;
+            Type = START_MOVING;
         }
     }
 
