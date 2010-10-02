@@ -8,7 +8,7 @@ namespace Game.Messages
 
     public class Message
     {
-        public int Type { get; set; }
+        public string Type { get; set; }
     }
 
 }

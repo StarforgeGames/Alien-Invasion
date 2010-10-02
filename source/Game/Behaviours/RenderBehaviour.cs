@@ -9,18 +9,9 @@ namespace Game.Behaviours
 
     class RenderBehaviour : IBehaviour
     {
-        List<Type> supportedMessages = new List<Type>() { };
-        public ReadOnlyCollection<Type> SupportedMessages
-        {
-            get
-            {
-                return supportedMessages.AsReadOnly();
-            }
-        }
+        public readonly int Key_Sprite;
 
         private Entity entity;
-
-        public readonly int Key_Sprite;
 
         public RenderBehaviour(Entity entity, string sprite)
         {
@@ -31,6 +22,15 @@ namespace Game.Behaviours
         }
 
         #region IBehaviour Members
+
+        List<Type> supportedMessages = new List<Type>() { };
+        public ReadOnlyCollection<Type> SupportedMessages
+        {
+            get
+            {
+                return supportedMessages.AsReadOnly();
+            }
+        }
 
         public void OnUpdate(float deltaTime)
         {

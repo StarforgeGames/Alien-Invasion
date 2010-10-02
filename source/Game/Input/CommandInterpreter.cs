@@ -25,5 +25,15 @@ namespace Game.Input
         {
             entity.SendMessage(new MoveMessage());
         }
+
+        public void StartFiringWeapon()
+        {
+            entity.SendMessage(new FireWeaponMessage(true));
+        }
+
+        public void StopFiringWeapon()
+        {
+            entity.SendMessage(new FireWeaponMessage(false));
+        }
     }
 }

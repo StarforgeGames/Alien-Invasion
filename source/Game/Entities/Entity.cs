@@ -17,11 +17,16 @@ namespace Game.Entities
             get { return nextAttributeID++; } 
         }
 
-        public Entity()
+        protected BaseGame game;
+        public BaseGame Game { get { return game; } }
+
+        public Entity(BaseGame game)
         {
             behaviours = new List<IBehaviour>();
             attributes = new Dictionary<int, IAttribute>();
             messageObservers = new Dictionary<Type, List<IBehaviour>>();
+
+            this.game = game;
         }
 
 

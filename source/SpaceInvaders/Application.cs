@@ -37,7 +37,7 @@ namespace SpaceInvaders
 
             Game = new BaseGame();
 
-            keyHandler = new KeyboardHandler(Game.PlayerInterpreter);
+            keyHandler = new PlayerController(Game.PlayerInterpreter);
             form.KeyDown += new KeyEventHandler(keyHandler.OnKeyDown);
             form.KeyUp += new KeyEventHandler(keyHandler.OnKeyUp);
 
@@ -47,8 +47,7 @@ namespace SpaceInvaders
 
         public void Update(float deltaTime)
         {
-            int deltaMilliseconds = (int) deltaTime * 1000;
-            Game.Update(deltaMilliseconds);
+            Game.Update(deltaTime);
         }
 
         /// <summary>
