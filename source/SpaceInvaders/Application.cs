@@ -6,6 +6,7 @@ using System;
 using SlimDX.Windows;
 using Graphics.Resources;
 using SpaceInvaders.Input;
+using Graphics.Resources.Loaders;
 
 namespace SpaceInvaders
 {
@@ -42,7 +43,14 @@ namespace SpaceInvaders
             form.KeyUp += new KeyEventHandler(keyHandler.OnKeyUp);
 
             resourceManager = new ResourceManager(new ThreadPoolExecuter());
-
+            resourceManager.AddWiper(new Graphics.Resources.Debug.DebugWiper());
+            resourceManager.AddLoader(new DummyLoader());
+            resourceManager.GetResource("blub1", "txt");
+            resourceManager.GetResource("blub2", "txt");
+            resourceManager.GetResource("blub3", "txt");
+            resourceManager.GetResource("blub4", "txt");
+            resourceManager.GetResource("blub5", "txt");
+            resourceManager.GetResource("blub6", "txt");
         }
 
         public void Update(float deltaTime)
