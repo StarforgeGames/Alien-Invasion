@@ -14,35 +14,26 @@ namespace Graphics.Resources
 
     public class ResourceHandle
     {
-        internal ResourceProperties[] resources = new ResourceProperties[2];
+        internal ResourceProperties 
+            active = new ResourceProperties {
+                resource = null,
+                state = ResourceState.Empty
+            },
+            inactive = new ResourceProperties()
+            {
+                resource = null,
+                state = ResourceState.Empty
+            };
+
         private IResourceLoader resourceLoader;
-        private int slot = 0;
         private int pendingSlot = 0;
         private int pendingOperation = 0;
         private string name;
 
         public ResourceHandle(string name, IResourceLoader resourceLoader)
         {
-            this.resources[0].state = ResourceState.Empty;
-            this.resources[1].state = ResourceState.Empty;
             this.name = name;
             this.resourceLoader = resourceLoader;
-        }
-
-        internal int ActiveSlot
-        {
-            get
-            {
-                return slot;
-            }
-        }
-
-        internal int InactiveSlot
-        {
-            get
-            {
-                return slot == 0 ? 1 : 0;
-            }
         }
 
         public string Name
@@ -58,11 +49,11 @@ namespace Graphics.Resources
             while (Interlocked.CompareExchange(ref pendingSlot, 1, 0) != 0) ;
             try
             {
-                switch (resources[ActiveSlot].state)
+                switch (active.state)
                 {
                     case ResourceState.Ready:
-                        resources[ActiveSlot].resource.Acquire();
-                        return resources[ActiveSlot].resource;
+                        active.resource.Acquire();
+                        return active.resource;
 
                     case ResourceState.Empty:
                         resourceLoader.Default.Acquire();
@@ -88,11 +79,11 @@ namespace Graphics.Resources
             while (Interlocked.CompareExchange(ref pendingSlot, 1, 0) != 0) ;
             try
             {
-                switch (resources[ActiveSlot].state)
+                switch (active.state)
                 {
                     case ResourceState.Ready:
-                        resources[ActiveSlot].resource.Acquire();
-                        return resources[ActiveSlot].resource;
+                        active.resource.Acquire();
+                        return active.resource;
 
                     case ResourceState.Empty:
                         Load();
@@ -118,7 +109,7 @@ namespace Graphics.Resources
         {
             if ((Interlocked.CompareExchange(ref pendingOperation, 1, 0) == 0))
             {
-                switch (resources[InactiveSlot].state)
+                switch (inactive.state)
                 {
                     case ResourceState.Empty:
                         resourceLoader.Load(this);
@@ -140,7 +131,7 @@ namespace Graphics.Resources
         {
             while ((Interlocked.CompareExchange(ref pendingOperation, 1, 0) == 1));
 
-            switch (resources[InactiveSlot].state)
+            switch (inactive.state)
             {
                 case ResourceState.Empty:
                     resourceLoader.Load(this, evt);
@@ -161,13 +152,13 @@ namespace Graphics.Resources
         {
             if ((Interlocked.CompareExchange(ref pendingOperation, 1, 0) == 0))
             {
-                switch (resources[InactiveSlot].state)
+                switch (inactive.state)
                 {
                     case ResourceState.Ready:
                         resourceLoader.Unload(this);
                         return;
                     case ResourceState.Empty:
-                        switch (resources[ActiveSlot].state)
+                        switch (active.state)
                         {
                             case ResourceState.Ready:
                                 Swap();
@@ -199,13 +190,13 @@ namespace Graphics.Resources
         {
             while ((Interlocked.CompareExchange(ref pendingOperation, 1, 0) == 1)) ;
 
-            switch (resources[InactiveSlot].state)
+            switch (inactive.state)
             {
                 case ResourceState.Ready:
                     resourceLoader.Unload(this, evt);
                     return;
                 case ResourceState.Empty:
-                    switch (resources[ActiveSlot].state)
+                    switch (active.state)
                     {
                         case ResourceState.Ready:
                             Swap();
@@ -234,7 +225,9 @@ namespace Graphics.Resources
         public void Swap()
         {
             while (Interlocked.CompareExchange(ref pendingSlot, 1, 0) != 0);
-            slot = slot == 1 ? 0 : 1;
+            ResourceProperties temp = active;
+            active = inactive;
+            inactive = temp;
             Interlocked.Decrement(ref pendingSlot);
         }
 

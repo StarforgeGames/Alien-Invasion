@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Graphics.Resources
 {
-    public struct ResourceProperties
+    public class ResourceProperties
     {
         public AResource resource;
         public ResourceState state;

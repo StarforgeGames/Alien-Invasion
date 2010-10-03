@@ -11,7 +11,7 @@
   <Class Name="Graphics.Resources.ResourceHandle">
     <Position X="2.25" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgACAAAAAACAAAgQAQARAAAAFBAAAAQACAEIAAAA=</HashCode>
+      <HashCode>AAAAgACAAAAAAAAAAgQAAARAAAAFAAAAAQAAIEIAAAg=</HashCode>
       <FileName>Resources\ResourceHandle.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -74,13 +74,6 @@
       <FileName>Resources\Loaders\DummyLoader.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Struct Name="Graphics.Resources.ResourceProperties">
-    <Position X="5.75" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
-      <FileName>Resources\ResourceProperties.cs</FileName>
-    </TypeIdentifier>
-  </Struct>
   <Interface Name="Graphics.Resources.IResourceLoader" Collapsed="true">
     <Position X="4" Y="1.25" Width="1.5" />
     <TypeIdentifier>

@@ -54,11 +54,11 @@ namespace Graphics.Resources.Debug
             public string type{get; set;}
             public string key{get; set;}
             public string name{get; set;}
-            public int activeSlot { get; set; }
-            public ResourceState resourceState1{get; set;}
-            public ResourceState resourceState2{get; set;}
-            public AResource resource1{get; set;}
-            public AResource resource2 { get; set; }
+            public ResourceState activeState { get; set; }
+            public AResource active { get; set; }
+
+            public ResourceState inactiveState { get; set; }
+            public AResource inactive { get; set; }
         }
 
         private Output test(KeyValuePair<string, Dictionary<string, ResourceHandle>> a, KeyValuePair<string, ResourceHandle> b)
@@ -70,11 +70,10 @@ namespace Graphics.Resources.Debug
                     type = a.Key,
                     key = b.Key,
                     name = b.Value.Name,
-                    activeSlot = b.Value.ActiveSlot,
-                    resourceState1 = b.Value.resources[0].state,
-                    resourceState2 = b.Value.resources[1].state,
-                    resource1 = b.Value.resources[0].resource,
-                    resource2 = b.Value.resources[1].resource
+                    activeState = b.Value.active.state,
+                    inactiveState = b.Value.inactive.state,
+                    active = b.Value.active.resource,
+                    inactive = b.Value.inactive.resource
                 };
             }
 

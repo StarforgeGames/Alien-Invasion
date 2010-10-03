@@ -16,70 +16,70 @@ namespace Graphics.Resources.Loaders
 
         #region IResourceLoader Members
 
-        public void Load(ResourceHandle resourceHandle, IEvent evt)
+        public void Load(ResourceHandle handle, IEvent evt)
         {
-            Load(resourceHandle);
+            Load(handle);
             evt.Finish();
         }
 
-        public void Unload(ResourceHandle resourceHandle, IEvent evt)
+        public void Unload(ResourceHandle handle, IEvent evt)
         {
-            Unload(resourceHandle);
+            Unload(handle);
             evt.Finish();
         }
 
-        public void Reload(ResourceHandle resourceHandle, IEvent evt)
+        public void Reload(ResourceHandle handle, IEvent evt)
         {
-            Reload(resourceHandle);
+            Reload(handle);
             evt.Finish();
         }
 
-        public void Load(ResourceHandle resourceHandle)
+        public void Load(ResourceHandle handle)
         {
             try
             {
-                resourceHandle.resources[resourceHandle.InactiveSlot].state = ResourceState.Loading;
-                resourceHandle.resources[resourceHandle.InactiveSlot].resource
-                    = doLoad(resourceHandle.Name);
-                resourceHandle.resources[resourceHandle.InactiveSlot].state = ResourceState.Ready;
-                resourceHandle.Swap();
+                handle.inactive.state = ResourceState.Loading;
+                handle.inactive.resource
+                    = doLoad(handle.Name);
+                handle.inactive.state = ResourceState.Ready;
+                handle.Swap();
             }
             finally
             {
-                resourceHandle.Finished();
+                handle.Finished();
             }
         }
 
-        public void Unload(ResourceHandle resourceHandle)
+        public void Unload(ResourceHandle handle)
         {
             try
             {
-                resourceHandle.resources[resourceHandle.InactiveSlot].state = ResourceState.Unloading;
-                doUnload(resourceHandle.resources[resourceHandle.InactiveSlot].resource);
-                resourceHandle.resources[resourceHandle.InactiveSlot].resource = null;
-                resourceHandle.resources[resourceHandle.InactiveSlot].state = ResourceState.Empty;
+                handle.inactive.state = ResourceState.Unloading;
+                doUnload(handle.inactive.resource);
+                handle.inactive.resource = null;
+                handle.inactive.state = ResourceState.Empty;
             }
             finally
             {
-                resourceHandle.Finished();
+                handle.Finished();
             }
         }
 
-        public void Reload(ResourceHandle resourceHandle)
+        public void Reload(ResourceHandle handle)
         {
             try
             {
-                resourceHandle.resources[resourceHandle.InactiveSlot].state = ResourceState.Unloading;
-                doUnload(resourceHandle.resources[resourceHandle.InactiveSlot].resource);
-                resourceHandle.resources[resourceHandle.InactiveSlot].state = ResourceState.Loading;
-                resourceHandle.resources[resourceHandle.InactiveSlot].resource
-                    = doLoad(resourceHandle.Name);
-                resourceHandle.resources[resourceHandle.InactiveSlot].state = ResourceState.Ready;
-                resourceHandle.Swap();
+                handle.inactive.state = ResourceState.Unloading;
+                doUnload(handle.inactive.resource);
+                handle.inactive.state = ResourceState.Loading;
+                handle.inactive.resource
+                    = doLoad(handle.Name);
+                handle.inactive.state = ResourceState.Ready;
+                handle.Swap();
             }
             finally
             {
-                resourceHandle.Finished();
+                handle.Finished();
             }
         }
 
