@@ -21,7 +21,7 @@ namespace Graphics.Resources.Loaders
         TextResource def = new TextResource { text = "default" };
         Random rand = new Random();
 
-        protected override AResource DoLoad(string name)
+        protected override AResource doLoad(string name)
         {
             TextResource res = new TextResource();
             res.text = name;
@@ -29,7 +29,7 @@ namespace Graphics.Resources.Loaders
             return res;
         }
 
-        protected override void DoUnload(AResource resource)
+        protected override void doUnload(AResource resource)
         {
             TextResource res = resource as TextResource;
             res.text = "";

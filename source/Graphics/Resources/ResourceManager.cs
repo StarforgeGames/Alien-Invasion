@@ -7,32 +7,19 @@ using System.IO;
 namespace Graphics.Resources
 {
 
-    public interface IResourceLoader : ILoader
-    {
-        string Type
-        {
-            get;
-        }
-
-        AResource Default
-        {
-            get;
-        }
-    }
-
     public class ResourceManager
     {
         Dictionary<string, Dictionary<string, ResourceHandle>> resources = new Dictionary<string,Dictionary<string, ResourceHandle>>();
         Dictionary<string, IResourceLoader> Loaders { get; set; }
         List<AWiper> wipers = new List<AWiper>();
 
-        public IAsyncExecuter AsyncExecuter
+        public IAsyncExecutor AsyncExecuter
         {
             get;
             private set;
         }
     
-        public ResourceManager(IAsyncExecuter executer)
+        public ResourceManager(IAsyncExecutor executer)
         {
             AsyncExecuter = executer;
             Loaders = new Dictionary<string, IResourceLoader>();

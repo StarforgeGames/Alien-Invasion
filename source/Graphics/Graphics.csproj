@@ -84,8 +84,9 @@
     <Compile Include="Resources\Debug\ResourceManagementMonitor.Designer.cs">
       <DependentUpon>ResourceManagementMonitor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Resources\IAsyncExecuter.cs" />
+    <Compile Include="Resources\IAsyncExecutor.cs" />
     <Compile Include="Resources\IEvent.cs" />
+    <Compile Include="Resources\IResourceLoader.cs" />
     <Compile Include="Resources\Loaders\ABasicLoader.cs" />
     <Compile Include="Resources\ILoader.cs" />
     <Compile Include="Resources\Loaders\DummyLoader.cs" />
@@ -102,7 +103,7 @@
     <Compile Include="Resources\ResourceHandle.cs" />
     <Compile Include="Resources\ResourceManager.cs" />
     <Compile Include="Sprites\BaseSprite.cs" />
-    <Compile Include="ThreadPoolExecuter.cs" />
+    <Compile Include="Resources\ThreadPoolExecutor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Game\Game.csproj">
