@@ -47,19 +47,36 @@ namespace Graphics.Resources.Debug
             while (running)
             {
                 int index1 = rand.Next(resources.Count);
-                var currentResource = resources.ElementAt(index1).Value;
-                int index2 = rand.Next(currentResource.Count);
-                int operation = rand.Next(2);
-                switch (operation)
+                lock (resources) // suboptimale lösung. wiper sollten keine exklusive Locks auf die resourcen setzen, da sie nur lesend zugreifen
                 {
-                    case 0:
+                    var currentResourceType = resources.ElementAt(index1).Value;
+                    lock (currentResourceType)
+                    {
+                        if (currentResourceType.Count > 0)
+                        {
+                            int index2 = rand.Next(currentResourceType.Count);
+                            int operation = rand.Next(2);
+                            var currentResource = currentResourceType.ElementAt(index2).Value;
+                            switch (operation)
+                            {
+                                case 0:
 
-                        currentResource.ElementAt(index2).Value.Load();
-                        break;
-                    case 1:
-                    default:
-                        currentResource.ElementAt(index2).Value.Unload();
-                        break;
+                                    currentResource.Load();
+                                    break;
+                                case 1:
+
+                                    currentResource.Unload();
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        if (rand.Next(2) == 1)
+                        {
+                            int i = rand.Next(2000);
+                            manager.GetResource("blub" + i, "txt");
+                        }
+                    }
                 }
                 System.Threading.Thread.Sleep(time);
             }
