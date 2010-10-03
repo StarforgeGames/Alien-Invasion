@@ -168,7 +168,6 @@ namespace Graphics
                         color);
 
                     swapChain.Present(0, PresentFlags.None);
-
                 }
             }
             catch (SlimDX.DXGI.DXGIException)

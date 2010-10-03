@@ -8,6 +8,6 @@ namespace Graphics.Resources
     public struct ResourceProperties
     {
         public AResource resource;
-        public ResourceState status;
+        public ResourceState state;
     }
 }
