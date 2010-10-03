@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Graphics.Resources.AResource" Collapsed="true">
-    <Position X="4" Y="4" Width="1.5" />
+    <Position X="4" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAAAAAAgAAAIAIAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Resources\AResource.cs</FileName>
@@ -16,40 +16,40 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Graphics.Resources.ResourceManager">
-    <Position X="5.75" Y="1.75" Width="1.5" />
+    <Position X="5.75" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAIAqAAAAAAAAAAAAEQACAAAAAACAAgAAA=</HashCode>
       <FileName>Resources\ResourceManager.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Graphics.Resources.Loaders.ABasicLoader" Collapsed="true">
-    <Position X="0.5" Y="3.5" Width="1.5" />
+  <Class Name="Graphics.Resources.Loaders.ABasicLoader">
+    <Position X="0.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgACAAAAAAAAIAAAAIAAAAAAAAAAACQEAAAAAAAA=</HashCode>
+      <HashCode>AAAAgACAAAgAAAAAAAAAIAAAAAAAAAAACQAAAAABAAA=</HashCode>
       <FileName>Resources\Loaders\ABasicLoader.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Graphics.Resources.AsyncLoader" Collapsed="true">
-    <Position X="0.5" Y="2.5" Width="1.5" />
+  <Class Name="Graphics.Resources.AsyncLoader">
+    <Position X="2.25" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgACAAAAAAAABAAAAIQAAAAAAAAAACQAAAAAAAAA=</HashCode>
+      <HashCode>AAAAgACAAAAAAAABAAAEIAAAAAAAAAAACQAAAAAAAAA=</HashCode>
       <FileName>Resources\AsyncLoader.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Graphics.Resources.ResourceIdentifier" Collapsed="true">
-    <Position X="5.75" Y="5.25" Width="1.5" />
+  <Class Name="Graphics.Resources.ResourceIdentifier">
+    <Position X="5.75" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>Resources\ResourceIdentifier.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Graphics.Resources.ThreadPoolExecuter">
-    <Position X="7.5" Y="4.25" Width="1.5" />
+  <Class Name="Graphics.Resources.ThreadPoolExecutor">
+    <Position X="7.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ThreadPoolExecuter.cs</FileName>
+      <FileName>Resources\ThreadPoolExecutor.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
@@ -61,21 +61,21 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Graphics.Resources.Loaders.TextResource">
-    <Position X="4" Y="5" Width="1.5" />
+    <Position X="4" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
       <FileName>Resources\Loaders\DummyLoader.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Graphics.Resources.Loaders.DummyLoader" Collapsed="true">
-    <Position X="0.5" Y="4.5" Width="1.5" />
+  <Class Name="Graphics.Resources.Loaders.DummyLoader">
+    <Position X="0.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAIAAAAoAAAAAAAAAAAAQEAAAAAAAA=</HashCode>
+      <HashCode>AAAAAIAAAAgAAAAAAAAAoAAAAAAAAAAAAQAAAAABAAA=</HashCode>
       <FileName>Resources\Loaders\DummyLoader.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Struct Name="Graphics.Resources.ResourceProperties">
-    <Position X="4" Y="2.25" Width="1.5" />
+    <Position X="5.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Resources\ResourceProperties.cs</FileName>
@@ -85,7 +85,8 @@
     <Position X="4" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
-      <FileName>Resources\ResourceManager.cs</FileName>
+      <FileName>Resources\IResourceLoader.cs</FileName>
+      <NewMemberFileName>Resources\ResourceManager.cs</NewMemberFileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Graphics.Resources.IEvent" Collapsed="true">
@@ -102,14 +103,14 @@
       <FileName>Resources\ILoader.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Graphics.Resources.IAsyncExecuter" Collapsed="true">
-    <Position X="4" Y="3" Width="1.5" />
+  <Interface Name="Graphics.Resources.IAsyncExecutor" Collapsed="true">
+    <Position X="4" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Resources\IAsyncExecuter.cs</FileName>
+      <FileName>Resources\IAsyncExecutor.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Enum Name="Graphics.Resources.ResourceState" Collapsed="true">
+  <Enum Name="Graphics.Resources.ResourceState">
     <Position X="0.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAAAAAAAEAAAIAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>

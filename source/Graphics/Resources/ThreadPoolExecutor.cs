@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Graphics.Resources
 {
-    public class ThreadPoolExecuter : IAsyncExecuter
+    public class ThreadPoolExecutor : IAsyncExecutor
     {
-        #region IAsyncExecuter Members
+        #region IAsyncExecutor Members
 
         public void Execute(Action command)
         {
