@@ -46,10 +46,10 @@ namespace SpaceInvaders
             resourceManager = new ResourceManager(new ThreadPoolExecuter());
             
             resourceManager.AddLoader(new DummyLoader());
-            for (int i = 0; i < 100; ++i)
+          /*  for (int i = 0; i < 100; ++i)
             {
                 resourceManager.GetResource("blub" + i, "txt");
-            }
+            }*/
             resourceManager.AddWiper(debugWiper);
         }
 

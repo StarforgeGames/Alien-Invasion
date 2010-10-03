@@ -13,7 +13,10 @@ namespace Graphics
         {
             get
             {
-                return !queue.Any();
+                lock (queue)
+                {
+                    return !queue.Any();
+                }
             }
         }
 
