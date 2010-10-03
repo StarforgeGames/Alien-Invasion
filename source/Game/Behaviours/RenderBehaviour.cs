@@ -17,8 +17,7 @@ namespace Game.Behaviours
         {
             this.entity = entity;
 
-            Key_Sprite = entity.NextAttributeID;
-            entity.AddAttribute(Key_Sprite, sprite);
+            Key_Sprite = entity.AddAttribute(new Attribute<string>(sprite));
         }
 
         #region IBehaviour Members

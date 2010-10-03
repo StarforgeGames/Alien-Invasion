@@ -23,24 +23,20 @@ namespace Game.Behaviours
         // Attribute Keys
         public readonly int Key_PositionX;
         public readonly int Key_PositionY;
+        public readonly int Key_Speed;
 
         private Entity entity;
         
         private Direction direction;
         private bool isMoving;
-
-        private float speed;
-
-        public SpatialBehaviour(Entity entity, float speed, float posX, float posY)
+        
+        public SpatialBehaviour(Entity entity, float posX, float posY, float speed)
         {
             this.entity = entity;
-            this.speed = speed;
 
-            Key_PositionX = entity.NextAttributeID;
-            entity.AddAttribute(Key_PositionX, posX);
-
-            Key_PositionY = entity.NextAttributeID;
-            entity.AddAttribute(Key_PositionY, posY);
+            Key_PositionX = entity.AddAttribute(new Attribute<float>(posX));
+            Key_PositionY = entity.AddAttribute(new Attribute<float>(posY));
+            Key_Speed = entity.AddAttribute(new Attribute<float>(speed));
         }
 
         #region IBehaviour Members
@@ -48,25 +44,25 @@ namespace Game.Behaviours
         public void OnUpdate(float deltaTime)
         {            
             if (isMoving) {
+                Attribute<float> speed = entity[Key_Speed] as Attribute<float>;
+                Attribute<float> posX = entity[Key_PositionX] as Attribute<float>;
+                Attribute<float> posY = entity[Key_PositionY] as Attribute<float>;
+
                 switch (direction) {
                     case Direction.North: {
-                        Attribute<float> posY = (Attribute<float>)entity.GetAttribute(Key_PositionY);
-                        posY.Value += (speed * deltaTime);
+                        posY.Value += speed * deltaTime;
                         break;
                     }
                     case Direction.East: {
-                        Attribute<float> posX = (Attribute<float>)entity.GetAttribute(Key_PositionX);
-                        posX.Value += (speed * deltaTime);
+                        posX.Value += speed * deltaTime;
                         break;
                     }
                     case Direction.South: {
-                        Attribute<float> posY = (Attribute<float>)entity.GetAttribute(Key_PositionY);
-                        posY.Value -= (speed * deltaTime);
+                        posY.Value -= speed * deltaTime;
                         break;
                     }
                     case Direction.West: {
-                        Attribute<float> posX = (Attribute<float>)entity.GetAttribute(Key_PositionX);
-                        posX.Value -= (speed * deltaTime);
+                        posX.Value -= speed * deltaTime;
                         break;
                     }
                 }

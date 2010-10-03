@@ -8,23 +8,25 @@ namespace Game.Entities
 
     public class Entity
     {
-        private Dictionary<int, IAttribute> attributes;
+        private Dictionary<int, object> attributes;
         private List<IBehaviour> behaviours;
-        private Dictionary<Type, List<IBehaviour>> messageObservers;
+        private Dictionary<Type, List<IBehaviour>> observers;
 
         private int nextAttributeID = 0;
-        public int NextAttributeID {
-            get { return nextAttributeID++; } 
-        }
 
         protected BaseGame game;
         public BaseGame Game { get { return game; } }
 
+        public object this[int key] { 
+            get { return attributes[key]; }
+            set { attributes[key] = value;  } 
+        }
+
         public Entity(BaseGame game)
         {
             behaviours = new List<IBehaviour>();
-            attributes = new Dictionary<int, IAttribute>();
-            messageObservers = new Dictionary<Type, List<IBehaviour>>();
+            attributes = new Dictionary<int, object>();
+            observers = new Dictionary<Type, List<IBehaviour>>();
             this.game = game;
         }
 
@@ -36,16 +38,16 @@ namespace Game.Entities
             behaviours.Add(behaviour);
 
             foreach (Type type in behaviour.SupportedMessages) {
-                if (!messageObservers.ContainsKey(type)) {
-                    messageObservers.Add(type, new List<IBehaviour>());
+                if (!observers.ContainsKey(type)) {
+                    observers.Add(type, new List<IBehaviour>());
                 }
-                messageObservers[type].Add(behaviour);
+                observers[type].Add(behaviour);
             }
         }
 
         public bool RemoveBehaviour(IBehaviour behaviour)
         {
-            foreach (List<IBehaviour> list in messageObservers.Values) {
+            foreach (List<IBehaviour> list in observers.Values) {
                 foreach (IBehaviour b in list) {
                     list.Remove(behaviour);
                 }
@@ -56,43 +58,29 @@ namespace Game.Entities
 
         #endregion
 
-
         #region Attributes
 
-        public void AddAttribute(int key, int value)
+        public int AddAttribute(object value)
         {
-            attributes.Add(key, new Attribute<int>(value));
+            int key = nextAttributeID++;
+            attributes.Add(key, value);
+
+            return key;
         }
 
-        public void AddAttribute(int key, float value)
-        {
-            attributes.Add(key, new Attribute<float>(value));
-        }
-
-        public void AddAttribute(int key, bool value)
-        {
-            attributes.Add(key, new Attribute<bool>(value));
-        }
-
-        public void AddAttribute(int key, string value)
-        {
-            attributes.Add(key, new Attribute<string>(value));
-        }
-
-        public IAttribute GetAttribute(int key)
+        public object GetAttribute(int key)
         {
             return attributes[key];
         }
 
         #endregion
 
-
         public void SendMessage(Message msg)
         {
             Type t = msg.GetType();
 
-            if (messageObservers.ContainsKey(t)) {
-                foreach (IBehaviour b in messageObservers[t]) {
+            if (observers.ContainsKey(t)) {
+                foreach (IBehaviour b in observers[t]) {
                     b.OnMessage(msg);
                 }
             }
