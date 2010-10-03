@@ -39,7 +39,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Graphics.Resources.ResourceIdentifier" Collapsed="true">
-    <Position X="4" Y="5" Width="1.5" />
+    <Position X="5.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>Resources\ResourceIdentifier.cs</FileName>
@@ -60,10 +60,24 @@
       <FileName>Resources\AWiper.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Struct Name="Graphics.Resources.ResourceProperties" Collapsed="true">
+  <Class Name="Graphics.Resources.Loaders.TextResource">
+    <Position X="3.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Resources\Loaders\DummyLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics.Resources.Loaders.DummyLoader" Collapsed="true">
+    <Position X="2" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAoAAAAAAAAAAAAQEAAAAAAAA=</HashCode>
+      <FileName>Resources\Loaders\DummyLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Graphics.Resources.ResourceProperties">
     <Position X="4" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Resources\ResourceProperties.cs</FileName>
     </TypeIdentifier>
   </Struct>

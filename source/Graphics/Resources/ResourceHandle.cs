@@ -23,6 +23,8 @@ namespace Graphics.Resources
 
         public ResourceHandle(string name, IResourceLoader resourceLoader)
         {
+            this.resources[0].state = ResourceState.Empty;
+            this.resources[1].state = ResourceState.Empty;
             this.name = name;
             this.resourceLoader = resourceLoader;
         }
@@ -51,12 +53,42 @@ namespace Graphics.Resources
             }
         }
 
+        internal AResource DebugAcquire()
+        {
+            while (Interlocked.CompareExchange(ref pendingSlot, 1, 0) != 0) ;
+            try
+            {
+                switch (resources[ActiveSlot].state)
+                {
+                    case ResourceState.Ready:
+                        resources[ActiveSlot].resource.Acquire();
+                        return resources[ActiveSlot].resource;
+
+                    case ResourceState.Empty:
+                        resourceLoader.Default.Acquire();
+                        return resourceLoader.Default;
+
+                    case ResourceState.Loading:
+                        resourceLoader.Default.Acquire();
+                        return resourceLoader.Default;
+
+                    case ResourceState.Unloading:
+                    default:
+                        throw new NotSupportedException("Tried to acquire resource that is unloading.");
+                }
+            }
+            finally
+            {
+                Interlocked.Decrement(ref pendingSlot);
+            }
+        }
+
         public AResource Acquire()
         {
             while (Interlocked.CompareExchange(ref pendingSlot, 1, 0) != 0) ;
             try
             {
-                switch (resources[ActiveSlot].status)
+                switch (resources[ActiveSlot].state)
                 {
                     case ResourceState.Ready:
                         resources[ActiveSlot].resource.Acquire();
@@ -86,7 +118,7 @@ namespace Graphics.Resources
         {
             if ((Interlocked.CompareExchange(ref pendingOperation, 1, 0) == 0))
             {
-                switch (resources[InactiveSlot].status)
+                switch (resources[InactiveSlot].state)
                 {
                     case ResourceState.Empty:
                         resourceLoader.Load(this);
@@ -108,7 +140,7 @@ namespace Graphics.Resources
         {
             while ((Interlocked.CompareExchange(ref pendingOperation, 1, 0) == 1));
 
-            switch (resources[InactiveSlot].status)
+            switch (resources[InactiveSlot].state)
             {
                 case ResourceState.Empty:
                     resourceLoader.Load(this, evt);
@@ -129,19 +161,20 @@ namespace Graphics.Resources
         {
             if ((Interlocked.CompareExchange(ref pendingOperation, 1, 0) == 0))
             {
-                switch (resources[InactiveSlot].status)
+                switch (resources[InactiveSlot].state)
                 {
                     case ResourceState.Ready:
                         resourceLoader.Unload(this);
                         return;
                     case ResourceState.Empty:
-                        switch (resources[ActiveSlot].status)
+                        switch (resources[ActiveSlot].state)
                         {
                             case ResourceState.Ready:
                                 Swap();
                                 resourceLoader.Unload(this);
                                 return;
                             case ResourceState.Empty:
+                                Interlocked.Decrement(ref pendingOperation);
                                 return;
                             case ResourceState.Loading:
                                 throw new NotSupportedException("tried to unload resource while loading");
@@ -166,19 +199,20 @@ namespace Graphics.Resources
         {
             while ((Interlocked.CompareExchange(ref pendingOperation, 1, 0) == 1)) ;
 
-            switch (resources[InactiveSlot].status)
+            switch (resources[InactiveSlot].state)
             {
                 case ResourceState.Ready:
                     resourceLoader.Unload(this, evt);
                     return;
                 case ResourceState.Empty:
-                    switch (resources[ActiveSlot].status)
+                    switch (resources[ActiveSlot].state)
                     {
                         case ResourceState.Ready:
                             Swap();
                             resourceLoader.Unload(this, evt);
                             return;
                         case ResourceState.Empty:
+                            Interlocked.Decrement(ref pendingOperation);
                             return;
                         case ResourceState.Loading:
                             throw new NotSupportedException("tried to unload resource while loading");

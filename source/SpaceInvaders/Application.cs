@@ -24,6 +24,7 @@ namespace SpaceInvaders
 
         Form form = new Form();
         IKeyboardHandler keyHandler;
+        AWiper debugWiper = new Graphics.Resources.Debug.DebugWiper();
 
         public Application()
         {      
@@ -43,14 +44,13 @@ namespace SpaceInvaders
             form.KeyUp += new KeyEventHandler(keyHandler.OnKeyUp);
 
             resourceManager = new ResourceManager(new ThreadPoolExecuter());
-            resourceManager.AddWiper(new Graphics.Resources.Debug.DebugWiper());
+            
             resourceManager.AddLoader(new DummyLoader());
-            resourceManager.GetResource("blub1", "txt");
-            resourceManager.GetResource("blub2", "txt");
-            resourceManager.GetResource("blub3", "txt");
-            resourceManager.GetResource("blub4", "txt");
-            resourceManager.GetResource("blub5", "txt");
-            resourceManager.GetResource("blub6", "txt");
+            for (int i = 0; i < 100; ++i)
+            {
+                resourceManager.GetResource("blub" + i, "txt");
+            }
+            resourceManager.AddWiper(debugWiper);
         }
 
         public void Update(float deltaTime)
@@ -71,7 +71,7 @@ namespace SpaceInvaders
                 float deltaTime = timer.DeltaTime;
                 Update(deltaTime);
             });
-
+            debugWiper.Stop();
             renderer.Dispose();
         }
     }
