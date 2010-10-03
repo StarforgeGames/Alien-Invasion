@@ -47,20 +47,23 @@ namespace Graphics.Resources
         {
             try
             {
-                var resourcesOfSameType = resources[identifier.Type];
-                if (resourcesOfSameType.ContainsKey(identifier.Name))
+                lock (resources)
                 {
-                    ResourceHandle handle = resourcesOfSameType[identifier.Name];
-                    return handle;
-                }
-                else
-                {
-                    ResourceHandle handle = new ResourceHandle(identifier.Name, Loaders[identifier.Type]);
-                    lock (resourcesOfSameType)
+                    var resourcesOfSameType = resources[identifier.Type];
+                    if (resourcesOfSameType.ContainsKey(identifier.Name))
                     {
-                        resourcesOfSameType.Add(identifier.Name, handle);
+                        ResourceHandle handle = resourcesOfSameType[identifier.Name];
+                        return handle;
                     }
-                    return handle;
+                    else
+                    {
+                        ResourceHandle handle = new ResourceHandle(identifier.Name, Loaders[identifier.Type]);
+                        lock (resourcesOfSameType)
+                        {
+                            resourcesOfSameType.Add(identifier.Name, handle);
+                        }
+                        return handle;
+                    }
                 }
             }
             catch (Exception e)
@@ -94,15 +97,23 @@ namespace Graphics.Resources
         public void AddWiper(AWiper wiper)
         {
             wiper.SetResources(resources);
+            wiper.SetManager(this);
             wiper.Start();
-            wipers.Add(wiper);
+            lock (wipers)
+            {
+                wipers.Add(wiper);
+            }
         }
 
         public void RemoveWiper(AWiper wiper)
         {
-            wipers.Remove(wiper);
+            lock (wipers)
+            {
+                wipers.Remove(wiper);
+            }
             wiper.Stop();
             wiper.SetResources(null);
+            wiper.SetManager(null);
         }
     }
 }

@@ -38,10 +38,13 @@ namespace Graphics.Resources.Debug
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            this.data.DataSource = (from a in this.resources
-                                    from b in a.Value
-                                    select test(a,b)
+            lock (resources)
+            {
+                this.data.DataSource = (from a in this.resources
+                                        from b in a.Value
+                                        select test(a, b)
                                     ).ToArray();
+            }
         }
 
         public struct Output

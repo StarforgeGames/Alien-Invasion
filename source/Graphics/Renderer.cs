@@ -54,7 +54,8 @@ namespace Graphics
                         view.Dispose();
                     }
 
-                    swapChain.ResizeBuffers(BackBufferCount, 0, 0, BackBufferFormat, SwapChainFlags.None);
+                    swapChain.ResizeBuffers(BackBufferCount, renderFrame.ClientSize.Width >> 1 << 1,
+                    renderFrame.ClientSize.Height >> 1 << 1, BackBufferFormat, SwapChainFlags.None);
 
                     SetDefaultRenderingBuffer();
                     SetDefaultViewport();
