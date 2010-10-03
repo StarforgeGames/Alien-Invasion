@@ -14,23 +14,18 @@ namespace Game.Behaviours
         public readonly int Key_IsDead;
         public readonly int Key_IsFiring;
         public readonly int Key_FiringSpeed;
+        public readonly int Key_TimeSinceLastShot;
 
         private Entity entity;
-
-        private Process process = null;
 
         public CombatBehaviour(Entity entity, float firingSpeed)
         {
             this.entity = entity;
 
-            Key_IsDead = entity.NextAttributeID;
-            entity.AddAttribute(Key_IsDead, false);
-
-            Key_IsFiring = entity.NextAttributeID;
-            entity.AddAttribute(Key_IsFiring, false);
-
-            Key_FiringSpeed = entity.NextAttributeID;
-            entity.AddAttribute(Key_FiringSpeed, firingSpeed);
+            Key_IsDead = entity.AddAttribute(new Attribute<bool>(false));
+            Key_IsFiring = entity.AddAttribute(new Attribute<bool>(false));
+            Key_FiringSpeed = entity.AddAttribute(new Attribute<float>(firingSpeed));
+            Key_TimeSinceLastShot = entity.AddAttribute(new Attribute<float>(0f));
         }
 
         #region IBehaviour Members
@@ -48,16 +43,19 @@ namespace Game.Behaviours
 
         public void OnUpdate(float deltaTime)
         {
-            bool isFiring = ((Attribute<bool>) entity.GetAttribute(Key_IsFiring)).Value;
+            Attribute<bool> isFiring = (Attribute<bool>) entity[Key_IsFiring];
 
-            if (isFiring && process == null) {
-                Attribute<float> firingSpeed = (Attribute<float>)entity.GetAttribute(Key_FiringSpeed);
-                process = new FireWeaponProcess(entity, firingSpeed.Value);
-                entity.Game.ProcessManager.Attach(process);
-            }
-            else if (!isFiring && process != null) {
-                entity.Game.ProcessManager.Detach(process);
-                process = null;
+            if (isFiring) {
+                Attribute<float> firingSpeed = (Attribute<float>)entity[Key_FiringSpeed];
+                Attribute<float> timeSinceLastShot = (Attribute<float>)entity[Key_TimeSinceLastShot];
+
+                timeSinceLastShot.Value += deltaTime;
+
+                if (timeSinceLastShot >= firingSpeed) {
+                    timeSinceLastShot.Value = 0f;
+                    Console.WriteLine("---------- PEW PEW! ----------");
+                    // TODO: Fire shot
+                }
             }
         }
 
@@ -65,13 +63,18 @@ namespace Game.Behaviours
         {
             switch (msg.Type) {
                 case FireWeaponMessage.START_FIRING: {
-                    Attribute<bool> isFiring = (Attribute<bool>)entity.GetAttribute(Key_IsFiring);
+                    Attribute<bool> isFiring = (Attribute<bool>)entity[Key_IsFiring];
                     isFiring.Value = true;
                     break;
                 }
                 case FireWeaponMessage.STOP_FIRING: {
-                    Attribute<bool> isFiring = (Attribute<bool>)entity.GetAttribute(Key_IsFiring);
+                    Attribute<bool> isFiring = (Attribute<bool>)entity[Key_IsFiring];
                     isFiring.Value = false;
+
+                    // Set to firing speed so that a shot is immediately fired when the fire button is hit again
+                    Attribute<float> timeSinceLastShot = (Attribute<float>)entity[Key_TimeSinceLastShot];
+                    Attribute<float> firingSpeed = (Attribute<float>)entity[Key_FiringSpeed];
+                    timeSinceLastShot.Value = firingSpeed;
                     break;
                 }
             }
