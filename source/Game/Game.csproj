@@ -85,7 +85,6 @@
     <Compile Include="Messages\FireWeaponMessage.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MoveMessage.cs" />
-    <Compile Include="Processes\FireWeaponProcess.cs" />
     <Compile Include="Processes\Process.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

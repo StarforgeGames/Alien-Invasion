@@ -31,9 +31,6 @@ namespace SpaceInvaders
             form.Size = new Size(800, 600);
             form.Text = "Space Invaders";
 
-            //Button button = new Button();
-            //form.Controls.Add(button);
-
             renderer = new Graphics.Renderer(form);
             renderer.Start();
 
