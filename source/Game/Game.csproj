@@ -80,7 +80,6 @@
     <Compile Include="Behaviours\SpatialBehaviour.cs" />
     <Compile Include="Entities\Attribute.cs" />
     <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Entities\IAttribute.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Input\CommandInterpreter.cs" />
     <Compile Include="Messages\FireWeaponMessage.cs" />

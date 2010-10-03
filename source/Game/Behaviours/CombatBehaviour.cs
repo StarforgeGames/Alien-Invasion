@@ -23,14 +23,9 @@ namespace Game.Behaviours
         {
             this.entity = entity;
 
-            Key_IsDead = entity.NextAttributeID;
-            entity.AddAttribute(Key_IsDead, false);
-
-            Key_IsFiring = entity.NextAttributeID;
-            entity.AddAttribute(Key_IsFiring, false);
-
-            Key_FiringSpeed = entity.NextAttributeID;
-            entity.AddAttribute(Key_FiringSpeed, firingSpeed);
+            Key_IsDead = entity.AddAttribute(new Attribute<bool>(false));
+            Key_IsFiring = entity.AddAttribute(new Attribute<bool>(false));
+            Key_FiringSpeed = entity.AddAttribute(new Attribute<float>(firingSpeed));
         }
 
         #region IBehaviour Members
@@ -48,11 +43,11 @@ namespace Game.Behaviours
 
         public void OnUpdate(float deltaTime)
         {
-            bool isFiring = ((Attribute<bool>) entity.GetAttribute(Key_IsFiring)).Value;
+            Attribute<bool> isFiring = (Attribute<bool>) entity[Key_IsFiring];
 
             if (isFiring && process == null) {
-                Attribute<float> firingSpeed = (Attribute<float>)entity.GetAttribute(Key_FiringSpeed);
-                process = new FireWeaponProcess(entity, firingSpeed.Value);
+                Attribute<float> firingSpeed = (Attribute<float>)entity[Key_FiringSpeed];
+                process = new FireWeaponProcess(entity, firingSpeed);
                 entity.Game.ProcessManager.Attach(process);
             }
             else if (!isFiring && process != null) {
@@ -65,12 +60,12 @@ namespace Game.Behaviours
         {
             switch (msg.Type) {
                 case FireWeaponMessage.START_FIRING: {
-                    Attribute<bool> isFiring = (Attribute<bool>)entity.GetAttribute(Key_IsFiring);
+                    Attribute<bool> isFiring = (Attribute<bool>)entity[Key_IsFiring];
                     isFiring.Value = true;
                     break;
                 }
                 case FireWeaponMessage.STOP_FIRING: {
-                    Attribute<bool> isFiring = (Attribute<bool>)entity.GetAttribute(Key_IsFiring);
+                    Attribute<bool> isFiring = (Attribute<bool>)entity[Key_IsFiring];
                     isFiring.Value = false;
                     break;
                 }
