@@ -13,7 +13,7 @@ namespace Graphics
         {
             get
             {
-                return !queue.Any();
+                return !queue.Any(); // multithreading problem, weil die queue verändert wird, während n iterator drüberläuft!
             }
         }
 
