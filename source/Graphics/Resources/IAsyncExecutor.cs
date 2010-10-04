@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Graphics.Resources
 {
-    public interface IAsyncExecuter
+    public interface IAsyncExecutor
     {
         void Execute(Action command);
     }

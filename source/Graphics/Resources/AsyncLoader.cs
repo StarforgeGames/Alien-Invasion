@@ -8,12 +8,12 @@ namespace Graphics.Resources
     class AsyncLoader : IResourceLoader
     {
         IResourceLoader loader;
-        IAsyncExecuter executer;
+        IAsyncExecutor executor;
 
-        public AsyncLoader(IResourceLoader loader, IAsyncExecuter executer)
+        public AsyncLoader(IResourceLoader loader, IAsyncExecutor executor)
         {
             this.loader = loader;
-            this.executer = executer;
+            this.executor = executor;
         }
 
 
@@ -35,7 +35,7 @@ namespace Graphics.Resources
 
         public void Load(ResourceHandle resourceHandle)
         {
-            executer.Execute(() =>
+            executor.Execute(() =>
             {
                 loader.Load(resourceHandle);
             });
@@ -43,7 +43,7 @@ namespace Graphics.Resources
 
         public void Load(ResourceHandle resourceHandle, IEvent evt)
         {
-            executer.Execute(() =>
+            executor.Execute(() =>
             {
                 loader.Load(resourceHandle, evt);
             });
@@ -51,7 +51,7 @@ namespace Graphics.Resources
 
         public void Reload(ResourceHandle resourceHandle)
         {
-            executer.Execute(() =>
+            executor.Execute(() =>
             {
                 loader.Reload(resourceHandle);
             });
@@ -59,7 +59,7 @@ namespace Graphics.Resources
 
         public void Reload(ResourceHandle resourceHandle, IEvent evt)
         {
-            executer.Execute(() =>
+            executor.Execute(() =>
             {
                 loader.Reload(resourceHandle, evt);
             });
@@ -67,7 +67,7 @@ namespace Graphics.Resources
 
         public void Unload(ResourceHandle resourceHandle)
         {
-            executer.Execute(() =>
+            executor.Execute(() =>
             {
                 loader.Unload(resourceHandle);
             });
@@ -75,7 +75,7 @@ namespace Graphics.Resources
 
         public void Unload(ResourceHandle resourceHandle, IEvent evt)
         {
-            executer.Execute(() =>
+            executor.Execute(() =>
             {
                 loader.Unload(resourceHandle, evt);
             });
