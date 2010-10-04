@@ -74,20 +74,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseGame.cs" />
+    <Compile Include="Behaviours\AEntityBasedBehaviour.cs" />
+    <Compile Include="Behaviours\CollisionBehaviour.cs" />
     <Compile Include="Behaviours\CombatBehaviour.cs" />
+    <Compile Include="Behaviours\HealthBehaviour.cs" />
     <Compile Include="Behaviours\IBehaviour.cs" />
     <Compile Include="Behaviours\RenderBehaviour.cs" />
     <Compile Include="Behaviours\SpatialBehaviour.cs" />
+    <Compile Include="Entities\Actor.cs" />
     <Compile Include="Entities\Attribute.cs" />
     <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Entities\Player.cs" />
+    <Compile Include="Entities\EntityFactory.cs" />
     <Compile Include="Input\CommandInterpreter.cs" />
+    <Compile Include="Messages\DamageMessage.cs" />
+    <Compile Include="Messages\DeathMessage.cs" />
     <Compile Include="Messages\FireWeaponMessage.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MoveMessage.cs" />
     <Compile Include="Processes\Process.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\Vector2D.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

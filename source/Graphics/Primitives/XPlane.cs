@@ -17,7 +17,7 @@ namespace Graphics.Primitives
 
         public XPlane(Resource sprite)
         {
-        /*    // TODO: Construction needs to be heavily optimized!
+        /* 
             var effect = Effect.FromFile(Renderer.Device, @"Shaders\SimplePassThrough.fx", "fx_4_0", ShaderFlags.None,
                 EffectFlags.None, null, null);
             technique = effect.GetTechniqueByName("Full");
@@ -30,8 +30,6 @@ namespace Graphics.Primitives
 
             var stream = new DataStream(4 * 40, true, true);
 
-            // hack to scale sprite to its original size
-            // TODO: Generalize this code so it reads the sprites' size dynamically
             float widthRatio = 75f / 800f;
             float heightRatio = 75f / 600f;
 

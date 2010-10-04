@@ -34,7 +34,7 @@ namespace SpaceInvaders
             renderer = new Graphics.Renderer(form);
             renderer.Start();
 
-            Game = new BaseGame();
+            Game = new BaseGame(form.Size.Width, form.Size.Height);
 
             keyHandler = new PlayerController(Game.PlayerInterpreter);
             form.KeyDown += new KeyEventHandler(keyHandler.OnKeyDown);
@@ -43,10 +43,6 @@ namespace SpaceInvaders
             resourceManager = new ResourceManager(new ThreadPoolExecuter());
             
             resourceManager.AddLoader(new DummyLoader());
-          /*  for (int i = 0; i < 100; ++i)
-            {
-                resourceManager.GetResource("blub" + i, "txt");
-            }*/
             resourceManager.AddWiper(debugWiper);
         }
 

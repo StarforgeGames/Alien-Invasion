@@ -5,34 +5,54 @@ using System;
 
 namespace Game.Entities
 {
+    public enum EntityState
+    {
+        Active,
+        Paused,
+        Dead
+    }
 
     public class Entity
     {
-        private Dictionary<int, object> attributes;
+        private readonly string name;
+        public string Name { get { return name; } }
+
+        public EntityState State { get; set; }
+
+        private BaseGame game;
+        public BaseGame Game { get { return game; } }
+
+        private Dictionary<string, object> attributes;
         private List<IBehaviour> behaviours;
         private Dictionary<Type, List<IBehaviour>> observers;
 
-        private int nextAttributeID = 0;
-
-        protected BaseGame game;
-        public BaseGame Game { get { return game; } }
-
-        public object this[int key] { 
+        public object this[string key]
+        { 
             get { return attributes[key]; }
             set { attributes[key] = value;  } 
         }
 
-        public Entity(BaseGame game)
+        public Entity(BaseGame game, string name)
         {
-            behaviours = new List<IBehaviour>();
-            attributes = new Dictionary<int, object>();
-            observers = new Dictionary<Type, List<IBehaviour>>();
+            // that's the
+            this.name = name; 
+            // of the
             this.game = game;
+
+            this.State = EntityState.Active;
+
+            behaviours = new List<IBehaviour>();
+            attributes = new Dictionary<string, object>();
+            observers = new Dictionary<Type, List<IBehaviour>>();
         }
 
 
         #region Behaviours
 
+        /// <summary>
+        /// Adds a new behaviour, registering it as listener to all supported messages as well.
+        /// </summary>
+        /// <param name="behaviour">The behaviour to add</param>
         public void AddBehaviour(IBehaviour behaviour)
         {
             behaviours.Add(behaviour);
@@ -45,6 +65,11 @@ namespace Game.Entities
             }
         }
 
+        /// <summary>
+        /// Removes a behaviour and unregisters it as listener to events.
+        /// </summary>
+        /// <param name="behaviour">The behaviour to remove</param>
+        /// <returns>True if removal was successful</returns>
         public bool RemoveBehaviour(IBehaviour behaviour)
         {
             foreach (List<IBehaviour> list in observers.Values) {
@@ -60,21 +85,22 @@ namespace Game.Entities
 
         #region Attributes
 
-        public int AddAttribute(object value)
+        /// <summary>
+        /// Adds a new attribute to this entity.
+        /// </summary>
+        /// <param name="value">Value of the new attribute</param>
+        /// <returns>Unique identifier for this attribute</returns>
+        public void AddAttribute(string key, object value)
         {
-            int key = nextAttributeID++;
             attributes.Add(key, value);
-
-            return key;
-        }
-
-        public object GetAttribute(int key)
-        {
-            return attributes[key];
         }
 
         #endregion
 
+        /// <summary>
+        /// Sends a message to all behaviours who listen to those kind of message.
+        /// </summary>
+        /// <param name="msg">Message</param>
         public void SendMessage(Message msg)
         {
             Type t = msg.GetType();
@@ -83,6 +109,17 @@ namespace Game.Entities
                 foreach (IBehaviour b in observers[t]) {
                     b.OnMessage(msg);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Sends a message to all behaviours, whether they are registered to listen to this kind of message or not.
+        /// </summary>
+        /// <param name="msg">Global message</param>
+        public void SendBroadcastMessage(Message msg)
+        {
+            foreach (IBehaviour b in behaviours) {
+                b.OnMessage(msg);
             }
         }
 

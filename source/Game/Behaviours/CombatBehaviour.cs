@@ -6,26 +6,23 @@ using System.Collections.ObjectModel;
 using Game.Entities;
 using Game.Messages;
 using Game.Processes;
+using Game.Utility;
 
 namespace Game.Behaviours
 {
-    class CombatBehaviour : IBehaviour
+    class CombatBehaviour : AEntityBasedBehaviour
     {
-        public readonly int Key_IsDead;
-        public readonly int Key_IsFiring;
-        public readonly int Key_FiringSpeed;
-        public readonly int Key_TimeSinceLastShot;
-
-        private Entity entity;
+        // Attribute Keys
+        public const string Key_IsFiring = "IsFiring";
+        public const string Key_FiringSpeed = "FiringSpeed";
+        public const string Key_TimeSinceLastShot = "TimeSinceLastShot";
 
         public CombatBehaviour(Entity entity, float firingSpeed)
+            : base(entity)
         {
-            this.entity = entity;
-
-            Key_IsDead = entity.AddAttribute(new Attribute<bool>(false));
-            Key_IsFiring = entity.AddAttribute(new Attribute<bool>(false));
-            Key_FiringSpeed = entity.AddAttribute(new Attribute<float>(firingSpeed));
-            Key_TimeSinceLastShot = entity.AddAttribute(new Attribute<float>(0f));
+            entity.AddAttribute(Key_IsFiring, new Attribute<bool>(false));
+            entity.AddAttribute(Key_FiringSpeed, new Attribute<float>(firingSpeed));
+            entity.AddAttribute(Key_TimeSinceLastShot, new Attribute<float>(firingSpeed));
         }
 
         #region IBehaviour Members
@@ -33,7 +30,7 @@ namespace Game.Behaviours
         List<Type> supportedMessages = new List<Type>() {
             typeof(FireWeaponMessage)
         };
-        public ReadOnlyCollection<Type> SupportedMessages
+        public override ReadOnlyCollection<Type> SupportedMessages
         {
             get
             {
@@ -41,7 +38,7 @@ namespace Game.Behaviours
             }
         }
 
-        public void OnUpdate(float deltaTime)
+        public override void OnUpdate(float deltaTime)
         {
             Attribute<bool> isFiring = (Attribute<bool>) entity[Key_IsFiring];
 
@@ -53,13 +50,22 @@ namespace Game.Behaviours
 
                 if (timeSinceLastShot >= firingSpeed) {
                     timeSinceLastShot.Value = 0f;
-                    Console.WriteLine("---------- PEW PEW! ----------");
-                    // TODO: Fire shot
+
+                    Entity pewpew = entity.Game.AddEntity("pewpew");
+
+                    Attribute<Vector2D> position = entity[SpatialBehaviour.Key_Position] as Attribute<Vector2D>;
+                    Attribute<Vector2D> pewpewPosition = pewpew[SpatialBehaviour.Key_Position] as Attribute<Vector2D>;
+                    pewpewPosition.Value.X = position.Value.X;
+                    pewpewPosition.Value.Y = position.Value.Y;
+
+                    pewpew.SendMessage(new MoveMessage(MoveMessage.START_MOVING, Direction.North));
+
+                    Console.WriteLine("PEW PEW at (" + pewpewPosition.Value.X + "/" + pewpewPosition.Value.Y + ")!");
                 }
             }
         }
 
-        public void OnMessage(Messages.Message msg)
+        public override void OnMessage(Messages.Message msg)
         {
             switch (msg.Type) {
                 case FireWeaponMessage.START_FIRING: {
