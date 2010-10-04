@@ -9,7 +9,7 @@ namespace Graphics.Resources
 
     public class ResourceManager
     {
-        Dictionary<string, Dictionary<string, ResourceHandle>> resources = new Dictionary<string,Dictionary<string, ResourceHandle>>();
+        Dictionary<string, Dictionary<string, ResourceHandle>> resourceHandles = new Dictionary<string,Dictionary<string, ResourceHandle>>();
         Dictionary<string, IResourceLoader> Loaders { get; set; }
         List<AWiper> wipers = new List<AWiper>();
 
@@ -34,9 +34,9 @@ namespace Graphics.Resources
         {
             try
             {
-                lock (resources)
+                lock (resourceHandles)
                 {
-                    var resourcesOfSameType = resources[identifier.Type];
+                    var resourcesOfSameType = resourceHandles[identifier.Type];
                     if (resourcesOfSameType.ContainsKey(identifier.Name))
                     {
                         ResourceHandle handle = resourcesOfSameType[identifier.Name];
@@ -65,9 +65,9 @@ namespace Graphics.Resources
             lock (Loaders)
             {
                 Loaders.Add(loader.Type, new AsyncLoader(loader, AsyncExecuter));
-                lock (resources)
+                lock (resourceHandles)
                 {
-                    resources.Add(loader.Type, new Dictionary<string, ResourceHandle>());
+                    resourceHandles.Add(loader.Type, new Dictionary<string, ResourceHandle>());
                 }
             }
             
@@ -83,7 +83,7 @@ namespace Graphics.Resources
 
         public void AddWiper(AWiper wiper)
         {
-            wiper.SetResources(resources);
+            wiper.SetResources(resourceHandles);
             wiper.SetManager(this);
             wiper.Start();
             lock (wipers)
