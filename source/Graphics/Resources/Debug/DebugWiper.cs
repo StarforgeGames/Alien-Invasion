@@ -9,7 +9,7 @@ namespace Graphics.Resources.Debug
     public class DebugWiper : AWiper
     {
         ResourceManagementMonitor monitor;
-        Thread[] timers = new Thread[20];
+        Thread[] timers = new Thread[30];
         
         bool running = true;
 
@@ -73,7 +73,7 @@ namespace Graphics.Resources.Debug
                         }
                         if (rand.Next(2) == 1)
                         {
-                            int i = rand.Next(2000);
+                            int i = rand.Next(10);
                             manager.GetResource("blub" + i, "txt");
                         }
                     }

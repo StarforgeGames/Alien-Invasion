@@ -38,11 +38,11 @@ namespace Graphics.Resources.Loaders
         {
             try
             {
-                handle.inactive.state = ResourceState.Loading;
                 handle.inactive.resource
                     = doLoad(handle.Name);
-                handle.inactive.state = ResourceState.Ready;
                 handle.Swap();
+                handle.active.state = ResourceState.Ready;
+                
             }
             finally
             {
@@ -54,7 +54,6 @@ namespace Graphics.Resources.Loaders
         {
             try
             {
-                handle.inactive.state = ResourceState.Unloading;
                 doUnload(handle.inactive.resource);
                 handle.inactive.resource = null;
                 handle.inactive.state = ResourceState.Empty;
@@ -69,13 +68,13 @@ namespace Graphics.Resources.Loaders
         {
             try
             {
-                handle.inactive.state = ResourceState.Unloading;
                 doUnload(handle.inactive.resource);
                 handle.inactive.state = ResourceState.Loading;
                 handle.inactive.resource
                     = doLoad(handle.Name);
-                handle.inactive.state = ResourceState.Ready;
+                
                 handle.Swap();
+                handle.active.state = ResourceState.Ready;
             }
             finally
             {

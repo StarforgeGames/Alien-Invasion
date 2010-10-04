@@ -25,23 +25,21 @@ namespace Graphics.Resources
                 state = ResourceState.Empty
             };
 
+        
         private IResourceLoader resourceLoader;
         private int pendingSlot = 0;
         private int pendingOperation = 0;
-        private string name;
 
         public ResourceHandle(string name, IResourceLoader resourceLoader)
         {
-            this.name = name;
+            this.Name = name;
             this.resourceLoader = resourceLoader;
         }
 
         public string Name
         {
-            get
-            {
-                return name;
-            }
+            get;
+            private set;
         }
 
         internal AResource DebugAcquire()
@@ -112,9 +110,11 @@ namespace Graphics.Resources
                 switch (inactive.state)
                 {
                     case ResourceState.Empty:
+                        inactive.state = ResourceState.Loading;
                         resourceLoader.Load(this);
                         return;
                     case ResourceState.Ready:
+                        inactive.state = ResourceState.Unloading;
                         resourceLoader.Reload(this);
                         return;
                     case ResourceState.Loading:
@@ -155,6 +155,7 @@ namespace Graphics.Resources
                 switch (inactive.state)
                 {
                     case ResourceState.Ready:
+                        inactive.state = ResourceState.Unloading;
                         resourceLoader.Unload(this);
                         return;
                     case ResourceState.Empty:
@@ -162,6 +163,7 @@ namespace Graphics.Resources
                         {
                             case ResourceState.Ready:
                                 Swap();
+                                inactive.state = ResourceState.Unloading;
                                 resourceLoader.Unload(this);
                                 return;
                             case ResourceState.Empty:
@@ -193,6 +195,7 @@ namespace Graphics.Resources
             switch (inactive.state)
             {
                 case ResourceState.Ready:
+                    inactive.state = ResourceState.Unloading;
                     resourceLoader.Unload(this, evt);
                     return;
                 case ResourceState.Empty:
@@ -200,6 +203,7 @@ namespace Graphics.Resources
                     {
                         case ResourceState.Ready:
                             Swap();
+                            inactive.state = ResourceState.Unloading;
                             resourceLoader.Unload(this, evt);
                             return;
                         case ResourceState.Empty:
@@ -225,6 +229,7 @@ namespace Graphics.Resources
         public void Swap()
         {
             while (Interlocked.CompareExchange(ref pendingSlot, 1, 0) != 0);
+            //inactive = Interlocked.Exchange(ref active, inactive);
             ResourceProperties temp = active;
             active = inactive;
             inactive = temp;
