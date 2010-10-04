@@ -10,9 +10,9 @@ namespace Graphics.Resources.Loaders
     {
 
 
-        abstract protected AResource DoLoad(string name);
+        abstract protected AResource doLoad(string name);
 
-        abstract protected void DoUnload(AResource resource);
+        abstract protected void doUnload(AResource resource);
 
         #region IResourceLoader Members
 
@@ -40,7 +40,7 @@ namespace Graphics.Resources.Loaders
             {
                 resourceHandle.resources[resourceHandle.InactiveSlot].state = ResourceState.Loading;
                 resourceHandle.resources[resourceHandle.InactiveSlot].resource
-                    = DoLoad(resourceHandle.Name);
+                    = doLoad(resourceHandle.Name);
                 resourceHandle.resources[resourceHandle.InactiveSlot].state = ResourceState.Ready;
                 resourceHandle.Swap();
             }
@@ -55,7 +55,7 @@ namespace Graphics.Resources.Loaders
             try
             {
                 resourceHandle.resources[resourceHandle.InactiveSlot].state = ResourceState.Unloading;
-                DoUnload(resourceHandle.resources[resourceHandle.InactiveSlot].resource);
+                doUnload(resourceHandle.resources[resourceHandle.InactiveSlot].resource);
                 resourceHandle.resources[resourceHandle.InactiveSlot].resource = null;
                 resourceHandle.resources[resourceHandle.InactiveSlot].state = ResourceState.Empty;
             }
@@ -70,10 +70,10 @@ namespace Graphics.Resources.Loaders
             try
             {
                 resourceHandle.resources[resourceHandle.InactiveSlot].state = ResourceState.Unloading;
-                DoUnload(resourceHandle.resources[resourceHandle.InactiveSlot].resource);
+                doUnload(resourceHandle.resources[resourceHandle.InactiveSlot].resource);
                 resourceHandle.resources[resourceHandle.InactiveSlot].state = ResourceState.Loading;
                 resourceHandle.resources[resourceHandle.InactiveSlot].resource
-                    = DoLoad(resourceHandle.Name);
+                    = doLoad(resourceHandle.Name);
                 resourceHandle.resources[resourceHandle.InactiveSlot].state = ResourceState.Ready;
                 resourceHandle.Swap();
             }

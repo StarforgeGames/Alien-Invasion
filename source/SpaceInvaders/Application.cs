@@ -40,7 +40,7 @@ namespace SpaceInvaders
             form.KeyDown += new KeyEventHandler(keyHandler.OnKeyDown);
             form.KeyUp += new KeyEventHandler(keyHandler.OnKeyUp);
 
-            resourceManager = new ResourceManager(new ThreadPoolExecuter());
+            resourceManager = new ResourceManager(new ThreadPoolExecutor());
             
             resourceManager.AddLoader(new DummyLoader());
             resourceManager.AddWiper(debugWiper);
