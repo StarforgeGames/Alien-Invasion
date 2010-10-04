@@ -7,23 +7,21 @@ using System.Collections.ObjectModel;
 namespace Game.Behaviours
 {
 
-    class RenderBehaviour : IBehaviour
+    class RenderBehaviour : AEntityBasedBehaviour
     {
-        public readonly int Key_Sprite;
-
-        private Entity entity;
+        // Attribute Keys
+        public const string Key_Sprite = "Sprite";
 
         public RenderBehaviour(Entity entity, string sprite)
+            : base(entity)
         {
-            this.entity = entity;
-
-            Key_Sprite = entity.AddAttribute(new Attribute<string>(sprite));
+            entity.AddAttribute(Key_Sprite, new Attribute<string>(sprite));
         }
 
         #region IBehaviour Members
 
         List<Type> supportedMessages = new List<Type>() { };
-        public ReadOnlyCollection<Type> SupportedMessages
+        public override ReadOnlyCollection<Type> SupportedMessages
         {
             get
             {
@@ -31,14 +29,12 @@ namespace Game.Behaviours
             }
         }
 
-        public void OnUpdate(float deltaTime)
-        {
-           
+        public override void OnUpdate(float deltaTime)
+        {           
         }
 
-        public void OnMessage(Message msg)
+        public override void OnMessage(Message msg)
         {
-            throw new NotImplementedException();
         }
 
         #endregion

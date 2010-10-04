@@ -23,14 +23,10 @@ namespace Game.Messages
 
         public Direction Direction { get; set; }
 
-        public MoveMessage() {
-            Type = STOP_MOVING;
-        }
-
-        public MoveMessage(Direction direction)
+        public MoveMessage(string type, Direction direction)
         {
-            Direction = direction;
-            Type = START_MOVING;
+            this.Type = type;
+            this.Direction = direction;
         }
     }
 
