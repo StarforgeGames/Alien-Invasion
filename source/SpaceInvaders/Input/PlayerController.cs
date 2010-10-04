@@ -52,22 +52,25 @@ namespace SpaceInvaders.Input
         {
             switch (e.KeyCode) {
                 case Keys.W:
-                    goto case Keys.Left;
+                    goto case Keys.Up;
                 case Keys.Up:
-                    goto case Keys.Left;
+                    interpreter.StopMoving(Direction.North);
+                    break;
                 case Keys.A:
                     goto case Keys.Left;
                 case Keys.Left:
-                    interpreter.StopMoving();
+                    interpreter.StopMoving(Direction.West);
                     break;
                 case Keys.S:
-                    goto case Keys.Left;
+                    goto case Keys.Down;
                 case Keys.Down:
-                    goto case Keys.Left;
+                    interpreter.StopMoving(Direction.South);
+                    break;
                 case Keys.D:
-                    goto case Keys.Left;
+                    goto case Keys.Right;
                 case Keys.Right:
-                    goto case Keys.Left;
+                    interpreter.StopMoving(Direction.East);
+                    break;
                 case Keys.Space:
                     interpreter.StopFiringWeapon();
                     break;

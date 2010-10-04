@@ -6,7 +6,9 @@ using Game.Processes;
 
 namespace Game
 {
-
+    /// <summary>
+    /// Simple Process Manager for continuing actions.
+    /// </summary>
     public class ProcessManager
     {
         private List<Process> processes;

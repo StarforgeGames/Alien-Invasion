@@ -6,7 +6,7 @@ using System.Text;
 namespace Game.Entities
 {
 
-    class Attribute<T>
+    internal class Attribute<T>
     {
         public T Value { get; set; }
 
@@ -18,6 +18,11 @@ namespace Game.Entities
         public static implicit operator T(Attribute<T> attribute)
         {
             return attribute.Value;
+        }
+
+        public override string ToString()
+        {
+            return Value.ToString();
         }
     }
 
