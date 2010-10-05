@@ -6,8 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Graphics.ResourceManagement.Resources;
 
-namespace Graphics.Resources.Debug
+namespace Graphics.ResourceManagement.Debug
 {
     public partial class ResourceManagementMonitor : Form
     {

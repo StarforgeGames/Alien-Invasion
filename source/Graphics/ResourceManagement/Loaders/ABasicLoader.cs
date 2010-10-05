@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using Graphics.ResourceManagement.Resources;
 
-namespace Graphics.Resources.Loaders
+namespace Graphics.ResourceManagement.Loaders
 {
     public abstract class ABasicLoader : IResourceLoader
     {

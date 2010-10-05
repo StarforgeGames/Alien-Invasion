@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.IO;
+using Graphics.ResourceManagement.Resources;
 
-namespace Graphics.Resources
+namespace Graphics.ResourceManagement
 {
     public enum ResourceState
     {

@@ -4,9 +4,11 @@ using System.Windows.Forms;
 using System.Drawing;
 using System;
 using SlimDX.Windows;
-using Graphics.Resources;
+using Graphics.ResourceManagement;
 using SpaceInvaders.Input;
-using Graphics.Resources.Loaders;
+using Graphics.ResourceManagement.Loaders;
+using Graphics.ResourceManagement.Wipers;
+using Graphics.ResourceManagement.Debug;
 
 namespace SpaceInvaders
 {
@@ -24,7 +26,7 @@ namespace SpaceInvaders
 
         Form form = new Form();
         IKeyboardHandler keyHandler;
-        AWiper debugWiper = new Graphics.Resources.Debug.DebugWiper();
+        AWiper debugWiper = new DebugWiper();
 
         public Application()
         {      

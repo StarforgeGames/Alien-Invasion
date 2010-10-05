@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Graphics.ResourceManagement.Resources;
 
-namespace Graphics.Resources.Loaders
+namespace Graphics.ResourceManagement.Loaders
 {
     public class TextResource : AResource
     {

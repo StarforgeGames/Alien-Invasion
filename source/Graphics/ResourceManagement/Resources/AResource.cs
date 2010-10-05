@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace Graphics.Resources
+namespace Graphics.ResourceManagement.Resources
 {
     public abstract class AResource : IDisposable
     {

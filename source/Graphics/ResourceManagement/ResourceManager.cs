@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using Graphics.ResourceManagement.Wipers;
+using Graphics.ResourceManagement.Loaders;
 
-namespace Graphics.Resources
+namespace Graphics.ResourceManagement
 {
 
     public class ResourceManager
