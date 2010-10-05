@@ -22,14 +22,14 @@ namespace Game.Entities
                 case "player":
                     float x = game.WorldWidth / 2;
                     float y = game.WorldHeight - 100;
-                    Entity player = new Actor(game, id, @"Gfx\player.png", x, y, 50f);
+                    Entity player = new Actor(game, id, @"Gfx\player.png", x, y, 75, 75, 50f);
                     player.AddBehaviour(new CombatBehaviour(player, .75f));
                     player.AddBehaviour(new CollisionBehaviour(player));
                     player.AddBehaviour(new HealthBehaviour(player, 1));
                     return player;
 
                 case "pewpew":
-                    Entity pewpew = new Actor(game, id, @"Gfx\pewpew.png", 0f, 0f, 200f);
+                    Entity pewpew = new Actor(game, id, @"Gfx\pewpew.png", 0f, 0f, 5, 15, 200f);
                     pewpew.AddBehaviour(new CollisionBehaviour(pewpew));
                     return pewpew;
 

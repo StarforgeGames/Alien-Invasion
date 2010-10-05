@@ -94,6 +94,7 @@
     <Compile Include="Processes\Process.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\Rectangle.cs" />
     <Compile Include="Utility\Vector2D.cs" />
   </ItemGroup>
   <ItemGroup />

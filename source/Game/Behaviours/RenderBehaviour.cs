@@ -30,7 +30,7 @@ namespace Game.Behaviours
         }
 
         public override void OnUpdate(float deltaTime)
-        {           
+        {
         }
 
         public override void OnMessage(Message msg)

@@ -12,7 +12,7 @@ namespace Game.Entities
 
         public Attribute(T value)
         {
-            Value = value;
+            this.Value = value;
         }
 
         public static implicit operator T(Attribute<T> attribute)

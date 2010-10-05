@@ -15,10 +15,10 @@ namespace Game.Utility
         /// </summary>
         public static readonly Vector2D Empty = new Vector2D(0, 0);
 
-        public double X { get; set; }
-        public double Y { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
 
-        public Vector2D(double x, double y)
+        public Vector2D(float x, float y)
         {
             this.X = x;
             this.Y = y;
@@ -50,9 +50,9 @@ namespace Game.Utility
 
         #endregion
 
-        public double Normalize()
+        public float Normalize()
         {
-            return Math.Sqrt(X * X + Y * Y);
+            return (float)Math.Sqrt(X * X + Y * Y);
         }
 
         public static bool operator ==(Vector2D lh, Vector2D rh)
@@ -80,19 +80,9 @@ namespace Game.Utility
             return new Vector2D(lh.X - rh.X, lh.Y - rh.Y);
         }
 
-        public static Vector2D operator *(Vector2D lh, double rh)
-        {
-            return new Vector2D(rh * lh.X, rh * lh.Y);
-        }
-
         public static Vector2D operator *(Vector2D lh, float rh)
         {
             return new Vector2D(rh * lh.X, rh * lh.Y);
-        }
-
-        public static Vector2D operator /(Vector2D lh, double rh)
-        {
-            return new Vector2D(lh.X / rh, lh.Y / rh);
         }
 
         public static Vector2D operator /(Vector2D lh, float rh)

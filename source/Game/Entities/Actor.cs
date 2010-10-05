@@ -8,10 +8,11 @@ namespace Game.Entities
 {
     class Actor : Entity
     {
-        public Actor(BaseGame game, string name, string sprite, float posX, float posY, float speed)
+        public Actor(BaseGame game, string name, string sprite, float posX, float posY, int width, int height, 
+                     float speed)
             : base(game, name)
         {
-            AddBehaviour(new SpatialBehaviour(this, posX, posY, speed));
+            AddBehaviour(new SpatialBehaviour(this, posX, posY, width, height, speed));
             AddBehaviour(new RenderBehaviour(this, sprite));
         }
     }
