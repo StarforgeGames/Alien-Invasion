@@ -1,4 +1,4 @@
-﻿namespace Graphics.Resources.Debug
+﻿namespace Graphics.ResourceManagement.Debug
 {
     partial class ResourceManagementMonitor
     {

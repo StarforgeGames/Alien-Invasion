@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Graphics.Resources
+namespace Graphics.ResourceManagement
 {
     public interface ILoader
     {
