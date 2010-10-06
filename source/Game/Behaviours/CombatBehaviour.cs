@@ -54,9 +54,12 @@ namespace Game.Behaviours
                     Entity pewpew = entity.Game.AddEntity("pewpew");
 
                     Attribute<Vector2D> position = entity[SpatialBehaviour.Key_Position] as Attribute<Vector2D>;
+                    Attribute<Rectangle> bounds = entity[SpatialBehaviour.Key_Bounds] as Attribute<Rectangle>;
+
                     Attribute<Vector2D> pewpewPosition = pewpew[SpatialBehaviour.Key_Position] as Attribute<Vector2D>;
-                    pewpewPosition.Value.X = position.Value.X;
-                    pewpewPosition.Value.Y = position.Value.Y;
+                    Attribute<Rectangle> pewpewBounds = pewpew[SpatialBehaviour.Key_Bounds] as Attribute<Rectangle>;
+                    pewpewPosition.Value.X = position.Value.X + (bounds.Value.Width / 2f);
+                    pewpewPosition.Value.Y = position.Value.Y - pewpewBounds.Value.Height - 1;
 
                     pewpew.SendMessage(new MoveMessage(MoveMessage.START_MOVING, Direction.North));
 

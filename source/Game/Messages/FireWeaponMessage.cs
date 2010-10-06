@@ -12,14 +12,9 @@ namespace Game.Messages
         public const string START_FIRING = "actor_start_firing";
         public const string STOP_FIRING = "actor_stop_firing";
 
-        public FireWeaponMessage(Boolean isFiring)
+        public FireWeaponMessage(string type)
+            : base(type)
         {
-            if (isFiring) {
-                Type = START_FIRING;
-            }
-            else {
-                Type = STOP_FIRING;
-            }
         }
     }
 

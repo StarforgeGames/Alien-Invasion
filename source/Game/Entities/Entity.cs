@@ -28,7 +28,12 @@ namespace Game.Entities
 
         public object this[string key]
         { 
-            get { return attributes[key]; }
+            get { 
+                if(attributes.ContainsKey(key)) {
+                    return attributes[key]; 
+                }
+                return null;
+            }
             set { attributes[key] = value;  } 
         }
 
@@ -128,6 +133,14 @@ namespace Game.Entities
             foreach (IBehaviour b in behaviours) {
                 b.OnUpdate(deltaTime);
             }
+        }
+
+        public void Kill()
+        {
+            this.State = EntityState.Dead;
+
+            Message deathMsg = new DeathMessage(DeathMessage.ACTOR_DIES);
+            SendBroadcastMessage(deathMsg);
         }
     }
 

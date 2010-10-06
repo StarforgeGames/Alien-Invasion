@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Game.Entities;
 using Game.Input;
+using Game.Behaviours;
 
 namespace Game
 {
@@ -30,6 +31,9 @@ namespace Game
             Entity player = entityFactory.New("player");
             Entities.Add(player);
             PlayerInterpreter = new CommandInterpreter(player);
+
+            Entity alien_ray = entityFactory.New("alien_ray");
+            Entities.Add(alien_ray);
         }
 
         public Entity AddEntity(string id) 

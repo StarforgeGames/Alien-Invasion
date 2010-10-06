@@ -31,12 +31,12 @@ namespace Game.Input
 
         public void StartFiringWeapon()
         {
-            entity.SendMessage(new FireWeaponMessage(true));
+            entity.SendMessage(new FireWeaponMessage(FireWeaponMessage.START_FIRING));
         }
 
         public void StopFiringWeapon()
         {
-            entity.SendMessage(new FireWeaponMessage(false));
+            entity.SendMessage(new FireWeaponMessage(FireWeaponMessage.STOP_FIRING));
         }
     }
 

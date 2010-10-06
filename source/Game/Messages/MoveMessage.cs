@@ -24,8 +24,8 @@ namespace Game.Messages
         public Direction Direction { get; set; }
 
         public MoveMessage(string type, Direction direction)
+            : base(type)
         {
-            this.Type = type;
             this.Direction = direction;
         }
     }

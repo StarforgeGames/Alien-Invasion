@@ -11,8 +11,8 @@ namespace Game.Messages
         public const string ACTOR_DIES = "actor_dies";
 
         public DeathMessage(string type)
+            : base(type)
         {
-            this.Type = type;
         }
     }
 }

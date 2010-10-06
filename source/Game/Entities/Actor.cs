@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Game.Behaviours;
+using Game.Messages;
 
 namespace Game.Entities
 {
+
     class Actor : Entity
     {
         public Actor(BaseGame game, string name, string sprite, float posX, float posY, int width, int height, 
@@ -16,4 +18,5 @@ namespace Game.Entities
             AddBehaviour(new RenderBehaviour(this, sprite));
         }
     }
+
 }
