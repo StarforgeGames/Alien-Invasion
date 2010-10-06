@@ -12,9 +12,13 @@ namespace Game.Behaviours
 
     class ProjectileBehaviour : AEntityBasedBehaviour
     {
-        public ProjectileBehaviour(Entity entity)
+        // Attribute Keys
+        public const string Key_ProjectileOwner = "ProjectileOwner";
+
+        public ProjectileBehaviour(Entity entity, Entity owner)
             : base(entity)
         {
+            entity.AddAttribute(Key_ProjectileOwner, new Attribute<Entity>(owner));
         }
 
         #region IBehaviour Members
@@ -24,10 +28,7 @@ namespace Game.Behaviours
         };
         public override ReadOnlyCollection<Type> SupportedMessages
         {
-            get
-            {
-                return supportedMessages.AsReadOnly();
-            }
+            get { return supportedMessages.AsReadOnly(); }
         }
 
         public override void OnUpdate(float deltaTime)

@@ -31,7 +31,7 @@ namespace Game.Entities
                 case "pewpew": {
                     Entity pewpew = new Actor(game, id, @"Gfx\pewpew.png", 0f, 0f, 5, 15, 200f);
                     pewpew.AddBehaviour(new CollisionBehaviour(pewpew, 10));
-                    pewpew.AddBehaviour(new ProjectileBehaviour(pewpew));
+                    pewpew.AddBehaviour(new ProjectileBehaviour(pewpew, null));
                     return pewpew;
                 }
                 case "alien_ray": {

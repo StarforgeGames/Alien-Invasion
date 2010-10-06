@@ -29,10 +29,7 @@ namespace Game.Behaviours
         List<Type> supportedMessages = new List<Type>() { };
         public ReadOnlyCollection<Type> SupportedMessages
         {
-            get
-            {
-                return supportedMessages.AsReadOnly();
-            }
+            get { return supportedMessages.AsReadOnly(); }
         }
 
         public void OnUpdate(float deltaTime)
@@ -46,16 +43,23 @@ namespace Game.Behaviours
                 if (isPhysical == null || !isPhysical) {
                     continue;
                 }
+
+                Attribute<Entity> owner = entity[ProjectileBehaviour.Key_ProjectileOwner] as Attribute<Entity>;
+                Attribute<Entity> otherOwner = e[ProjectileBehaviour.Key_ProjectileOwner] as Attribute<Entity>;
+                if ((owner != null && owner.Value == e) || (otherOwner != null && otherOwner.Value == entity)) {
+                    continue;
+                }
                 
-                Attribute<Rectangle> bounds = e[SpatialBehaviour.Key_Bounds] as Attribute<Rectangle>;
-                if (isColliding(bounds)) {
+                Attribute<Rectangle> otherBounds = e[SpatialBehaviour.Key_Bounds] as Attribute<Rectangle>;
+                if (isColliding(otherBounds)) {
+                    // TODO: Guarantee that collisions happen once but affect both entities
                     Console.WriteLine(entity.Name + " collides with " + e.Name + "!");
 
                     CollisionMessage collisionMsg = new CollisionMessage(CollisionMessage.ACTOR_COLLIDES, e);
                     entity.SendMessage(collisionMsg);
 
                     Attribute<int> collisionDmg = e[Key_CollisionDamage] as Attribute<int>;
-                    DamageMessage dmgMsg = new DamageMessage(DamageMessage.RECEIVE_DAMAGE, collisionDmg);
+                    DamageMessage dmgMsg = new DamageMessage(DamageMessage.RECEIVE_DAMAGE, collisionDmg, e);
                     entity.SendMessage(dmgMsg);
                 }
             }
