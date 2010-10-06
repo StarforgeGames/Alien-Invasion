@@ -79,6 +79,7 @@
     <Compile Include="Behaviours\CombatBehaviour.cs" />
     <Compile Include="Behaviours\HealthBehaviour.cs" />
     <Compile Include="Behaviours\IBehaviour.cs" />
+    <Compile Include="Behaviours\ProjectileBehaviour.cs" />
     <Compile Include="Behaviours\RenderBehaviour.cs" />
     <Compile Include="Behaviours\SpatialBehaviour.cs" />
     <Compile Include="Entities\Actor.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityFactory.cs" />
     <Compile Include="Input\CommandInterpreter.cs" />
+    <Compile Include="Messages\CollisionMessage.cs" />
     <Compile Include="Messages\DamageMessage.cs" />
     <Compile Include="Messages\DeathMessage.cs" />
     <Compile Include="Messages\FireWeaponMessage.cs" />

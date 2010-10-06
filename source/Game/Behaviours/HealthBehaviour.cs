@@ -39,22 +39,19 @@ namespace Game.Behaviours
         public override void OnMessage(Message msg)
         {
             switch (msg.Type) {
-                case DamageMessage.DEAL_DAMAGE: {
+                case DamageMessage.RECEIVE_DAMAGE: {
                     DamageMessage dmgMsg = (DamageMessage) msg;
 
                     Attribute<int> health = entity[Key_Health] as Attribute<int>;
                     health.Value -= dmgMsg.Damage;
 
+                    Console.WriteLine("Entity " + entity.Name + " received " + dmgMsg.Damage + " damage "
+                        + "(Remaining HP:" + health + "). Ouch!");
+
                     if (health <= 0) {
-                        entity.State = EntityState.Dead;
-
-                        Message deathMsg = new DeathMessage(DeathMessage.ACTOR_DIES);
-                        entity.SendBroadcastMessage(deathMsg);
-
+                        entity.Kill();
                         Console.WriteLine("Entity " + entity.Name + " died a horrible death!");
                     }
-
-                    Console.WriteLine("Entity " + entity.Name + " received " + dmgMsg.Damage + " damage. Ouch!");
                 }
                 break;
             }

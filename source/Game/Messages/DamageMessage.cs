@@ -9,13 +9,13 @@ namespace Game.Messages
     class DamageMessage : Message
     {
         // Event Message Types
-        public const string DEAL_DAMAGE = "actor_deal_damage";
+        public const string RECEIVE_DAMAGE = "actor_receive_damage";
 
         public int Damage { get; set; }
 
         public DamageMessage(string type, int damage)
+            : base(type)
         {
-            this.Type = type;
             this.Damage = damage > 0 ? damage : 0;
         }
     }

@@ -6,9 +6,14 @@ using System.Text;
 namespace Game.Messages
 {
 
-    public class Message
+    public abstract class Message
     {
         public string Type { get; set; }
+
+        public Message(string type)
+        {
+            this.Type = type;
+        }
     }
 
 }

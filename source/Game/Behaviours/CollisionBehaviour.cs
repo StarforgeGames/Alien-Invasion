@@ -5,16 +5,23 @@ using System.Text;
 using System.Collections.ObjectModel;
 using Game.Entities;
 using Game.Utility;
+using Game.Messages;
 
 namespace Game.Behaviours
 {
     class CollisionBehaviour : IBehaviour
     {
+        // Attribute Keys
+        public const string Key_IsPhysical = "IsPhysical";
+        public const string Key_CollisionDamage = "CollisionDamage";
+
         private Entity entity;
 
-        public CollisionBehaviour(Entity entity)
+        public CollisionBehaviour(Entity entity, int collisionDamage)
         {
             this.entity = entity;
+            entity.AddAttribute(Key_IsPhysical, new Attribute<bool>(true));
+            entity.AddAttribute(Key_CollisionDamage, new Attribute<int>(collisionDamage));
         }
 
         #region IBehaviour Members
@@ -31,7 +38,26 @@ namespace Game.Behaviours
         public void OnUpdate(float deltaTime)
         {
             foreach (Entity e in entity.Game.Entities) {
+                if (entity == e) {
+                    continue;
+                }
 
+                Attribute<bool> isPhysical = e[Key_IsPhysical] as Attribute<bool>;
+                if (isPhysical == null || !isPhysical) {
+                    continue;
+                }
+                
+                Attribute<Rectangle> bounds = e[SpatialBehaviour.Key_Bounds] as Attribute<Rectangle>;
+                if (isColliding(bounds)) {
+                    Console.WriteLine(entity.Name + " collides with " + e.Name + "!");
+
+                    CollisionMessage collisionMsg = new CollisionMessage(CollisionMessage.ACTOR_COLLIDES, e);
+                    entity.SendMessage(collisionMsg);
+
+                    Attribute<int> collisionDmg = e[Key_CollisionDamage] as Attribute<int>;
+                    DamageMessage dmgMsg = new DamageMessage(DamageMessage.RECEIVE_DAMAGE, collisionDmg);
+                    entity.SendMessage(dmgMsg);
+                }
             }
         }
 
@@ -42,11 +68,14 @@ namespace Game.Behaviours
 
         #endregion
 
-        private bool isColliding(int posX, int posY)
+        private bool isColliding(Attribute<Rectangle> other)
         {
-            Attribute<Vector2D> pos = entity[SpatialBehaviour.Key_Position] as Attribute<Vector2D>;
+            Attribute<Rectangle> bounds = entity[SpatialBehaviour.Key_Bounds] as Attribute<Rectangle>;
 
-            return false;
+            return bounds.Value.Left <= other.Value.Right
+                && bounds.Value.Top <= other.Value.Bottom
+                && bounds.Value.Right >= other.Value.Left
+                && bounds.Value.Bottom >= other.Value.Top;
         }
     }
 }
