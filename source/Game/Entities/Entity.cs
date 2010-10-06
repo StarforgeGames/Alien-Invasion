@@ -14,13 +14,10 @@ namespace Game.Entities
 
     public class Entity
     {
-        private readonly string name;
-        public string Name { get { return name; } }
-
         public EntityState State { get; set; }
 
-        private BaseGame game;
-        public BaseGame Game { get { return game; } }
+        public string Name { get; private set; }
+        public BaseGame Game { get; private set; }
 
         private Dictionary<string, object> attributes;
         private List<IBehaviour> behaviours;
@@ -39,12 +36,12 @@ namespace Game.Entities
 
         public Entity(BaseGame game, string name)
         {
-            // that's the
-            this.name = name; 
-            // of the
-            this.game = game;
+            State = EntityState.Active;
 
-            this.State = EntityState.Active;
+            // that's the
+            this.Name = name; 
+            // of the
+            this.Game = game;
 
             behaviours = new List<IBehaviour>();
             attributes = new Dictionary<string, object>();

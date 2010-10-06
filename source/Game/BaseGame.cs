@@ -8,37 +8,36 @@ namespace Game
 
     public class BaseGame
     {
-        private EntityFactory entityFactory;
-        public EntityFactory EntityFactory { get { return entityFactory; } }
-        public List<Entity> Entities { get; set; }
-        public CommandInterpreter PlayerInterpreter { get; set; }
+        public EntityFactory EntityFactory { get; private set; }
+        public List<Entity> Entities { get; private set; }
+        public CommandInterpreter PlayerInterpreter { get; private set; }
 
-        public int WorldWidth { get; set; }
-        public int WorldHeight { get; set; }
+        public int WorldWidth { get; private set; }
+        public int WorldHeight { get; private set; }
 
-        public ProcessManager ProcessManager { get; set; }
+        public ProcessManager ProcessManager { get; private set; }
 
         public BaseGame(int worldWidth, int worldHeight)
         {
             this.WorldWidth = worldWidth;
             this.WorldHeight = worldHeight;
 
-            entityFactory = new EntityFactory(this);
+            EntityFactory = new EntityFactory(this);
             Entities = new List<Entity>();
 
             ProcessManager = new ProcessManager();
 
-            Entity player = entityFactory.New("player");
+            Entity player = EntityFactory.New("player");
             Entities.Add(player);
             PlayerInterpreter = new CommandInterpreter(player);
 
-            Entity alien_ray = entityFactory.New("alien_ray");
+            Entity alien_ray = EntityFactory.New("alien_ray");
             Entities.Add(alien_ray);
         }
 
         public Entity AddEntity(string id) 
         {
-            Entity entity = entityFactory.New(id);
+            Entity entity = EntityFactory.New(id);
             Entities.Add(entity);
             return entity;
         }

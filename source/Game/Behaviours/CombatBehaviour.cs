@@ -32,10 +32,7 @@ namespace Game.Behaviours
         };
         public override ReadOnlyCollection<Type> SupportedMessages
         {
-            get
-            {
-                return supportedMessages.AsReadOnly();
-            }
+            get { return supportedMessages.AsReadOnly(); }
         }
 
         public override void OnUpdate(float deltaTime)
@@ -52,6 +49,8 @@ namespace Game.Behaviours
                     timeSinceLastShot.Value = 0f;
 
                     Entity pewpew = entity.Game.AddEntity("pewpew");
+                    Attribute<Entity> owner = pewpew[ProjectileBehaviour.Key_ProjectileOwner] as Attribute<Entity>;
+                    owner.Value = entity;
 
                     Attribute<Vector2D> position = entity[SpatialBehaviour.Key_Position] as Attribute<Vector2D>;
                     Attribute<Rectangle> bounds = entity[SpatialBehaviour.Key_Bounds] as Attribute<Rectangle>;
@@ -59,7 +58,7 @@ namespace Game.Behaviours
                     Attribute<Vector2D> pewpewPosition = pewpew[SpatialBehaviour.Key_Position] as Attribute<Vector2D>;
                     Attribute<Rectangle> pewpewBounds = pewpew[SpatialBehaviour.Key_Bounds] as Attribute<Rectangle>;
                     pewpewPosition.Value.X = position.Value.X + (bounds.Value.Width / 2f);
-                    pewpewPosition.Value.Y = position.Value.Y - pewpewBounds.Value.Height - 1;
+                    pewpewPosition.Value.Y = position.Value.Y - (pewpewBounds.Value.Height / 2f);
 
                     pewpew.SendMessage(new MoveMessage(MoveMessage.START_MOVING, Direction.North));
 

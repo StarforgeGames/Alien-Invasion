@@ -7,40 +7,39 @@ namespace Game.Processes
 {
     public abstract class Process
     {
-        protected bool isDead = false;
-        public bool IsDead { get { return isDead; } }
-
         public bool IsActive { get; set; }
+        public bool IsPaused { get; private set; }
+        public bool IsDead { get; private set; }
 
+        public bool IsInitialized { get; private set; }
         public bool IsAttached { get; set; }
-
-        protected bool isPaused = false;
-        public bool IsPaused { get { return isPaused; } }
-
-        protected bool isInitialized = false;
-        public bool IsInitialized { get { return isInitialized; } }
 
         public Process Next { get; set; }
 
+        public Process()
+        {
+            IsActive = true;
+            IsPaused = false;
+        }
 
         public abstract void OnInitialize();
 
         public virtual void Kill()
         {
-            isDead = true;
+            IsDead = true;
         }
 
         public virtual void Update(float deltaTime)
         {
-            if (!isInitialized) {
+            if (!IsInitialized) {
                 OnInitialize();
-                isInitialized = true;
+                IsInitialized = true;
             }
         }
 
         public void TogglePause()
         {
-            isPaused = !isPaused;
+            IsPaused = !IsPaused;
         }
     }
 

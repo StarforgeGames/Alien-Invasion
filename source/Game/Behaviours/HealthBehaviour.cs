@@ -26,10 +26,7 @@ namespace Game.Behaviours
         };
         public override ReadOnlyCollection<Type> SupportedMessages
         {
-            get
-            {
-                return supportedMessages.AsReadOnly();
-            }
+            get { return supportedMessages.AsReadOnly(); }
         }
 
         public override void OnUpdate(float deltaTime)
