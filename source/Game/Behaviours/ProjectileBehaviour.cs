@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
-using Game.Messages;
+using Game.EventManagement.Events;
 using Game.Entities;
 using Game.Utility;
 
@@ -24,7 +24,7 @@ namespace Game.Behaviours
         #region IBehaviour Members
 
         List<Type> supportedMessages = new List<Type>() {
-            typeof(CollisionMessage)
+            typeof(CollisionEvent)
         };
         public override ReadOnlyCollection<Type> SupportedMessages
         {
@@ -41,10 +41,10 @@ namespace Game.Behaviours
             }
         }
 
-        public override void OnMessage(Messages.Message msg)
+        public override void OnMessage(EventManagement.Events.Event msg)
         {
             switch (msg.Type) {
-                case CollisionMessage.ACTOR_COLLIDES: {
+                case CollisionEvent.ACTOR_COLLIDES: {
                     entity.Kill();
                     Console.WriteLine(entity.Name + " died fulfilling its honorable duty.");
                 }

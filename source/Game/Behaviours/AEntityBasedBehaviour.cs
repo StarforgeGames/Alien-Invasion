@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using Game.Entities;
 using System.Collections.ObjectModel;
+using Game.EventManagement.Events;
 
 namespace Game.Behaviours
 {
+
     abstract class AEntityBasedBehaviour : IBehaviour
     {
         protected Entity entity;
@@ -16,13 +18,10 @@ namespace Game.Behaviours
             this.entity = entity;
         }
 
-        #region IBehaviour Members
-
         public abstract ReadOnlyCollection<Type> SupportedMessages { get; }
 
         public abstract void OnUpdate(float deltaTime);
-        public abstract void OnMessage(Messages.Message msg);
-
-        #endregion
+        public abstract void OnMessage(Event msg);
     }
+
 }

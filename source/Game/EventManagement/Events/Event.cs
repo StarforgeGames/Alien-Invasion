@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Game.Messages
+namespace Game.EventManagement.Events
 {
 
-    public abstract class Message
+    public abstract class Event : EventArgs
     {
         public string Type { get; set; }
 
-        public Message(string type)
+        public Event(string type)
         {
             this.Type = type;
         }

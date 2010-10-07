@@ -2,30 +2,33 @@
 using Game.Entities;
 using Game.Input;
 using Game.Behaviours;
+using Game.EventManagement;
 
 namespace Game
 {
 
     public class BaseGame
     {
-        public EntityFactory EntityFactory { get; private set; }
+        public SwappingEventManager EventManager { get; private set; }
+        public ProcessManager ProcessManager { get; private set; }
+
         public List<Entity> Entities { get; private set; }
+        public EntityFactory EntityFactory { get; private set; }
         public CommandInterpreter PlayerInterpreter { get; private set; }
 
         public int WorldWidth { get; private set; }
         public int WorldHeight { get; private set; }
-
-        public ProcessManager ProcessManager { get; private set; }
 
         public BaseGame(int worldWidth, int worldHeight)
         {
             this.WorldWidth = worldWidth;
             this.WorldHeight = worldHeight;
 
-            EntityFactory = new EntityFactory(this);
-            Entities = new List<Entity>();
-
+            EventManager = new SwappingEventManager();
             ProcessManager = new ProcessManager();
+
+            Entities = new List<Entity>();
+            EntityFactory = new EntityFactory(this);
 
             Entity player = EntityFactory.New("player");
             Entities.Add(player);
@@ -49,6 +52,9 @@ namespace Game
 
         public void Update(float deltaTime)
         {
+            EventManager.Tick();
+            ProcessManager.OnUpdate(deltaTime);
+
             List<Entity> tmp = new List<Entity>(Entities);
 
             foreach (Entity entity in tmp) {
@@ -61,8 +67,6 @@ namespace Game
                         break;
                 }
             }
-
-            ProcessManager.OnUpdate(deltaTime);
         }
     }
 

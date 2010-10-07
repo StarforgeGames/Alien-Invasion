@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using Game.Behaviours;
-using Game.Messages;
+using Game.EventManagement.Events;
 using System;
+using Game.EventManagement;
 
 namespace Game.Entities
 {
@@ -19,9 +20,10 @@ namespace Game.Entities
         public string Name { get; private set; }
         public BaseGame Game { get; private set; }
 
+        public IEventManager EventManager { get; private set; }
+
         private Dictionary<string, object> attributes;
         private List<IBehaviour> behaviours;
-        private Dictionary<Type, List<IBehaviour>> observers;
 
         public object this[string key]
         { 
@@ -43,9 +45,10 @@ namespace Game.Entities
             // of the
             this.Game = game;
 
+            EventManager = new SwappingEventManager();
+
             behaviours = new List<IBehaviour>();
             attributes = new Dictionary<string, object>();
-            observers = new Dictionary<Type, List<IBehaviour>>();
         }
 
 
@@ -60,10 +63,7 @@ namespace Game.Entities
             behaviours.Add(behaviour);
 
             foreach (Type type in behaviour.SupportedMessages) {
-                if (!observers.ContainsKey(type)) {
-                    observers.Add(type, new List<IBehaviour>());
-                }
-                observers[type].Add(behaviour);
+                EventManager.AddListener(behaviour, type);
             }
         }
 
@@ -74,10 +74,8 @@ namespace Game.Entities
         /// <returns>True if removal was successful</returns>
         public bool RemoveBehaviour(IBehaviour behaviour)
         {
-            foreach (List<IBehaviour> list in observers.Values) {
-                foreach (IBehaviour b in list) {
-                    list.Remove(behaviour);
-                }
+            foreach (Type type in behaviour.SupportedMessages) {
+                EventManager.RemoveListener(behaviour, type);
             }
 
             return behaviours.Remove(behaviour);
@@ -99,34 +97,10 @@ namespace Game.Entities
 
         #endregion
 
-        /// <summary>
-        /// Sends a message to all behaviours who listen to those kind of message.
-        /// </summary>
-        /// <param name="msg">Message</param>
-        public void SendMessage(Message msg)
-        {
-            Type t = msg.GetType();
-
-            if (observers.ContainsKey(t)) {
-                foreach (IBehaviour b in observers[t]) {
-                    b.OnMessage(msg);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Sends a message to all behaviours, whether they are registered to listen to this kind of message or not.
-        /// </summary>
-        /// <param name="msg">Global message</param>
-        public void SendBroadcastMessage(Message msg)
-        {
-            foreach (IBehaviour b in behaviours) {
-                b.OnMessage(msg);
-            }
-        }
-
         public void Update(float deltaTime)
         {
+            EventManager.Tick();
+
             foreach (IBehaviour b in behaviours) {
                 b.OnUpdate(deltaTime);
             }
@@ -135,6 +109,7 @@ namespace Game.Entities
         public void Kill()
         {
             this.State = EntityState.Dead;
+            EventManager.QueueEvent(new DeathEvent(DeathEvent.ACTOR_DIES));
         }
     }
 

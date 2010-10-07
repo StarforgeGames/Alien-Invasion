@@ -5,7 +5,7 @@ using System.Text;
 using System.Collections.ObjectModel;
 using Game.Entities;
 using Game.Utility;
-using Game.Messages;
+using Game.EventManagement.Events;
 
 namespace Game.Behaviours
 {
@@ -54,17 +54,17 @@ namespace Game.Behaviours
                 if (isColliding(otherBounds)) {
                     Console.WriteLine(entity.Name + " collides with " + e.Name + "!");
 
-                    CollisionMessage collisionMsg = new CollisionMessage(CollisionMessage.ACTOR_COLLIDES, e);
-                    entity.SendMessage(collisionMsg);
+                    CollisionEvent collisionMsg = new CollisionEvent(CollisionEvent.ACTOR_COLLIDES, e);
+                    entity.EventManager.QueueEvent(collisionMsg);
 
                     Attribute<int> collisionDmg = e[Key_CollisionDamage] as Attribute<int>;
-                    DamageMessage dmgMsg = new DamageMessage(DamageMessage.RECEIVE_DAMAGE, collisionDmg, e);
-                    entity.SendMessage(dmgMsg);
+                    DamageEvent dmgMsg = new DamageEvent(DamageEvent.RECEIVE_DAMAGE, collisionDmg, e);
+                    entity.EventManager.QueueEvent(dmgMsg);
                 }
             }
         }
 
-        public void OnMessage(Message msg)
+        public void OnMessage(Event msg)
         {
 
         }
