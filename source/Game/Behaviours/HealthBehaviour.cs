@@ -31,6 +31,12 @@ namespace Game.Behaviours
 
         public override void OnUpdate(float deltaTime)
         {
+            Attribute<int> health = entity[Key_Health] as Attribute<int>;
+
+            if (health <= 0) {
+                entity.Kill();
+                Console.WriteLine("Entity " + entity.Name + " died a horrible death!");
+            }
         }
 
         public override void OnMessage(Message msg)
@@ -46,8 +52,8 @@ namespace Game.Behaviours
                         + "(Remaining HP:" + health + "). Ouch!");
 
                     if (health <= 0) {
-                        entity.Kill();
-                        Console.WriteLine("Entity " + entity.Name + " died a horrible death!");
+                        Message deathMsg = new DeathMessage(DeathMessage.ACTOR_DIES);
+                        entity.SendBroadcastMessage(deathMsg);
                     }
                 }
                 break;

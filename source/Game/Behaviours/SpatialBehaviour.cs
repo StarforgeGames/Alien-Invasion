@@ -120,7 +120,7 @@ namespace Game.Behaviours
             }
 
             Attribute<bool> entityIsMoving = entity[Key_IsMoving] as Attribute<bool>;
-            if (entityDirection.Value.X != 0 || entityDirection.Value.Y != 0) {
+            if (entityDirection.Value.X != 0f || entityDirection.Value.Y != 0f) {
                 entityIsMoving.Value = true;
             }
             else {
