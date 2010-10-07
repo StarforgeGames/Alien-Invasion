@@ -8,6 +8,6 @@ namespace Game.EventManagement
 {
     public interface IEventListener
     {
-        void OnMessage(Event msg);
+        void OnEvent(Event evt);
     }
 }

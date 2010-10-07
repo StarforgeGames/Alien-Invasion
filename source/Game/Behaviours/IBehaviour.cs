@@ -8,7 +8,7 @@ namespace Game.Behaviours
 
     public interface IBehaviour : IEventListener
     {
-        ReadOnlyCollection<Type> SupportedMessages { get; }
+        ReadOnlyCollection<Type> HandledEventTypes { get; }
 
         void OnUpdate(float deltaTime);
     }

@@ -15,26 +15,17 @@ namespace Game.Behaviours
         public RenderBehaviour(Entity entity, string sprite)
             : base(entity)
         {
+            handledEventTypes = new List<Type>();
             entity.AddAttribute(Key_Sprite, new Attribute<string>(sprite));
-        }
-
-        #region IBehaviour Members
-
-        List<Type> supportedMessages = new List<Type>() { };
-        public override ReadOnlyCollection<Type> SupportedMessages
-        {
-            get { return supportedMessages.AsReadOnly(); }
         }
 
         public override void OnUpdate(float deltaTime)
         {
         }
 
-        public override void OnMessage(Event msg)
+        public override void OnEvent(Event evt)
         {
         }
-
-        #endregion
     }
 
 }

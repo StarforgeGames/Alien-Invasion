@@ -18,17 +18,9 @@ namespace Game.Behaviours
         public ProjectileBehaviour(Entity entity, Entity owner)
             : base(entity)
         {
+            handledEventTypes = new List<Type>() { typeof(CollisionEvent) };
+
             entity.AddAttribute(Key_ProjectileOwner, new Attribute<Entity>(owner));
-        }
-
-        #region IBehaviour Members
-
-        List<Type> supportedMessages = new List<Type>() {
-            typeof(CollisionEvent)
-        };
-        public override ReadOnlyCollection<Type> SupportedMessages
-        {
-            get { return supportedMessages.AsReadOnly(); }
         }
 
         public override void OnUpdate(float deltaTime)
@@ -41,9 +33,9 @@ namespace Game.Behaviours
             }
         }
 
-        public override void OnMessage(EventManagement.Events.Event msg)
+        public override void OnEvent(Event evt)
         {
-            switch (msg.Type) {
+            switch (evt.Type) {
                 case CollisionEvent.ACTOR_COLLIDES: {
                     entity.Kill();
                     Console.WriteLine(entity.Name + " died fulfilling its honorable duty.");
@@ -51,8 +43,6 @@ namespace Game.Behaviours
                 break;
             }
         }
-
-        #endregion
     }
 
 }

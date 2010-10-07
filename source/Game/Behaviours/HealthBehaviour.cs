@@ -16,17 +16,9 @@ namespace Game.Behaviours
         public HealthBehaviour(Entity entity, int health)
             : base(entity)
         {
+            handledEventTypes = new List<Type>() { typeof(DamageEvent) };
+
             entity.AddAttribute(Key_Health, new Attribute<int>(health));
-        }
-
-        #region IBehaviour Members
-
-        List<Type> supportedMessages = new List<Type>() {
-            typeof(DamageEvent)
-        };
-        public override ReadOnlyCollection<Type> SupportedMessages
-        {
-            get { return supportedMessages.AsReadOnly(); }
         }
 
         public override void OnUpdate(float deltaTime)
@@ -39,11 +31,11 @@ namespace Game.Behaviours
             }
         }
 
-        public override void OnMessage(Event msg)
+        public override void OnEvent(Event evt)
         {
-            switch (msg.Type) {
+            switch (evt.Type) {
                 case DamageEvent.RECEIVE_DAMAGE: {
-                    DamageEvent dmgMsg = (DamageEvent) msg;
+                    DamageEvent dmgMsg = (DamageEvent) evt;
 
                     Attribute<int> health = entity[Key_Health] as Attribute<int>;
                     health.Value -= dmgMsg.Damage;
@@ -54,7 +46,5 @@ namespace Game.Behaviours
                 break;
             }
         }
-
-        #endregion
     }
 }
