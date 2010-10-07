@@ -135,9 +135,6 @@ namespace Game.Entities
         public void Kill()
         {
             this.State = EntityState.Dead;
-
-            Message deathMsg = new DeathMessage(DeathMessage.ACTOR_DIES);
-            SendBroadcastMessage(deathMsg);
         }
     }
 

@@ -52,7 +52,6 @@ namespace Game.Behaviours
                 
                 Attribute<Rectangle> otherBounds = e[SpatialBehaviour.Key_Bounds] as Attribute<Rectangle>;
                 if (isColliding(otherBounds)) {
-                    // TODO: Guarantee that collisions happen once but affect both entities
                     Console.WriteLine(entity.Name + " collides with " + e.Name + "!");
 
                     CollisionMessage collisionMsg = new CollisionMessage(CollisionMessage.ACTOR_COLLIDES, e);
@@ -65,7 +64,7 @@ namespace Game.Behaviours
             }
         }
 
-        public void OnMessage(Messages.Message msg)
+        public void OnMessage(Message msg)
         {
 
         }
