@@ -76,6 +76,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ResourceManagement\Loaders\MeshLoader.cs" />
+    <Compile Include="ResourceManagement\Loaders\TextureLoader.cs" />
+    <Compile Include="ResourceManagement\Resources\MeshResource.cs" />
     <Compile Include="ResourceManagement\Wipers\AWiper.cs" />
     <Compile Include="ResourceManagement\Debug\DebugWiper.cs" />
     <Compile Include="ResourceManagement\Debug\ResourceManagementMonitor.cs">
@@ -104,6 +107,7 @@
     <Compile Include="ResourceManagement\ResourceManager.cs" />
     <Compile Include="Sprites\BaseSprite.cs" />
     <Compile Include="ResourceManagement\ThreadPoolExecutor.cs" />
+    <Compile Include="ResourceManagement\Resources\TextureResource.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Game\Game.csproj">
