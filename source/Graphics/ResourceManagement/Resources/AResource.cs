@@ -8,26 +8,36 @@ namespace Graphics.ResourceManagement.Resources
 {
     public abstract class AResource : IDisposable
     {
-        private int acuiredCount = 0;
+        private int acquiredCount = 0;
 
         public bool IsAcquired
         {
             get
             {
-                return acuiredCount > 0;
+                return acquiredCount > 0;
             }
+        }
+
+        virtual protected void Cleanup()
+        {
+
         }
     
         public void Acquire()
         {
-            Interlocked.Increment(ref acuiredCount);
+            Interlocked.Increment(ref acquiredCount);
         }
 
         #region IDisposable Members
 
         public void Dispose()
         {
-            Interlocked.Decrement(ref acuiredCount);
+            Interlocked.Decrement(ref acquiredCount);
+            if (acquiredCount < 0)
+            {
+                
+                Cleanup();
+            }
         }
 
         #endregion

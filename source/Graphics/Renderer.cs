@@ -14,7 +14,7 @@ namespace Graphics
     {
         private Control renderFrame;
 
-        private Device device;
+        public Device device;
         private SwapChain swapChain;
         private Thread renderThread;
         public bool IsRendering { get; private set; }
@@ -24,7 +24,7 @@ namespace Graphics
         private const int BackBufferCount = 1;
         private const Format BackBufferFormat = Format.R8G8B8A8_UNorm;
 
-        private CommandQueue commandQueue = new CommandQueue();
+        public readonly CommandQueue commandQueue = new CommandQueue();
 
         public Renderer(Control control)
         {

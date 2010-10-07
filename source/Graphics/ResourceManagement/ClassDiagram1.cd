@@ -74,6 +74,13 @@
       <FileName>ResourceManagement\Loaders\DummyLoader.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Graphics.ResourceManagement.Resources.TextureResource">
+    <Position X="4" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ResourceManagement\Resources\TextureResource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Interface Name="Graphics.ResourceManagement.IResourceLoader" Collapsed="true">
     <Position X="4" Y="1.25" Width="1.5" />
     <TypeIdentifier>
