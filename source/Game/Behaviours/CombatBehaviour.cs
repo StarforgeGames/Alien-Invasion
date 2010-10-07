@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 using Game.Entities;
-using Game.Messages;
+using Game.EventManagement.Events;
 using Game.Processes;
 using Game.Utility;
 
@@ -28,7 +28,7 @@ namespace Game.Behaviours
         #region IBehaviour Members
 
         List<Type> supportedMessages = new List<Type>() {
-            typeof(FireWeaponMessage)
+            typeof(FireWeaponEvent)
         };
         public override ReadOnlyCollection<Type> SupportedMessages
         {
@@ -60,22 +60,22 @@ namespace Game.Behaviours
                     pewpewPosition.Value.X = position.Value.X + (bounds.Value.Width / 2f);
                     pewpewPosition.Value.Y = position.Value.Y - (pewpewBounds.Value.Height / 2f);
 
-                    pewpew.SendMessage(new MoveMessage(MoveMessage.START_MOVING, Direction.North));
+                    pewpew.EventManager.QueueEvent(new MoveEvent(MoveEvent.START_MOVING, Direction.North));
 
                     Console.WriteLine("PEW PEW at (" + pewpewPosition.Value.X + "/" + pewpewPosition.Value.Y + ")!");
                 }
             }
         }
 
-        public override void OnMessage(Messages.Message msg)
+        public override void OnMessage(Event msg)
         {
             switch (msg.Type) {
-                case FireWeaponMessage.START_FIRING: {
+                case FireWeaponEvent.START_FIRING: {
                     Attribute<bool> isFiring = (Attribute<bool>)entity[Key_IsFiring];
                     isFiring.Value = true;
                     break;
                 }
-                case FireWeaponMessage.STOP_FIRING: {
+                case FireWeaponEvent.STOP_FIRING: {
                     Attribute<bool> isFiring = (Attribute<bool>)entity[Key_IsFiring];
                     isFiring.Value = false;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Game.Entities;
-using Game.Messages;
+using Game.EventManagement.Events;
 
 namespace Game.Input
 {
@@ -21,22 +21,22 @@ namespace Game.Input
 
         public void StartMoving(Direction direction)
         {
-            entity.SendMessage(new MoveMessage(MoveMessage.START_MOVING, direction));
+            entity.EventManager.QueueEvent(new MoveEvent(MoveEvent.START_MOVING, direction));
         }
 
         public void StopMoving(Direction direction)
         {
-            entity.SendMessage(new MoveMessage(MoveMessage.STOP_MOVING, direction));
+            entity.EventManager.QueueEvent(new MoveEvent(MoveEvent.STOP_MOVING, direction));
         }
 
         public void StartFiringWeapon()
         {
-            entity.SendMessage(new FireWeaponMessage(FireWeaponMessage.START_FIRING));
+            entity.EventManager.QueueEvent(new FireWeaponEvent(FireWeaponEvent.START_FIRING));
         }
 
         public void StopFiringWeapon()
         {
-            entity.SendMessage(new FireWeaponMessage(FireWeaponMessage.STOP_FIRING));
+            entity.EventManager.QueueEvent(new FireWeaponEvent(FireWeaponEvent.STOP_FIRING));
         }
     }
 

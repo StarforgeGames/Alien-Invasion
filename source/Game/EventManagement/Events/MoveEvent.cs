@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Game.Behaviours;
 
-namespace Game.Messages
+namespace Game.EventManagement.Events
 {
 
     public enum Direction
@@ -15,7 +15,7 @@ namespace Game.Messages
         West
     }
 
-    class MoveMessage : Message
+    class MoveEvent : Event
     {
         // Event Message Types
         public const string START_MOVING = "actor_start_moving";
@@ -23,7 +23,7 @@ namespace Game.Messages
 
         public Direction Direction { get; set; }
 
-        public MoveMessage(string type, Direction direction)
+        public MoveEvent(string type, Direction direction)
             : base(type)
         {
             this.Direction = direction;

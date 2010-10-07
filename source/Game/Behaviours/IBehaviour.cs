@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using Game.Messages;
+using Game.EventManagement.Events;
+using Game.EventManagement;
 
 namespace Game.Behaviours
 {
 
-    public interface IBehaviour
+    public interface IBehaviour : IEventListener
     {
         ReadOnlyCollection<Type> SupportedMessages { get; }
 
         void OnUpdate(float deltaTime);
-        void OnMessage(Message msg);
     }
 
 }

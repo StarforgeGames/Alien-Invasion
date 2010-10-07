@@ -1,6 +1,6 @@
 ﻿using System;
 using Game.Entities;
-using Game.Messages;
+using Game.EventManagement.Events;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -30,7 +30,7 @@ namespace Game.Behaviours
         {
         }
 
-        public override void OnMessage(Message msg)
+        public override void OnMessage(Event msg)
         {
         }
 

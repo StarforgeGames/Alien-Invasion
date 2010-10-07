@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Game.Entities;
-using Game.Messages;
+using Game.EventManagement.Events;
 using Game.Utility;
 
 namespace Game.Behaviours
@@ -32,10 +32,8 @@ namespace Game.Behaviours
             entity.AddAttribute(Key_IsMoving, new Attribute<bool>(false));
         }
 
-        #region IBehaviour Members
-
         List<Type> supportedMessages = new List<Type>() {
-            typeof(MoveMessage)
+            typeof(MoveEvent)
         };
         public override ReadOnlyCollection<Type> SupportedMessages
         {
@@ -60,24 +58,6 @@ namespace Game.Behaviours
             }
         }
 
-        public override void OnMessage(Message msg)
-        {
-            switch (msg.Type) {
-                case MoveMessage.START_MOVING: {
-                    MoveMessage moveMsg = (MoveMessage)msg;
-                    setMovement(true, moveMsg.Direction);
-                    break;
-                }
-                case MoveMessage.STOP_MOVING: {
-                    MoveMessage moveMsg = (MoveMessage)msg;
-                    setMovement(false, moveMsg.Direction);
-                    break;
-                }
-            }
-        }
-
-        #endregion
-
         private void checkBounds(Attribute<Vector2D> position)
         {
             Attribute<Rectangle> bounds = entity[Key_Bounds] as Attribute<Rectangle>;
@@ -98,6 +78,22 @@ namespace Game.Behaviours
             else if (bounds.Value.Bottom >= entity.Game.WorldHeight) {
                 position.Value.Y = entity.Game.WorldHeight - bounds.Value.Height;
                 setMovement(false, Direction.South);
+            }
+        }
+
+        public override void OnMessage(Event msg)
+        {
+            switch (msg.Type) {
+                case MoveEvent.START_MOVING: {
+                    MoveEvent moveMsg = (MoveEvent)msg;
+                    setMovement(true, moveMsg.Direction);
+                    break;
+                }
+                case MoveEvent.STOP_MOVING: {
+                    MoveEvent moveMsg = (MoveEvent)msg;
+                    setMovement(false, moveMsg.Direction);
+                    break;
+                }
             }
         }
 

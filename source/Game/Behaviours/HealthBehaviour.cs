@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
-using Game.Messages;
+using Game.EventManagement.Events;
 using Game.Entities;
 
 namespace Game.Behaviours
@@ -22,7 +22,7 @@ namespace Game.Behaviours
         #region IBehaviour Members
 
         List<Type> supportedMessages = new List<Type>() {
-            typeof(DamageMessage)
+            typeof(DamageEvent)
         };
         public override ReadOnlyCollection<Type> SupportedMessages
         {
@@ -39,22 +39,17 @@ namespace Game.Behaviours
             }
         }
 
-        public override void OnMessage(Message msg)
+        public override void OnMessage(Event msg)
         {
             switch (msg.Type) {
-                case DamageMessage.RECEIVE_DAMAGE: {
-                    DamageMessage dmgMsg = (DamageMessage) msg;
+                case DamageEvent.RECEIVE_DAMAGE: {
+                    DamageEvent dmgMsg = (DamageEvent) msg;
 
                     Attribute<int> health = entity[Key_Health] as Attribute<int>;
                     health.Value -= dmgMsg.Damage;
 
                     Console.WriteLine("Entity " + entity.Name + " received " + dmgMsg.Damage + " damage "
                         + "(Remaining HP:" + health + "). Ouch!");
-
-                    if (health <= 0) {
-                        Message deathMsg = new DeathMessage(DeathMessage.ACTOR_DIES);
-                        entity.SendBroadcastMessage(deathMsg);
-                    }
                 }
                 break;
             }
