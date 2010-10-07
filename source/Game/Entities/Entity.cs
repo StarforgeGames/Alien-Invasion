@@ -62,7 +62,7 @@ namespace Game.Entities
         {
             behaviours.Add(behaviour);
 
-            foreach (Type type in behaviour.SupportedMessages) {
+            foreach (Type type in behaviour.HandledEventTypes) {
                 EventManager.AddListener(behaviour, type);
             }
         }
@@ -74,7 +74,7 @@ namespace Game.Entities
         /// <returns>True if removal was successful</returns>
         public bool RemoveBehaviour(IBehaviour behaviour)
         {
-            foreach (Type type in behaviour.SupportedMessages) {
+            foreach (Type type in behaviour.HandledEventTypes) {
                 EventManager.RemoveListener(behaviour, type);
             }
 

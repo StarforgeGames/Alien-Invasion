@@ -20,19 +20,11 @@ namespace Game.Behaviours
         public CombatBehaviour(Entity entity, float firingSpeed)
             : base(entity)
         {
+            handledEventTypes = new List<Type>() { typeof(FireWeaponEvent) };
+
             entity.AddAttribute(Key_IsFiring, new Attribute<bool>(false));
             entity.AddAttribute(Key_FiringSpeed, new Attribute<float>(firingSpeed));
             entity.AddAttribute(Key_TimeSinceLastShot, new Attribute<float>(firingSpeed));
-        }
-
-        #region IBehaviour Members
-
-        List<Type> supportedMessages = new List<Type>() {
-            typeof(FireWeaponEvent)
-        };
-        public override ReadOnlyCollection<Type> SupportedMessages
-        {
-            get { return supportedMessages.AsReadOnly(); }
         }
 
         public override void OnUpdate(float deltaTime)
@@ -67,9 +59,9 @@ namespace Game.Behaviours
             }
         }
 
-        public override void OnMessage(Event msg)
+        public override void OnEvent(Event evt)
         {
-            switch (msg.Type) {
+            switch (evt.Type) {
                 case FireWeaponEvent.START_FIRING: {
                     Attribute<bool> isFiring = (Attribute<bool>)entity[Key_IsFiring];
                     isFiring.Value = true;
@@ -87,7 +79,5 @@ namespace Game.Behaviours
                 }
             }
         }
-
-        #endregion
     }
 }

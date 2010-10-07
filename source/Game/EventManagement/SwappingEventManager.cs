@@ -54,30 +54,30 @@ namespace Game.EventManagement
             return listenerMap[eventType].Remove(listener);
         }
 
-        public void Trigger(Event msg)
+        public void Trigger(Event evt)
         {
-            if (!listenerMap.ContainsKey(msg.GetType())) {
+            if (!listenerMap.ContainsKey(evt.GetType())) {
                 return;
             }
 
-            foreach (IEventListener listener in listenerMap[msg.GetType()]) {
-                listener.OnMessage(msg);
+            foreach (IEventListener listener in listenerMap[evt.GetType()]) {
+                listener.OnEvent(evt);
             }
         }
 
-        public bool QueueEvent(Event msg)
+        public bool QueueEvent(Event evt)
         {
-            if (!listenerMap.ContainsKey(msg.GetType())) {
+            if (!listenerMap.ContainsKey(evt.GetType())) {
                 return false;
             }
 
-            ActiveQueue.Add(msg);
+            ActiveQueue.Add(evt);
             return true;
         }
 
-        public bool AbortEvent(Event msg)
+        public bool AbortEvent(Event evt)
         {
-            return ActiveQueue.Remove(msg);
+            return ActiveQueue.Remove(evt);
         }
 
         public bool Tick()

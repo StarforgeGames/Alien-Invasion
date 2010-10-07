@@ -23,6 +23,8 @@ namespace Game.Behaviours
         public SpatialBehaviour(Entity entity, float x, float y, float width, float height, float speed)
             : base (entity)
         {
+            handledEventTypes = new List<Type>() { typeof(MoveEvent) };
+
             Vector2D position = new Vector2D(x, y);
             entity.AddAttribute(Key_Position, new Attribute<Vector2D>(position));
             Rectangle bounds = new Rectangle(position, width, height);
@@ -30,14 +32,6 @@ namespace Game.Behaviours
             entity.AddAttribute(Key_Orientation, new Attribute<Vector2D>(Vector2D.Empty));
             entity.AddAttribute(Key_Speed, new Attribute<float>(speed));
             entity.AddAttribute(Key_IsMoving, new Attribute<bool>(false));
-        }
-
-        List<Type> supportedMessages = new List<Type>() {
-            typeof(MoveEvent)
-        };
-        public override ReadOnlyCollection<Type> SupportedMessages
-        {
-            get { return supportedMessages.AsReadOnly(); }
         }
 
         public override void OnUpdate(float deltaTime)
@@ -81,16 +75,16 @@ namespace Game.Behaviours
             }
         }
 
-        public override void OnMessage(Event msg)
+        public override void OnEvent(Event evt)
         {
-            switch (msg.Type) {
+            switch (evt.Type) {
                 case MoveEvent.START_MOVING: {
-                    MoveEvent moveMsg = (MoveEvent)msg;
+                    MoveEvent moveMsg = (MoveEvent)evt;
                     setMovement(true, moveMsg.Direction);
                     break;
                 }
                 case MoveEvent.STOP_MOVING: {
-                    MoveEvent moveMsg = (MoveEvent)msg;
+                    MoveEvent moveMsg = (MoveEvent)evt;
                     setMovement(false, moveMsg.Direction);
                     break;
                 }

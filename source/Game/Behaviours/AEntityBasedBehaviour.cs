@@ -18,10 +18,13 @@ namespace Game.Behaviours
             this.entity = entity;
         }
 
-        public abstract ReadOnlyCollection<Type> SupportedMessages { get; }
+        protected List<Type> handledEventTypes;
+        public ReadOnlyCollection<Type> HandledEventTypes {
+            get { return handledEventTypes.AsReadOnly(); }
+        }
 
         public abstract void OnUpdate(float deltaTime);
-        public abstract void OnMessage(Event msg);
+        public abstract void OnEvent(Event evt);
     }
 
 }
