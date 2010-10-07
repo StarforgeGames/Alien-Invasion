@@ -19,20 +19,38 @@ namespace Graphics.ResourceManagement.Loaders
 
         public void Load(ResourceHandle handle, IEvent evt)
         {
-            Load(handle);
-            evt.Finish();
+            try
+            {
+                Load(handle);
+            }
+            finally
+            {
+                evt.Finish();
+            }
         }
 
         public void Unload(ResourceHandle handle, IEvent evt)
         {
-            Unload(handle);
-            evt.Finish();
+            try
+            {
+                Unload(handle);
+            }
+            finally
+            {
+                evt.Finish();
+            }
         }
 
         public void Reload(ResourceHandle handle, IEvent evt)
         {
-            Reload(handle);
-            evt.Finish();
+            try
+            {
+                Reload(handle);
+            }
+            finally
+            {
+                evt.Finish();
+            }
         }
 
         public void Load(ResourceHandle handle)
@@ -41,9 +59,8 @@ namespace Graphics.ResourceManagement.Loaders
             {
                 handle.inactive.resource
                     = doLoad(handle.Name);
-                handle.Swap();
                 handle.active.state = ResourceState.Ready;
-                
+                handle.Swap();
             }
             finally
             {
