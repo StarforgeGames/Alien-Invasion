@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Graphics
 {
-    class CommandQueue
+    public class CommandQueue
     {
         Queue<Action> queue = new Queue<Action>();
         

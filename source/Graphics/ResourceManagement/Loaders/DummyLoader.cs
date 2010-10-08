@@ -15,6 +15,10 @@ namespace Graphics.ResourceManagement.Loaders
             return text;
         }
 
+
+        protected override void Cleanup()
+        {
+        }
     }
 
     public class DummyLoader : ABasicLoader
@@ -32,7 +36,7 @@ namespace Graphics.ResourceManagement.Loaders
 
         protected override void doUnload(AResource resource)
         {
-            TextResource res = resource as TextResource;
+            TextResource res = (TextResource)resource;
             res.text = "";
             System.Threading.Thread.Sleep(rand.Next(5000));
         }

@@ -10,9 +10,14 @@ namespace Graphics.ResourceManagement.Resources
     {
         private ShaderResourceView texture;
 
-        public TextureResource(ShaderResourceView texture)
+        public TextureResource(Renderer renderer, byte[] image)
         {
-            this.texture = texture;
+            texture = ShaderResourceView.FromMemory(renderer.device, image);
+        }
+
+        protected override void Cleanup()
+        {
+            texture.Dispose();
         }
     }
 }
