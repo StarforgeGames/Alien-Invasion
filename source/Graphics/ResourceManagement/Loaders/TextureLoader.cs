@@ -43,8 +43,7 @@ namespace Graphics.ResourceManagement.Loaders
                 {
                     try
                     {
-                        ShaderResourceView myTexture = ShaderResourceView.FromMemory(renderer.device, image);
-                        resourceHandle.inactive.resource = new TextureResource(myTexture);
+                        resourceHandle.inactive.resource = new TextureResource(renderer, image);
                         resourceHandle.inactive.state = ResourceState.Ready;
                         resourceHandle.Swap();
                     }
@@ -71,15 +70,21 @@ namespace Graphics.ResourceManagement.Loaders
                 {
                     try
                     {
-                        ShaderResourceView myTexture = ShaderResourceView.FromMemory(renderer.device, image);
-                        resourceHandle.inactive.resource = new TextureResource(myTexture);
-                        resourceHandle.inactive.state = ResourceState.Ready;
-                        resourceHandle.Swap();
-                    }
-                    finally
-                    {
-                        resourceHandle.Finished();
+                        try
+                        {
+                            resourceHandle.inactive.resource = new TextureResource(renderer, image);
+                            resourceHandle.inactive.state = ResourceState.Ready;
+                            resourceHandle.Swap();
+                        }
+                        finally
+                        {
+                            resourceHandle.Finished();
+                        }
                         evt.Finish();
+                    }
+                    catch (Exception)
+                    {
+                        evt.Abort();
                     }
                 });
             }
@@ -110,7 +115,7 @@ namespace Graphics.ResourceManagement.Loaders
                     try
                     {
                         TextureResource tex = (TextureResource)resourceHandle.inactive.resource;
-                        
+                        resourceHandle.inactive.resource.Dispose();
                         resourceHandle.inactive.resource = null;
                         resourceHandle.inactive.state = ResourceState.Empty;
                         resourceHandle.Swap();
@@ -130,7 +135,39 @@ namespace Graphics.ResourceManagement.Loaders
 
         public void Unload(ResourceHandle resourceHandle, IEvent evt)
         {
-            throw new NotImplementedException();
+            try
+            {
+                renderer.commandQueue.Add(() =>
+                {
+                    try
+                    {
+                        try
+                        {
+                            TextureResource tex = (TextureResource)resourceHandle.inactive.resource;
+                            resourceHandle.inactive.resource.Dispose();
+                            resourceHandle.inactive.resource = null;
+                            resourceHandle.inactive.state = ResourceState.Empty;
+                            resourceHandle.Swap();
+                        }
+                        finally
+                        {
+                            resourceHandle.Finished();
+                        }
+                        evt.Finish();
+                    }
+                    catch (Exception)
+                    {
+                        evt.Abort();
+                    }
+                    
+                });
+            }
+            catch (Exception e)
+            {
+                resourceHandle.Finished();
+                evt.Abort();
+                throw e;
+            }
         }
 
         #endregion

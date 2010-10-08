@@ -22,10 +22,11 @@ namespace Graphics.ResourceManagement.Loaders
             try
             {
                 Load(handle);
-            }
-            finally
-            {
                 evt.Finish();
+            }
+            catch(Exception)
+            {
+                evt.Abort();
             }
         }
 
@@ -34,10 +35,11 @@ namespace Graphics.ResourceManagement.Loaders
             try
             {
                 Unload(handle);
-            }
-            finally
-            {
                 evt.Finish();
+            }
+            catch (Exception)
+            {
+                evt.Abort();
             }
         }
 
@@ -46,10 +48,11 @@ namespace Graphics.ResourceManagement.Loaders
             try
             {
                 Reload(handle);
-            }
-            finally
-            {
                 evt.Finish();
+            }
+            catch (Exception)
+            {
+                evt.Abort();
             }
         }
 

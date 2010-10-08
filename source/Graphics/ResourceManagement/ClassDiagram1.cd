@@ -3,7 +3,7 @@
   <Class Name="Graphics.ResourceManagement.Resources.AResource" Collapsed="true">
     <Position X="4" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAAAAgAAAIAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>IAAAAAAAACAAAAAAAgAAAAAIAAAAAAAAAAAAAEAAAAA=</HashCode>
       <FileName>ResourceManagement\Resources\AResource.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -77,15 +77,15 @@
   <Class Name="Graphics.ResourceManagement.Resources.TextureResource">
     <Position X="4" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
       <FileName>ResourceManagement\Resources\TextureResource.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="Graphics.ResourceManagement.IResourceLoader" Collapsed="true">
+  <Interface Name="Graphics.ResourceManagement.Loaders.IResourceLoader" Collapsed="true">
     <Position X="4" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
-      <FileName>ResourceManagement\IResourceLoader.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ResourceManagement\Loaders\IResourceLoader.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Graphics.ResourceManagement.IEvent" Collapsed="true">

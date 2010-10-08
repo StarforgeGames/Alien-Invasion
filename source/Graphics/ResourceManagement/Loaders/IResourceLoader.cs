@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Graphics.ResourceManagement.Resources;
 
-namespace Graphics.ResourceManagement
+namespace Graphics.ResourceManagement.Loaders
 {
     public interface IResourceLoader : ILoader
     {

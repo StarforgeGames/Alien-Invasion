@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.IO;
 using Graphics.ResourceManagement.Resources;
+using Graphics.ResourceManagement.Loaders;
 
 namespace Graphics.ResourceManagement
 {

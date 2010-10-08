@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ResourceManagement\Loaders\ARendererLoader.cs" />
     <Compile Include="ResourceManagement\Loaders\MeshLoader.cs" />
     <Compile Include="ResourceManagement\Loaders\TextureLoader.cs" />
     <Compile Include="ResourceManagement\Resources\MeshResource.cs" />
@@ -89,7 +90,7 @@
     </Compile>
     <Compile Include="ResourceManagement\IAsyncExecutor.cs" />
     <Compile Include="ResourceManagement\IEvent.cs" />
-    <Compile Include="ResourceManagement\IResourceLoader.cs" />
+    <Compile Include="ResourceManagement\Loaders\IResourceLoader.cs" />
     <Compile Include="ResourceManagement\Loaders\ABasicLoader.cs" />
     <Compile Include="ResourceManagement\ILoader.cs" />
     <Compile Include="ResourceManagement\Loaders\DummyLoader.cs" />
@@ -128,6 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ResourceManagement\ClassDiagram1.cd" />
+    <None Include="ResourceManagement\Loaders\Loaders.cd" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ResourceManagement\Debug\ResourceManagementMonitor.resx">

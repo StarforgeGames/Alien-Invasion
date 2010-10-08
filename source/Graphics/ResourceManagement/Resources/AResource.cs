@@ -18,10 +18,7 @@ namespace Graphics.ResourceManagement.Resources
             }
         }
 
-        virtual protected void Cleanup()
-        {
-
-        }
+        abstract protected void Cleanup();
     
         public void Acquire()
         {
@@ -33,10 +30,10 @@ namespace Graphics.ResourceManagement.Resources
         public void Dispose()
         {
             Interlocked.Decrement(ref acquiredCount);
-            if (acquiredCount < 0)
+            if (acquiredCount == -1)
             {
-                
                 Cleanup();
+                System.GC.SuppressFinalize(this);
             }
         }
 
