@@ -62,8 +62,10 @@ namespace Graphics.ResourceManagement.Loaders
             {
                 handle.inactive.resource
                     = doLoad(handle.Name);
-                handle.active.state = ResourceState.Ready;
+
+                handle.inactive.state = ResourceState.Ready;
                 handle.Swap();
+                
             }
             finally
             {
