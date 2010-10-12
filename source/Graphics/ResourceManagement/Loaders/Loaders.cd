@@ -25,23 +25,22 @@
   <Class Name="Graphics.ResourceManagement.Loaders.MeshLoader" Collapsed="true">
     <Position X="0.5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgACAAAAAAAAAAAAAIAAAAAAAAAAACQAAAAAAgAA=</HashCode>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAAAAAAAAEAAAAYEAAAABAAA=</HashCode>
       <FileName>ResourceManagement\Loaders\MeshLoader.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Graphics.ResourceManagement.Loaders.TextureLoader" Collapsed="true">
+  <Class Name="Graphics.ResourceManagement.Loaders.ARendererLoader" Collapsed="true">
     <Position X="3" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgACAAAAAAAAAAAAAIAAAAAAAAAAACYAAAAAAgAA=</HashCode>
-      <FileName>ResourceManagement\Loaders\TextureLoader.cs</FileName>
+      <HashCode>AAAAgACAAAgAAAAAAAAAIAAAEAAAEBAACQAAAIABgAA=</HashCode>
+      <FileName>ResourceManagement\Loaders\ARendererLoader.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Interface Name="Graphics.ResourceManagement.Loaders.IResourceLoader" Collapsed="true">
     <Position X="4.25" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>ResourceManagement\Loaders\IResourceLoader.cs</FileName>
     </TypeIdentifier>
   </Interface>

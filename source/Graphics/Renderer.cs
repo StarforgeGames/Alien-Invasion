@@ -37,7 +37,7 @@ namespace Graphics
             InitDeviceAndSwapChain(currentDescription);
             SetDefaultViewport();
             SetDefaultRenderingBuffer();
-
+            control.BackColor = Color.Empty;
             
 
             renderFrame.Resize += new EventHandler(RenderFrame_Resize);
@@ -154,9 +154,10 @@ namespace Graphics
             Color4 color = new Color4(Color.DarkBlue);
             Random rand = new Random(2434545);
 
-            try
+            
+            while (IsRendering)
             {
-                while (IsRendering)
+                try
                 {
                     if (!commandQueue.Empty)
                     {
@@ -170,11 +171,12 @@ namespace Graphics
 
                     swapChain.Present(0, PresentFlags.None);
                 }
+                catch (SlimDX.DXGI.DXGIException)
+                {
+                   // IsRendering = false;
+                }
             }
-            catch (SlimDX.DXGI.DXGIException)
-            {
-                IsRendering = false;
-            }
+            
         }
 
         #region IDisposable Members
@@ -183,6 +185,11 @@ namespace Graphics
         {
             Stop();
             renderThread.Join();
+
+            foreach (var view in views)
+            {
+                view.Dispose();
+            }
 
             device.Dispose();
             swapChain.Dispose();

@@ -9,7 +9,7 @@ using Graphics.ResourceManagement.Loaders;
 namespace Graphics.ResourceManagement
 {
 
-    public class ResourceManager
+    public class ResourceManager : IDisposable
     {
         Dictionary<string, Dictionary<string, ResourceHandle>> resourceHandles = new Dictionary<string,Dictionary<string, ResourceHandle>>();
         Dictionary<string, IResourceLoader> Loaders { get; set; }
@@ -104,5 +104,43 @@ namespace Graphics.ResourceManagement
             wiper.SetResources(null);
             wiper.SetManager(null);
         }
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+
+            lock (wipers)
+            {
+                foreach (var wiper in wipers)
+                {
+                    wiper.Stop();
+                    wiper.SetResources(null);
+                    wiper.SetManager(null);
+                }
+                wipers.Clear();
+            }
+
+            lock (Loaders)
+            {
+                Loaders.Clear();
+            }
+
+            lock (resourceHandles)
+            {
+                foreach (var handles in resourceHandles)
+                {
+                    foreach (var handle in handles.Value)
+                    {
+                        IEvent evt = new BasicEvent();
+
+                        handle.Value.Unload(evt);
+                        evt.Wait();
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }
