@@ -1,14 +1,12 @@
-﻿using Game;
-using Graphics;
-using System.Windows.Forms;
-using System.Drawing;
-using System;
-using SlimDX.Windows;
+﻿using System.Collections.Generic;
+using Game;
+using Game.EventManagement.Events;
 using Graphics.ResourceManagement;
-using SpaceInvaders.Input;
+using Graphics.ResourceManagement.Debug;
 using Graphics.ResourceManagement.Loaders;
 using Graphics.ResourceManagement.Wipers;
-using Graphics.ResourceManagement.Debug;
+using SlimDX.Windows;
+using SpaceInvaders.Views;
 
 namespace SpaceInvaders
 {
@@ -18,39 +16,41 @@ namespace SpaceInvaders
     /// </summary>
     class Application
     {
-        public BaseGame Game { get; set; }
-        private Renderer renderer;
+        public GameLogic Game { get; private set; }
+        public List<IGameView> Views { get; private set; }
+
+        public double LifeTime { get; private set; }
 
         private GameTimer timer = new GameTimer();
         private ResourceManager resourceManager;
 
-        Form form = new Form();
-        IKeyboardHandler keyHandler;
         AWiper debugWiper = new DebugWiper();
 
         public Application()
-        {      
-            form.Size = new Size(800, 600);
-            form.Text = "Space Invaders";
+        {
+            Game = new GameLogic(800, 600);
 
-            renderer = new Graphics.Renderer(form);
-            renderer.Start();
+            Views = new List<IGameView>();
+            IGameView playerView = new PlayerView(Game);
+            Views.Add(playerView);
 
-            Game = new BaseGame(form.Size.Width, form.Size.Height);
+            LifeTime = 0d;
 
-            keyHandler = new PlayerController(Game.PlayerInterpreter);
-            form.KeyDown += new KeyEventHandler(keyHandler.OnKeyDown);
-            form.KeyUp += new KeyEventHandler(keyHandler.OnKeyUp);
-
-            resourceManager = new ResourceManager(new ThreadPoolExecutor());
-            
+            resourceManager = new ResourceManager(new ThreadPoolExecutor());            
             resourceManager.AddLoader(new DummyLoader());
             resourceManager.AddWiper(debugWiper);
+
+            Game.ChangeState(GameState.Loading);
         }
 
         public void Update(float deltaTime)
         {
+            LifeTime += deltaTime;
             Game.Update(deltaTime);
+
+            foreach (IGameView view in Views) {
+                view.OnUpdate(deltaTime);
+            }
         }
 
         /// <summary>
@@ -59,15 +59,16 @@ namespace SpaceInvaders
         public void Run()
         {
             timer.Reset();
+            PlayerView playerView = Views.Find(x => x.Type == GameViewType.PlayerView) as PlayerView;
 
-            MessagePump.Run(form, () =>
+            MessagePump.Run(playerView.RenderForm, () =>
             {
                 timer.Tick();
                 float deltaTime = timer.DeltaTime;
                 Update(deltaTime);
             });
+
             debugWiper.Stop();
-            renderer.Dispose();
         }
     }
 

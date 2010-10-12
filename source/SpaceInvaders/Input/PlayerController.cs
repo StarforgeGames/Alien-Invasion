@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Game.Input;
+using Game.EventManagement;
 using Game.EventManagement.Events;
+using Game.Entities;
 
 namespace SpaceInvaders.Input
 {
     class PlayerController : IKeyboardHandler
     {
-        private CommandInterpreter interpreter;
+        private Entity playerEntity;
+        private IEventManager eventManager;
 
-        public PlayerController(CommandInterpreter interpreter)
+        public PlayerController(Entity playerEntity)
         {
-            this.interpreter = interpreter;
+            this.playerEntity = playerEntity;
+            this.eventManager = playerEntity.EventManager;
         }
 
         #region IKeyboardHandler Members
@@ -25,25 +28,25 @@ namespace SpaceInvaders.Input
                 case Keys.W:
                     goto case Keys.Up;
                 case Keys.Up:
-                    interpreter.StartMoving(Direction.North);
+                    eventManager.QueueEvent(new MoveEvent(MoveEvent.START_MOVING, playerEntity.ID, Direction.North));
                     break;
                 case Keys.A:
                     goto case Keys.Left;
                 case Keys.Left:
-                    interpreter.StartMoving(Direction.West);
+                    eventManager.QueueEvent(new MoveEvent(MoveEvent.START_MOVING, playerEntity.ID, Direction.West));
                     break;
                 case Keys.S:
                     goto case Keys.Down;
                 case Keys.Down:
-                    interpreter.StartMoving(Direction.South);
+                    eventManager.QueueEvent(new MoveEvent(MoveEvent.START_MOVING, playerEntity.ID, Direction.South));
                     break;
                 case Keys.D:
                     goto case Keys.Right;
                 case Keys.Right:
-                    interpreter.StartMoving(Direction.East);
+                    eventManager.QueueEvent(new MoveEvent(MoveEvent.START_MOVING, playerEntity.ID, Direction.East));
                     break;
                 case Keys.Space:
-                    interpreter.StartFiringWeapon();
+                    eventManager.QueueEvent(new FireWeaponEvent(FireWeaponEvent.START_FIRING, playerEntity.ID));
                     break;
             }
         }
@@ -54,25 +57,25 @@ namespace SpaceInvaders.Input
                 case Keys.W:
                     goto case Keys.Up;
                 case Keys.Up:
-                    interpreter.StopMoving(Direction.North);
+                    eventManager.QueueEvent(new MoveEvent(MoveEvent.STOP_MOVING, playerEntity.ID, Direction.North));
                     break;
                 case Keys.A:
                     goto case Keys.Left;
                 case Keys.Left:
-                    interpreter.StopMoving(Direction.West);
+                    eventManager.QueueEvent(new MoveEvent(MoveEvent.STOP_MOVING, playerEntity.ID, Direction.West));
                     break;
                 case Keys.S:
                     goto case Keys.Down;
                 case Keys.Down:
-                    interpreter.StopMoving(Direction.South);
+                    eventManager.QueueEvent(new MoveEvent(MoveEvent.STOP_MOVING, playerEntity.ID, Direction.South));
                     break;
                 case Keys.D:
                     goto case Keys.Right;
                 case Keys.Right:
-                    interpreter.StopMoving(Direction.East);
+                    eventManager.QueueEvent(new MoveEvent(MoveEvent.STOP_MOVING, playerEntity.ID, Direction.East));
                     break;
                 case Keys.Space:
-                    interpreter.StopFiringWeapon();
+                    eventManager.QueueEvent(new FireWeaponEvent(FireWeaponEvent.STOP_FIRING, playerEntity.ID));
                     break;
             }
         }

@@ -9,6 +9,7 @@ namespace Game.Behaviours
     public interface IBehaviour : IEventListener
     {
         ReadOnlyCollection<Type> HandledEventTypes { get; }
+        IEventManager EventManager { get; }
 
         void OnUpdate(float deltaTime);
     }

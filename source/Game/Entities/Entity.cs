@@ -18,9 +18,13 @@ namespace Game.Entities
         public EntityState State { get; set; }
 
         public string Name { get; private set; }
-        public BaseGame Game { get; private set; }
+        public GameLogic Game { get; private set; }
 
         public IEventManager EventManager { get; private set; }
+
+        private static int nextEntityId = 1;
+        private readonly int id;
+        public int ID { get { return id; } }
 
         private Dictionary<string, object> attributes;
         private List<IBehaviour> behaviours;
@@ -36,7 +40,7 @@ namespace Game.Entities
             set { attributes[key] = value;  } 
         }
 
-        public Entity(BaseGame game, string name)
+        public Entity(GameLogic game, string name)
         {
             State = EntityState.Active;
 
@@ -45,7 +49,8 @@ namespace Game.Entities
             // of the
             this.Game = game;
 
-            EventManager = new SwappingEventManager();
+            EventManager = game.EventManager;
+            id = nextEntityId++;
 
             behaviours = new List<IBehaviour>();
             attributes = new Dictionary<string, object>();
@@ -81,6 +86,15 @@ namespace Game.Entities
             return behaviours.Remove(behaviour);
         }
 
+        public void SendEvent(Event evt)
+        {
+            foreach (IBehaviour b in behaviours) {
+                if(b.HandledEventTypes.Contains(evt.GetType())) {
+                    b.OnEvent(evt);
+                }
+            }
+        }
+
         #endregion
 
         #region Attributes
@@ -109,7 +123,13 @@ namespace Game.Entities
         public void Kill()
         {
             this.State = EntityState.Dead;
-            EventManager.QueueEvent(new DeathEvent(DeathEvent.ACTOR_DIES));
+            EventManager.QueueEvent(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, this.ID));
+            Console.WriteLine(this.ToString() + " was killed");
+        }
+
+        public override string ToString()
+        {
+            return Name + " (#" + ID + ")";
         }
     }
 

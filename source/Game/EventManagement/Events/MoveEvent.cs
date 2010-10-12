@@ -15,7 +15,7 @@ namespace Game.EventManagement.Events
         West
     }
 
-    class MoveEvent : Event
+    public class MoveEvent : Event
     {
         // Event Message Types
         public const string START_MOVING = "actor_start_moving";
@@ -23,10 +23,15 @@ namespace Game.EventManagement.Events
 
         public Direction Direction { get; set; }
 
-        public MoveEvent(string type, Direction direction)
-            : base(type)
+        public MoveEvent(string type, int recipientID, Direction direction)
+            : base(type, recipientID)
         {
             this.Direction = direction;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + " [Direction: " + Direction + "]";
         }
     }
 

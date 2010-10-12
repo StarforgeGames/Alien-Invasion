@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Game.EventManagement.Events;
+using Game.Entities;
 
 namespace Game.EventManagement
 {
@@ -19,8 +20,12 @@ namespace Game.EventManagement
         private Dictionary<Type, List<IEventListener>> listenerMap;
         private List<Event>[] queues;
 
-        public SwappingEventManager()
+        private GameLogic game;
+
+        public SwappingEventManager(GameLogic game)
         {
+            this.game = game;
+
             listenerMap = new Dictionary<Type, List<IEventListener>>();
 
             queues = new List<Event>[numOfQueues];
@@ -60,9 +65,29 @@ namespace Game.EventManagement
                 return;
             }
 
+            sendEventToGeneralListeners(evt);
+
+            if (evt.RecipientID != 0) {
+                Entity entity = game.Entities[evt.RecipientID];
+                entity.SendEvent(evt);
+                return;
+            }
+
             foreach (IEventListener listener in listenerMap[evt.GetType()]) {
                 listener.OnEvent(evt);
             }
+        }
+
+        private void sendEventToGeneralListeners(Event evt)
+        {
+            if (!listenerMap.ContainsKey(typeof(Event))) {
+                return;
+            }
+
+            foreach (IEventListener listener in listenerMap[typeof(Event)]) {
+                listener.OnEvent(evt);
+            }
+
         }
 
         public bool QueueEvent(Event evt)
@@ -86,8 +111,8 @@ namespace Game.EventManagement
             SwapActiveQueue();
             ActiveQueue.Clear();
 
-            foreach (Event msg in queueToProcess) {
-                Trigger(msg);
+            foreach (Event evt in queueToProcess) {
+                Trigger(evt);
             }
 
             return true;
