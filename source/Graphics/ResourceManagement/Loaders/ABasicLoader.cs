@@ -120,5 +120,10 @@ namespace Graphics.ResourceManagement.Loaders
         }
 
         #endregion
+
+        ~ABasicLoader()
+        {
+            doUnload(Default);
+        }
     }
 }

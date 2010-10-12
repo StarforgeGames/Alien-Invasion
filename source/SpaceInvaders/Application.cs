@@ -23,6 +23,8 @@ namespace SpaceInvaders
 
         private GameTimer timer = new GameTimer();
         private ResourceManager resourceManager;
+        
+        private List<ARendererLoader> rendererLoaders = new List<ARendererLoader>();
 
         AWiper debugWiper = new DebugWiper();
 
@@ -38,8 +40,13 @@ namespace SpaceInvaders
 
             resourceManager = new ResourceManager(new ThreadPoolExecutor());            
             resourceManager.AddLoader(new DummyLoader());
-            resourceManager.AddLoader(new TextureLoader(playerView.Renderer));
-            resourceManager.AddLoader(new MeshLoader(playerView.Renderer));
+            rendererLoaders.Add(new TextureLoader(playerView.Renderer));
+            rendererLoaders.Add(new MeshLoader(playerView.Renderer));
+
+            foreach (var rendererLoader in rendererLoaders)
+            {
+                resourceManager.AddLoader(rendererLoader);
+            }
 
             resourceManager.AddWiper(debugWiper);
 
@@ -77,7 +84,12 @@ namespace SpaceInvaders
             });
 
             resourceManager.Dispose();
-            //debugWiper.Stop();
+
+            foreach (var rendererLoader in rendererLoaders)
+            {
+                rendererLoader.Dispose();
+            }
+
             playerView.Dispose();
         }
     }

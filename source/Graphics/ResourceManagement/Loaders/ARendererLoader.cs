@@ -8,7 +8,7 @@ using Graphics.ResourceManagement.Resources;
 
 namespace Graphics.ResourceManagement.Loaders
 {
-    public abstract class ARendererLoader : IResourceLoader
+    public abstract class ARendererLoader : IResourceLoader, IDisposable
     {
         protected Renderer renderer;
         AResource defaultResource;
@@ -240,6 +240,18 @@ namespace Graphics.ResourceManagement.Loaders
                 evt.Abort();
                 throw e;
             }
+        }
+
+        #endregion
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            renderer.commandQueue.Add(() =>
+            {
+                doUnload(Default);
+            });
         }
 
         #endregion
