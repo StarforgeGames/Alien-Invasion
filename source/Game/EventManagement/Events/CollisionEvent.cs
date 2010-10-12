@@ -6,17 +6,24 @@ using Game.Entities;
 
 namespace Game.EventManagement.Events
 {
-    class CollisionEvent : Event
+
+    public class CollisionEvent : Event
     {
         // Event Message Types
         public const string ACTOR_COLLIDES = "actor_collides";
 
-        public Entity OtherEntity { get; set; }
+        public int OtherEntityID { get; set; }
 
-        public CollisionEvent(string type, Entity otherEntity)
-            : base(type)
+        public CollisionEvent(string type, int recipientID, int otherEntityID)
+            : base(type, recipientID)
         {
-            this.OtherEntity = otherEntity;
+            this.OtherEntityID = otherEntityID;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + " [OtherEntityID: " + OtherEntityID + "]";
         }
     }
+
 }

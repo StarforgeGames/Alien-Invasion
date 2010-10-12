@@ -15,12 +15,12 @@ namespace Game.Behaviours
         // Attribute Keys
         public const string Key_ProjectileOwner = "ProjectileOwner";
 
-        public ProjectileBehaviour(Entity entity, Entity owner)
+        public ProjectileBehaviour(Entity entity)
             : base(entity)
         {
             handledEventTypes = new List<Type>() { typeof(CollisionEvent) };
 
-            entity.AddAttribute(Key_ProjectileOwner, new Attribute<Entity>(owner));
+            entity.AddAttribute(Key_ProjectileOwner, new Attribute<Entity>(null));
         }
 
         public override void OnUpdate(float deltaTime)
@@ -29,7 +29,7 @@ namespace Game.Behaviours
 
             if (bounds.Value.Top <= 0 || bounds.Value.Bottom >= entity.Game.WorldHeight) {
                 entity.Kill();
-                Console.WriteLine(entity.Name + " died in vain.");
+                Console.WriteLine("[" + this.GetType().Name +"] " + entity.Name + " died in vain.");
             }
         }
 
@@ -38,7 +38,8 @@ namespace Game.Behaviours
             switch (evt.Type) {
                 case CollisionEvent.ACTOR_COLLIDES: {
                     entity.Kill();
-                    Console.WriteLine(entity.Name + " died fulfilling its honorable duty.");
+                    Console.WriteLine("[" + this.GetType().Name +"] " + entity.Name + " died fulfilling its honorable"
+                        + "duty.");
                 }
                 break;
             }

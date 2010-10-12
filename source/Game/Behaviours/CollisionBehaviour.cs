@@ -15,43 +15,52 @@ namespace Game.Behaviours
         public const string Key_IsPhysical = "IsPhysical";
         public const string Key_CollisionDamage = "CollisionDamage";
 
-        public CollisionBehaviour(Entity entity, int collisionDamage)
+        public CollisionBehaviour(Entity entity)
             : base(entity)
         {
             handledEventTypes = new List<Type>() { };
 
             entity.AddAttribute(Key_IsPhysical, new Attribute<bool>(true));
-            entity.AddAttribute(Key_CollisionDamage, new Attribute<int>(collisionDamage));
+            entity.AddAttribute(Key_CollisionDamage, new Attribute<int>(1));
         }
 
         public override void OnUpdate(float deltaTime)
         {
-            foreach (Entity e in entity.Game.Entities) {
-                if (entity == e) {
+            foreach (KeyValuePair<int, Entity> pair in entity.Game.Entities) {
+                if (entity.ID == pair.Key) {
                     continue;
                 }
 
-                Attribute<bool> isPhysical = e[Key_IsPhysical] as Attribute<bool>;
+                Entity other = pair.Value;
+
+                Attribute<bool> isPhysical = other[Key_IsPhysical] as Attribute<bool>;
                 if (isPhysical == null || !isPhysical) {
                     continue;
                 }
 
                 Attribute<Entity> owner = entity[ProjectileBehaviour.Key_ProjectileOwner] as Attribute<Entity>;
-                Attribute<Entity> otherOwner = e[ProjectileBehaviour.Key_ProjectileOwner] as Attribute<Entity>;
-                if ((owner != null && owner.Value == e) || (otherOwner != null && otherOwner.Value == entity)) {
+                Attribute<Entity> otherOwner = other[ProjectileBehaviour.Key_ProjectileOwner] as Attribute<Entity>;
+                if ((owner != null && owner.Value == other) || (otherOwner != null && otherOwner.Value == entity)) {
                     continue;
                 }
-                
-                Attribute<Rectangle> otherBounds = e[SpatialBehaviour.Key_Bounds] as Attribute<Rectangle>;
+
+                Attribute<Rectangle> otherBounds = other[SpatialBehaviour.Key_Bounds] as Attribute<Rectangle>;
                 if (isColliding(otherBounds)) {
-                    Console.WriteLine(entity.Name + " collides with " + e.Name + "!");
+                    Console.WriteLine("[" + this.GetType().Name + "] " +entity.Name + " collides with " + other.Name 
+                        + "!");
 
-                    CollisionEvent collisionMsg = new CollisionEvent(CollisionEvent.ACTOR_COLLIDES, e);
-                    entity.EventManager.Trigger(collisionMsg);
+                    CollisionEvent collisionMsg = new CollisionEvent(
+                        CollisionEvent.ACTOR_COLLIDES, 
+                        entity.ID,
+                        other.ID);
+                    EventManager.Trigger(collisionMsg);
 
-                    Attribute<int> collisionDmg = e[Key_CollisionDamage] as Attribute<int>;
-                    DamageEvent dmgMsg = new DamageEvent(DamageEvent.RECEIVE_DAMAGE, collisionDmg, e);
-                    entity.EventManager.Trigger(dmgMsg);
+                    Attribute<int> collisionDmg = other[Key_CollisionDamage] as Attribute<int>;
+                    DamageEvent dmgMsg = new DamageEvent(DamageEvent.RECEIVE_DAMAGE, 
+                        entity.ID,
+                        collisionDmg, 
+                        other.ID);
+                    EventManager.Trigger(dmgMsg);
                 }
             }
         }

@@ -13,12 +13,12 @@ namespace Game.Behaviours
         // Attribute Keys
         public const string Key_Health = "Health";
 
-        public HealthBehaviour(Entity entity, int health)
+        public HealthBehaviour(Entity entity)
             : base(entity)
         {
             handledEventTypes = new List<Type>() { typeof(DamageEvent) };
 
-            entity.AddAttribute(Key_Health, new Attribute<int>(health));
+            entity.AddAttribute(Key_Health, new Attribute<int>(1));
         }
 
         public override void OnUpdate(float deltaTime)
@@ -27,7 +27,7 @@ namespace Game.Behaviours
 
             if (health <= 0) {
                 entity.Kill();
-                Console.WriteLine("Entity " + entity.Name + " died a horrible death!");
+                Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Name + " died a horrible death!");
             }
         }
 
@@ -40,8 +40,8 @@ namespace Game.Behaviours
                     Attribute<int> health = entity[Key_Health] as Attribute<int>;
                     health.Value -= dmgMsg.Damage;
 
-                    Console.WriteLine("Entity " + entity.Name + " received " + dmgMsg.Damage + " damage "
-                        + "(Remaining HP:" + health + "). Ouch!");
+                    Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Name + " received " 
+                        + dmgMsg.Damage + " damage " + "(Remaining HP:" + health + "). Ouch!");
                 }
                 break;
             }

@@ -12,11 +12,12 @@ namespace Game.Behaviours
         // Attribute Keys
         public const string Key_Sprite = "Sprite";
 
-        public RenderBehaviour(Entity entity, string sprite)
+        public RenderBehaviour(Entity entity)
             : base(entity)
         {
             handledEventTypes = new List<Type>();
-            entity.AddAttribute(Key_Sprite, new Attribute<string>(sprite));
+
+            entity.AddAttribute(Key_Sprite, new Attribute<string>(String.Empty));
         }
 
         public override void OnUpdate(float deltaTime)

@@ -20,17 +20,17 @@ namespace Game.Behaviours
         public const string Key_Speed = "Speed";
         public const string Key_IsMoving = "IsMoving";
 
-        public SpatialBehaviour(Entity entity, float x, float y, float width, float height, float speed)
+        public SpatialBehaviour(Entity entity)
             : base (entity)
         {
             handledEventTypes = new List<Type>() { typeof(MoveEvent) };
 
-            Vector2D position = new Vector2D(x, y);
+            Vector2D position = Vector2D.Empty;
             entity.AddAttribute(Key_Position, new Attribute<Vector2D>(position));
-            Rectangle bounds = new Rectangle(position, width, height);
+            Rectangle bounds = new Rectangle(position, 0, 0);
             entity.AddAttribute(Key_Bounds, new Attribute<Rectangle>(bounds));
             entity.AddAttribute(Key_Orientation, new Attribute<Vector2D>(Vector2D.Empty));
-            entity.AddAttribute(Key_Speed, new Attribute<float>(speed));
+            entity.AddAttribute(Key_Speed, new Attribute<float>(0));
             entity.AddAttribute(Key_IsMoving, new Attribute<bool>(false));
         }
 
@@ -47,8 +47,8 @@ namespace Game.Behaviours
                 position.Value.Y += direction.Value.Y * speed * deltaTime;
                 checkBounds(position);
 
-                Console.WriteLine(entity.Name + " moved " + direction.ToString() + " to ("
-                    + position.Value.X + "/" + position.Value.Y + ")");
+                Console.WriteLine("[" + this.GetType().Name +"] " + entity.Name + " moved " + direction.ToString() 
+                    + " to (" + position.Value.X + "/" + position.Value.Y + ")");
             }
         }
 

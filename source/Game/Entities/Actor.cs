@@ -10,12 +10,11 @@ namespace Game.Entities
 
     class Actor : Entity
     {
-        public Actor(BaseGame game, string name, string sprite, float posX, float posY, int width, int height, 
-                     float speed)
+        public Actor(GameLogic game, string name)
             : base(game, name)
         {
-            AddBehaviour(new SpatialBehaviour(this, posX, posY, width, height, speed));
-            AddBehaviour(new RenderBehaviour(this, sprite));
+            AddBehaviour(new SpatialBehaviour(this));
+            AddBehaviour(new RenderBehaviour(this));
         }
     }
 

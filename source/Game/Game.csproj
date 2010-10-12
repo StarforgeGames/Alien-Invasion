@@ -73,7 +73,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseGame.cs" />
     <Compile Include="Behaviours\AEntityBasedBehaviour.cs" />
     <Compile Include="Behaviours\CollisionBehaviour.cs" />
     <Compile Include="Behaviours\CombatBehaviour.cs" />
@@ -86,16 +85,19 @@
     <Compile Include="Entities\Attribute.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityFactory.cs" />
+    <Compile Include="EventManagement\Debug\EventLogger.cs" />
     <Compile Include="EventManagement\Events\CollisionEvent.cs" />
+    <Compile Include="EventManagement\Events\CreateEntityEvent.cs" />
     <Compile Include="EventManagement\Events\DamageEvent.cs" />
-    <Compile Include="EventManagement\Events\DeathEvent.cs" />
+    <Compile Include="EventManagement\Events\DestroyEntityEvent.cs" />
     <Compile Include="EventManagement\Events\Event.cs" />
     <Compile Include="EventManagement\Events\FireWeaponEvent.cs" />
     <Compile Include="EventManagement\Events\MoveEvent.cs" />
+    <Compile Include="EventManagement\Events\NewEntityEvent.cs" />
     <Compile Include="EventManagement\SwappingEventManager.cs" />
     <Compile Include="EventManagement\IEventListener.cs" />
     <Compile Include="EventManagement\IEventManager.cs" />
-    <Compile Include="Input\CommandInterpreter.cs" />
+    <Compile Include="GameLogic.cs" />
     <Compile Include="Processes\Process.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
