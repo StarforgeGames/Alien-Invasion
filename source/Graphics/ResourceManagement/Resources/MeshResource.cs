@@ -7,5 +7,8 @@ namespace Graphics.ResourceManagement.Resources
 {
     class MeshResource : AResource
     {
+        public SlimDX.Direct3D10.Buffer buffer;
+
+
     }
 }

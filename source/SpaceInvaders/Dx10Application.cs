@@ -88,7 +88,6 @@ namespace SpaceInvaders
                 IsWindowed = true,
                 SwapEffect = SwapEffect.Discard
             };
-
             DeviceCreationFlags flags = DeviceCreationFlags.None;
 #if DEBUG
             flags |= DeviceCreationFlags.Debug;
