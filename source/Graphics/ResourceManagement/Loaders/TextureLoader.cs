@@ -11,9 +11,10 @@ namespace Graphics.ResourceManagement.Loaders
     public class TextureLoader : IResourceLoader
     {
         Renderer renderer;
-        TextureResource defaultResource = new TextureResource();
+        AResource defaultResource = new TextureResource();
 
         string baseDirectory = @"Gfx\";
+        string extension = @".png";
 
         public TextureLoader(Renderer renderer)
         {
@@ -23,7 +24,10 @@ namespace Graphics.ResourceManagement.Loaders
 
             renderer.commandQueue.Add(() =>
                 {
-                    defaultResource.texture = ShaderResourceView.FromMemory(renderer.device, data);
+                    TextureResource tex = new TextureResource();
+                    tex.texture = ShaderResourceView.FromMemory(renderer.device, data);
+                    defaultResource = tex;
+
                     evt.Finish();
                 });
             EventState state = evt.Wait();
@@ -33,7 +37,7 @@ namespace Graphics.ResourceManagement.Loaders
 
         private byte[] ReadFromFile(string name)
         {
-            return File.ReadAllBytes(baseDirectory + name + ".png");
+            return File.ReadAllBytes(baseDirectory + name + extension);
         }
 
         private void RendererLoad(ResourceHandle handle, byte[] data)
@@ -49,7 +53,8 @@ namespace Graphics.ResourceManagement.Loaders
 
         private void RendererUnload(ResourceHandle handle)
         {
-            TextureResource tex = (TextureResource)handle.inactive.resource;
+            TextureResource res = (TextureResource)handle.inactive.resource;
+            res.texture.Dispose();
             handle.inactive.resource = null;
             handle.inactive.state = ResourceState.Empty;
         }
