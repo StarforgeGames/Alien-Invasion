@@ -30,11 +30,11 @@ namespace Graphics.ResourceManagement.Resources
         public void Dispose()
         {
             Interlocked.Decrement(ref acquiredCount);
-            if (acquiredCount == -1)
+            /*if (acquiredCount == -1)
             {
                 Cleanup();
                 System.GC.SuppressFinalize(this);
-            }
+            }*/
         }
 
         #endregion
