@@ -106,7 +106,6 @@
     <Compile Include="ResourceManagement\Resources\AResource.cs" />
     <Compile Include="ResourceManagement\ResourceHandle.cs" />
     <Compile Include="ResourceManagement\ResourceManager.cs" />
-    <Compile Include="Sprites\BaseSprite.cs" />
     <Compile Include="ResourceManagement\ThreadPoolExecutor.cs" />
     <Compile Include="ResourceManagement\Resources\TextureResource.cs" />
   </ItemGroup>
