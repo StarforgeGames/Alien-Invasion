@@ -100,7 +100,6 @@
     <Compile Include="ResourceManagement\Loaders\AsyncLoader.cs" />
     <Compile Include="CommandQueue.cs" />
     <Compile Include="Counter.cs" />
-    <Compile Include="IRenderable.cs" />
     <Compile Include="Primitives\XPlane.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
