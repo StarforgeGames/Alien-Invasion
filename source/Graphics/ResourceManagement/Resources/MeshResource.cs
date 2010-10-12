@@ -7,9 +7,5 @@ namespace Graphics.ResourceManagement.Resources
 {
     class MeshResource : AResource
     {
-        protected override void Cleanup()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
