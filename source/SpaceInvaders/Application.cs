@@ -31,14 +31,22 @@ namespace SpaceInvaders
             Game = new GameLogic(800, 600);
 
             Views = new List<IGameView>();
-            IGameView playerView = new PlayerView(Game);
+            PlayerView playerView = new PlayerView(Game);
             Views.Add(playerView);
 
             LifeTime = 0d;
 
             resourceManager = new ResourceManager(new ThreadPoolExecutor());            
             resourceManager.AddLoader(new DummyLoader());
+            resourceManager.AddLoader(new TextureLoader(playerView.Renderer));
+            resourceManager.AddLoader(new MeshLoader(playerView.Renderer));
+
             resourceManager.AddWiper(debugWiper);
+
+            // some testing code
+            resourceManager.GetResource("player", "texture");
+            resourceManager.GetResource("quad", "mesh");
+            // end of testing code
 
             Game.ChangeState(GameState.Loading);
         }
@@ -68,7 +76,9 @@ namespace SpaceInvaders
                 Update(deltaTime);
             });
 
-            debugWiper.Stop();
+            resourceManager.Dispose();
+            //debugWiper.Stop();
+            playerView.Dispose();
         }
     }
 
