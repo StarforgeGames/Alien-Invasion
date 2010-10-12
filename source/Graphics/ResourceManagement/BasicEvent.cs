@@ -8,7 +8,7 @@ namespace Graphics.ResourceManagement
 {
     public class BasicEvent : IEvent
     {
-        EventWaitHandle handle = new EventWaitHandle(false, EventResetMode.AutoReset);
+        EventWaitHandle handle = new EventWaitHandle(false, EventResetMode.ManualReset);
         EventState state = EventState.Pending;
 
         #region IEvent Members

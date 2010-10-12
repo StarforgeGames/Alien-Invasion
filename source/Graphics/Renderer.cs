@@ -155,7 +155,7 @@ namespace Graphics
             Random rand = new Random(2434545);
 
             
-            while (IsRendering)
+            while (IsRendering || !commandQueue.Empty)
             {
                 try
                 {

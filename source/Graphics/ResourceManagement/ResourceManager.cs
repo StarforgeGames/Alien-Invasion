@@ -135,6 +135,13 @@ namespace Graphics.ResourceManagement
                         IEvent evt = new BasicEvent();
 
                         handle.Value.Unload(evt);
+                        
+                        evt.Wait();
+
+                        evt = new BasicEvent();
+
+                        handle.Value.Unload(evt);
+
                         evt.Wait();
                     }
                 }

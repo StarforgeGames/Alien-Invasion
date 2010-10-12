@@ -33,6 +33,10 @@ namespace Graphics.ResourceManagement.Debug
             running = false;
 
             monitor.Close();
+            foreach (var timer in timers)
+            {
+                timer.Join();
+            }
         }
         public DebugWiper()
         {

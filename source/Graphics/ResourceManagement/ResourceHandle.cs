@@ -210,6 +210,7 @@ namespace Graphics.ResourceManagement
                             return;
                         case ResourceState.Empty:
                             Interlocked.Decrement(ref pendingOperation);
+                            evt.Finish();
                             return;
                         case ResourceState.Loading:
                             throw new NotSupportedException("tried to unload resource while loading");
