@@ -8,14 +8,27 @@ using Graphics.ResourceManagement.Resources;
 
 namespace Graphics.ResourceManagement.Loaders
 {
-    class TextureLoader : IResourceLoader
+    public class TextureLoader : IResourceLoader
     {
         Renderer renderer;
+        TextureResource defaultResource = new TextureResource();
+
         string baseDirectory = @"Gfx\";
 
-        TextureLoader(Renderer renderer)
+        public TextureLoader(Renderer renderer)
         {
             this.renderer = renderer;
+            byte[] data = File.ReadAllBytes(baseDirectory + "default.png");
+            IEvent evt = new BasicEvent();
+
+            renderer.commandQueue.Add(() =>
+                {
+                    defaultResource.texture = ShaderResourceView.FromMemory(renderer.device, data);
+                    evt.Finish();
+                });
+            EventState state = evt.Wait();
+            if (state == EventState.Failed)
+                throw new NotSupportedException("Default Resource was not loaded properly");
         }
 
         private byte[] ReadFromFile(ResourceHandle handle)
@@ -50,7 +63,7 @@ namespace Graphics.ResourceManagement.Loaders
 
         public Resources.AResource Default
         {
-            get { throw new NotImplementedException(); }
+            get { return defaultResource; }
         }
 
         #endregion

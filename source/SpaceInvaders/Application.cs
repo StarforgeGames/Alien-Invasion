@@ -45,7 +45,9 @@ namespace SpaceInvaders
             resourceManager = new ResourceManager(new ThreadPoolExecutor());
             
             resourceManager.AddLoader(new DummyLoader());
+            resourceManager.AddLoader(new TextureLoader(renderer));
             resourceManager.AddWiper(debugWiper);
+            resourceManager.GetResource("player", "texture");
         }
 
         public void Update(float deltaTime)

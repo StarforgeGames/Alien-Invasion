@@ -15,10 +15,6 @@ namespace Graphics.ResourceManagement.Loaders
             return text;
         }
 
-
-        protected override void Cleanup()
-        {
-        }
     }
 
     public class DummyLoader : ABasicLoader
