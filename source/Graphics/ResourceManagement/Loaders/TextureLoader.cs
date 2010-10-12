@@ -25,8 +25,12 @@ namespace Graphics.ResourceManagement.Loaders
 
         private void RendererLoad(ResourceHandle handle, byte[] data)
         {
-            handle.inactive.resource = new TextureResource(renderer, data);
+            TextureResource res = new TextureResource();
+            res.texture = ShaderResourceView.FromMemory(renderer.device, data);
+
+            handle.inactive.resource = res;
             handle.inactive.state = ResourceState.Ready;
+
             handle.Swap();
         }
 

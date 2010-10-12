@@ -8,16 +8,10 @@ namespace Graphics.ResourceManagement.Resources
 {
     public class TextureResource : AResource
     {
-        private ShaderResourceView texture;
+        public ShaderResourceView texture;
 
-        public TextureResource(Renderer renderer, byte[] image)
+        public TextureResource()
         {
-            texture = ShaderResourceView.FromMemory(renderer.device, image);
-        }
-
-        protected override void Cleanup()
-        {
-            texture.Dispose();
         }
     }
 }
