@@ -77,8 +77,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ResourceManagement\BasicEvent.cs" />
-    <Compile Include="ResourceManagement\Loaders\ARendererLoader.cs" />
     <Compile Include="ResourceManagement\Loaders\MeshLoader.cs" />
+    <Compile Include="ResourceManagement\Loaders\ARendererLoader.cs" />
     <Compile Include="ResourceManagement\Loaders\TextureLoader.cs" />
     <Compile Include="ResourceManagement\Resources\MeshResource.cs" />
     <Compile Include="ResourceManagement\Wipers\AWiper.cs" />
@@ -132,6 +132,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Meshes\default.mesh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Meshes\quad.mesh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="ResourceManagement\ClassDiagram1.cd" />
     <None Include="ResourceManagement\Loaders\Loaders.cd" />
   </ItemGroup>
@@ -140,6 +146,7 @@
       <DependentUpon>ResourceManagementMonitor.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

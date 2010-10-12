@@ -46,8 +46,12 @@ namespace SpaceInvaders
             
             resourceManager.AddLoader(new DummyLoader());
             resourceManager.AddLoader(new TextureLoader(renderer));
+            resourceManager.AddLoader(new MeshLoader(renderer));
+
             resourceManager.AddWiper(debugWiper);
+
             resourceManager.GetResource("player", "texture");
+            resourceManager.GetResource("quad", "mesh");
         }
 
         public void Update(float deltaTime)

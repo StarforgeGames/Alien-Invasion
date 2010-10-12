@@ -2,67 +2,244 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using SlimDX.Direct3D10;
 using Graphics.ResourceManagement.Resources;
 
 namespace Graphics.ResourceManagement.Loaders
 {
-    abstract class ARendererLoader : IResourceLoader
+    public abstract class ARendererLoader : IResourceLoader
     {
         protected Renderer renderer;
-
-        abstract protected AResource doLoad(string name);
-
-        abstract protected void doUnload(AResource resource);
+        AResource defaultResource;
 
         public ARendererLoader(Renderer renderer)
         {
             this.renderer = renderer;
+            byte[] data = ReadResourceWithName("default");
+            IEvent evt = new BasicEvent();
+
+            renderer.commandQueue.Add(() =>
+                {
+                    try
+                    {
+                        defaultResource = doLoad(data);
+
+                        evt.Finish();
+                    }
+                    catch (Exception e)
+                    {
+                        evt.Abort();
+                    }
+                });
+            EventState state = evt.Wait();
+            if (state == EventState.Failed)
+                throw new NotSupportedException("Default Resource was not loaded properly");
+        }
+
+        abstract protected byte[] ReadResourceWithName(string name);
+
+        abstract protected AResource doLoad(byte[] data);
+
+        abstract protected void doUnload(AResource resource);
+
+        private void RendererLoad(ResourceHandle handle, byte[] data)
+        {
+            handle.inactive.resource = doLoad(data);
+            handle.inactive.state = ResourceState.Ready;
+
+            handle.Swap();
+        }
+
+        private void RendererUnload(ResourceHandle handle)
+        {
+            doUnload(handle.inactive.resource);
+
+            handle.inactive.resource = null;
+            handle.inactive.state = ResourceState.Empty;
         }
 
         #region IResourceLoader Members
 
-        public string Type
-        {
-            get { throw new NotImplementedException(); }
-        }
+        abstract public string Type { get; }
 
-        public Resources.AResource Default
+        public AResource Default
         {
-            get { throw new NotImplementedException(); }
+            get { return defaultResource; }
         }
 
         #endregion
 
         #region ILoader Members
 
-        public void Load(ResourceHandle resourceHandle)
+        public void Load(ResourceHandle handle)
         {
-            throw new NotImplementedException();
+            try
+            {
+                byte[] data = ReadResourceWithName(handle.Name);
+                renderer.commandQueue.Add(() =>
+                {
+                    try
+                    {
+                        RendererLoad(handle, data);
+                    }
+                    catch (Exception)
+                    {
+                        throw new NotImplementedException("Exception in commandQueue should be handled.");
+                    }
+                    finally
+                    {
+                        handle.Finished();
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                handle.Finished();
+                throw e;
+            }
+            
         }
 
-        public void Load(ResourceHandle resourceHandle, IEvent evt)
+        public void Load(ResourceHandle handle, IEvent evt)
         {
-            throw new NotImplementedException();
+            try
+            {
+                byte[] data = ReadResourceWithName(handle.Name);
+                renderer.commandQueue.Add(() =>
+                {
+                    try
+                    {
+                        try
+                        {
+                            RendererLoad(handle, data);
+                        }
+                        finally
+                        {
+                            handle.Finished();
+                        }
+                        evt.Finish();
+                    }
+                    catch (Exception)
+                    {
+                        evt.Abort();
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                handle.Finished();
+                evt.Abort();
+                throw e;
+            }
         }
 
-        public void Reload(ResourceHandle resourceHandle)
+        public void Reload(ResourceHandle handle)
         {
-            throw new NotImplementedException();
+            try
+            {
+                renderer.commandQueue.Add(() =>
+                {
+                    try
+                    {
+                        RendererUnload(handle);
+                    }
+                    catch (Exception)
+                    {
+                        throw new NotImplementedException("Exception in commandQueue should be handled.");
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                handle.Finished();
+                throw e;
+            }
+
+            Load(handle);
         }
 
-        public void Reload(ResourceHandle resourceHandle, IEvent evt)
+        public void Reload(ResourceHandle handle, IEvent evt)
         {
-            throw new NotImplementedException();
+            try
+            {
+                renderer.commandQueue.Add(() =>
+                {
+                    try
+                    {
+                        RendererUnload(handle);
+                    }
+                    catch (Exception)
+                    {
+                        throw new NotImplementedException("Exception in commandQueue should be handled.");
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                handle.Finished();
+                evt.Abort();
+                throw e;
+            }
+
+            Load(handle, evt);
         }
 
-        public void Unload(ResourceHandle resourceHandle)
+        public void Unload(ResourceHandle handle)
         {
-            throw new NotImplementedException();
+            try
+            {
+                renderer.commandQueue.Add(() =>
+                {
+                    try
+                    {
+                        RendererUnload(handle);
+                    }
+                    catch (Exception)
+                    {
+                        throw new NotImplementedException("Exception in commandQueue should be handled.");
+                    }
+                    finally
+                    {
+                        handle.Finished();
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                handle.Finished();
+                throw e;
+            }
         }
 
-        public void Unload(ResourceHandle resourceHandle, IEvent evt)
+        public void Unload(ResourceHandle handle, IEvent evt)
         {
-            throw new NotImplementedException();
+            try
+            {
+                renderer.commandQueue.Add(() =>
+                {
+                    try
+                    {
+                        RendererUnload(handle);
+                        evt.Finish();
+                    }
+                    catch (Exception)
+                    {
+                        evt.Abort();
+                    }
+                    finally
+                    {
+                        handle.Finished();
+                    }
+                    
+                });
+            }
+            catch (Exception e)
+            {
+                handle.Finished();
+                evt.Abort();
+                throw e;
+            }
         }
 
         #endregion
