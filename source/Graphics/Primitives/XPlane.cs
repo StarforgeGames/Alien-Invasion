@@ -8,7 +8,7 @@ namespace Graphics.Primitives
     /// Class to create a plane. It's called XPlane to make it sound cool... Just kidding. It's to avoid naming 
     /// conflicts with SlimDX or other graphics APIs.
     /// </summary>
-    class XPlane : IRenderable
+    class XPlane //: IRenderable
     {
         /*private EffectTechnique technique;
         private EffectPass pass;
