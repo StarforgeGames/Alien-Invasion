@@ -37,7 +37,7 @@ namespace Graphics
             InitDeviceAndSwapChain(currentDescription);
             SetDefaultViewport();
             SetDefaultRenderingBuffer();
-
+            control.BackColor = Color.Empty;
             
 
             renderFrame.Resize += new EventHandler(RenderFrame_Resize);

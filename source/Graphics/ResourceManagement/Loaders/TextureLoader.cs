@@ -18,7 +18,7 @@ namespace Graphics.ResourceManagement.Loaders
         public TextureLoader(Renderer renderer)
         {
             this.renderer = renderer;
-            byte[] data = File.ReadAllBytes(baseDirectory + "default.png");
+            byte[] data = ReadFromFile("default");
             IEvent evt = new BasicEvent();
 
             renderer.commandQueue.Add(() =>
@@ -31,9 +31,9 @@ namespace Graphics.ResourceManagement.Loaders
                 throw new NotSupportedException("Default Resource was not loaded properly");
         }
 
-        private byte[] ReadFromFile(ResourceHandle handle)
+        private byte[] ReadFromFile(string name)
         {
-            return File.ReadAllBytes(baseDirectory + handle.Name + ".png");
+            return File.ReadAllBytes(baseDirectory + name + ".png");
         }
 
         private void RendererLoad(ResourceHandle handle, byte[] data)
@@ -74,7 +74,7 @@ namespace Graphics.ResourceManagement.Loaders
         {
             try
             {
-                byte[] data = ReadFromFile(handle);
+                byte[] data = ReadFromFile(handle.Name);
                 renderer.commandQueue.Add(() =>
                 {
                     try
@@ -103,7 +103,7 @@ namespace Graphics.ResourceManagement.Loaders
         {
             try
             {
-                byte[] data = ReadFromFile(handle);
+                byte[] data = ReadFromFile(handle.Name);
                 renderer.commandQueue.Add(() =>
                 {
                     try
