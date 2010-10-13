@@ -50,7 +50,7 @@ namespace Game.Behaviours
                 checkBounds(position);
 
                 totalTime += deltaTime;
-                if (totalTime >= 1.0f) {
+                if (totalTime >= 0.33f) {
                     totalTime = 0f;
                     Console.WriteLine("[" + this.GetType().Name + "] " + entity.Name + " moved " + direction.ToString()
                         + " to (" + position.Value.X + "/" + position.Value.Y + ")");

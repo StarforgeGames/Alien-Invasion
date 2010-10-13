@@ -26,12 +26,10 @@ namespace Game.Behaviours
 
         public override void OnUpdate(float deltaTime)
         {
-            foreach (KeyValuePair<int, Entity> pair in entity.Game.Entities) {
-                if (entity.ID == pair.Key) {
+            foreach (Entity other in entity.Game.Entities.Values) {
+                if (entity.ID == other.ID || other.State != EntityState.Active) {
                     continue;
                 }
-
-                Entity other = pair.Value;
 
                 Attribute<bool> isPhysical = other[Key_IsPhysical] as Attribute<bool>;
                 if (isPhysical == null || !isPhysical) {
@@ -46,20 +44,20 @@ namespace Game.Behaviours
 
                 Attribute<Rectangle> otherBounds = other[SpatialBehaviour.Key_Bounds] as Attribute<Rectangle>;
                 if (isColliding(otherBounds)) {
-                    Console.WriteLine("[" + this.GetType().Name + "] " +entity.Name + " collides with " + other.Name 
+                    Console.WriteLine("[" + this.GetType().Name + "] " + entity.Name + " collided with " + other.Name
                         + "!");
 
                     CollisionEvent collisionMsg = new CollisionEvent(
                         CollisionEvent.ACTOR_COLLIDES, 
-                        entity.ID,
-                        other.ID);
+                        other.ID, 
+                        entity.ID);
                     EventManager.Trigger(collisionMsg);
 
-                    Attribute<int> collisionDmg = other[Key_CollisionDamage] as Attribute<int>;
-                    DamageEvent dmgMsg = new DamageEvent(DamageEvent.RECEIVE_DAMAGE, 
-                        entity.ID,
+                    Attribute<int> collisionDmg = entity[Key_CollisionDamage] as Attribute<int>;
+                    DamageEvent dmgMsg = new DamageEvent(DamageEvent.RECEIVE_DAMAGE,
+                        other.ID,
                         collisionDmg, 
-                        other.ID);
+                        entity.ID);
                     EventManager.Trigger(dmgMsg);
                 }
             }

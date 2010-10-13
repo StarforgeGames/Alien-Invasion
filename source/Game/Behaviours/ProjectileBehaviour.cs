@@ -28,17 +28,25 @@ namespace Game.Behaviours
             Attribute<Rectangle> bounds = entity[SpatialBehaviour.Key_Bounds] as Attribute<Rectangle>;
 
             if (bounds.Value.Top <= 0 || bounds.Value.Bottom >= entity.Game.WorldHeight) {
-                entity.Kill();
+                killEntity();
+
                 Console.WriteLine("[" + this.GetType().Name +"] " + entity.Name + " died in vain.");
             }
+        }
+
+        private void killEntity()
+        {
+            entity.State = EntityState.Dead;
+            EventManager.QueueEvent(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, entity.ID));
         }
 
         public override void OnEvent(Event evt)
         {
             switch (evt.Type) {
                 case CollisionEvent.ACTOR_COLLIDES: {
-                    entity.Kill();
-                    Console.WriteLine("[" + this.GetType().Name +"] " + entity.Name + " died fulfilling its honorable"
+                    killEntity();
+
+                    Console.WriteLine("[" + this.GetType().Name +"] " + entity.Name + " died fulfilling its honorable "
                         + "duty.");
                 }
                 break;

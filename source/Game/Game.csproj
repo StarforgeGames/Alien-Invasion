@@ -94,6 +94,7 @@
     <Compile Include="EventManagement\Events\FireWeaponEvent.cs" />
     <Compile Include="EventManagement\Events\MoveEvent.cs" />
     <Compile Include="EventManagement\Events\NewEntityEvent.cs" />
+    <Compile Include="EventManagement\Events\RespawnEntityEvent.cs" />
     <Compile Include="EventManagement\SwappingEventManager.cs" />
     <Compile Include="EventManagement\IEventListener.cs" />
     <Compile Include="EventManagement\IEventManager.cs" />

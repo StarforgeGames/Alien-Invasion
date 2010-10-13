@@ -34,6 +34,9 @@ namespace Game.Entities
 
                     Attribute<float> speed = entity[SpatialBehaviour.Key_Speed] as Attribute<float>;
                     speed.Value = 150f;
+                    
+                    Attribute<int> lifes = entity[HealthBehaviour.Key_Lifes] as Attribute<int>;
+                    lifes.Value = 3;
 
                     Attribute<float> firingSpeed = entity[CombatBehaviour.Key_FiringSpeed] as Attribute<float>;
                     firingSpeed.Value = 0.75f;
@@ -41,13 +44,12 @@ namespace Game.Entities
                     Attribute<float> timeSinceLastShot = entity[CombatBehaviour.Key_TimeSinceLastShot] 
                         as Attribute<float>;
                     timeSinceLastShot.Value = firingSpeed;
-
                     break;
                 }
                 case "pewpew": {
                     entity = new Actor(game, id);
-                    entity.AddBehaviour(new CollisionBehaviour(entity));
                     entity.AddBehaviour(new ProjectileBehaviour(entity));
+                    entity.AddBehaviour(new CollisionBehaviour(entity));
 
                     Attribute<string> sprite = entity[RenderBehaviour.Key_Sprite] as Attribute<string>;
                     sprite.Value = @"Gfx\pewpew.png";
@@ -61,7 +63,6 @@ namespace Game.Entities
                     Attribute<Vector2D> orientation = entity[SpatialBehaviour.Key_Orientation] as Attribute<Vector2D>;
                     orientation.Value.X = 0;
                     orientation.Value.Y = -1;
-
                     break;
                 }
                 case "alien_ray": {
@@ -71,21 +72,54 @@ namespace Game.Entities
                     entity.AddBehaviour(new HealthBehaviour(entity));
 
                     Attribute<string> sprite = entity[RenderBehaviour.Key_Sprite] as Attribute<string>;
-                    sprite.Value = @"Gfx\player.png";
+                    sprite.Value = @"Gfx\alien_ray.png";
+
                     Attribute<float> speed = entity[SpatialBehaviour.Key_Speed] as Attribute<float>;
                     speed.Value = 75f;
+
                     Attribute<float> firingSpeed = entity[CombatBehaviour.Key_FiringSpeed] as Attribute<float>;
                     firingSpeed.Value = 0.75f;
+                    break;
+                }
+                case "alien_pincher": {
+                    entity = new Actor(game, id);
+                    entity.AddBehaviour(new CombatBehaviour(entity));
+                    entity.AddBehaviour(new CollisionBehaviour(entity));
+                    entity.AddBehaviour(new HealthBehaviour(entity));
 
+                    Attribute<string> sprite = entity[RenderBehaviour.Key_Sprite] as Attribute<string>;
+                    sprite.Value = @"Gfx\alien_pincher.png";
+
+                    Attribute<float> speed = entity[SpatialBehaviour.Key_Speed] as Attribute<float>;
+                    speed.Value = 75f;
+
+                    Attribute<float> firingSpeed = entity[CombatBehaviour.Key_FiringSpeed] as Attribute<float>;
+                    firingSpeed.Value = 0.75f;
+                    break;
+                }
+                case "alien_hammerhead": {
+                    entity = new Actor(game, id);
+                    entity.AddBehaviour(new CombatBehaviour(entity));
+                    entity.AddBehaviour(new CollisionBehaviour(entity));
+                    entity.AddBehaviour(new HealthBehaviour(entity));
+
+                    Attribute<string> sprite = entity[RenderBehaviour.Key_Sprite] as Attribute<string>;
+                    sprite.Value = @"Gfx\alien_hammerhead.png";
+
+                    Attribute<float> speed = entity[SpatialBehaviour.Key_Speed] as Attribute<float>;
+                    speed.Value = 75f;
+
+                    Attribute<float> firingSpeed = entity[CombatBehaviour.Key_FiringSpeed] as Attribute<float>;
+                    firingSpeed.Value = 0.75f;
                     break;
                 }
                 default:
-                    // Unknown entity! Report and exit
+                    // Unknown entity! Report and return
                     Console.WriteLine("[" + this.GetType().Name + "] Unknown entity requested: " + id);
                     return null;
             }
 
-            Console.WriteLine("[" + this.GetType().Name + "] Created entity " + id);
+            Console.WriteLine("[" + this.GetType().Name + "] Created entity " + entity);
 
             if (attributes != null) {
                 foreach (KeyValuePair<string, object> pair in attributes) {
