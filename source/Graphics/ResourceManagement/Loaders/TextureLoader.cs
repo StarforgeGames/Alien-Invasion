@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Graphics.ResourceManagement.Loaders
 {
-    public class TextureLoader : ARendererLoader
+    public class TextureLoader : ARendererLoader<byte[]>
     {
         string baseDirectory = @"Gfx\";
         string extension = @".png";

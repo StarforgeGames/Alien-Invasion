@@ -13,6 +13,10 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <SccProjectName>&lt;Project Location In Database&gt;</SccProjectName>
+    <SccLocalPath>&lt;Local Binding Root of Project&gt;</SccLocalPath>
+    <SccAuxPath>&lt;Source Control Database&gt;</SccAuxPath>
+    <SccProvider>Mercurial Source Control Package</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -77,9 +81,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ResourceManagement\BasicEvent.cs" />
+    <Compile Include="ResourceManagement\Loaders\EffectLoader.cs" />
     <Compile Include="ResourceManagement\Loaders\MeshLoader.cs" />
     <Compile Include="ResourceManagement\Loaders\ARendererLoader.cs" />
+    <Compile Include="ResourceManagement\Loaders\MeshParser.cs" />
     <Compile Include="ResourceManagement\Loaders\TextureLoader.cs" />
+    <Compile Include="ResourceManagement\Resources\EffectResource.cs" />
     <Compile Include="ResourceManagement\Resources\MeshResource.cs" />
     <Compile Include="ResourceManagement\Wipers\AWiper.cs" />
     <Compile Include="ResourceManagement\Debug\DebugWiper.cs" />
@@ -138,6 +145,9 @@
     </Content>
     <None Include="ResourceManagement\ClassDiagram1.cd" />
     <None Include="ResourceManagement\Loaders\Loaders.cd" />
+    <Content Include="Shaders\default.fx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ResourceManagement\Debug\ResourceManagementMonitor.resx">

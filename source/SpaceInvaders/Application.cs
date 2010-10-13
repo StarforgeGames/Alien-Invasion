@@ -7,6 +7,7 @@ using Graphics.ResourceManagement.Loaders;
 using Graphics.ResourceManagement.Wipers;
 using SlimDX.Windows;
 using SpaceInvaders.Views;
+using System;
 
 namespace SpaceInvaders
 {
@@ -24,7 +25,7 @@ namespace SpaceInvaders
         private GameTimer timer = new GameTimer();
         private ResourceManager resourceManager;
         
-        private List<ARendererLoader> rendererLoaders = new List<ARendererLoader>();
+        private List<IResourceLoader> rendererLoaders = new List<IResourceLoader>();
 
         AWiper debugWiper = new DebugWiper();
 
@@ -38,10 +39,14 @@ namespace SpaceInvaders
 
             LifeTime = 0d;
 
-            resourceManager = new ResourceManager(new ThreadPoolExecutor());            
-            resourceManager.AddLoader(new DummyLoader());
             rendererLoaders.Add(new TextureLoader(playerView.Renderer));
             rendererLoaders.Add(new MeshLoader(playerView.Renderer));
+            rendererLoaders.Add(new EffectLoader(playerView.Renderer));
+
+
+
+            resourceManager = new ResourceManager(new ThreadPoolExecutor());            
+            resourceManager.AddLoader(new DummyLoader());
 
             foreach (var rendererLoader in rendererLoaders)
             {
@@ -53,6 +58,7 @@ namespace SpaceInvaders
             // some testing code
             resourceManager.GetResource("player", "texture");
             resourceManager.GetResource("quad", "mesh");
+            resourceManager.GetResource("SimplePassThrough", "fx");
             // end of testing code
 
             Game.ChangeState(GameState.Loading);
@@ -87,7 +93,11 @@ namespace SpaceInvaders
 
             foreach (var rendererLoader in rendererLoaders)
             {
-                rendererLoader.Dispose();
+                if (rendererLoader is IDisposable)
+                {
+                    ((IDisposable)rendererLoader).Dispose();
+                }
+                
             }
 
             playerView.Dispose();

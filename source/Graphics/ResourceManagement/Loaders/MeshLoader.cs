@@ -9,7 +9,7 @@ using Graphics.ResourceManagement.Resources;
 
 namespace Graphics.ResourceManagement.Loaders
 {
-    public class MeshLoader : ARendererLoader
+    public class MeshLoader : ARendererLoader<byte[]>
     {
         string baseDirectory = @"Meshes\";
         string extension = @".mesh";
