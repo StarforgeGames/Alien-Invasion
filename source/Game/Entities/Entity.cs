@@ -13,7 +13,7 @@ namespace Game.Entities
         Dead
     }
 
-    public class Entity
+    public class Entity : IEventListener
     {
         public EntityState State { get; set; }
 
@@ -21,6 +21,7 @@ namespace Game.Entities
         public GameLogic Game { get; private set; }
 
         public IEventManager EventManager { get; private set; }
+        private Dictionary<Type, List<IEventListener>> listenerMap;
 
         private static int nextEntityId = 1;
         private readonly int id;
@@ -50,14 +51,13 @@ namespace Game.Entities
             this.Game = game;
 
             EventManager = game.EventManager;
+            listenerMap = new Dictionary<Type, List<IEventListener>>();
+
             id = nextEntityId++;
 
             behaviours = new List<IBehaviour>();
             attributes = new Dictionary<string, object>();
         }
-
-
-        #region Behaviours
 
         /// <summary>
         /// Adds a new behaviour, registering it as listener to all supported messages as well.
@@ -68,7 +68,12 @@ namespace Game.Entities
             behaviours.Add(behaviour);
 
             foreach (Type type in behaviour.HandledEventTypes) {
-                EventManager.AddListener(behaviour, type);
+                if (!listenerMap.ContainsKey(type)) {
+                    listenerMap.Add(type, new List<IEventListener>());
+                }
+
+                listenerMap[type].Add(behaviour);
+                EventManager.AddListener(this, type);
             }
         }
 
@@ -80,24 +85,23 @@ namespace Game.Entities
         public bool RemoveBehaviour(IBehaviour behaviour)
         {
             foreach (Type type in behaviour.HandledEventTypes) {
-                EventManager.RemoveListener(behaviour, type);
+                listenerMap[type].Remove(behaviour);
+                EventManager.RemoveListener(this, type);
             }
 
             return behaviours.Remove(behaviour);
         }
 
-        public void SendEvent(Event evt)
+        public void OnEvent(Event evt)
         {
-            foreach (IBehaviour b in behaviours) {
-                if(b.HandledEventTypes.Contains(evt.GetType())) {
-                    b.OnEvent(evt);
-                }
+            if(!listenerMap.ContainsKey(evt.GetType())) {
+                return;
+            }
+
+            foreach (IEventListener listener in listenerMap[evt.GetType()]) {
+                listener.OnEvent(evt);
             }
         }
-
-        #endregion
-
-        #region Attributes
 
         /// <summary>
         /// Adds a new attribute to this entity.
@@ -108,8 +112,6 @@ namespace Game.Entities
         {
             attributes.Add(key, value);
         }
-
-        #endregion
 
         public void Update(float deltaTime)
         {

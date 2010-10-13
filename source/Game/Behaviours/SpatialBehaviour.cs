@@ -20,6 +20,8 @@ namespace Game.Behaviours
         public const string Key_Speed = "Speed";
         public const string Key_IsMoving = "IsMoving";
 
+        private float totalTime = 9999f;
+
         public SpatialBehaviour(Entity entity)
             : base (entity)
         {
@@ -47,8 +49,12 @@ namespace Game.Behaviours
                 position.Value.Y += direction.Value.Y * speed * deltaTime;
                 checkBounds(position);
 
-                Console.WriteLine("[" + this.GetType().Name +"] " + entity.Name + " moved " + direction.ToString() 
-                    + " to (" + position.Value.X + "/" + position.Value.Y + ")");
+                totalTime += deltaTime;
+                if (totalTime >= 1.0f) {
+                    totalTime = 0f;
+                    Console.WriteLine("[" + this.GetType().Name + "] " + entity.Name + " moved " + direction.ToString()
+                        + " to (" + position.Value.X + "/" + position.Value.Y + ")");
+                }
             }
         }
 
