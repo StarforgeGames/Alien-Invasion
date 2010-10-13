@@ -9,7 +9,7 @@ namespace Game.Entities
     public enum EntityState
     {
         Active,
-        Paused,
+        Inactive,
         Dead
     }
 
@@ -92,17 +92,6 @@ namespace Game.Entities
             return behaviours.Remove(behaviour);
         }
 
-        public void OnEvent(Event evt)
-        {
-            if(!listenerMap.ContainsKey(evt.GetType())) {
-                return;
-            }
-
-            foreach (IEventListener listener in listenerMap[evt.GetType()]) {
-                listener.OnEvent(evt);
-            }
-        }
-
         /// <summary>
         /// Adds a new attribute to this entity.
         /// </summary>
@@ -122,11 +111,15 @@ namespace Game.Entities
             }
         }
 
-        public void Kill()
+        public void OnEvent(Event evt)
         {
-            this.State = EntityState.Dead;
-            EventManager.QueueEvent(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, this.ID));
-            Console.WriteLine(this.ToString() + " was killed");
+            if(!listenerMap.ContainsKey(evt.GetType())) {
+                return;
+            }
+
+            foreach (IEventListener listener in listenerMap[evt.GetType()]) {
+                listener.OnEvent(evt);
+            }
         }
 
         public override string ToString()

@@ -13,7 +13,8 @@ namespace Game
         Active,
         Loading,
         Menu,
-        Paused
+        Paused,
+        GameOver
 
     }
 
@@ -48,6 +49,7 @@ namespace Game
         private void registerGameEventListeners()
         {
             EventManager.AddListener(this, typeof(CreateEntityEvent));
+            EventManager.AddListener(this, typeof(DestroyEntityEvent));
             //EventManager.AddListener(new EventLogger(), typeof(Event));
         }
 
@@ -66,6 +68,8 @@ namespace Game
                 case GameState.Menu:
                     break;
                 case GameState.Paused:
+                    break;
+                case GameState.GameOver:
                     break;
             }
         }
@@ -104,23 +108,17 @@ namespace Game
 
         public void Update(float deltaTime)
         {
-            EventManager.Tick();
-            ProcessManager.OnUpdate(deltaTime);
-
             List<Entity> tmp = new List<Entity>(Entities.Values);
-
             foreach (Entity entity in tmp) {
                 switch (entity.State) {
                     case EntityState.Active:
                         entity.Update(deltaTime);
                         break;
-                    case EntityState.Dead:
-                        if (!entity.Name.Equals("player")) {
-                            Entities.Remove(entity.ID);
-                        }
-                        break;
                 }
             }
+
+            EventManager.Tick();
+            ProcessManager.OnUpdate(deltaTime);
         }
 
         public void OnEvent(Event evt)
@@ -131,8 +129,15 @@ namespace Game
 
             switch (evt.Type) {
                 case CreateEntityEvent.CREATE_ENTITY:
-                    CreateEntityEvent createEvent = (CreateEntityEvent) evt;
+                    CreateEntityEvent createEvent = evt as CreateEntityEvent;
                     addEntity(createEvent.EntityType, createEvent.Attributes);
+                    break;
+                case DestroyEntityEvent.DESTROY_ENTITY:
+                    DestroyEntityEvent destroyEvent = evt as DestroyEntityEvent;
+                    Entities.Remove(destroyEvent.EntityID);
+
+                    System.Console.WriteLine("[" + this.GetType().Name + "] Destroyed entity #" 
+                        + destroyEvent.EntityID);
                     break;
             }
         }
