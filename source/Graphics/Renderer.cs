@@ -30,6 +30,7 @@ namespace Graphics
         {
 
             renderThread = new Thread(renderLoop);
+            renderThread.Name = "Renderer";
             renderFrame = control;
 
             var currentDescription = GetDefaultSwapChainDescription(control);

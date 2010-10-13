@@ -265,6 +265,7 @@ namespace Graphics.ResourceManagement.Loaders
                 renderer.commandQueue.Add(() =>
                 {
                     doUnload(Default);
+                    defaultResource = null;
                 });
             }
         }

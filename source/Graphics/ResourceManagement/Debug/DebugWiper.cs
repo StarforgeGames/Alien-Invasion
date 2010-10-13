@@ -22,6 +22,7 @@ namespace Graphics.ResourceManagement.Debug
             {
                 running = true;
                 timers[i] = new Thread(t_Elapsed);
+                timers[i].Name = "Debug " + i;
                 timers[i].Start();
 
             }

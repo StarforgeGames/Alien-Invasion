@@ -133,6 +133,7 @@ namespace Graphics.ResourceManagement.Loaders
             if (Default != null)
             {
                 doUnload(Default);
+                defaultResource = null;
             }
         }
     }
