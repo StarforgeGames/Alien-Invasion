@@ -132,17 +132,16 @@ namespace Graphics.ResourceManagement
                 {
                     foreach (var handle in handles.Value)
                     {
-                        IEvent evt = new BasicEvent();
+                        IEvent evt1 = new BasicEvent();
 
-                        handle.Value.Unload(evt);
-                        
-                        evt.Wait();
+                        handle.Value.Unload(evt1);
 
-                        evt = new BasicEvent();
+                        IEvent evt2 = new BasicEvent();
 
-                        handle.Value.Unload(evt);
+                        handle.Value.Unload(evt2);
 
-                        evt.Wait();
+                        evt1.Wait();
+                        evt2.Wait();
                     }
                 }
             }

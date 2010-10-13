@@ -8,7 +8,7 @@ using Graphics.ResourceManagement.Resources;
 
 namespace Graphics.ResourceManagement.Loaders
 {
-    public abstract class ARendererLoader : IResourceLoader, IDisposable
+    public abstract class ARendererLoader<T> : IResourceLoader, IDisposable
     {
         protected Renderer renderer;
         AResource defaultResource;
@@ -16,7 +16,7 @@ namespace Graphics.ResourceManagement.Loaders
         public ARendererLoader(Renderer renderer)
         {
             this.renderer = renderer;
-            byte[] data = ReadResourceWithName("default");
+            T data = ReadResourceWithName("default");
             IEvent evt = new BasicEvent();
 
             renderer.commandQueue.Add(() =>
@@ -27,7 +27,7 @@ namespace Graphics.ResourceManagement.Loaders
 
                         evt.Finish();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         evt.Abort();
                     }
@@ -37,13 +37,13 @@ namespace Graphics.ResourceManagement.Loaders
                 throw new NotSupportedException("Default Resource was not loaded properly");
         }
 
-        abstract protected byte[] ReadResourceWithName(string name);
+        abstract protected T ReadResourceWithName(string name);
 
-        abstract protected AResource doLoad(byte[] data);
+        abstract protected AResource doLoad(T data);
 
         abstract protected void doUnload(AResource resource);
 
-        private void RendererLoad(ResourceHandle handle, byte[] data)
+        private void RendererLoad(ResourceHandle handle, T data)
         {
             handle.inactive.resource = doLoad(data);
             handle.inactive.state = ResourceState.Ready;
@@ -76,7 +76,7 @@ namespace Graphics.ResourceManagement.Loaders
         {
             try
             {
-                byte[] data = ReadResourceWithName(handle.Name);
+                T data = ReadResourceWithName(handle.Name);
                 renderer.commandQueue.Add(() =>
                 {
                     try
@@ -105,7 +105,7 @@ namespace Graphics.ResourceManagement.Loaders
         {
             try
             {
-                byte[] data = ReadResourceWithName(handle.Name);
+                T data = ReadResourceWithName(handle.Name);
                 renderer.commandQueue.Add(() =>
                 {
                     try
