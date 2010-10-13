@@ -39,11 +39,9 @@ namespace SpaceInvaders
 
             LifeTime = 0d;
 
-            rendererLoaders.Add(new TextureLoader(playerView.Renderer));
+            /*rendererLoaders.Add(new TextureLoader(playerView.Renderer));
             rendererLoaders.Add(new MeshLoader(playerView.Renderer));
-            rendererLoaders.Add(new EffectLoader(playerView.Renderer));
-
-
+            rendererLoaders.Add(new EffectLoader(playerView.Renderer));*/
 
             resourceManager = new ResourceManager(new ThreadPoolExecutor());            
             resourceManager.AddLoader(new DummyLoader());
@@ -56,9 +54,9 @@ namespace SpaceInvaders
             resourceManager.AddWiper(debugWiper);
 
             // some testing code
-            resourceManager.GetResource("player", "texture");
+            /*resourceManager.GetResource("player", "texture");
             resourceManager.GetResource("quad", "mesh");
-            resourceManager.GetResource("SimplePassThrough", "fx");
+            resourceManager.GetResource("SimplePassThrough", "fx");*/
             // end of testing code
 
             Game.ChangeState(GameState.Loading);

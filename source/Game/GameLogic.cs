@@ -48,7 +48,7 @@ namespace Game
         private void registerGameEventListeners()
         {
             EventManager.AddListener(this, typeof(CreateEntityEvent));
-            EventManager.AddListener(new EventLogger(), typeof(Event));
+            //EventManager.AddListener(new EventLogger(), typeof(Event));
         }
 
         public void ChangeState(GameState newState)
@@ -75,7 +75,7 @@ namespace Game
             CreateEntityEvent evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, "player");
 
             float startX = WorldWidth / 2f - (75f / 2f);
-            float startY = WorldHeight / 2f - (75f / 2f);
+            float startY = WorldHeight - 100 - (75f / 2f);
             Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(startX, startY));
             evt.AddAttribute(SpatialBehaviour.Key_Position, position);
 

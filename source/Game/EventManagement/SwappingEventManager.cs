@@ -69,7 +69,7 @@ namespace Game.EventManagement
 
             if (evt.RecipientID != 0) {
                 Entity entity = game.Entities[evt.RecipientID];
-                entity.SendEvent(evt);
+                entity.OnEvent(evt);
                 return;
             }
 

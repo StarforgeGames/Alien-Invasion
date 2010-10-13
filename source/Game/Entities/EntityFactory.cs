@@ -31,10 +31,13 @@ namespace Game.Entities
 
                     Attribute<string> sprite = entity[RenderBehaviour.Key_Sprite] as Attribute<string>;
                     sprite.Value = @"Gfx\player.png";
+
                     Attribute<float> speed = entity[SpatialBehaviour.Key_Speed] as Attribute<float>;
-                    speed.Value = 50f;
+                    speed.Value = 150f;
+
                     Attribute<float> firingSpeed = entity[CombatBehaviour.Key_FiringSpeed] as Attribute<float>;
                     firingSpeed.Value = 0.75f;
+
                     Attribute<float> timeSinceLastShot = entity[CombatBehaviour.Key_TimeSinceLastShot] 
                         as Attribute<float>;
                     timeSinceLastShot.Value = firingSpeed;
@@ -48,10 +51,13 @@ namespace Game.Entities
 
                     Attribute<string> sprite = entity[RenderBehaviour.Key_Sprite] as Attribute<string>;
                     sprite.Value = @"Gfx\pewpew.png";
+
                     Attribute<float> speed = entity[SpatialBehaviour.Key_Speed] as Attribute<float>;
-                    speed.Value = (200f);
+                    speed.Value = (300f);
+
                     Attribute<bool> isMoving = entity[SpatialBehaviour.Key_IsMoving] as Attribute<bool>;
                     isMoving.Value = true;
+
                     Attribute<Vector2D> orientation = entity[SpatialBehaviour.Key_Orientation] as Attribute<Vector2D>;
                     orientation.Value.X = 0;
                     orientation.Value.Y = -1;
@@ -67,7 +73,7 @@ namespace Game.Entities
                     Attribute<string> sprite = entity[RenderBehaviour.Key_Sprite] as Attribute<string>;
                     sprite.Value = @"Gfx\player.png";
                     Attribute<float> speed = entity[SpatialBehaviour.Key_Speed] as Attribute<float>;
-                    speed.Value = 50f;
+                    speed.Value = 75f;
                     Attribute<float> firingSpeed = entity[CombatBehaviour.Key_FiringSpeed] as Attribute<float>;
                     firingSpeed.Value = 0.75f;
 
