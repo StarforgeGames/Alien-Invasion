@@ -82,11 +82,13 @@
   <ItemGroup>
     <Compile Include="ResourceManagement\BasicEvent.cs" />
     <Compile Include="ResourceManagement\Loaders\EffectLoader.cs" />
+    <Compile Include="ResourceManagement\Loaders\MaterialLoader.cs" />
     <Compile Include="ResourceManagement\Loaders\MeshLoader.cs" />
     <Compile Include="ResourceManagement\Loaders\ARendererLoader.cs" />
     <Compile Include="ResourceManagement\Loaders\MeshParser.cs" />
     <Compile Include="ResourceManagement\Loaders\TextureLoader.cs" />
     <Compile Include="ResourceManagement\Resources\EffectResource.cs" />
+    <Compile Include="ResourceManagement\Resources\MaterialResource.cs" />
     <Compile Include="ResourceManagement\Resources\MeshResource.cs" />
     <Compile Include="ResourceManagement\Wipers\AWiper.cs" />
     <Compile Include="ResourceManagement\Debug\DebugWiper.cs" />

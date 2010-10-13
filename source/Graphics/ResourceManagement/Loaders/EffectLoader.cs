@@ -16,7 +16,6 @@ namespace Graphics.ResourceManagement.Loaders
 
         public EffectLoader(Renderer renderer) : base(renderer)
         {
-
         }
 
         protected override byte[] ReadResourceWithName(string name)

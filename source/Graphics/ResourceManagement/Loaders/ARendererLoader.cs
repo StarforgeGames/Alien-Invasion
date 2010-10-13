@@ -16,25 +16,6 @@ namespace Graphics.ResourceManagement.Loaders
         public ARendererLoader(Renderer renderer)
         {
             this.renderer = renderer;
-            T data = ReadResourceWithName("default");
-            IEvent evt = new BasicEvent();
-
-            renderer.commandQueue.Add(() =>
-                {
-                    try
-                    {
-                        defaultResource = doLoad(data);
-
-                        evt.Finish();
-                    }
-                    catch (Exception)
-                    {
-                        evt.Abort();
-                    }
-                });
-            EventState state = evt.Wait();
-            if (state == EventState.Failed)
-                throw new NotSupportedException("Default Resource was not loaded properly");
         }
 
         abstract protected T ReadResourceWithName(string name);
@@ -42,6 +23,29 @@ namespace Graphics.ResourceManagement.Loaders
         abstract protected AResource doLoad(T data);
 
         abstract protected void doUnload(AResource resource);
+
+        private void loadDefault()
+        {
+            T data = ReadResourceWithName("default");
+            IEvent evt = new BasicEvent();
+
+            renderer.commandQueue.Add(() =>
+            {
+                try
+                {
+                    defaultResource = doLoad(data);
+
+                    evt.Finish();
+                }
+                catch (Exception)
+                {
+                    evt.Abort();
+                }
+            });
+            EventState state = evt.Wait();
+            if (state == EventState.Failed)
+                throw new NotSupportedException("Default Resource was not loaded properly");
+        }
 
         private void RendererLoad(ResourceHandle handle, T data)
         {
@@ -65,7 +69,15 @@ namespace Graphics.ResourceManagement.Loaders
 
         public AResource Default
         {
-            get { return defaultResource; }
+            get 
+            {
+                if (defaultResource == null)
+                {
+                    loadDefault();
+                }
+
+                return defaultResource;
+            }
         }
 
         #endregion
@@ -248,10 +260,13 @@ namespace Graphics.ResourceManagement.Loaders
 
         public void Dispose()
         {
-            renderer.commandQueue.Add(() =>
+            if (Default != null)
             {
-                doUnload(Default);
-            });
+                renderer.commandQueue.Add(() =>
+                {
+                    doUnload(Default);
+                });
+            }
         }
 
         #endregion

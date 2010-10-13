@@ -9,7 +9,7 @@ namespace Graphics.ResourceManagement.Loaders
 {
     public abstract class ABasicLoader : IResourceLoader
     {
-
+        AResource defaultResource;
 
         abstract protected AResource doLoad(string name);
 
@@ -114,16 +114,26 @@ namespace Graphics.ResourceManagement.Loaders
             get;
         }
 
-        abstract public AResource Default
+        public AResource Default
         {
-            get;
+            get
+            {
+                if (defaultResource == null)
+                {
+                    defaultResource = doLoad("default");
+                }
+                return defaultResource;
+            }
         }
 
         #endregion
 
         ~ABasicLoader()
         {
-            doUnload(Default);
+            if (Default != null)
+            {
+                doUnload(Default);
+            }
         }
     }
 }
