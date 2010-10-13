@@ -76,6 +76,8 @@ namespace Game.Entities
 
                     Attribute<float> speed = entity[SpatialBehaviour.Key_Speed] as Attribute<float>;
                     speed.Value = 75f;
+                    Attribute<int> lifes = entity[HealthBehaviour.Key_Lifes] as Attribute<int>;
+                    lifes.Value = 3;
 
                     Attribute<float> firingSpeed = entity[CombatBehaviour.Key_FiringSpeed] as Attribute<float>;
                     firingSpeed.Value = 0.75f;

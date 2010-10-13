@@ -51,14 +51,14 @@ namespace Game.Behaviours
                         CollisionEvent.ACTOR_COLLIDES, 
                         other.ID, 
                         entity.ID);
-                    EventManager.Trigger(collisionMsg);
+                    EventManager.QueueEvent(collisionMsg);
 
                     Attribute<int> collisionDmg = entity[Key_CollisionDamage] as Attribute<int>;
                     DamageEvent dmgMsg = new DamageEvent(DamageEvent.RECEIVE_DAMAGE,
                         other.ID,
                         collisionDmg, 
                         entity.ID);
-                    EventManager.Trigger(dmgMsg);
+                    EventManager.QueueEvent(dmgMsg);
                 }
             }
         }

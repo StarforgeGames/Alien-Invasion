@@ -114,6 +114,9 @@ namespace Game
                     case EntityState.Active:
                         entity.Update(deltaTime);
                         break;
+                    case EntityState.Inactive:
+                        entity.Update(deltaTime);
+                        break;
                 }
             }
 
