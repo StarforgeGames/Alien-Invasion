@@ -145,6 +145,9 @@
     <Content Include="Meshes\quad.mesh">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Materials\default.material">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="ResourceManagement\ClassDiagram1.cd" />
     <None Include="ResourceManagement\Loaders\Loaders.cd" />
     <Content Include="Shaders\default.fx">

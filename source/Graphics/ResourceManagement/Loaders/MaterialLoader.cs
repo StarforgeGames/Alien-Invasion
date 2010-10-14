@@ -11,7 +11,7 @@ namespace Graphics.ResourceManagement.Loaders
         ResourceManager manager;
 
         string baseDirectory = @"Materials\";
-        string extension = @".mat";
+        string extension = @".material";
 
         public MaterialLoader(ResourceManager manager)
         {
