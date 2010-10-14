@@ -12,6 +12,11 @@ namespace Graphics.ResourceManagement.Resources
 
         public TextureResource()
         {
+            //new EffectVariableDescription().Semantic
+            //Effect.FromPointer(null).GetVariableBySemantic("")
+            //Effect.FromPointer(null).GetVariableByName("").AsResource().
+            
+            
         }
     }
 }
