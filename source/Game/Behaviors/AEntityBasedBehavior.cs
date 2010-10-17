@@ -7,10 +7,10 @@ using System.Collections.ObjectModel;
 using Game.EventManagement.Events;
 using Game.EventManagement;
 
-namespace Game.Behaviours
+namespace Game.Behaviors
 {
 
-    abstract class AEntityBasedBehaviour : IBehaviour
+    abstract class AEntityBasedBehavior : IBehavior
     {
         protected Entity entity;
 
@@ -22,7 +22,7 @@ namespace Game.Behaviours
             get { return handledEventTypes.AsReadOnly(); }
         }
 
-        public AEntityBasedBehaviour(Entity entity)
+        public AEntityBasedBehavior(Entity entity)
         {
             this.entity = entity;
             this.EventManager = entity.Game.EventManager;

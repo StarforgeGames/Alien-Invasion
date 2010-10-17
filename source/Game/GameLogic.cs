@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Game.Entities;
-using Game.Behaviours;
+using Game.Behaviors;
 using Game.EventManagement;
 using Game.EventManagement.Events;
 using Game.Utility;
@@ -81,11 +81,11 @@ namespace Game
             float startX = WorldWidth / 2f - (75f / 2f);
             float startY = WorldHeight - 100 - (75f / 2f);
             Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(startX, startY));
-            evt.AddAttribute(SpatialBehaviour.Key_Position, position);
+            evt.AddAttribute(SpatialBehavior.Key_Position, position);
 
             Rectangle rect = new Rectangle(position, 75, 75);
             Attribute<Rectangle> bounds = new Attribute<Rectangle>(rect);
-            evt.AddAttribute(SpatialBehaviour.Key_Bounds, bounds);
+            evt.AddAttribute(SpatialBehavior.Key_Bounds, bounds);
 
             EventManager.QueueEvent(evt);
         }
@@ -97,11 +97,11 @@ namespace Game
             float startX = WorldWidth / 2f - (75f / 2f);
             float startY = 100;
             Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(startX, startY));
-            evt.AddAttribute(SpatialBehaviour.Key_Position, position);
+            evt.AddAttribute(SpatialBehavior.Key_Position, position);
 
             Rectangle rect = new Rectangle(position, 75, 75);
             Attribute<Rectangle> bounds = new Attribute<Rectangle>(rect);
-            evt.AddAttribute(SpatialBehaviour.Key_Bounds, bounds);
+            evt.AddAttribute(SpatialBehavior.Key_Bounds, bounds);
 
             EventManager.QueueEvent(evt);
         }

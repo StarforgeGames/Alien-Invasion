@@ -7,15 +7,15 @@ using Game.Entities;
 using Game.Utility;
 using Game.EventManagement.Events;
 
-namespace Game.Behaviours
+namespace Game.Behaviors
 {
-    class CollisionBehaviour : AEntityBasedBehaviour
+    class CollisionBehavior : AEntityBasedBehavior
     {
         // Attribute Keys
         public const string Key_IsPhysical = "IsPhysical";
         public const string Key_CollisionDamage = "CollisionDamage";
 
-        public CollisionBehaviour(Entity entity)
+        public CollisionBehavior(Entity entity)
             : base(entity)
         {
             handledEventTypes = new List<Type>() { };
@@ -36,15 +36,15 @@ namespace Game.Behaviours
                     continue;
                 }
 
-                Attribute<Entity> owner = entity[ProjectileBehaviour.Key_ProjectileOwner] as Attribute<Entity>;
-                Attribute<Entity> otherOwner = other[ProjectileBehaviour.Key_ProjectileOwner] as Attribute<Entity>;
+                Attribute<Entity> owner = entity[ProjectileBehavior.Key_ProjectileOwner] as Attribute<Entity>;
+                Attribute<Entity> otherOwner = other[ProjectileBehavior.Key_ProjectileOwner] as Attribute<Entity>;
                 if ((owner != null && owner.Value == other) || (otherOwner != null && otherOwner.Value == entity)) {
                     continue;
                 }
 
-                Attribute<Rectangle> otherBounds = other[SpatialBehaviour.Key_Bounds] as Attribute<Rectangle>;
+                Attribute<Rectangle> otherBounds = other[SpatialBehavior.Key_Bounds] as Attribute<Rectangle>;
                 if (isColliding(otherBounds)) {
-                    Console.WriteLine("[" + this.GetType().Name + "] " + entity.Name + " collided with " + other.Name
+                    Console.WriteLine("[" + this.GetType().Name + "] " + entity.Type + " collided with " + other.Type
                         + "!");
 
                     CollisionEvent collisionMsg = new CollisionEvent(
@@ -69,7 +69,7 @@ namespace Game.Behaviours
 
         private bool isColliding(Attribute<Rectangle> other)
         {
-            Attribute<Rectangle> bounds = entity[SpatialBehaviour.Key_Bounds] as Attribute<Rectangle>;
+            Attribute<Rectangle> bounds = entity[SpatialBehavior.Key_Bounds] as Attribute<Rectangle>;
 
             return bounds.Value.Left <= other.Value.Right
                 && bounds.Value.Top <= other.Value.Bottom

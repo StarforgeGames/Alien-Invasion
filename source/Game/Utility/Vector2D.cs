@@ -10,11 +10,6 @@ namespace Game.Utility
     /// </summary>
     class Vector2D
     {
-        /// <summary>
-        /// Zero Vector.
-        /// </summary>
-        public static readonly Vector2D Empty = new Vector2D(0, 0);
-
         public float X { get; set; }
         public float Y { get; set; }
 
