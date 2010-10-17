@@ -6,9 +6,9 @@ using System.Collections.ObjectModel;
 using Game.EventManagement.Events;
 using Game.Entities;
 
-namespace Game.Behaviours
+namespace Game.Behaviors
 {
-    class HealthBehaviour : AEntityBasedBehaviour
+    class HealthBehavior : AEntityBasedBehavior
     {
         // Attribute Keys
         public const string Key_Health = "Health";
@@ -18,7 +18,7 @@ namespace Game.Behaviours
 
         private float elapsedTime = 0f;
 
-        public HealthBehaviour(Entity entity)
+        public HealthBehavior(Entity entity)
             : base(entity)
         {
             handledEventTypes = new List<Type>() { typeof(DamageEvent), typeof(RespawnEntityEvent) };
@@ -51,7 +51,7 @@ namespace Game.Behaviours
                     elapsedTime = 0f;
                     isRespawning.Value = false;
 
-                    Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Name + " respawned.");
+                    Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type + " respawned.");
                 }
             }
 
@@ -84,14 +84,14 @@ namespace Game.Behaviours
 
                 if (lifes <= 0) {
                     EventManager.QueueEvent(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, entity.ID));
-                    Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Name
+                    Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type
                         + " died a horrible death!");
                 }
                 else {
                     RespawnEntityEvent respawnEvent = new RespawnEntityEvent(RespawnEntityEvent.RESPAWN_ENTITY,
                         entity.ID);
                     EventManager.QueueEvent(respawnEvent);
-                    Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Name
+                    Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type
                         + " lost a life. " + lifes + " lifes remaining. Respawning...");
                 }
             }

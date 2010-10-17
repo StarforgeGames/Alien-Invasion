@@ -7,15 +7,15 @@ using Game.EventManagement.Events;
 using Game.Entities;
 using Game.Utility;
 
-namespace Game.Behaviours
+namespace Game.Behaviors
 {
 
-    class ProjectileBehaviour : AEntityBasedBehaviour
+    class ProjectileBehavior : AEntityBasedBehavior
     {
         // Attribute Keys
         public const string Key_ProjectileOwner = "ProjectileOwner";
 
-        public ProjectileBehaviour(Entity entity)
+        public ProjectileBehavior(Entity entity)
             : base(entity)
         {
             handledEventTypes = new List<Type>() { typeof(CollisionEvent) };
@@ -25,12 +25,12 @@ namespace Game.Behaviours
 
         public override void OnUpdate(float deltaTime)
         {
-            Attribute<Rectangle> bounds = entity[SpatialBehaviour.Key_Bounds] as Attribute<Rectangle>;
+            Attribute<Rectangle> bounds = entity[SpatialBehavior.Key_Bounds] as Attribute<Rectangle>;
 
             if (bounds.Value.Top <= 0 || bounds.Value.Bottom >= entity.Game.WorldHeight) {
                 killEntity();
 
-                Console.WriteLine("[" + this.GetType().Name +"] " + entity.Name + " died in vain.");
+                Console.WriteLine("[" + this.GetType().Name +"] " + entity.Type + " died in vain.");
             }
         }
 
@@ -46,7 +46,7 @@ namespace Game.Behaviours
                 case CollisionEvent.ACTOR_COLLIDES: {
                     killEntity();
 
-                    Console.WriteLine("[" + this.GetType().Name +"] " + entity.Name + " died fulfilling its honorable "
+                    Console.WriteLine("[" + this.GetType().Name +"] " + entity.Type + " died fulfilling its honorable "
                         + "duty.");
                 }
                 break;

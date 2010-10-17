@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using Game.Behaviours;
+using Game.Behaviors;
 using Game.EventManagement.Events;
 using System;
 using Game.EventManagement;
+using System.Xml;
 
 namespace Game.Entities
 {
@@ -17,7 +18,7 @@ namespace Game.Entities
     {
         public EntityState State { get; set; }
 
-        public string Name { get; private set; }
+        public string Type { get; private set; }
         public GameLogic Game { get; private set; }
 
         public IEventManager EventManager { get; private set; }
@@ -28,7 +29,7 @@ namespace Game.Entities
         public int ID { get { return id; } }
 
         private Dictionary<string, object> attributes;
-        private List<IBehaviour> behaviours;
+        private List<IBehavior> behaviors;
 
         public object this[string key]
         { 
@@ -41,13 +42,11 @@ namespace Game.Entities
             set { attributes[key] = value;  } 
         }
 
-        public Entity(GameLogic game, string name)
+        public Entity(GameLogic game, string type)
         {
             State = EntityState.Active;
 
-            // that's the
-            this.Name = name; 
-            // of the
+            this.Type = type; 
             this.Game = game;
 
             EventManager = game.EventManager;
@@ -55,41 +54,62 @@ namespace Game.Entities
 
             id = nextEntityId++;
 
-            behaviours = new List<IBehaviour>();
+            behaviors = new List<IBehavior>();
             attributes = new Dictionary<string, object>();
         }
 
-        /// <summary>
-        /// Adds a new behaviour, registering it as listener to all supported messages as well.
-        /// </summary>
-        /// <param name="behaviour">The behaviour to add</param>
-        public void AddBehaviour(IBehaviour behaviour)
+        public void Load(string xmlFile)
         {
-            behaviours.Add(behaviour);
+            XmlDocument xml = new XmlDocument();
+            xml.Load(xmlFile);
 
-            foreach (Type type in behaviour.HandledEventTypes) {
+            XmlNode behaviorNode = xml.GetElementsByTagName("behaviors")[0];
+            foreach (XmlNode node in behaviorNode.ChildNodes) {
+                Type t = System.Type.GetType(typeof(IBehavior).Namespace + "." + node.Name);
+                object[] param = new object[] { this };
+                IBehavior b = Activator.CreateInstance(t, param) as IBehavior;
+
+                AddBehavior(b);
+            }
+            /*
+            XmlNode attributeNode = xml.GetElementsByTagName("attributes")[0];
+            foreach (XmlNode node in behaviorNode.ChildNodes) {
+                Type type = System.Type.GetType(node.Name);
+                Attribute<type.> attribute = this[node.Attributes["key"].Value] as Attribute<type.DeclaringType>;                
+            }*/
+        }
+
+        /// <summary>
+        /// Adds a new behavior, registering it as listener to all supported messages as well.
+        /// </summary>
+        /// <param name="behavior">The behavior to add</param>
+        public void AddBehavior(IBehavior behavior)
+        {
+            behaviors.Add(behavior);
+
+            foreach (Type type in behavior.HandledEventTypes) {
                 if (!listenerMap.ContainsKey(type)) {
                     listenerMap.Add(type, new List<IEventListener>());
                 }
 
-                listenerMap[type].Add(behaviour);
+                listenerMap[type].Add(behavior);
                 EventManager.AddListener(this, type);
             }
         }
 
         /// <summary>
-        /// Removes a behaviour and unregisters it as listener to events.
+        /// Removes a behavior and unregisters it as listener to events.
         /// </summary>
-        /// <param name="behaviour">The behaviour to remove</param>
+        /// <param name="behavior">The behavior to remove</param>
         /// <returns>True if removal was successful</returns>
-        public bool RemoveBehaviour(IBehaviour behaviour)
+        public bool RemoveBehavior(IBehavior behavior)
         {
-            foreach (Type type in behaviour.HandledEventTypes) {
-                listenerMap[type].Remove(behaviour);
+            foreach (Type type in behavior.HandledEventTypes) {
+                listenerMap[type].Remove(behavior);
                 EventManager.RemoveListener(this, type);
             }
 
-            return behaviours.Remove(behaviour);
+            return behaviors.Remove(behavior);
         }
 
         /// <summary>
@@ -106,7 +126,7 @@ namespace Game.Entities
         {
             EventManager.Tick();
 
-            foreach (IBehaviour b in behaviours) {
+            foreach (IBehavior b in behaviors) {
                 b.OnUpdate(deltaTime);
             }
         }
@@ -124,7 +144,7 @@ namespace Game.Entities
 
         public override string ToString()
         {
-            return Name + " (#" + ID + ")";
+            return Type + " (#" + ID + ")";
         }
     }
 
