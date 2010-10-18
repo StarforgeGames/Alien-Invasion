@@ -80,6 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extractor.cs" />
     <Compile Include="ResourceManagement\BasicEvent.cs" />
     <Compile Include="ResourceManagement\Loaders\EffectLoader.cs" />
     <Compile Include="ResourceManagement\Loaders\MaterialLoader.cs" />
