@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Game.Entities;
-using Game.Behaviours;
+using Game.Behaviors;
 using Game.EventManagement;
 using Game.EventManagement.Events;
 using Game.Utility;
@@ -13,7 +13,8 @@ namespace Game
         Active,
         Loading,
         Menu,
-        Paused
+        Paused,
+        GameOver
 
     }
 
@@ -48,7 +49,8 @@ namespace Game
         private void registerGameEventListeners()
         {
             EventManager.AddListener(this, typeof(CreateEntityEvent));
-            EventManager.AddListener(new EventLogger(), typeof(Event));
+            EventManager.AddListener(this, typeof(DestroyEntityEvent));
+            //EventManager.AddListener(new EventLogger(), typeof(Event));
         }
 
         public void ChangeState(GameState newState)
@@ -67,6 +69,8 @@ namespace Game
                     break;
                 case GameState.Paused:
                     break;
+                case GameState.GameOver:
+                    break;
             }
         }
 
@@ -75,13 +79,13 @@ namespace Game
             CreateEntityEvent evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, "player");
 
             float startX = WorldWidth / 2f - (75f / 2f);
-            float startY = WorldHeight / 2f - (75f / 2f);
+            float startY = WorldHeight - 100 - (75f / 2f);
             Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(startX, startY));
-            evt.AddAttribute(SpatialBehaviour.Key_Position, position);
+            evt.AddAttribute(SpatialBehavior.Key_Position, position);
 
             Rectangle rect = new Rectangle(position, 75, 75);
             Attribute<Rectangle> bounds = new Attribute<Rectangle>(rect);
-            evt.AddAttribute(SpatialBehaviour.Key_Bounds, bounds);
+            evt.AddAttribute(SpatialBehavior.Key_Bounds, bounds);
 
             EventManager.QueueEvent(evt);
         }
@@ -93,34 +97,31 @@ namespace Game
             float startX = WorldWidth / 2f - (75f / 2f);
             float startY = 100;
             Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(startX, startY));
-            evt.AddAttribute(SpatialBehaviour.Key_Position, position);
+            evt.AddAttribute(SpatialBehavior.Key_Position, position);
 
             Rectangle rect = new Rectangle(position, 75, 75);
             Attribute<Rectangle> bounds = new Attribute<Rectangle>(rect);
-            evt.AddAttribute(SpatialBehaviour.Key_Bounds, bounds);
+            evt.AddAttribute(SpatialBehavior.Key_Bounds, bounds);
 
             EventManager.QueueEvent(evt);
         }
 
         public void Update(float deltaTime)
         {
-            EventManager.Tick();
-            ProcessManager.OnUpdate(deltaTime);
-
             List<Entity> tmp = new List<Entity>(Entities.Values);
-
             foreach (Entity entity in tmp) {
                 switch (entity.State) {
                     case EntityState.Active:
                         entity.Update(deltaTime);
                         break;
-                    case EntityState.Dead:
-                        if (!entity.Name.Equals("player")) {
-                            Entities.Remove(entity.ID);
-                        }
+                    case EntityState.Inactive:
+                        entity.Update(deltaTime);
                         break;
                 }
             }
+
+            EventManager.Tick();
+            ProcessManager.OnUpdate(deltaTime);
         }
 
         public void OnEvent(Event evt)
@@ -131,8 +132,15 @@ namespace Game
 
             switch (evt.Type) {
                 case CreateEntityEvent.CREATE_ENTITY:
-                    CreateEntityEvent createEvent = (CreateEntityEvent) evt;
+                    CreateEntityEvent createEvent = evt as CreateEntityEvent;
                     addEntity(createEvent.EntityType, createEvent.Attributes);
+                    break;
+                case DestroyEntityEvent.DESTROY_ENTITY:
+                    DestroyEntityEvent destroyEvent = evt as DestroyEntityEvent;
+                    Entities.Remove(destroyEvent.EntityID);
+
+                    System.Console.WriteLine("[" + this.GetType().Name + "] Destroyed entity #" 
+                        + destroyEvent.EntityID);
                     break;
             }
         }

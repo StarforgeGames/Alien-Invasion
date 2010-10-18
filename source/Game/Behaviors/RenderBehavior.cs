@@ -4,15 +4,15 @@ using Game.EventManagement.Events;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Game.Behaviours
+namespace Game.Behaviors
 {
 
-    class RenderBehaviour : AEntityBasedBehaviour
+    class RenderBehavior : AEntityBasedBehavior
     {
         // Attribute Keys
         public const string Key_Sprite = "Sprite";
 
-        public RenderBehaviour(Entity entity)
+        public RenderBehavior(Entity entity)
             : base(entity)
         {
             handledEventTypes = new List<Type>();

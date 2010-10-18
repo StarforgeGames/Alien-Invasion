@@ -73,15 +73,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Behaviours\AEntityBasedBehaviour.cs" />
-    <Compile Include="Behaviours\CollisionBehaviour.cs" />
-    <Compile Include="Behaviours\CombatBehaviour.cs" />
-    <Compile Include="Behaviours\HealthBehaviour.cs" />
-    <Compile Include="Behaviours\IBehaviour.cs" />
-    <Compile Include="Behaviours\ProjectileBehaviour.cs" />
-    <Compile Include="Behaviours\RenderBehaviour.cs" />
-    <Compile Include="Behaviours\SpatialBehaviour.cs" />
-    <Compile Include="Entities\Actor.cs" />
+    <Compile Include="Behaviors\AEntityBasedBehavior.cs" />
+    <Compile Include="Behaviors\CollisionBehavior.cs" />
+    <Compile Include="Behaviors\CombatBehavior.cs" />
+    <Compile Include="Behaviors\HealthBehavior.cs" />
+    <Compile Include="Behaviors\IBehavior.cs" />
+    <Compile Include="Behaviors\ProjectileBehavior.cs" />
+    <Compile Include="Behaviors\RenderBehavior.cs" />
+    <Compile Include="Behaviors\SpatialBehavior.cs" />
     <Compile Include="Entities\Attribute.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityFactory.cs" />
@@ -94,6 +93,7 @@
     <Compile Include="EventManagement\Events\FireWeaponEvent.cs" />
     <Compile Include="EventManagement\Events\MoveEvent.cs" />
     <Compile Include="EventManagement\Events\NewEntityEvent.cs" />
+    <Compile Include="EventManagement\Events\RespawnEntityEvent.cs" />
     <Compile Include="EventManagement\SwappingEventManager.cs" />
     <Compile Include="EventManagement\IEventListener.cs" />
     <Compile Include="EventManagement\IEventManager.cs" />
@@ -104,7 +104,23 @@
     <Compile Include="Utility\Rectangle.cs" />
     <Compile Include="Utility\Vector2D.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="data\entities\alien_hammerhead.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\entities\alien_pincher.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\entities\alien_ray.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\entities\pewpew.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\entities\player.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

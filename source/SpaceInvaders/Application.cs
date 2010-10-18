@@ -58,6 +58,7 @@ namespace SpaceInvaders
             resourceManager.AddWiper(debugWiper);
 
             // some testing code
+            //resourceManager.GetResource("player", "texture");
             //using (var test1 = resourceManager.GetResource("player", "texture").Acquire())
             {
                 using (var test2 = resourceManager.GetResource("quad", "mesh").Acquire())

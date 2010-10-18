@@ -69,7 +69,7 @@ namespace SpaceInvaders.Views
                 case NewEntityEvent.NEW_ENTITY:
                     NewEntityEvent newEntityEvent = (NewEntityEvent)evt;
                     Entity entity = Game.Entities[newEntityEvent.EntityID];
-                    if (entity.Name == "player") {
+                    if (entity.Type == "player") {
                         OnAttach(entity);
                     }
                     break;
