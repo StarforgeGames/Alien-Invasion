@@ -13,7 +13,7 @@ namespace Graphics.ResourceManagement.Loaders
             get;
         }
 
-        AResource Default
+        ResourceHandle Default
         {
             get;
         }

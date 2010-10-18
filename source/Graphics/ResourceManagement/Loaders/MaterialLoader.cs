@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Graphics.ResourceManagement.Resources;
+using System.IO;
 
 namespace Graphics.ResourceManagement.Loaders
 {
@@ -20,14 +21,19 @@ namespace Graphics.ResourceManagement.Loaders
 
         protected override Resources.AResource doLoad(string name)
         {
-            MaterialResource res = new MaterialResource();
+            // not implemented yet:
+            // StringReader reader = new StringReader(File.ReadAllText(baseDirectory + name + extension));
 
-            throw new NotImplementedException();
+            // currently dummy code since true loading is not implemented yet.
+            MaterialResource res = new MaterialResource(
+                effectHandle: manager.GetResource("default", "effect"),
+                textureHandle: manager.GetResource(name, "texture"));
+            return res;
         }
 
         protected override void doUnload(Resources.AResource resource)
         {
-            throw new NotImplementedException();
+            // do nothing since the material resource does not consume much memory and will be collected by the gc.
         }
 
         public override string Type

@@ -26,6 +26,8 @@ namespace Graphics.ResourceManagement.Loaders
 
         protected override Resources.AResource doLoad(byte[] data)
         {
+
+            // currently dummy code since true loading is not implemented yet.
             MeshResource res = new MeshResource();
 
             using (var stream = new DataStream(6 * 4 * sizeof(float), true, true))

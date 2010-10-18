@@ -36,6 +36,10 @@ namespace Graphics.ResourceManagement
         {
             try
             {
+                if (identifier.Name == "default")
+                {
+                    return Loaders[identifier.Type].Default;
+                }
                 lock (resourceHandles)
                 {
                     var resourcesOfSameType = resourceHandles[identifier.Type];
@@ -120,14 +124,13 @@ namespace Graphics.ResourceManagement
                 }
                 wipers.Clear();
             }
-
-            lock (Loaders)
-            {
-                Loaders.Clear();
-            }
-
-            lock (resourceHandles)
-            {
+            /* removed locking since it may cause a deadlock when another thread loads
+             * resources while the manager is being disposed. this is not a bug in the
+             * application: the client has to stop using an object before calling
+             * dispose.
+             */
+//            lock (resourceHandles)
+  //          {
                 foreach (var handles in resourceHandles)
                 {
                     foreach (var handle in handles.Value)
@@ -144,7 +147,14 @@ namespace Graphics.ResourceManagement
                         evt2.Wait();
                     }
                 }
+    //        }
+
+            lock (Loaders)
+            {
+                Loaders.Clear();
             }
+
+            
         }
 
         #endregion

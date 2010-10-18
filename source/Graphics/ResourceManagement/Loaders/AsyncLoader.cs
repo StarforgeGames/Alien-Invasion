@@ -25,7 +25,7 @@ namespace Graphics.ResourceManagement.Loaders
             get { return loader.Type; }
         }
 
-        public AResource Default
+        public ResourceHandle Default
         {
             get { return loader.Default; }
         }

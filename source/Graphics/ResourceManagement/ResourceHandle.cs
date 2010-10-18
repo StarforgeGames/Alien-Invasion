@@ -56,12 +56,10 @@ namespace Graphics.ResourceManagement
                         return active.resource;
 
                     case ResourceState.Empty:
-                        resourceLoader.Default.Acquire();
-                        return resourceLoader.Default;
+                        return resourceLoader.Default.Acquire();
 
                     case ResourceState.Loading:
-                        resourceLoader.Default.Acquire();
-                        return resourceLoader.Default;
+                        return resourceLoader.Default.Acquire();
 
                     case ResourceState.Unloading:
                     default:
@@ -87,12 +85,10 @@ namespace Graphics.ResourceManagement
 
                     case ResourceState.Empty:
                         Load();
-                        resourceLoader.Default.Acquire();
-                        return resourceLoader.Default;
+                        return resourceLoader.Default.Acquire();
 
                     case ResourceState.Loading:
-                        resourceLoader.Default.Acquire();
-                        return resourceLoader.Default;
+                        return resourceLoader.Default.Acquire();
 
                     case ResourceState.Unloading:
                     default:
@@ -116,8 +112,15 @@ namespace Graphics.ResourceManagement
                         resourceLoader.Load(this);
                         return;
                     case ResourceState.Ready:
-                        inactive.state = ResourceState.Unloading;
-                        resourceLoader.Reload(this);
+                        if (inactive.resource.IsAcquired)
+                        {
+                            Interlocked.Decrement(ref pendingOperation);
+                        }
+                        else
+                        {
+                            inactive.state = ResourceState.Unloading;
+                            resourceLoader.Reload(this);
+                        }
                         return;
                     case ResourceState.Loading:
                         throw new NotSupportedException("tried to load resource while loading");
@@ -139,6 +142,7 @@ namespace Graphics.ResourceManagement
                     resourceLoader.Load(this, evt);
                     return;
                 case ResourceState.Ready:
+                    while (inactive.resource.IsAcquired) ;
                     resourceLoader.Reload(this, evt);
                     return;
                 case ResourceState.Loading:
@@ -157,16 +161,40 @@ namespace Graphics.ResourceManagement
                 switch (inactive.state)
                 {
                     case ResourceState.Ready:
-                        inactive.state = ResourceState.Unloading;
-                        resourceLoader.Unload(this);
+                        if (inactive.resource.IsAcquired)
+                        {
+                            Interlocked.Decrement(ref pendingOperation);
+                        }
+                        else
+                        {
+                            inactive.state = ResourceState.Unloading;
+                            resourceLoader.Unload(this);
+                        }
                         return;
+                        
                     case ResourceState.Empty:
                         switch (active.state)
                         {
                             case ResourceState.Ready:
-                                Swap();
-                                inactive.state = ResourceState.Unloading;
-                                resourceLoader.Unload(this);
+                                bool swapped = false;
+                                while (Interlocked.CompareExchange(ref pendingSlot, 1, 0) != 0) ;
+                                if (!active.resource.IsAcquired)
+                                {
+                                    ResourceProperties temp = active;
+                                    active = inactive;
+                                    inactive = temp;
+                                    swapped = true;
+                                }
+                                Interlocked.Decrement(ref pendingSlot);
+                                if (swapped)
+                                {
+                                    inactive.state = ResourceState.Unloading;
+                                    resourceLoader.Unload(this);
+                                }
+                                else
+                                {
+                                    Interlocked.Decrement(ref pendingOperation);
+                                }
                                 return;
                             case ResourceState.Empty:
                                 Interlocked.Decrement(ref pendingOperation);
@@ -197,6 +225,7 @@ namespace Graphics.ResourceManagement
             switch (inactive.state)
             {
                 case ResourceState.Ready:
+                    while (inactive.resource.IsAcquired) ;
                     inactive.state = ResourceState.Unloading;
                     resourceLoader.Unload(this, evt);
                     return;
@@ -204,9 +233,15 @@ namespace Graphics.ResourceManagement
                     switch (active.state)
                     {
                         case ResourceState.Ready:
-                            Swap();
+                            while (Interlocked.CompareExchange(ref pendingSlot, 1, 0) != 0) ;
+                            while (active.resource.IsAcquired) ;
+                            ResourceProperties temp = active;
+                            active = inactive;
+                            inactive = temp;
+                            Interlocked.Decrement(ref pendingSlot);
                             inactive.state = ResourceState.Unloading;
                             resourceLoader.Unload(this, evt);
+                            
                             return;
                         case ResourceState.Empty:
                             Interlocked.Decrement(ref pendingOperation);
