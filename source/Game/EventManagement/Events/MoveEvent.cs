@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Game.Behaviours;
+using Game.Behaviors;
 
 namespace Game.EventManagement.Events
 {

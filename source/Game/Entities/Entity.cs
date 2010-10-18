@@ -1,33 +1,38 @@
 ﻿using System.Collections.Generic;
-using Game.Behaviours;
+using Game.Behaviors;
 using Game.EventManagement.Events;
 using System;
 using Game.EventManagement;
+using System.Xml;
+using System.Reflection;
+using System.Globalization;
+using Game.Utility;
 
 namespace Game.Entities
 {
     public enum EntityState
     {
         Active,
-        Paused,
+        Inactive,
         Dead
     }
 
-    public class Entity
+    public class Entity : IEventListener
     {
         public EntityState State { get; set; }
 
-        public string Name { get; private set; }
+        public string Type { get; private set; }
         public GameLogic Game { get; private set; }
 
         public IEventManager EventManager { get; private set; }
+        private Dictionary<Type, List<IEventListener>> listenerMap;
 
         private static int nextEntityId = 1;
         private readonly int id;
         public int ID { get { return id; } }
 
         private Dictionary<string, object> attributes;
-        private List<IBehaviour> behaviours;
+        private List<IBehavior> behaviors;
 
         public object this[string key]
         { 
@@ -40,64 +45,115 @@ namespace Game.Entities
             set { attributes[key] = value;  } 
         }
 
-        public Entity(GameLogic game, string name)
+        public Entity(GameLogic game, string type)
         {
             State = EntityState.Active;
 
-            // that's the
-            this.Name = name; 
-            // of the
+            this.Type = type; 
             this.Game = game;
 
             EventManager = game.EventManager;
+            listenerMap = new Dictionary<Type, List<IEventListener>>();
+
             id = nextEntityId++;
 
-            behaviours = new List<IBehaviour>();
+            behaviors = new List<IBehavior>();
             attributes = new Dictionary<string, object>();
         }
 
-
-        #region Behaviours
-
-        /// <summary>
-        /// Adds a new behaviour, registering it as listener to all supported messages as well.
-        /// </summary>
-        /// <param name="behaviour">The behaviour to add</param>
-        public void AddBehaviour(IBehaviour behaviour)
+        public void Load(string xmlFile)
         {
-            behaviours.Add(behaviour);
+            XmlDocument xml = new XmlDocument();
+            xml.Load(xmlFile);
 
-            foreach (Type type in behaviour.HandledEventTypes) {
-                EventManager.AddListener(behaviour, type);
+            XmlNode behaviorNode = xml.GetElementsByTagName("behaviors")[0];
+            foreach (XmlNode node in behaviorNode.ChildNodes) {
+                Type t = System.Type.GetType(typeof(IBehavior).Namespace + "." + node.Name);
+                object[] param = new object[] { this };
+                IBehavior b = Activator.CreateInstance(t, param) as IBehavior;
+
+                AddBehavior(b);
+            }
+            
+            XmlNode attributeNode = xml.GetElementsByTagName("attributes")[0];
+            foreach (XmlNode node in attributeNode.ChildNodes) {
+                object attribute = this[node.Attributes["key"].Value];
+                PropertyInfo valueProp = attribute.GetType().GetProperty("Value");
+                object value = extractValue(node);
+
+                valueProp.SetValue(attribute, value, null);
+            }
+        }
+
+        private object extractValue(XmlNode node)
+        {
+            switch (node.Name) {
+                case "bool":
+                    bool b;
+                    bool.TryParse(node.InnerText, out b);
+                    return b;
+                case "string":
+                    return node.InnerText;
+                case "int":
+                    int i;
+                    int.TryParse(node.InnerText, out i);
+                    return i;
+                case "float":
+                    float f;
+                    float.TryParse(node.InnerText, NumberStyles.Number, 
+                        CultureInfo.InvariantCulture.NumberFormat, out f);
+                    return f;
+                case "double":
+                    double d;
+                    double.TryParse(node.InnerText, NumberStyles.Number,
+                        CultureInfo.InvariantCulture.NumberFormat, out d);
+                    return d;
+                case "Vector2D":
+                    float x;
+                    float.TryParse(node.SelectSingleNode("x").InnerText, NumberStyles.Number,
+                        CultureInfo.InvariantCulture.NumberFormat, out x);
+                    float y;
+                    float.TryParse(node.SelectSingleNode("y").InnerText, NumberStyles.Number,
+                        CultureInfo.InvariantCulture.NumberFormat, out y);
+                    Vector2D v = new Vector2D(x, y);
+                    return v;
+                default:
+                    return null;
             }
         }
 
         /// <summary>
-        /// Removes a behaviour and unregisters it as listener to events.
+        /// Adds a new behavior, registering it as listener to all supported messages as well.
         /// </summary>
-        /// <param name="behaviour">The behaviour to remove</param>
-        /// <returns>True if removal was successful</returns>
-        public bool RemoveBehaviour(IBehaviour behaviour)
+        /// <param name="behavior">The behavior to add</param>
+        public void AddBehavior(IBehavior behavior)
         {
-            foreach (Type type in behaviour.HandledEventTypes) {
-                EventManager.RemoveListener(behaviour, type);
-            }
+            behaviors.Add(behavior);
 
-            return behaviours.Remove(behaviour);
-        }
-
-        public void SendEvent(Event evt)
-        {
-            foreach (IBehaviour b in behaviours) {
-                if(b.HandledEventTypes.Contains(evt.GetType())) {
-                    b.OnEvent(evt);
+            foreach (Type type in behavior.HandledEventTypes) {
+                if (!listenerMap.ContainsKey(type)) {
+                    listenerMap.Add(type, new List<IEventListener>());
                 }
+
+                listenerMap[type].Add(behavior);
+                EventManager.AddListener(this, type);
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Removes a behavior and unregisters it as listener to events.
+        /// </summary>
+        /// <param name="behavior">The behavior to remove</param>
+        /// <returns>True if removal was successful</returns>
+        public bool RemoveBehavior(IBehavior behavior)
+        {
+            foreach (Type type in behavior.HandledEventTypes) {
+                listenerMap[type].Remove(behavior);
+                EventManager.RemoveListener(this, type);
+            }
 
-        #region Attributes
+            return behaviors.Remove(behavior);
+        }
 
         /// <summary>
         /// Adds a new attribute to this entity.
@@ -109,27 +165,29 @@ namespace Game.Entities
             attributes.Add(key, value);
         }
 
-        #endregion
-
         public void Update(float deltaTime)
         {
             EventManager.Tick();
 
-            foreach (IBehaviour b in behaviours) {
+            foreach (IBehavior b in behaviors) {
                 b.OnUpdate(deltaTime);
             }
         }
 
-        public void Kill()
+        public void OnEvent(Event evt)
         {
-            this.State = EntityState.Dead;
-            EventManager.QueueEvent(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, this.ID));
-            Console.WriteLine(this.ToString() + " was killed");
+            if(!listenerMap.ContainsKey(evt.GetType())) {
+                return;
+            }
+
+            foreach (IEventListener listener in listenerMap[evt.GetType()]) {
+                listener.OnEvent(evt);
+            }
         }
 
         public override string ToString()
         {
-            return Name + " (#" + ID + ")";
+            return Type + " (#" + ID + ")";
         }
     }
 

@@ -5,13 +5,13 @@ using Game.Entities;
 using Game.EventManagement.Events;
 using Game.Utility;
 
-namespace Game.Behaviours
+namespace Game.Behaviors
 {
     /// <summary>
     /// Behaviour that gives an entity the feature if having a position in the world and allowing it to move around
     /// in the world.
     /// </summary>
-    class SpatialBehaviour : AEntityBasedBehaviour
+    class SpatialBehavior : AEntityBasedBehavior
     {
         // Attribute Keys
         public const string Key_Position = "Position";
@@ -20,16 +20,18 @@ namespace Game.Behaviours
         public const string Key_Speed = "Speed";
         public const string Key_IsMoving = "IsMoving";
 
-        public SpatialBehaviour(Entity entity)
+        private float totalTime = 9999f;
+
+        public SpatialBehavior(Entity entity)
             : base (entity)
         {
             handledEventTypes = new List<Type>() { typeof(MoveEvent) };
 
-            Vector2D position = Vector2D.Empty;
+            Vector2D position = new Vector2D(0, 0);
             entity.AddAttribute(Key_Position, new Attribute<Vector2D>(position));
             Rectangle bounds = new Rectangle(position, 0, 0);
             entity.AddAttribute(Key_Bounds, new Attribute<Rectangle>(bounds));
-            entity.AddAttribute(Key_Orientation, new Attribute<Vector2D>(Vector2D.Empty));
+            entity.AddAttribute(Key_Orientation, new Attribute<Vector2D>(new Vector2D(0, 0)));
             entity.AddAttribute(Key_Speed, new Attribute<float>(0));
             entity.AddAttribute(Key_IsMoving, new Attribute<bool>(false));
         }
@@ -47,8 +49,12 @@ namespace Game.Behaviours
                 position.Value.Y += direction.Value.Y * speed * deltaTime;
                 checkBounds(position);
 
-                Console.WriteLine("[" + this.GetType().Name +"] " + entity.Name + " moved " + direction.ToString() 
-                    + " to (" + position.Value.X + "/" + position.Value.Y + ")");
+                totalTime += deltaTime;
+                if (totalTime >= 0.33f) {
+                    totalTime = 0f;
+                    Console.WriteLine("[" + this.GetType().Name + "] " + entity.Type + " moved " + direction.ToString()
+                        + " to (" + position.Value.X + "/" + position.Value.Y + ")");
+                }
             }
         }
 

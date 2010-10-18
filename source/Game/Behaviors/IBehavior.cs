@@ -3,10 +3,10 @@ using System.Collections.ObjectModel;
 using Game.EventManagement.Events;
 using Game.EventManagement;
 
-namespace Game.Behaviours
+namespace Game.Behaviors
 {
 
-    public interface IBehaviour : IEventListener
+    public interface IBehavior : IEventListener
     {
         ReadOnlyCollection<Type> HandledEventTypes { get; }
         IEventManager EventManager { get; }

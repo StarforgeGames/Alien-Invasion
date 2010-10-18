@@ -10,7 +10,7 @@ namespace Graphics
         public bool Extract 
         {
             private get;
-            public set;
+            set;
         }
         
 
