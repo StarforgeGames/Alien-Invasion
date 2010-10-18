@@ -148,9 +148,6 @@
     <Content Include="data\sprites\player.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="shaders\SimplePassThrough.fx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="data\meshes\default.mesh">
@@ -159,14 +156,17 @@
     <Content Include="data\meshes\quad.mesh">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Materials\default.material">
+    <Content Include="data\materials\default.material">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\shaders\default.fx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\shaders\SimplePassThrough.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="ResourceManagement\ClassDiagram1.cd" />
     <None Include="ResourceManagement\Loaders\Loaders.cd" />
-    <Content Include="shaders\default.fx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ResourceManagement\Debug\ResourceManagementMonitor.resx">
