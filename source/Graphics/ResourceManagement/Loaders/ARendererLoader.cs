@@ -11,7 +11,7 @@ namespace Graphics.ResourceManagement.Loaders
     public abstract class ARendererLoader<T> : IResourceLoader, IDisposable
     {
         protected Renderer renderer;
-        AResource defaultResource;
+        ResourceHandle defaultResource;
 
         public ARendererLoader(Renderer renderer)
         {
@@ -26,22 +26,9 @@ namespace Graphics.ResourceManagement.Loaders
 
         private void loadDefault()
         {
-            T data = ReadResourceWithName("default");
+            defaultResource = new ResourceHandle("default", this);
             IEvent evt = new BasicEvent();
-
-            renderer.commandQueue.Add(() =>
-            {
-                try
-                {
-                    defaultResource = doLoad(data);
-
-                    evt.Finish();
-                }
-                catch (Exception)
-                {
-                    evt.Abort();
-                }
-            });
+            defaultResource.Load(evt);
             EventState state = evt.Wait();
             if (state == EventState.Failed)
                 throw new NotSupportedException("Default Resource was not loaded properly");
@@ -67,7 +54,7 @@ namespace Graphics.ResourceManagement.Loaders
 
         abstract public string Type { get; }
 
-        public AResource Default
+        public ResourceHandle Default
         {
             get 
             {
@@ -262,11 +249,14 @@ namespace Graphics.ResourceManagement.Loaders
         {
             if (Default != null)
             {
+                IEvent evt = new BasicEvent();
+
                 renderer.commandQueue.Add(() =>
                 {
-                    doUnload(Default);
+                    defaultResource.Unload(evt);
                     defaultResource = null;
                 });
+                evt.Wait();
             }
         }
 

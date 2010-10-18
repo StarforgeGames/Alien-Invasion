@@ -18,14 +18,14 @@ namespace Graphics.ResourceManagement.Resources
             }
         }
 
-        public void Acquire()
+        public virtual void Acquire()
         {
             Interlocked.Increment(ref acquiredCount);
         }
 
         #region IDisposable Members
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             Interlocked.Decrement(ref acquiredCount);
         }

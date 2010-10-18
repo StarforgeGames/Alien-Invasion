@@ -47,7 +47,7 @@ namespace Graphics.ResourceManagement.Loaders
 
         public override string Type
         {
-            get { return "fx"; }
+            get { return "effect"; }
         }
     }
 }
