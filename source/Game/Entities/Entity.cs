@@ -4,6 +4,9 @@ using Game.EventManagement.Events;
 using System;
 using Game.EventManagement;
 using System.Xml;
+using System.Reflection;
+using System.Globalization;
+using Game.Utility;
 
 namespace Game.Entities
 {
@@ -71,12 +74,52 @@ namespace Game.Entities
 
                 AddBehavior(b);
             }
-            /*
+            
             XmlNode attributeNode = xml.GetElementsByTagName("attributes")[0];
-            foreach (XmlNode node in behaviorNode.ChildNodes) {
-                Type type = System.Type.GetType(node.Name);
-                Attribute<type.> attribute = this[node.Attributes["key"].Value] as Attribute<type.DeclaringType>;                
-            }*/
+            foreach (XmlNode node in attributeNode.ChildNodes) {
+                object attribute = this[node.Attributes["key"].Value];
+                PropertyInfo valueProp = attribute.GetType().GetProperty("Value");
+                object value = extractValue(node);
+
+                valueProp.SetValue(attribute, value, null);
+            }
+        }
+
+        private object extractValue(XmlNode node)
+        {
+            switch (node.Name) {
+                case "bool":
+                    bool b;
+                    bool.TryParse(node.InnerText, out b);
+                    return b;
+                case "string":
+                    return node.InnerText;
+                case "int":
+                    int i;
+                    int.TryParse(node.InnerText, out i);
+                    return i;
+                case "float":
+                    float f;
+                    float.TryParse(node.InnerText, NumberStyles.Number, 
+                        CultureInfo.InvariantCulture.NumberFormat, out f);
+                    return f;
+                case "double":
+                    double d;
+                    double.TryParse(node.InnerText, NumberStyles.Number,
+                        CultureInfo.InvariantCulture.NumberFormat, out d);
+                    return d;
+                case "Vector2D":
+                    float x;
+                    float.TryParse(node.SelectSingleNode("x").InnerText, NumberStyles.Number,
+                        CultureInfo.InvariantCulture.NumberFormat, out x);
+                    float y;
+                    float.TryParse(node.SelectSingleNode("y").InnerText, NumberStyles.Number,
+                        CultureInfo.InvariantCulture.NumberFormat, out y);
+                    Vector2D v = new Vector2D(x, y);
+                    return v;
+                default:
+                    return null;
+            }
         }
 
         /// <summary>
