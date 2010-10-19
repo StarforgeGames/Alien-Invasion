@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Entity>
+	<behaviors>
+		<SpatialBehavior />
+		<RenderBehavior />
+		<CombatBehavior />
+		<CollisionBehavior />
+		<HealthBehavior />
+	</behaviors>
+	<attributes>
+		<string key="Sprite">player.png</string>
+		<float key="Speed">150</float>
+		<float key="FiringSpeed">0.75</float>
+		<int key="Lifes">3</int>
+	</attributes>
+</Entity>
