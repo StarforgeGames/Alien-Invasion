@@ -18,6 +18,7 @@ namespace SpaceInvaders.Views
     {
         public GameLogic Game { get; private set; }
         public Renderer Renderer { get; private set; }
+        private Extractor extractor;
         public Form RenderForm { get; private set; }
 
         private GameMainMenu mainMenuControl;
@@ -38,12 +39,16 @@ namespace SpaceInvaders.Views
             RenderForm = new Form();
             RenderForm.Size = new Size(800, 600);
             RenderForm.Text = "Space Invaders";
+            RenderForm.BackColor = Color.Empty;
+
+            extractor = new Extractor(game);
+            Renderer = new Graphics.Renderer(RenderForm, extractor);
+
 
             mainMenuControl = new GameMainMenu(Game.EventManager);
             mainMenuControl.Location = new Point((RenderForm.Width - mainMenuControl.Width) / 2, 100); ;
             RenderForm.Controls.Add(mainMenuControl);
 
-            Renderer = new Graphics.Renderer(RenderForm);
             Renderer.Start();
 
             registerGameEventListeners();

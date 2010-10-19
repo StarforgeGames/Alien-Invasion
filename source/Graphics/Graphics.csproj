@@ -84,7 +84,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extractor.cs" />
+    <Compile Include="Extraction\Extractor.cs" />
+    <Compile Include="Extraction\RenderObject.cs" />
+    <Compile Include="Extraction\RenderObjects.cs" />
     <Compile Include="ResourceManagement\BasicEvent.cs" />
     <Compile Include="ResourceManagement\Loaders\EffectLoader.cs" />
     <Compile Include="ResourceManagement\Loaders\MaterialLoader.cs" />
