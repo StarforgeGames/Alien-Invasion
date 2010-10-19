@@ -81,13 +81,17 @@ namespace Graphics.ResourceManagement
                 {
                     case ResourceState.Ready:
                         active.resource.Acquire();
-                        return active.resource;
+                        AResource result = active.resource;
+                        Interlocked.Decrement(ref pendingSlot);
+                        return result;
 
                     case ResourceState.Empty:
+                        Interlocked.Decrement(ref pendingSlot);
                         Load();
                         return resourceLoader.Default.Acquire();
 
                     case ResourceState.Loading:
+                        Interlocked.Decrement(ref pendingSlot);
                         return resourceLoader.Default.Acquire();
 
                     case ResourceState.Unloading:
@@ -95,10 +99,11 @@ namespace Graphics.ResourceManagement
                         throw new NotSupportedException("Tried to acquire resource that is unloading.");
                 }
             }
-            finally
+            catch (Exception e)
             {
                 Interlocked.Decrement(ref pendingSlot);
-            } 
+                throw e;
+            }
         }
 
         public void Load()

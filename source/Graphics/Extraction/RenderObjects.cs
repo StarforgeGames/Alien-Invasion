@@ -22,7 +22,7 @@ namespace Graphics
 
         }
 
-        internal void SetCamera(Matrix camera)
+        public void SetCamera(Matrix camera)
         {
             this.camera = camera;
         }
