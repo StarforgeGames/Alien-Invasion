@@ -173,7 +173,7 @@ namespace Graphics
                         color);
 
                     swapChain.Present(0, PresentFlags.None);
-                    System.Threading.Thread.Sleep(1000);
+                    Thread.Sleep(1000);
                 }
                 catch (SlimDX.DXGI.DXGIException)
                 {
