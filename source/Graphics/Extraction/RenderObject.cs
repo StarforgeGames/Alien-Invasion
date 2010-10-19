@@ -8,6 +8,7 @@ namespace Graphics
 {
     class RenderObject
     {
+        ResourceHandle material, mesh;
         
     }
 }

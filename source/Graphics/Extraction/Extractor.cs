@@ -34,7 +34,7 @@ namespace Graphics
 
         public void ExtractSingle(Entity entity)
         {
-            
+            frontObjects.Add(null);
         }
 
 
@@ -43,6 +43,7 @@ namespace Graphics
             if (ExtractNext)
             {
                 frontObjects.Clear();
+                frontObjects.SetCamera();
                 foreach (var GameObject in game.Entities)
                 {
                     if (GameObject.Value["renderable"] != null)
