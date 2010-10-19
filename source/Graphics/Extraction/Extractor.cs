@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Graphics.ResourceManagement;
 using Game.Entities;
+using SlimDX;
 
 namespace Graphics
 {
@@ -43,7 +44,7 @@ namespace Graphics
             if (ExtractNext)
             {
                 frontObjects.Clear();
-                frontObjects.SetCamera();
+                frontObjects.SetCamera(new Matrix());
                 foreach (var GameObject in game.Entities)
                 {
                     if (GameObject.Value["renderable"] != null)

@@ -46,7 +46,7 @@ namespace SpaceInvaders
             resourceManager = new ResourceManager(new ThreadPoolExecutor());
             resourceManager.AddLoader(new MaterialLoader(resourceManager));
 
-            resourceManager.AddLoader(new DummyLoader());
+         //   resourceManager.AddLoader(new DummyLoader());
 
             foreach (var rendererLoader in rendererLoaders)
             {
@@ -55,7 +55,7 @@ namespace SpaceInvaders
 
             
 
-            resourceManager.AddWiper(debugWiper);
+           // resourceManager.AddWiper(debugWiper);
 
             // some testing code
             //resourceManager.GetResource("player", "texture");

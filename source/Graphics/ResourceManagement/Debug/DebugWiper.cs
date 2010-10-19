@@ -10,7 +10,7 @@ namespace Graphics.ResourceManagement.Debug
     public class DebugWiper : AWiper
     {
         ResourceManagementMonitor monitor;
-        Thread[] timers = new Thread[30];
+        Thread[] timers = new Thread[0];
         
         bool running = true;
 
@@ -49,7 +49,7 @@ namespace Graphics.ResourceManagement.Debug
         void t_Elapsed()
         {
             Random rand = new Random(Thread.CurrentThread.ManagedThreadId);
-            time = rand.Next(50, 200);
+            time = rand.Next(5000, 10000);
             while (running)
             {
                 int index1 = rand.Next(resources.Count);
