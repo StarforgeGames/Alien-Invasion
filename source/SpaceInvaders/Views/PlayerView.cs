@@ -17,6 +17,7 @@ namespace SpaceInvaders.Views
     {
         public GameLogic Game { get; private set; }
         public Renderer Renderer { get; private set; }
+        private Extractor extractor;
         public Form RenderForm { get; private set; }
 
         public GameViewType Type { get { return GameViewType.PlayerView; } }
@@ -35,8 +36,12 @@ namespace SpaceInvaders.Views
             RenderForm = new Form();
             RenderForm.Size = new Size(800, 600);
             RenderForm.Text = "Space Invaders";
+            RenderForm.BackColor = Color.Empty;
 
-            Renderer = new Graphics.Renderer(RenderForm);
+            extractor = new Extractor(game);
+            Renderer = new Graphics.Renderer(RenderForm, extractor);
+
+
             Renderer.Start();
 
             registerGameEventListeners();
