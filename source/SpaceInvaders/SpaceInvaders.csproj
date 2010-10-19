@@ -161,11 +161,20 @@
     <Compile Include="Dx10Application.cs" />
     <Compile Include="Input\IKeyboardHandler.cs" />
     <Compile Include="Input\PlayerController.cs" />
+    <Compile Include="Controls\GameMainMenu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\GameMainMenu.Designer.cs">
+      <DependentUpon>GameMainMenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\GameTimer.cs" />
     <Compile Include="Views\IGameView.cs" />
     <Compile Include="Views\PlayerView.cs" />
+    <EmbeddedResource Include="Controls\GameMainMenu.resx">
+      <DependentUpon>GameMainMenu.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -196,6 +205,11 @@
       <Project>{272620DF-6615-4809-AFD8-B9F277307120}</Project>
       <Name>Graphics</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="data\images\menu_title.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,7 +7,7 @@
 		<CollisionBehavior />
 	</behaviors>
 	<attributes>
-		<string key="Sprite">data\sprites\pewpew.png</string>
+		<string key="Sprite">pewpew.png</string>
 		<float key="Speed">300</float>
 		<bool key="IsMoving">true</bool>
 		<Vector2D key="Orientation">

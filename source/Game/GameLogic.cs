@@ -10,11 +10,13 @@ namespace Game
 {
     public enum GameState
     {
-        Active,
-        Loading,
+        StartUp,
         Menu,
+        Loading,
+        InGame,
         Paused,
-        GameOver
+        GameOver,
+        Quit
 
     }
 
@@ -33,6 +35,7 @@ namespace Game
 
         public GameLogic(int worldWidth, int worldHeight)
         {
+            State = GameState.StartUp;
             this.WorldWidth = worldWidth;
             this.WorldHeight = worldHeight;
 
@@ -41,7 +44,6 @@ namespace Game
 
             Entities = new Dictionary<int, Entity>();
             EntityFactory = new EntityFactory(this);
-            State = GameState.Menu;
 
             registerGameEventListeners();
         }
@@ -58,20 +60,22 @@ namespace Game
             this.State = newState;
 
             switch (newState) {
-                case GameState.Active:
+                case GameState.Menu:
                     break;
                 case GameState.Loading:
                     createAndInitializePlayer();
                     createAndInitializeAliens();
-                    ChangeState(GameState.Active);
+                    ChangeState(GameState.InGame);
                     break;
-                case GameState.Menu:
+                case GameState.InGame:
                     break;
                 case GameState.Paused:
                     break;
                 case GameState.GameOver:
                     break;
             }
+
+            EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED, newState));
         }
 
         private void createAndInitializePlayer()

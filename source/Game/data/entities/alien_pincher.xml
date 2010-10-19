@@ -8,7 +8,7 @@
 		<HealthBehavior />
 	</behaviors>
 	<attributes>
-		<string key="Sprite">data\sprites\alien_pincher.png</string>
+		<string key="Sprite">alien_pincher.png</string>
 		<float key="Speed">75</float>
 		<float key="FiringSpeed">0.75</float>
 	</attributes>

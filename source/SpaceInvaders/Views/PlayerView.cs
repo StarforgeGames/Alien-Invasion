@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using Game.EventManagement.Events;
 using Game;
+using SpaceInvaders.Menus;
 
 namespace SpaceInvaders.Views
 {
@@ -18,6 +19,8 @@ namespace SpaceInvaders.Views
         public GameLogic Game { get; private set; }
         public Renderer Renderer { get; private set; }
         public Form RenderForm { get; private set; }
+
+        private GameMainMenu mainMenuControl;
 
         public GameViewType Type { get { return GameViewType.PlayerView; } }
         public int ID
@@ -36,6 +39,10 @@ namespace SpaceInvaders.Views
             RenderForm.Size = new Size(800, 600);
             RenderForm.Text = "Space Invaders";
 
+            mainMenuControl = new GameMainMenu(Game);
+            mainMenuControl.Location = new Point((RenderForm.Width - mainMenuControl.Width) / 2, 100); ;
+            RenderForm.Controls.Add(mainMenuControl);
+
             Renderer = new Graphics.Renderer(RenderForm);
             Renderer.Start();
 
@@ -45,6 +52,7 @@ namespace SpaceInvaders.Views
         private void registerGameEventListeners()
         {
             Game.EventManager.AddListener(this, typeof(NewEntityEvent));
+            Game.EventManager.AddListener(this, typeof(GameStateChangedEvent));
         }
 
         public void OnUpdate(float deltaTime)
@@ -72,6 +80,33 @@ namespace SpaceInvaders.Views
                     if (entity.Type == "player") {
                         OnAttach(entity);
                     }
+                    break;
+                case GameStateChangedEvent.GAME_STATE_CHANGED:
+                    GameStateChangedEvent stateChangedEvent = (GameStateChangedEvent)evt;
+                    onGameStateChanged(stateChangedEvent.NewState);
+                    break;
+            }
+        }
+
+        private void onGameStateChanged(GameState newState)
+        {
+            switch (newState) {
+                case GameState.StartUp:
+                    mainMenuControl.Visible = false;
+                    break;
+                case GameState.Menu:
+                    mainMenuControl.Visible = true;
+                    break;
+                case GameState.Loading:
+                    mainMenuControl.Visible = false;
+                    break;
+                case GameState.InGame:
+                    break;
+                case GameState.Paused:
+                    break;
+                case GameState.GameOver:
+                    break;
+                default:
                     break;
             }
         }
