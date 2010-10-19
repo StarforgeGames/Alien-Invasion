@@ -11,6 +11,7 @@ namespace Game.Behaviors
     {
         // Attribute Keys
         public const string Key_Sprite = "Sprite";
+        public const string Key_Renderable = "renderable";
 
         public RenderBehavior(Entity entity)
             : base(entity)
@@ -18,6 +19,7 @@ namespace Game.Behaviors
             handledEventTypes = new List<Type>();
 
             entity.AddAttribute(Key_Sprite, new Attribute<string>(String.Empty));
+            entity.AddAttribute(Key_Renderable, new Attribute<bool>(true));
         }
 
         public override void OnUpdate(float deltaTime)

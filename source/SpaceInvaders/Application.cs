@@ -47,7 +47,7 @@ namespace SpaceInvaders
             resourceManager = new ResourceManager(new ThreadPoolExecutor());
             resourceManager.AddLoader(new MaterialLoader(resourceManager));
            
-            resourceManager.AddLoader(new DummyLoader());
+         //   resourceManager.AddLoader(new DummyLoader());
 
             foreach (var rendererLoader in rendererLoaders)
             {
@@ -56,19 +56,19 @@ namespace SpaceInvaders
 
 
 
-            resourceManager.AddWiper(debugWiper);
+           // resourceManager.AddWiper(debugWiper);
 
             // some testing code
             //resourceManager.GetResource("player", "texture");
             //using (var test1 = resourceManager.GetResource("player", "texture").Acquire())
-            /*{
+            {
                 using (var test2 = resourceManager.GetResource("quad", "mesh").Acquire())
                 {
                     using (var test3 = resourceManager.GetResource("SimplePassThrough", "effect").Acquire())
                     {
                     }
                 }
-            }*/
+            }
 
             /*resourceManager.GetResource("default", "material");
             resourceManager.GetResource("player", "material");*/
