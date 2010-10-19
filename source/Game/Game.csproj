@@ -82,8 +82,11 @@
     <Compile Include="Behaviors\RenderBehavior.cs" />
     <Compile Include="Behaviors\SpatialBehavior.cs" />
     <Compile Include="Entities\Attribute.cs" />
+    <Compile Include="Entities\AttributeParser\MaterialParser.cs" />
+    <Compile Include="Entities\AttributeParser\Vector2DParser.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityFactory.cs" />
+    <Compile Include="Entities\AttributeLoader.cs" />
     <Compile Include="EventManagement\Debug\EventLogger.cs" />
     <Compile Include="EventManagement\Events\CollisionEvent.cs" />
     <Compile Include="EventManagement\Events\CreateEntityEvent.cs" />
@@ -122,6 +125,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

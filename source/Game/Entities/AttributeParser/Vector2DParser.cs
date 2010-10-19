@@ -1,0 +1,26 @@
+﻿using System.Globalization;
+using System.Xml;
+using Game.Utility;
+
+namespace Game.Entities.AttributeParser
+{
+
+    static class Vector2DParser
+    {
+        public static string Type
+        {
+            get { return "Vector2D"; }
+        }
+
+        public static object Parse(XmlNode node)
+        {
+            float x = float.Parse(node.SelectSingleNode("x").InnerText, NumberStyles.Number,
+                        CultureInfo.InvariantCulture.NumberFormat);
+            float y = float.Parse(node.SelectSingleNode("y").InnerText, NumberStyles.Number,
+                CultureInfo.InvariantCulture.NumberFormat);
+
+            return new Vector2D(x, y);
+        }
+    }
+
+}
