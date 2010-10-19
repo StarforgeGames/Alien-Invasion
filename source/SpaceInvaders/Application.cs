@@ -8,6 +8,7 @@ using Graphics.ResourceManagement.Wipers;
 using SlimDX.Windows;
 using SpaceInvaders.Views;
 using System;
+using Game.EventManagement;
 
 namespace SpaceInvaders
 {
@@ -75,8 +76,8 @@ namespace SpaceInvaders
             //resourceManager.GetResource("quad", "mesh").Acquire();
             
             // end of testing code
-
-            Game.ChangeState(GameState.Menu);
+            Game.EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
+                        GameState.Menu));
         }
 
         public void Update(float deltaTime)

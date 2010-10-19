@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using Game.EventManagement;
 using Game.EventManagement.Events;
 using Game.Entities;
+using Game;
 
 namespace SpaceInvaders.Input
 {
@@ -76,6 +77,10 @@ namespace SpaceInvaders.Input
                     break;
                 case Keys.Space:
                     eventManager.QueueEvent(new FireWeaponEvent(FireWeaponEvent.STOP_FIRING, playerEntity.ID));
+                    break;
+                case Keys.Escape:
+                    eventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
+                        GameState.Menu));
                     break;
             }
         }

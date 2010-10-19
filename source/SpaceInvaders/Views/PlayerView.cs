@@ -39,7 +39,7 @@ namespace SpaceInvaders.Views
             RenderForm.Size = new Size(800, 600);
             RenderForm.Text = "Space Invaders";
 
-            mainMenuControl = new GameMainMenu(Game);
+            mainMenuControl = new GameMainMenu(Game.EventManager);
             mainMenuControl.Location = new Point((RenderForm.Width - mainMenuControl.Width) / 2, 100); ;
             RenderForm.Controls.Add(mainMenuControl);
 
@@ -92,13 +92,13 @@ namespace SpaceInvaders.Views
         {
             switch (newState) {
                 case GameState.StartUp:
-                    mainMenuControl.Visible = false;
+                    hideControl(mainMenuControl);
                     break;
                 case GameState.Menu:
-                    mainMenuControl.Visible = true;
+                    showControl(mainMenuControl);
                     break;
                 case GameState.Loading:
-                    mainMenuControl.Visible = false;
+                    hideControl(mainMenuControl);
                     break;
                 case GameState.InGame:
                     break;
@@ -106,9 +106,26 @@ namespace SpaceInvaders.Views
                     break;
                 case GameState.GameOver:
                     break;
+                case GameState.Quit:
+                    RenderForm.Close();
+                    break;
                 default:
                     break;
             }
+        }
+
+        private void showControl(Control control)
+        {
+            control.Enabled = true;
+            control.Visible = true;
+            control.Focus();
+        }
+
+        private void hideControl(Control control)
+        {
+            control.Enabled = false;
+            control.Visible = false;
+            RenderForm.Focus();
         }
 
         public void Dispose()
