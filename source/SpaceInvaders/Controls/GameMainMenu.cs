@@ -1,35 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Game;
+using Game.EventManagement;
 using Game.EventManagement.Events;
 
 namespace SpaceInvaders.Menus
 {
     public partial class GameMainMenu : UserControl
     {
-        public GameLogic Game { get; set; }
+        private IEventManager eventManager { get; set; }
 
-        public GameMainMenu(GameLogic game)
+        public GameMainMenu(IEventManager eventManager)
         {
             InitializeComponent();
 
-            this.Game = game;
+            this.eventManager = eventManager;
         }
 
         private void NewGameButton_Click(object sender, EventArgs e)
         {
-            Game.ChangeState(GameState.Loading);
+            eventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED, 
+                GameState.Loading));
         }
 
         private void QuitButton_Click(object sender, EventArgs e)
         {
-            Game.ChangeState(GameState.Quit);
+            eventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED, 
+                GameState.Quit));
         }
     }
 }

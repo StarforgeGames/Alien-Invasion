@@ -24,7 +24,7 @@ namespace Game
     {
         public GameState State { get; set; }
 
-        public SwappingEventManager EventManager { get; private set; }
+        public IEventManager EventManager { get; private set; }
         public ProcessManager ProcessManager { get; private set; }
 
         public Dictionary<int, Entity> Entities { get; private set; }
@@ -50,12 +50,13 @@ namespace Game
 
         private void registerGameEventListeners()
         {
+            EventManager.AddListener(this, typeof(GameStateChangedEvent));
             EventManager.AddListener(this, typeof(CreateEntityEvent));
             EventManager.AddListener(this, typeof(DestroyEntityEvent));
             //EventManager.AddListener(new EventLogger(), typeof(Event));
         }
 
-        public void ChangeState(GameState newState)
+        private void changeState(GameState newState)
         {
             this.State = newState;
 
@@ -65,7 +66,9 @@ namespace Game
                 case GameState.Loading:
                     createAndInitializePlayer();
                     createAndInitializeAliens();
-                    ChangeState(GameState.InGame);
+
+                    EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
+                        GameState.InGame));
                     break;
                 case GameState.InGame:
                     break;
@@ -74,8 +77,6 @@ namespace Game
                 case GameState.GameOver:
                     break;
             }
-
-            EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED, newState));
         }
 
         private void createAndInitializePlayer()
@@ -145,6 +146,10 @@ namespace Game
 
                     System.Console.WriteLine("[" + this.GetType().Name + "] Destroyed entity #" 
                         + destroyEvent.EntityID);
+                    break;
+                case GameStateChangedEvent.GAME_STATE_CHANGED:
+                    GameStateChangedEvent stateChangedEvent = evt as GameStateChangedEvent;
+                    changeState(stateChangedEvent.NewState);
                     break;
             }
         }
