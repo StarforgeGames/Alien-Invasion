@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Entity>
+	<behaviors>
+		<SpatialBehavior />
+		<RenderBehavior />
+		<CombatBehavior />
+		<CollisionBehavior />
+		<HealthBehavior />
+	</behaviors>
+	<attributes>
+		<string key="Sprite">alien_ray.png</string>
+		<float key="Speed">75</float>
+		<float key="FiringSpeed">0.75</float>
+	</attributes>
+</Entity>
