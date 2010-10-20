@@ -143,7 +143,7 @@ namespace Game.Entities
         /// </summary>
         /// <param name="value">Value of the new attribute</param>
         /// <returns>Unique identifier for this attribute</returns>
-        public void AddAttribute(string key, object value)
+        public void AddAttribute<T>(string key, Attribute<T> value)
         {
             attributes.Add(key, value);
         }

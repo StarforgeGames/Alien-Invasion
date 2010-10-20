@@ -126,6 +126,7 @@
     </Content>
     <Content Include="data\entities\player.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup />

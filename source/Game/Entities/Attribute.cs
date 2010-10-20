@@ -1,7 +1,7 @@
 ﻿namespace Game.Entities
 {
 
-    internal class Attribute<T>
+    public class Attribute<T>
     {
         public T Value { get; set; }
 
