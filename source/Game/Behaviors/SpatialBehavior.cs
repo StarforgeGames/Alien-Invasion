@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Game.Entities;
 using Game.EventManagement.Events;
 using Game.Utility;
@@ -24,8 +23,6 @@ namespace Game.Behaviors
         public SpatialBehavior(Entity entity)
             : base (entity)
         {
-            handledEventTypes = new List<Type>() { typeof(MoveEvent) };
-
             Vector2D position = new Vector2D(0, 0);
             entity.AddAttribute(Key_Position, new Attribute<Vector2D>(position));
             Rectangle bounds = new Rectangle(position, 0, 0);
@@ -33,6 +30,11 @@ namespace Game.Behaviors
             entity.AddAttribute(Key_Orientation, new Attribute<Vector2D>(new Vector2D(0, 0)));
             entity.AddAttribute(Key_Speed, new Attribute<float>(0));
             entity.AddAttribute(Key_IsMoving, new Attribute<bool>(false));
+        }
+
+        protected override void initializeHandledEventTypes()
+        {
+            handledEventTypes.Add(typeof(MoveEvent));
         }
 
         public override void OnUpdate(float deltaTime)

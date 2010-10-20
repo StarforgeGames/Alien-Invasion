@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using Game.EventManagement.Events;
 using Game.EventManagement;
 
 namespace Game.Behaviors

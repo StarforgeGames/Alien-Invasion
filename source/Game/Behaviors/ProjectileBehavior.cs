@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Game.Entities;
 using Game.EventManagement.Events;
 using Game.Utility;
@@ -15,8 +14,6 @@ namespace Game.Behaviors
         public ProjectileBehavior(Entity entity)
             : base(entity)
         {
-            handledEventTypes = new List<Type>() { typeof(CollisionEvent) };
-
             entity.AddAttribute(Key_ProjectileOwner, new Attribute<Entity>(null));
         }
 
@@ -29,6 +26,11 @@ namespace Game.Behaviors
 
                 Console.WriteLine("[" + this.GetType().Name +"] " + entity.Type + " died in vain.");
             }
+        }
+
+        protected override void initializeHandledEventTypes()
+        {
+            handledEventTypes.Add(typeof(CollisionEvent));
         }
 
         private void killEntity()

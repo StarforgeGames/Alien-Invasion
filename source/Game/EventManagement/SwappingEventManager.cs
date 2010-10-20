@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Game.EventManagement.Events;
 using Game.Entities;
+using Game.EventManagement.Events;
 
 namespace Game.EventManagement
 {
@@ -17,7 +15,7 @@ namespace Game.EventManagement
             get { return queues[activeQueueId]; }
         }
 
-        private Dictionary<Type, List<IEventListener>> listenerMap;
+        private Dictionary<Type, List<IEventListener>> listenerMap = new Dictionary<Type, List<IEventListener>>();
         private List<Event>[] queues;
 
         private GameLogic game;
@@ -25,8 +23,6 @@ namespace Game.EventManagement
         public SwappingEventManager(GameLogic game)
         {
             this.game = game;
-
-            listenerMap = new Dictionary<Type, List<IEventListener>>();
 
             queues = new List<Event>[numOfQueues];
             for (int i = 0; i < numOfQueues; i++) {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Game.Entities;
-
-namespace Game.EventManagement.Events
+﻿namespace Game.EventManagement.Events
 {
 
     public class CollisionEvent : Event

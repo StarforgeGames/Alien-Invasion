@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Game.Behaviors;
-using Game.EventManagement.Events;
-using Game.Utility;
 using Game.Entities.AttributeLoader;
 using Game.EventManagement;
+using Game.EventManagement.Events;
 
 namespace Game.Entities
 {
@@ -15,13 +11,12 @@ namespace Game.Entities
     {
         private GameLogic game;
         private IEventManager eventManager;
-        private IAttributeLoader attributeLoader;
+        private IAttributeLoader attributeLoader = new DefaultAttributeLoader();
 
         public EntityFactory(GameLogic game)
         {
             this.game = game;
             this.eventManager = game.EventManager;
-            this.attributeLoader = new DefaultAttributeLoader();
         }
 
         public Entity New(string id, Dictionary<string, object> customAttributes = null)

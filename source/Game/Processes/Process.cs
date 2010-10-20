@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Game.Processes
+﻿namespace Game.Processes
 {
     public abstract class Process
     {
@@ -19,7 +14,6 @@ namespace Game.Processes
         public Process()
         {
             IsActive = true;
-            IsPaused = false;
         }
 
         public abstract void OnInitialize();

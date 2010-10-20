@@ -8,14 +8,13 @@ namespace Game.Entities.AttributeLoader
 
     class DefaultAttributeLoader : IAttributeLoader
     {
-        private List<IAttributeParser> parsers;
+        private List<IAttributeParser> parsers = new List<IAttributeParser>();
 
         private delegate object Parser(XmlNode node);
-        private static Dictionary<string, Parser> loaderMap = new Dictionary<string, Parser>();
+        private Dictionary<string, Parser> loaderMap = new Dictionary<string, Parser>();
 
         public DefaultAttributeLoader()
         {
-            parsers = new List<IAttributeParser>();
             parsers.Add(new MaterialParser());
             parsers.Add(new Vector2DParser());
 
@@ -35,7 +34,7 @@ namespace Game.Entities.AttributeLoader
                 throw new NotSupportedException("No loader for attribute type: '" + node.Name + "' available");
             }
 
-            return loaderMap[node.Name].Invoke(node);
+            return loaderMap[node.Name](node);
         }
     }
 
