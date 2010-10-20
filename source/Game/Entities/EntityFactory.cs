@@ -12,6 +12,7 @@ namespace Game.Entities
     public class EntityFactory
     {
         private GameLogic game;
+        private AttributeLoader loader = new AttributeLoader();
 
         public EntityFactory(GameLogic game)
         {
@@ -21,7 +22,7 @@ namespace Game.Entities
         public Entity New(string id, Dictionary<string, object> customAttributes = null)
         {
             Entity entity = new Entity(game, id);
-            entity.Load(@"data\entities\" + id + ".xml");
+            entity.Load(loader, @"data\entities\" + id + ".xml");
 
             Console.WriteLine("[" + this.GetType().Name + "] Created entity " + entity);
 
