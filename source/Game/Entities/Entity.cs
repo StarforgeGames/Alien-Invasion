@@ -29,10 +29,10 @@ namespace Game.Entities
         public GameLogic Game { get; private set; }
 
         public IEventManager EventManager { get; private set; }
-        private Dictionary<Type, List<IEventListener>> listenerMap;
+        private Dictionary<Type, List<IEventListener>> listenerMap = new Dictionary<Type, List<IEventListener>>();
 
-        private Dictionary<string, object> attributes;
-        private List<IBehavior> behaviors;
+        private Dictionary<string, object> attributes = new Dictionary<string, object>();
+        private List<IBehavior> behaviors = new List<IBehavior>();
 
         public object this[string key]
         { 
@@ -55,10 +55,6 @@ namespace Game.Entities
             id = nextEntityId++;
 
             EventManager = game.EventManager;
-            listenerMap = new Dictionary<Type, List<IEventListener>>();
-
-            behaviors = new List<IBehavior>();
-            attributes = new Dictionary<string, object>();
         }
 
         internal void Load(IAttributeLoader attributeLoader, string xmlFile)

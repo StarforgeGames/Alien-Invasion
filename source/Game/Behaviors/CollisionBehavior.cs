@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Game.Entities;
 using Game.EventManagement.Events;
 using Game.Utility;
@@ -15,8 +14,6 @@ namespace Game.Behaviors
         public CollisionBehavior(Entity entity)
             : base(entity)
         {
-            handledEventTypes = new List<Type>() { };
-
             entity.AddAttribute(Key_IsPhysical, new Attribute<bool>(true));
             entity.AddAttribute(Key_CollisionDamage, new Attribute<int>(1));
         }

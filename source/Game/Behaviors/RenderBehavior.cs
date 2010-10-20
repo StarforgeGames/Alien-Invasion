@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Game.Entities;
 using Game.EventManagement.Events;
 
@@ -16,8 +15,6 @@ namespace Game.Behaviors
         public RenderBehavior(Entity entity)
             : base(entity)
         {
-            handledEventTypes = new List<Type>();
-
             entity.AddAttribute(Key_Sprite, new Attribute<string>(String.Empty));
             entity.AddAttribute(Key_Material, new Attribute<string>(String.Empty));
             entity.AddAttribute(Key_IsRenderable, new Attribute<bool>(true));

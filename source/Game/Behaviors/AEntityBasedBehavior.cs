@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Game.Entities;
 using System.Collections.ObjectModel;
-using Game.EventManagement.Events;
+using Game.Entities;
 using Game.EventManagement;
+using Game.EventManagement.Events;
 
 namespace Game.Behaviors
 {
@@ -16,7 +14,7 @@ namespace Game.Behaviors
 
         public IEventManager EventManager { get; private set; }
 
-        protected List<Type> handledEventTypes;
+        protected List<Type> handledEventTypes = new List<Type>();
         public ReadOnlyCollection<Type> HandledEventTypes
         {
             get { return handledEventTypes.AsReadOnly(); }
@@ -26,7 +24,12 @@ namespace Game.Behaviors
         {
             this.entity = entity;
             this.EventManager = entity.EventManager;
+
+            initializeHandledEventTypes();
         }
+
+        protected virtual void initializeHandledEventTypes()
+        { }
 
         public abstract void OnUpdate(float deltaTime);
         public abstract void OnEvent(Event evt);

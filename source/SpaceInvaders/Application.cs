@@ -23,7 +23,7 @@ namespace SpaceInvaders
         public List<IGameView> Views { get; private set; }
 
         private GameTimer timer = new GameTimer();
-        private ResourceManager resourceManager;
+        private ResourceManager resourceManager = new ResourceManager(new ThreadPoolExecutor());
         
         private List<IResourceLoader> rendererLoaders = new List<IResourceLoader>();
 
@@ -31,8 +31,6 @@ namespace SpaceInvaders
 
         public Application()
         {
-            GameLifeTime = 0d;
-
             Game = new GameLogic(800, 600);
 
             Views = new List<IGameView>();
@@ -43,10 +41,8 @@ namespace SpaceInvaders
             rendererLoaders.Add(new MeshLoader(playerView.Renderer));
             rendererLoaders.Add(new EffectLoader(playerView.Renderer));
 
-            resourceManager = new ResourceManager(new ThreadPoolExecutor());
-            resourceManager.AddLoader(new MaterialLoader(resourceManager));
-           
-         //   resourceManager.AddLoader(new DummyLoader());
+            resourceManager.AddLoader(new MaterialLoader(resourceManager));           
+            //resourceManager.AddLoader(new DummyLoader());
 
             foreach (var rendererLoader in rendererLoaders)
             {

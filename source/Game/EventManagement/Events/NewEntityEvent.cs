@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Game.EventManagement.Events
+﻿namespace Game.EventManagement.Events
 {
 
     public class NewEntityEvent : Event

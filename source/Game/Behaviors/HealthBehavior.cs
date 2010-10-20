@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
-using Game.EventManagement.Events;
 using Game.Entities;
+using Game.EventManagement.Events;
 
 namespace Game.Behaviors
 {
@@ -21,12 +17,16 @@ namespace Game.Behaviors
         public HealthBehavior(Entity entity)
             : base(entity)
         {
-            handledEventTypes = new List<Type>() { typeof(DamageEvent), typeof(RespawnEntityEvent) };
-
             entity.AddAttribute(Key_Health, new Attribute<int>(1));
             entity.AddAttribute(Key_Lifes, new Attribute<int>(1));
             entity.AddAttribute(Key_IsRespawning, new Attribute<bool>(false));
             entity.AddAttribute(Key_RespawnTime, new Attribute<float>(2f));
+        }
+
+        protected override void initializeHandledEventTypes()
+        {
+            handledEventTypes.Add(typeof(DamageEvent));
+            handledEventTypes.Add(typeof(RespawnEntityEvent));
         }
 
         public override void OnUpdate(float deltaTime)

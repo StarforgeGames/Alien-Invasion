@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Game.Processes;
 
 namespace Game
@@ -11,12 +8,7 @@ namespace Game
     /// </summary>
     public class ProcessManager
     {
-        private List<Process> processes;
-
-        public ProcessManager()
-        {
-            processes = new List<Process>();
-        }
+        private List<Process> processes = new List<Process>();
 
         public void Attach(Process process)
         {

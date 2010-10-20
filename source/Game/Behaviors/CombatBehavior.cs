@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
 using Game.Entities;
 using Game.EventManagement.Events;
-using Game.Processes;
 using Game.Utility;
 
 namespace Game.Behaviors
@@ -19,12 +14,15 @@ namespace Game.Behaviors
 
         public CombatBehavior(Entity entity)
             : base(entity)
-        {
-            handledEventTypes = new List<Type>() { typeof(FireWeaponEvent) };
-
+        { 
             entity.AddAttribute(Key_IsFiring, new Attribute<bool>(false));
             entity.AddAttribute(Key_FiringSpeed, new Attribute<float>(0));
             entity.AddAttribute(Key_TimeSinceLastShot, new Attribute<float>(999));
+        }
+
+        protected override void initializeHandledEventTypes()
+        {
+            handledEventTypes.Add(typeof(FireWeaponEvent));
         }
 
         public override void OnUpdate(float deltaTime)
