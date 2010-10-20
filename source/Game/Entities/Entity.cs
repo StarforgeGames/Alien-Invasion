@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Xml;
 using Game.Behaviors;
+using Game.Entities.AttributeLoader;
 using Game.EventManagement;
 using Game.EventManagement.Events;
 
@@ -19,16 +20,16 @@ namespace Game.Entities
     public class Entity : IEventListener
     {
         public EntityState State { get; set; }
-
         public string Type { get; private set; }
+
+        public int ID { get { return id; } }
+        private static int nextEntityId = 1;
+        private readonly int id;
+
         public GameLogic Game { get; private set; }
 
         public IEventManager EventManager { get; private set; }
         private Dictionary<Type, List<IEventListener>> listenerMap;
-
-        private static int nextEntityId = 1;
-        private readonly int id;
-        public int ID { get { return id; } }
 
         private Dictionary<string, object> attributes;
         private List<IBehavior> behaviors;
@@ -48,19 +49,19 @@ namespace Game.Entities
         {
             State = EntityState.Active;
 
-            this.Type = type; 
+            this.Type = type;
             this.Game = game;
+
+            id = nextEntityId++;
 
             EventManager = game.EventManager;
             listenerMap = new Dictionary<Type, List<IEventListener>>();
-
-            id = nextEntityId++;
 
             behaviors = new List<IBehavior>();
             attributes = new Dictionary<string, object>();
         }
 
-        public void Load(string xmlFile)
+        internal void Load(IAttributeLoader attributeLoader, string xmlFile)
         {
             XmlDocument xml = new XmlDocument();
             xml.Load(xmlFile);
@@ -78,13 +79,13 @@ namespace Game.Entities
             foreach (XmlNode node in attributeNode.ChildNodes) {
                 object attribute = this[node.Attributes["key"].Value];
                 PropertyInfo valueProp = attribute.GetType().GetProperty("Value");
-                object value = extractValue(node);
+                object value = extractValue(attributeLoader, node);
 
                 valueProp.SetValue(attribute, value, null);
             }
         }
 
-        private object extractValue(XmlNode node)
+        private object extractValue(IAttributeLoader attributeLoader, XmlNode node)
         {
             switch (node.Name) {
                 case "bool":
@@ -104,7 +105,7 @@ namespace Game.Entities
                         CultureInfo.InvariantCulture.NumberFormat);
                     return d;
                 default:
-                    return AttributeLoader.Load(node);
+                    return attributeLoader.Load(node);
             }
         }
 

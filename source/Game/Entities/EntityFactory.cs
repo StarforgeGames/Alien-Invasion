@@ -5,6 +5,8 @@ using System.Text;
 using Game.Behaviors;
 using Game.EventManagement.Events;
 using Game.Utility;
+using Game.Entities.AttributeLoader;
+using Game.EventManagement;
 
 namespace Game.Entities
 {
@@ -12,16 +14,20 @@ namespace Game.Entities
     public class EntityFactory
     {
         private GameLogic game;
+        private IEventManager eventManager;
+        private IAttributeLoader attributeLoader;
 
         public EntityFactory(GameLogic game)
         {
             this.game = game;
+            this.eventManager = game.EventManager;
+            this.attributeLoader = new DefaultAttributeLoader();
         }
 
         public Entity New(string id, Dictionary<string, object> customAttributes = null)
         {
             Entity entity = new Entity(game, id);
-            entity.Load(@"data\entities\" + id + ".xml");
+            entity.Load(attributeLoader, @"data\entities\" + id + ".xml");
 
             Console.WriteLine("[" + this.GetType().Name + "] Created entity " + entity);
 
@@ -32,7 +38,7 @@ namespace Game.Entities
             }
 
             NewEntityEvent newEntityEvent = new NewEntityEvent(NewEntityEvent.NEW_ENTITY, entity.ID);
-            game.EventManager.QueueEvent(newEntityEvent);
+            eventManager.QueueEvent(newEntityEvent);
 
             return entity;
         }

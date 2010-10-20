@@ -7,14 +7,14 @@ using System.Xml;
 namespace Game.Entities.AttributeParser
 {
 
-    static class MaterialParser
+    class MaterialParser : IAttributeParser
     {
-        public static string Type
+        public string Type
         {
             get { return "Material"; }
         }
 
-        public static object Parse(XmlNode node)
+        public object Parse(XmlNode node)
         {
             return null;
         }

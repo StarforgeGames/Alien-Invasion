@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Game;
 using Game.EventManagement.Events;
 using Graphics.ResourceManagement;
@@ -7,8 +8,6 @@ using Graphics.ResourceManagement.Loaders;
 using Graphics.ResourceManagement.Wipers;
 using SlimDX.Windows;
 using SpaceInvaders.Views;
-using System;
-using Game.EventManagement;
 
 namespace SpaceInvaders
 {
@@ -18,10 +17,10 @@ namespace SpaceInvaders
     /// </summary>
     class Application
     {
+        public double GameLifeTime { get; private set; }
+
         public GameLogic Game { get; private set; }
         public List<IGameView> Views { get; private set; }
-
-        public double LifeTime { get; private set; }
 
         private GameTimer timer = new GameTimer();
         private ResourceManager resourceManager;
@@ -32,13 +31,13 @@ namespace SpaceInvaders
 
         public Application()
         {
+            GameLifeTime = 0d;
+
             Game = new GameLogic(800, 600);
 
             Views = new List<IGameView>();
             PlayerView playerView = new PlayerView(Game);
             Views.Add(playerView);
-
-            LifeTime = 0d;
 
             rendererLoaders.Add(new TextureLoader(playerView.Renderer));
             rendererLoaders.Add(new MeshLoader(playerView.Renderer));
@@ -82,7 +81,7 @@ namespace SpaceInvaders
 
         public void Update(float deltaTime)
         {
-            LifeTime += deltaTime;
+            GameLifeTime += deltaTime;
             Game.Update(deltaTime);
 
             foreach (IGameView view in Views) {

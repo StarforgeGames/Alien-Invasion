@@ -82,11 +82,13 @@
     <Compile Include="Behaviors\RenderBehavior.cs" />
     <Compile Include="Behaviors\SpatialBehavior.cs" />
     <Compile Include="Entities\Attribute.cs" />
+    <Compile Include="Entities\AttributeLoader\DefaultAttributeLoader.cs" />
+    <Compile Include="Entities\AttributeLoader\IAttributeLoader.cs" />
+    <Compile Include="Entities\AttributeParser\IAttributeParser.cs" />
     <Compile Include="Entities\AttributeParser\MaterialParser.cs" />
     <Compile Include="Entities\AttributeParser\Vector2DParser.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityFactory.cs" />
-    <Compile Include="Entities\AttributeLoader.cs" />
     <Compile Include="EventManagement\Debug\EventLogger.cs" />
     <Compile Include="EventManagement\Events\CollisionEvent.cs" />
     <Compile Include="EventManagement\Events\CreateEntityEvent.cs" />

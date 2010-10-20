@@ -25,7 +25,7 @@ namespace Game.Behaviors
         public AEntityBasedBehavior(Entity entity)
         {
             this.entity = entity;
-            this.EventManager = entity.Game.EventManager;
+            this.EventManager = entity.EventManager;
         }
 
         public abstract void OnUpdate(float deltaTime);

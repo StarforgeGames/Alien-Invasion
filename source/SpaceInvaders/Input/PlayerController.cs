@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
+using Game;
+using Game.Entities;
 using Game.EventManagement;
 using Game.EventManagement.Events;
-using Game.Entities;
-using Game;
 
 namespace SpaceInvaders.Input
 {

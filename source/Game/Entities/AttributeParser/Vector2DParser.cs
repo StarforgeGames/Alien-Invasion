@@ -5,14 +5,14 @@ using Game.Utility;
 namespace Game.Entities.AttributeParser
 {
 
-    static class Vector2DParser
+    class Vector2DParser : IAttributeParser
     {
-        public static string Type
+        public string Type
         {
             get { return "Vector2D"; }
         }
 
-        public static object Parse(XmlNode node)
+        public object Parse(XmlNode node)
         {
             float x = float.Parse(node.SelectSingleNode("x").InnerText, NumberStyles.Number,
                         CultureInfo.InvariantCulture.NumberFormat);

@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SpaceInvaders.Input;
-using Game.Entities;
-using Graphics;
-using System.Windows.Forms;
 using System.Drawing;
-using Game.EventManagement.Events;
+using System.Windows.Forms;
 using Game;
+using Game.Entities;
+using Game.EventManagement;
+using Game.EventManagement.Events;
+using Graphics;
+using SpaceInvaders.Input;
 using SpaceInvaders.Menus;
 
 namespace SpaceInvaders.Views
@@ -17,6 +15,7 @@ namespace SpaceInvaders.Views
     class PlayerView : IGameView, IDisposable
     {
         public GameLogic Game { get; private set; }
+        public IEventManager EventManager { get; private set; }
         public Renderer Renderer { get; private set; }
         private Extractor extractor;
         public Form RenderForm { get; private set; }
@@ -35,6 +34,7 @@ namespace SpaceInvaders.Views
         public PlayerView(GameLogic game)
         {
             this.Game = game;
+            this.EventManager = game.EventManager;
 
             RenderForm = new Form();
             RenderForm.Size = new Size(800, 600);
@@ -45,7 +45,7 @@ namespace SpaceInvaders.Views
             Renderer = new Graphics.Renderer(RenderForm, extractor);
 
 
-            mainMenuControl = new GameMainMenu(Game.EventManager);
+            mainMenuControl = new GameMainMenu(EventManager);
             mainMenuControl.Location = new Point((RenderForm.Width - mainMenuControl.Width) / 2, 100); ;
             RenderForm.Controls.Add(mainMenuControl);
 
@@ -56,8 +56,8 @@ namespace SpaceInvaders.Views
 
         private void registerGameEventListeners()
         {
-            Game.EventManager.AddListener(this, typeof(NewEntityEvent));
-            Game.EventManager.AddListener(this, typeof(GameStateChangedEvent));
+            EventManager.AddListener(this, typeof(NewEntityEvent));
+            EventManager.AddListener(this, typeof(GameStateChangedEvent));
         }
 
         public void OnUpdate(float deltaTime)

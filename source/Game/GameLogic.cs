@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Game.Entities;
 using Game.Behaviors;
+using Game.Entities;
 using Game.EventManagement;
 using Game.EventManagement.Events;
 using Game.Utility;
-using Game.EventManagement.Debug;
 
 namespace Game
 {
@@ -22,16 +21,15 @@ namespace Game
 
     public class GameLogic : IEventListener
     {
-        public GameState State { get; set; }
+        public GameState State { get; private set; }
+        public int WorldWidth { get; private set; }
+        public int WorldHeight { get; private set; }
 
         public IEventManager EventManager { get; private set; }
         public ProcessManager ProcessManager { get; private set; }
 
-        public Dictionary<int, Entity> Entities { get; private set; }
         public EntityFactory EntityFactory { get; private set; }
-
-        public int WorldWidth { get; private set; }
-        public int WorldHeight { get; private set; }
+        public Dictionary<int, Entity> Entities { get; private set; }
 
         public GameLogic(int worldWidth, int worldHeight)
         {
@@ -42,8 +40,8 @@ namespace Game
             EventManager = new SwappingEventManager(this);
             ProcessManager = new ProcessManager();
 
-            Entities = new Dictionary<int, Entity>();
             EntityFactory = new EntityFactory(this);
+            Entities = new Dictionary<int, Entity>();
 
             registerGameEventListeners();
         }

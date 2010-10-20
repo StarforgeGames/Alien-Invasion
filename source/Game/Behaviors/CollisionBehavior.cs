@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
 using Game.Entities;
-using Game.Utility;
 using Game.EventManagement.Events;
+using Game.Utility;
 
 namespace Game.Behaviors
 {
