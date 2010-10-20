@@ -60,7 +60,7 @@ namespace Game.Entities
             attributes = new Dictionary<string, object>();
         }
 
-        public void Load(string xmlFile)
+        public void Load(AttributeLoader loader, string xmlFile)
         {
             XmlDocument xml = new XmlDocument();
             xml.Load(xmlFile);
@@ -78,13 +78,13 @@ namespace Game.Entities
             foreach (XmlNode node in attributeNode.ChildNodes) {
                 object attribute = this[node.Attributes["key"].Value];
                 PropertyInfo valueProp = attribute.GetType().GetProperty("Value");
-                object value = extractValue(node);
+                object value = extractValue(loader, node);
 
                 valueProp.SetValue(attribute, value, null);
             }
         }
 
-        private object extractValue(XmlNode node)
+        private object extractValue(AttributeLoader loader, XmlNode node)
         {
             switch (node.Name) {
                 case "bool":
@@ -104,7 +104,7 @@ namespace Game.Entities
                         CultureInfo.InvariantCulture.NumberFormat);
                     return d;
                 default:
-                    return AttributeLoader.Load(node);
+                    return loader.Load(node);
             }
         }
 
