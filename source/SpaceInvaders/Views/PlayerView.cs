@@ -59,9 +59,9 @@ namespace SpaceInvaders.Views
                 resourceManager.AddLoader(rendererLoader);
             }
 
+
             resourceManager.AddLoader(new MaterialLoader(resourceManager));
-
-
+            game.EntityFactory.Add(new ResourceParser(resourceManager));
 
             mainMenuControl = new GameMainMenu(EventManager);
             mainMenuControl.Location = new Point((RenderForm.Width - mainMenuControl.Width) / 2, 100); ;

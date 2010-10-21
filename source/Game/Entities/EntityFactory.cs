@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Game.Entities.AttributeLoader;
 using Game.EventManagement;
 using Game.EventManagement.Events;
+using Game.Entities.AttributeParser;
 
 namespace Game.Entities
 {
@@ -36,6 +37,16 @@ namespace Game.Entities
             eventManager.QueueEvent(newEntityEvent);
 
             return entity;
+        }
+
+        public void Add(IAttributeParser parser)
+        {
+            attributeLoader.Add(parser);
+        }
+
+        public void Remove(string type)
+        {
+            attributeLoader.Remove(type);
         }
     }
 

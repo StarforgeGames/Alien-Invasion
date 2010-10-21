@@ -23,10 +23,12 @@ namespace Game.Entities.AttributeLoader
         private void initializeLoaderMap()
         {
             foreach (IAttributeParser p in parsers) {
-                loaderMap.Add(p.Type, p.Parse);
+                Add(p);
             }
         }
-        
+
+        #region IAttributeLoader Members
+
         public object Load(XmlNode node)
         {
             if (!loaderMap.ContainsKey(node.Name)) {
@@ -35,6 +37,22 @@ namespace Game.Entities.AttributeLoader
 
             return loaderMap[node.Name](node);
         }
+
+
+        public void Add(IAttributeParser parser)
+        {
+            loaderMap.Add(parser.Type, parser.Parse);
+        }
+
+        public void Remove(string type)
+        {
+            if (loaderMap.ContainsKey(type))
+            {
+                loaderMap.Remove(type);
+            }
+        }
+
+        #endregion
     }
 
 }

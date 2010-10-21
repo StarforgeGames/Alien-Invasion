@@ -25,9 +25,7 @@ namespace SpaceInvaders
         private GameTimer timer = new GameTimer();
         private ResourceManager resourceManager = new ResourceManager(new ThreadPoolExecutor());
         
-        
-
-        AWiper debugWiper = new DebugWiper();
+       
 
         public Application()
         {
@@ -37,7 +35,8 @@ namespace SpaceInvaders
             PlayerView playerView = new PlayerView(Game, resourceManager);
             Views.Add(playerView);
 
-
+            resourceManager.AddLoader(new DummyLoader());
+            resourceManager.AddWiper(new DebugWiper());
 
             
             //resourceManager.AddLoader(new DummyLoader());
