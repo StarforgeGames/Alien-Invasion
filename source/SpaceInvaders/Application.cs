@@ -25,7 +25,7 @@ namespace SpaceInvaders
         private GameTimer timer = new GameTimer();
         private ResourceManager resourceManager = new ResourceManager(new ThreadPoolExecutor());
         
-        private List<IResourceLoader> rendererLoaders = new List<IResourceLoader>();
+        
 
         AWiper debugWiper = new DebugWiper();
 
@@ -34,20 +34,15 @@ namespace SpaceInvaders
             Game = new GameLogic(800, 600);
 
             Views = new List<IGameView>();
-            PlayerView playerView = new PlayerView(Game);
+            PlayerView playerView = new PlayerView(Game, resourceManager);
             Views.Add(playerView);
 
-            rendererLoaders.Add(new TextureLoader(playerView.Renderer));
-            rendererLoaders.Add(new MeshLoader(playerView.Renderer));
-            rendererLoaders.Add(new EffectLoader(playerView.Renderer));
 
-            resourceManager.AddLoader(new MaterialLoader(resourceManager));           
+
+            
             //resourceManager.AddLoader(new DummyLoader());
 
-            foreach (var rendererLoader in rendererLoaders)
-            {
-                resourceManager.AddLoader(rendererLoader);
-            }
+
 
 
 
@@ -101,15 +96,6 @@ namespace SpaceInvaders
             });
 
             resourceManager.Dispose();
-
-            foreach (var rendererLoader in rendererLoaders)
-            {
-                if (rendererLoader is IDisposable)
-                {
-                    ((IDisposable)rendererLoader).Dispose();
-                }
-                
-            }
 
             playerView.Dispose();
         }

@@ -8,6 +8,9 @@ using Game.EventManagement.Events;
 using Graphics;
 using SpaceInvaders.Input;
 using SpaceInvaders.Menus;
+using Graphics.ResourceManagement;
+using Graphics.ResourceManagement.Loaders;
+using System.Collections.Generic;
 
 namespace SpaceInvaders.Views
 {
@@ -31,7 +34,9 @@ namespace SpaceInvaders.Views
         private Entity playerEntity;
         private PlayerController controller;
 
-        public PlayerView(GameLogic game)
+        private List<IResourceLoader> rendererLoaders = new List<IResourceLoader>();
+
+        public PlayerView(GameLogic game, ResourceManager resourceManager)
         {
             this.Game = game;
             this.EventManager = game.EventManager;
@@ -43,6 +48,18 @@ namespace SpaceInvaders.Views
 
             extractor = new Extractor(game);
             Renderer = new Graphics.Renderer(RenderForm, extractor);
+
+            rendererLoaders.Add(new TextureLoader(Renderer));
+            rendererLoaders.Add(new MeshLoader(Renderer));
+            rendererLoaders.Add(new EffectLoader(Renderer));
+
+            foreach (var rendererLoader in rendererLoaders)
+            {
+                resourceManager.AddLoader(rendererLoader);
+            }
+
+            resourceManager.AddLoader(new MaterialLoader(resourceManager));
+
 
 
             mainMenuControl = new GameMainMenu(EventManager);
@@ -135,6 +152,15 @@ namespace SpaceInvaders.Views
 
         public void Dispose()
         {
+            foreach (var rendererLoader in rendererLoaders)
+            {
+                if (rendererLoader is IDisposable)
+                {
+                    ((IDisposable)rendererLoader).Dispose();
+                }
+
+            }
+
             Renderer.Stop();
             Renderer.Dispose();
         }
