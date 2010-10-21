@@ -8,7 +8,8 @@
 		<HealthBehavior />
 	</behaviors>
 	<attributes>
-		<string key="Sprite">player.png</string>
+    <!--<resource key="Material" type="material" name="player"/>-->
+    <!--<resource key="Mesh" type="mesh" name="player"/>-->
 		<float key="Speed">150</float>
 		<float key="FiringSpeed">0.75</float>
 		<int key="Lifes">3</int>

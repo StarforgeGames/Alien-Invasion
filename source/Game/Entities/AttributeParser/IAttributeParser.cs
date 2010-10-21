@@ -3,7 +3,7 @@
 namespace Game.Entities.AttributeParser
 {
 
-    interface IAttributeParser
+    public interface IAttributeParser
     {
         string Type { get; }
 

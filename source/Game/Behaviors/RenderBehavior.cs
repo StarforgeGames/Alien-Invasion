@@ -16,7 +16,7 @@ namespace Game.Behaviors
             : base(entity)
         {
             entity.AddAttribute(Key_Sprite, new Attribute<string>(String.Empty));
-            entity.AddAttribute(Key_Material, new Attribute<string>(String.Empty));
+            //entity.AddAttribute(Key_Material, new Attribute<ResourceHandle>(null));
             entity.AddAttribute(Key_IsRenderable, new Attribute<bool>(true));
         }
 

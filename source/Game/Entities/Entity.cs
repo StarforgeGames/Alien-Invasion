@@ -73,11 +73,14 @@ namespace Game.Entities
             
             XmlNode attributeNode = xml.GetElementsByTagName("attributes")[0];
             foreach (XmlNode node in attributeNode.ChildNodes) {
-                object attribute = this[node.Attributes["key"].Value];
-                PropertyInfo valueProp = attribute.GetType().GetProperty("Value");
-                object value = extractValue(attributeLoader, node);
+                if (node.Attributes != null) // used to handle comment nodes
+                {
+                    object attribute = this[node.Attributes["key"].Value];
+                    PropertyInfo valueProp = attribute.GetType().GetProperty("Value");
+                    object value = extractValue(attributeLoader, node);
 
-                valueProp.SetValue(attribute, value, null);
+                    valueProp.SetValue(attribute, value, null);
+                }
             }
         }
 
