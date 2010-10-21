@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Graphics.ResourceManagement;
+using ResourceManagement;
 using SlimDX;
 
 namespace Graphics

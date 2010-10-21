@@ -191,7 +191,6 @@
     <Compile Include="Utility\GameTimer.cs" />
     <Compile Include="Views\IGameView.cs" />
     <Compile Include="Views\PlayerView.cs" />
-    <Compile Include="Views\ResourceParser.cs" />
     <EmbeddedResource Include="Controls\GameMainMenu.resx">
       <DependentUpon>GameMainMenu.cs</DependentUpon>
     </EmbeddedResource>
@@ -224,6 +223,10 @@
     <ProjectReference Include="..\Graphics\Graphics.csproj">
       <Project>{272620DF-6615-4809-AFD8-B9F277307120}</Project>
       <Name>Graphics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ResourceManagement\ResourceManagement.csproj">
+      <Project>{5B991C83-B0B6-4736-9DB7-7AFC2A6B81E6}</Project>
+      <Name>ResourceManagement</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

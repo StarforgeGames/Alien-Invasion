@@ -5,29 +5,21 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{272620DF-6615-4809-AFD8-B9F277307120}</ProjectGuid>
+    <ProjectGuid>{5B991C83-B0B6-4736-9DB7-7AFC2A6B81E6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Graphics</RootNamespace>
-    <AssemblyName>Graphics</AssemblyName>
+    <RootNamespace>ResourceManagement</RootNamespace>
+    <AssemblyName>ResourceManagement</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\test\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -41,35 +33,36 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug - Software|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\test-software\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SOFTWARE</DefineConstants>
+    <OutputPath>..\..\release-software\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisLogFile>..\..\test\Graphics.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisLogFile>bin\Debug\ResourceManagement.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release - Software|AnyCPU'">
-    <OutputPath>..\..\release-software\</OutputPath>
-    <DefineConstants>TRACE;SOFTWARE</DefineConstants>
+    <OutputPath>bin\Release - Software\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisLogFile>..\..\release\Graphics.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisLogFile>bin\Release\ResourceManagement.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
@@ -84,73 +77,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extraction\Extractor.cs" />
-    <Compile Include="Extraction\RenderObject.cs" />
-    <Compile Include="Extraction\RenderObjects.cs" />
-    <Compile Include="CommandQueue.cs" />
-    <Compile Include="Counter.cs" />
-    <Compile Include="Loaders\ARendererLoader.cs" />
-    <Compile Include="Loaders\EffectLoader.cs" />
-    <Compile Include="Loaders\MaterialLoader.cs" />
-    <Compile Include="Loaders\MeshLoader.cs" />
-    <Compile Include="Loaders\MeshParser.cs" />
-    <Compile Include="Loaders\TextureLoader.cs" />
-    <Compile Include="Primitives\XPlane.cs" />
-    <Compile Include="Renderer.cs" />
+    <Compile Include="BasicEvent.cs" />
+    <Compile Include="Debug\DebugWiper.cs" />
+    <Compile Include="Debug\ResourceManagementMonitor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Debug\ResourceManagementMonitor.Designer.cs">
+      <DependentUpon>ResourceManagementMonitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IAsyncExecutor.cs" />
+    <Compile Include="IEvent.cs" />
+    <Compile Include="ILoader.cs" />
+    <Compile Include="Loaders\ABasicLoader.cs" />
+    <Compile Include="Loaders\AsyncLoader.cs" />
+    <Compile Include="Loaders\DummyLoader.cs" />
+    <Compile Include="Loaders\IResourceLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\EffectResource.cs" />
-    <Compile Include="Resources\MaterialResource.cs" />
-    <Compile Include="Resources\MeshResource.cs" />
-    <Compile Include="Resources\TextureResource.cs" />
+    <Compile Include="ResourceHandle.cs" />
+    <Compile Include="ResourceIdentifier.cs" />
+    <Compile Include="ResourceManager.cs" />
+    <Compile Include="ResourceProperties.cs" />
+    <Compile Include="Resources\AResource.cs" />
+    <Compile Include="ThreadPoolExecutor.cs" />
+    <Compile Include="Wipers\AWiper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Game\Game.csproj">
-      <Project>{EB0EE324-D5BA-456A-84ED-BFDE30680E01}</Project>
-      <Name>Game</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ResourceManagement\ResourceManagement.csproj">
-      <Project>{5B991C83-B0B6-4736-9DB7-7AFC2A6B81E6}</Project>
-      <Name>ResourceManagement</Name>
-    </ProjectReference>
+    <EmbeddedResource Include="Debug\ResourceManagementMonitor.resx">
+      <DependentUpon>ResourceManagementMonitor.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="data\sprites\alien_hammerhead.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="data\sprites\alien_pincher.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="data\sprites\alien_ray.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="data\sprites\default.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="data\sprites\pewpew.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="data\sprites\player.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Loaders\Loaders.cd" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="data\meshes\default.mesh">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="data\meshes\quad.mesh">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="data\shaders\default.fx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="data\shaders\SimplePassThrough.fx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="data\materials\default.mtl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

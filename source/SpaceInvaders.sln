@@ -2,10 +2,16 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceInvaders", "SpaceInvaders\SpaceInvaders.csproj", "{D0C1E553-1429-4490-B25A-05C55B019E46}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5B991C83-B0B6-4736-9DB7-7AFC2A6B81E6} = {5B991C83-B0B6-4736-9DB7-7AFC2A6B81E6}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game", "Game\Game.csproj", "{EB0EE324-D5BA-456A-84ED-BFDE30680E01}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphics", "Graphics\Graphics.csproj", "{272620DF-6615-4809-AFD8-B9F277307120}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5B991C83-B0B6-4736-9DB7-7AFC2A6B81E6} = {5B991C83-B0B6-4736-9DB7-7AFC2A6B81E6}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceManagement", "ResourceManagement\ResourceManagement.csproj", "{5B991C83-B0B6-4736-9DB7-7AFC2A6B81E6}"
 EndProject
