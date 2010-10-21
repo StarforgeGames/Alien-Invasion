@@ -4,6 +4,7 @@ using Game.Entities;
 using Game.EventManagement;
 using Game.EventManagement.Events;
 using Game.Utility;
+using ResourceManagement;
 
 namespace Game
 {
@@ -27,11 +28,12 @@ namespace Game
 
         public IEventManager EventManager { get; private set; }
         public ProcessManager ProcessManager { get; private set; }
+        public ResourceManager ResourceManager { get; private set; }
 
         public EntityFactory EntityFactory { get; private set; }
         public Dictionary<int, Entity> Entities { get; private set; }
 
-        public GameLogic(int worldWidth, int worldHeight)
+        public GameLogic(int worldWidth, int worldHeight, ResourceManager resourceManager)
         {
             State = GameState.StartUp;
             this.WorldWidth = worldWidth;
@@ -39,6 +41,7 @@ namespace Game
 
             EventManager = new SwappingEventManager(this);
             ProcessManager = new ProcessManager();
+            ResourceManager = resourceManager;
 
             EntityFactory = new EntityFactory(this);
             Entities = new Dictionary<int, Entity>();

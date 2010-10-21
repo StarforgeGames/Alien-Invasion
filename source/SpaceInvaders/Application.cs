@@ -29,10 +29,10 @@ namespace SpaceInvaders
 
         public Application()
         {
-            Game = new GameLogic(800, 600);
+            Game = new GameLogic(800, 600, resourceManager);
 
             Views = new List<IGameView>();
-            PlayerView playerView = new PlayerView(Game, resourceManager);
+            PlayerView playerView = new PlayerView(Game);
             Views.Add(playerView);
 
             resourceManager.AddLoader(new DummyLoader());

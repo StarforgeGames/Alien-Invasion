@@ -12,12 +12,13 @@ namespace Game.Entities
     {
         private GameLogic game;
         private IEventManager eventManager;
-        private IAttributeLoader attributeLoader = new DefaultAttributeLoader();
+        private IAttributeLoader attributeLoader;
 
         public EntityFactory(GameLogic game)
         {
             this.game = game;
             this.eventManager = game.EventManager;
+            attributeLoader = new DefaultAttributeLoader(game.ResourceManager);
         }
 
         public Entity New(string id, Dictionary<string, object> customAttributes = null)
@@ -37,16 +38,6 @@ namespace Game.Entities
             eventManager.QueueEvent(newEntityEvent);
 
             return entity;
-        }
-
-        public void Add(IAttributeParser parser)
-        {
-            attributeLoader.Add(parser);
-        }
-
-        public void Remove(string type)
-        {
-            attributeLoader.Remove(type);
         }
     }
 

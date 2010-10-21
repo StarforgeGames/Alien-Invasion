@@ -7,8 +7,6 @@ namespace Game.Entities.AttributeLoader
     interface IAttributeLoader
     {
         object Load(XmlNode node);
-        void Add(IAttributeParser parser);
-        void Remove(string type);
     }
 
 }
