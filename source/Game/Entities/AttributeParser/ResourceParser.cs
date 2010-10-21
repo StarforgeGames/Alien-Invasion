@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Game.Entities.AttributeParser;
 using ResourceManagement;
 
-namespace SpaceInvaders.Views
+namespace Game.Entities.AttributeParser
 {
     public class ResourceParser : IAttributeParser
     {

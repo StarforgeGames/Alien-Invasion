@@ -37,7 +37,7 @@ namespace SpaceInvaders.Views
 
         private List<IResourceLoader> rendererLoaders = new List<IResourceLoader>();
 
-        public PlayerView(GameLogic game, ResourceManager resourceManager)
+        public PlayerView(GameLogic game)
         {
             this.Game = game;
             this.EventManager = game.EventManager;
@@ -56,12 +56,11 @@ namespace SpaceInvaders.Views
 
             foreach (var rendererLoader in rendererLoaders)
             {
-                resourceManager.AddLoader(rendererLoader);
+                game.ResourceManager.AddLoader(rendererLoader);
             }
 
 
-            resourceManager.AddLoader(new MaterialLoader(resourceManager));
-            game.EntityFactory.Add(new ResourceParser(resourceManager));
+            game.ResourceManager.AddLoader(new MaterialLoader(game.ResourceManager));
 
             mainMenuControl = new GameMainMenu(EventManager);
             mainMenuControl.Location = new Point((RenderForm.Width - mainMenuControl.Width) / 2, 100); ;
