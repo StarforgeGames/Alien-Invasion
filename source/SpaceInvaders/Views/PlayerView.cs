@@ -6,10 +6,11 @@ using Game.Entities;
 using Game.EventManagement;
 using Game.EventManagement.Events;
 using Graphics;
+using Graphics.Loaders;
 using SpaceInvaders.Input;
 using SpaceInvaders.Menus;
-using Graphics.ResourceManagement;
-using Graphics.ResourceManagement.Loaders;
+using ResourceManagement;
+using ResourceManagement.Loaders;
 using System.Collections.Generic;
 
 namespace SpaceInvaders.Views

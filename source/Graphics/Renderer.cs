@@ -25,12 +25,11 @@ namespace Graphics
         private const Format BackBufferFormat = Format.R8G8B8A8_UNorm;
 
         public readonly CommandQueue commandQueue = new CommandQueue();
-        private Form RenderForm;
         private Extractor extractor;
 
         public Renderer(Control control, Extractor extractor)
         {
-
+            this.extractor = extractor;
             renderThread = new Thread(renderLoop);
             renderThread.Name = "Renderer";
             renderFrame = control;

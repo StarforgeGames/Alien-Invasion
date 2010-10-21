@@ -85,8 +85,7 @@
     <Compile Include="Entities\AttributeLoader\DefaultAttributeLoader.cs" />
     <Compile Include="Entities\AttributeLoader\IAttributeLoader.cs" />
     <Compile Include="Entities\AttributeParser\IAttributeParser.cs" />
-    <Compile Include="Entities\AttributeParser\MaterialParser.cs" />
-    <Compile Include="Entities\AttributeParser\MeshParser.cs" />
+    <Compile Include="Entities\AttributeParser\ResourceParser.cs" />
     <Compile Include="Entities\AttributeParser\Vector2DParser.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityFactory.cs" />
@@ -129,7 +128,12 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\ResourceManagement\ResourceManagement.csproj">
+      <Project>{5B991C83-B0B6-4736-9DB7-7AFC2A6B81E6}</Project>
+      <Name>ResourceManagement</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

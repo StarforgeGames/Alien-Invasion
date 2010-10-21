@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Game;
 using Game.EventManagement.Events;
-using Graphics.ResourceManagement;
-using Graphics.ResourceManagement.Debug;
-using Graphics.ResourceManagement.Loaders;
-using Graphics.ResourceManagement.Wipers;
+using ResourceManagement;
+using ResourceManagement.Debug;
+using ResourceManagement.Loaders;
+using ResourceManagement.Wipers;
 using SlimDX.Windows;
 using SpaceInvaders.Views;
 

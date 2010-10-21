@@ -15,7 +15,6 @@ namespace Game.Entities.AttributeLoader
 
         public DefaultAttributeLoader()
         {
-            parsers.Add(new MaterialParser());
             parsers.Add(new Vector2DParser());
 
             initializeLoaderMap();
