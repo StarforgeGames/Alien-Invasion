@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ResourceManagement;
 using ResourceManagement.Resources;
+using SlimDX.Direct3D10;
 
 namespace Graphics.Resources
 {
@@ -31,10 +32,8 @@ namespace Graphics.Resources
         public override void Dispose()
         {
             effect.Dispose();
-            effect = null;
 
             texture.Dispose();
-            texture = null;
 
             base.Dispose();
         }

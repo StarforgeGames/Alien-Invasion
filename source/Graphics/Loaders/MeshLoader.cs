@@ -9,6 +9,7 @@ using ResourceManagement;
 using ResourceManagement.Loaders;
 using ResourceManagement.Resources;
 using Graphics.Resources;
+using SlimDX.DXGI;
 
 namespace Graphics.Loaders
 {
@@ -33,19 +34,21 @@ namespace Graphics.Loaders
             // currently dummy code since true loading is not implemented yet.
             MeshResource res = new MeshResource();
 
-            using (var stream = new DataStream(6 * 4 * sizeof(float), true, true))
+            using (var stream = new DataStream(6 * 4 * 4, true, true))
             {
-                stream.Write<Vector4>(new Vector4(0.0f, 0.0f, 1.0f, 1.0f));
-                stream.Write<Vector2>(new Vector2(0.0f, 0.0f));
-
-                stream.Write<Vector4>(new Vector4(1.0f, 0.0f, 1.0f, 1.0f));
+                stream.Write<Vector4>(new Vector4(1.0f, -1.0f, 0.5f, 1.0f));
                 stream.Write<Vector2>(new Vector2(1.0f, 0.0f));
 
-                stream.Write<Vector4>(new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+                stream.Write<Vector4>(new Vector4(1.0f, 1.0f, 0.5f, 1.0f));
                 stream.Write<Vector2>(new Vector2(1.0f, 1.0f));
 
-                stream.Write<Vector4>(new Vector4(0.0f, 1.0f, 1.0f, 1.0f));
+                stream.Write<Vector4>(new Vector4(-1.0f, -1.0f, 0.5f, 1.0f));
+                stream.Write<Vector2>(new Vector2(0.0f, 0.0f));
+
+                stream.Write<Vector4>(new Vector4(-1.0f, 1.0f, 0.5f, 1.0f));
                 stream.Write<Vector2>(new Vector2(0.0f, 1.0f));
+
+                
 
                 stream.Position = 0;
                 
@@ -55,10 +58,18 @@ namespace Graphics.Loaders
                     BindFlags = BindFlags.VertexBuffer,
                     CpuAccessFlags = CpuAccessFlags.None,
                     OptionFlags = ResourceOptionFlags.None,
-                    SizeInBytes = 6 * 4 * sizeof(float),
+                    SizeInBytes = 6 * 4 * 4,
                     Usage = ResourceUsage.Default
                 });
             }
+            
+            res.size = 6 * 4 * 4;
+
+            res.inputLayout = new[] {
+                new InputElement("POSITION", 0, Format.R32G32B32A32_Float, 0, 0),
+                new InputElement("TEXCOORD", 0, Format.R32G32_Float, 16, 0)};
+            res.primitiveTopology = PrimitiveTopology.TriangleStrip;
+
             return res;
         }
 

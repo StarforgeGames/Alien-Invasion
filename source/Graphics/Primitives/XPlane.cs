@@ -1,5 +1,6 @@
 ﻿using SlimDX.Direct3D10;
 using Buffer = SlimDX.Direct3D10.Buffer;
+//using SlimDX.DXGI;
 
 namespace Graphics.Primitives
 {
@@ -27,7 +28,7 @@ namespace Graphics.Primitives
                 new InputElement("COLOR", 0, Format.R32G32B32A32_Float, 16, 0),// TODO: Obsolete with sprites => remove
                 new InputElement("TEXCOORD", 0, Format.R32G32_Float, 32, 0)
             });
-
+            
             var stream = new DataStream(4 * 40, true, true);
 
             float widthRatio = 75f / 800f;

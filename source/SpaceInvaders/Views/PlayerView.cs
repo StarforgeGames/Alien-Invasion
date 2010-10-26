@@ -46,9 +46,12 @@ namespace SpaceInvaders.Views
             RenderForm.Size = new Size(800, 600);
             RenderForm.Text = "Space Invaders";
             RenderForm.BackColor = Color.Empty;
+            
 
             extractor = new Extractor(game);
             Renderer = new Graphics.Renderer(RenderForm, extractor);
+            Renderer.StartRender();
+
 
             rendererLoaders.Add(new TextureLoader(Renderer));
             rendererLoaders.Add(new MeshLoader(Renderer));
@@ -66,7 +69,7 @@ namespace SpaceInvaders.Views
             mainMenuControl.Location = new Point((RenderForm.Width - mainMenuControl.Width) / 2, 100); ;
             RenderForm.Controls.Add(mainMenuControl);
 
-            Renderer.Start();
+            
 
             registerGameEventListeners();
         }
@@ -79,6 +82,7 @@ namespace SpaceInvaders.Views
 
         public void OnUpdate(float deltaTime)
         {
+            extractor.OnUpdate(deltaTime);
             // TODO: Run Extractor and stuff
         }
 
@@ -152,8 +156,14 @@ namespace SpaceInvaders.Views
 
         public void Dispose()
         {
+            Renderer.StopRender();
+            Renderer.WaitForStateChange();
+
+
             foreach (var rendererLoader in rendererLoaders)
             {
+                Game.ResourceManager.RemoveLoader(rendererLoader.Type);
+
                 if (rendererLoader is IDisposable)
                 {
                     ((IDisposable)rendererLoader).Dispose();
@@ -161,7 +171,10 @@ namespace SpaceInvaders.Views
 
             }
 
-            Renderer.Stop();
+            Renderer.StopHandleCommands();
+            Renderer.WaitForStateChange();
+            Renderer.WaitForCompletion();
+            
             Renderer.Dispose();
         }
     }
