@@ -1,7 +1,7 @@
 ﻿namespace Game.Utility
 {
 
-    class Rectangle
+    public class Rectangle
     {
         public float Left
         {

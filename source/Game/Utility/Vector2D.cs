@@ -5,7 +5,7 @@ namespace Game.Utility
     /// <summary>
     /// Represents a 2 dimensional Vector usable for positioning and stuff.
     /// </summary>
-    class Vector2D
+    public class Vector2D
     {
         public float X { get; set; }
         public float Y { get; set; }

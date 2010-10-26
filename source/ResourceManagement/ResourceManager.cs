@@ -75,15 +75,37 @@ namespace ResourceManagement
                 {
                     resourceHandles.Add(loader.Type, new Dictionary<string, ResourceHandle>());
                 }
+                var dummy = Loaders[loader.Type].Default;
             }
             
+        }
+
+        private void doRemoveLoader(string type)
+        {
+            Loaders.Remove(type);
+            if (resourceHandles.ContainsKey(type))
+            {
+                foreach (var handle in resourceHandles[type])
+                {
+                    IEvent evt1 = new BasicEvent();
+
+                    handle.Value.Unload(evt1);
+
+                    IEvent evt2 = new BasicEvent();
+
+                    handle.Value.Unload(evt2);
+
+                    evt1.Wait();
+                    evt2.Wait();
+                }
+            }
         }
 
         public void RemoveLoader(string type)
         {
             lock (Loaders)
             {
-                Loaders.Remove(type);
+                doRemoveLoader(type);
             }
         }
 
@@ -124,36 +146,16 @@ namespace ResourceManagement
                 }
                 wipers.Clear();
             }
-            /* removed locking since it may cause a deadlock when another thread loads
-             * resources while the manager is being disposed. this is not a bug in the
-             * application: the client has to stop using an object before calling
-             * dispose.
-             */
-//            lock (resourceHandles)
-  //          {
-                foreach (var handles in resourceHandles)
-                {
-                    foreach (var handle in handles.Value)
-                    {
-                        IEvent evt1 = new BasicEvent();
-
-                        handle.Value.Unload(evt1);
-
-                        IEvent evt2 = new BasicEvent();
-
-                        handle.Value.Unload(evt2);
-
-                        evt1.Wait();
-                        evt2.Wait();
-                    }
-                }
-    //        }
-
+            
             lock (Loaders)
-            {
-                Loaders.Clear();
-            }
-
+	        {
+                var types = Loaders.Keys.ToArray();
+                foreach (var type in types)
+                {
+                    doRemoveLoader(type);
+                }
+	        }
+            
             
         }
 

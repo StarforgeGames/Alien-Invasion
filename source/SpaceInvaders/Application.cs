@@ -94,9 +94,9 @@ namespace SpaceInvaders
                 Update(deltaTime);
             });
 
-            resourceManager.Dispose();
-
             playerView.Dispose();
+
+            resourceManager.Dispose();
         }
     }
 

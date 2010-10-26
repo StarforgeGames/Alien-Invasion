@@ -8,7 +8,8 @@
 		<HealthBehavior />
 	</behaviors>
 	<attributes>
-		<string key="Sprite">alien_hammerhead.png</string>
+    <resource key="Material" type="material" name="alien_hammerhead"/>
+    <resource key="Mesh" type="mesh" name="quad"/>
 		<float key="Speed">75</float>
 		<float key="FiringSpeed">0.75</float>
 	</attributes>

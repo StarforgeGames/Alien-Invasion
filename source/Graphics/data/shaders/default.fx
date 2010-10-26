@@ -1,22 +1,25 @@
 Texture2D tex2D;
+float2 posi;
+float2 bounds;
+
 SamplerState linearSampler
 {
-    Filter = MIN_MAG_MIP_LINEAR;
+    Filter = ANISOTROPIC;
     AddressU = Wrap;
     AddressV = Wrap;
 };
 
+
+
 struct VS_IN
 {
 	float4 pos : POSITION;
-	float4 col : COLOR;
 	float2 tex : TEXCOORD;
 };
 
 struct PS_IN
 {
 	float4 pos : SV_POSITION;
-	float4 col : COLOR;
 	float2 tex : TEXCOORD;
 };
 
@@ -25,7 +28,8 @@ PS_IN VS(VS_IN input)
 	PS_IN output = (PS_IN)0;
 	
 	output.pos = input.pos;
-	output.col = input.col;
+	output.pos.xy = (input.pos.xy / 2.0f * bounds + posi) * 2.0f - 1.0f;
+	output.pos.y *= -1.0f;
 	output.tex = input.tex;
 	
 	return output;
@@ -33,17 +37,8 @@ PS_IN VS(VS_IN input)
 
 float4 PS(PS_IN input) : SV_Target
 {
-	return input.col;
-}
-
-float4 textured(PS_IN input) : SV_Target
-{
 	return tex2D.Sample(linearSampler, input.tex);
-}
-
-float4 noTexture(PS_IN input) : SV_Target
-{
-	return input.col;
+	//return float4(1.0, 1.0, 1.0, 1.0);
 }
 
 
@@ -53,16 +48,6 @@ technique10 Full
     {
         SetVertexShader( CompileShader( vs_4_0, VS() ) );
         SetGeometryShader( NULL );
-        SetPixelShader( CompileShader( ps_4_0, textured() ) );
+        SetPixelShader( CompileShader( ps_4_0, PS() ) );
     }
-}
-
-technique10 TexturesDisabled
-{
-	pass P0
-	{
-		SetGeometryShader( 0 );
-		SetVertexShader( CompileShader( vs_4_0, VS() ) );
-		SetPixelShader( CompileShader( ps_4_0, PS() ) );
-	}
 }

@@ -23,9 +23,9 @@ namespace Graphics.Loaders
 
         protected override AResource doLoad(byte[] data)
         {
-            TextureResource tex = new TextureResource();
-            tex.texture = ShaderResourceView.FromMemory(renderer.device, data);
-            return tex;
+            TextureResource res = new TextureResource();
+            res.texture = ShaderResourceView.FromMemory(renderer.device, data);
+            return res;
         }
 
         protected override void doUnload(AResource resource)
