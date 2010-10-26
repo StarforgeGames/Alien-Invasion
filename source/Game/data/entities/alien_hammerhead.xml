@@ -8,8 +8,8 @@
 		<HealthBehavior />
 	</behaviors>
 	<attributes>
-    <resource key="Material" type="material" name="alien_hammerhead"/>
-    <resource key="Mesh" type="mesh" name="quad"/>
+		<Resource key="Material" type="material" name="alien_hammerhead"/>
+		<Resource key="Mesh" type="mesh" name="quad"/>
 		<float key="Speed">75</float>
 		<float key="FiringSpeed">0.75</float>
 	</attributes>

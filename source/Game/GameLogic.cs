@@ -98,11 +98,18 @@ namespace Game
 
         private void createAndInitializeAliens()
         {
-            CreateEntityEvent evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, "alien_ray");
+            for (int i = 1; i < 7; i++) {
+                createAndInitializeAlien("alien_ray", 100 * i, 75);
+                createAndInitializeAlien("alien_pincher", 100 * i, 200);
+                createAndInitializeAlien("alien_hammerhead", 100 * i, 325);
+            }
+        }
 
-            float startX = WorldWidth / 2f - (75f / 2f);
-            float startY = 100;
-            Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(startX, startY));
+        private void createAndInitializeAlien(string type, float x, float y)
+        {
+            CreateEntityEvent evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, type);
+
+            Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(x, y));
             evt.AddAttribute(SpatialBehavior.Key_Position, position);
 
             Rectangle rect = new Rectangle(position, 75, 75);

@@ -20,7 +20,7 @@ namespace Game.Entities.AttributeParser
 
         public string Type
         {
-            get { return "resource"; }
+            get { return "Resource"; }
         }
 
         public object Parse(System.Xml.XmlNode node)

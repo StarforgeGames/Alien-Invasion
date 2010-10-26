@@ -1,6 +1,7 @@
 ﻿using System;
 using Game.Entities;
 using Game.EventManagement.Events;
+using Game.Utility;
 
 namespace Game.Behaviors
 {
@@ -50,6 +51,10 @@ namespace Game.Behaviors
 
                     elapsedTime = 0f;
                     isRespawning.Value = false;
+
+                    Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
+                    position.Value.X = entity.Game.WorldWidth / 2f - (75f / 2f);
+                    position.Value.Y = entity.Game.WorldHeight - 100 - (75f / 2f);
 
                     Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type + " respawned.");
                 }

@@ -8,9 +8,9 @@
 		<HealthBehavior />
 	</behaviors>
 	<attributes>
-    <resource key="Material" type="material" name="player"/>
-    <resource key="Mesh" type="mesh" name="quad"/>
-		<float key="Speed">150</float>
+		<Resource key="Material" type="material" name="player"/>
+		<Resource key="Mesh" type="mesh" name="quad"/>
+		<float key="Speed">300</float>
 		<float key="FiringSpeed">0.75</float>
 		<int key="Lifes">3</int>
 	</attributes>

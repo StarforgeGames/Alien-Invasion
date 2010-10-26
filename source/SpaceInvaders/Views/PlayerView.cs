@@ -43,7 +43,7 @@ namespace SpaceInvaders.Views
             this.EventManager = game.EventManager;
 
             RenderForm = new Form();
-            RenderForm.Size = new Size(800, 600);
+            RenderForm.Size = new Size(Game.WorldWidth, Game.WorldHeight);
             RenderForm.Text = "Space Invaders";
             RenderForm.BackColor = Color.Empty;
             
