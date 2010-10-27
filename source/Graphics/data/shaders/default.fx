@@ -28,7 +28,7 @@ PS_IN VS(VS_IN input)
 	PS_IN output = (PS_IN)0;
 	
 	output.pos = input.pos;
-	output.pos.xy = (input.pos.xy / 2.0f * bounds + posi) * 2.0f - 1.0f;
+	output.pos.xy = (input.pos.xy  * bounds + posi) * 2.0f - 1.0f;
 	output.pos.y *= -1.0f;
 	output.tex = input.tex;
 	

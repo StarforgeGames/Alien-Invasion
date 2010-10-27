@@ -36,16 +36,16 @@ namespace Graphics.Loaders
 
             using (var stream = new DataStream(6 * 4 * 4, true, true))
             {
-                stream.Write<Vector4>(new Vector4(1.0f, -1.0f, 0.5f, 1.0f));
+                stream.Write<Vector4>(new Vector4(1.0f, 0.0f, 0.5f, 1.0f));
                 stream.Write<Vector2>(new Vector2(1.0f, 0.0f));
 
                 stream.Write<Vector4>(new Vector4(1.0f, 1.0f, 0.5f, 1.0f));
                 stream.Write<Vector2>(new Vector2(1.0f, 1.0f));
 
-                stream.Write<Vector4>(new Vector4(-1.0f, -1.0f, 0.5f, 1.0f));
+                stream.Write<Vector4>(new Vector4(0.0f, 0.0f, 0.5f, 1.0f));
                 stream.Write<Vector2>(new Vector2(0.0f, 0.0f));
 
-                stream.Write<Vector4>(new Vector4(-1.0f, 1.0f, 0.5f, 1.0f));
+                stream.Write<Vector4>(new Vector4(0.0f, 1.0f, 0.5f, 1.0f));
                 stream.Write<Vector2>(new Vector2(0.0f, 1.0f));
 
                 
