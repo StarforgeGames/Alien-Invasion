@@ -8,22 +8,18 @@ using ResourceManagement.Loaders;
 
 namespace ResourceManagement
 {
-
     public class ResourceManager : IDisposable
     {
-        Dictionary<string, Dictionary<string, ResourceHandle>> resourceHandles = new Dictionary<string,Dictionary<string, ResourceHandle>>();
+        public IAsyncExecutor AsyncExecutor { get; private set; }
         Dictionary<string, IResourceLoader> Loaders { get; set; }
-        List<AWiper> wipers = new List<AWiper>();
 
-        public IAsyncExecutor AsyncExecuter
-        {
-            get;
-            private set;
-        }
+        private Dictionary<string, Dictionary<string, ResourceHandle>> resourceHandles = 
+            new Dictionary<string,Dictionary<string, ResourceHandle>>();
+        private List<AWiper> wipers = new List<AWiper>();
     
-        public ResourceManager(IAsyncExecutor executer)
+        public ResourceManager(IAsyncExecutor executor)
         {
-            AsyncExecuter = executer;
+            AsyncExecutor = executor;
             Loaders = new Dictionary<string, IResourceLoader>();
         }
 
@@ -36,63 +32,55 @@ namespace ResourceManagement
         {
             try
             {
-                if (identifier.Name == "default")
-                {
+                if (identifier.Name == "default") {
                     return Loaders[identifier.Type].Default;
                 }
-                lock (resourceHandles)
-                {
+                lock (resourceHandles) {
                     var resourcesOfSameType = resourceHandles[identifier.Type];
-                    if (resourcesOfSameType.ContainsKey(identifier.Name))
-                    {
-                        ResourceHandle handle = resourcesOfSameType[identifier.Name];
-                        return handle;
-                    }
-                    else
-                    {
+
+                    if (!resourcesOfSameType.ContainsKey(identifier.Name)) {
                         ResourceHandle handle = new ResourceHandle(identifier.Name, Loaders[identifier.Type]);
-                        lock (resourcesOfSameType)
-                        {
+                        lock (resourcesOfSameType) {
                             resourcesOfSameType.Add(identifier.Name, handle);
                         }
-                        return handle;
                     }
+
+                    return resourcesOfSameType[identifier.Name];
                 }
             }
             catch (Exception e)
-            {
-                
+            {                
                 throw new NotSupportedException("No loader available for type! \r\n\r\nMessage: " + e.Message);
             }
         }
 
         public void AddLoader(IResourceLoader loader)
         {
-            lock (Loaders)
-            {
-                Loaders.Add(loader.Type, new AsyncLoader(loader, AsyncExecuter));
-                lock (resourceHandles)
-                {
+            lock (Loaders) {
+                Loaders.Add(loader.Type, new AsyncLoader(loader, AsyncExecutor));
+                lock (resourceHandles) {
                     resourceHandles.Add(loader.Type, new Dictionary<string, ResourceHandle>());
                 }
                 var dummy = Loaders[loader.Type].Default;
+            }            
+        }
+
+        public void RemoveLoader(string type)
+        {
+            lock (Loaders) {
+                doRemoveLoader(type);
             }
-            
         }
 
         private void doRemoveLoader(string type)
         {
             Loaders.Remove(type);
-            if (resourceHandles.ContainsKey(type))
-            {
-                foreach (var handle in resourceHandles[type])
-                {
+            if (resourceHandles.ContainsKey(type)) {
+                foreach (var handle in resourceHandles[type]) {
                     IEvent evt1 = new BasicEvent();
-
                     handle.Value.Unload(evt1);
 
                     IEvent evt2 = new BasicEvent();
-
                     handle.Value.Unload(evt2);
 
                     evt1.Wait();
@@ -101,29 +89,19 @@ namespace ResourceManagement
             }
         }
 
-        public void RemoveLoader(string type)
-        {
-            lock (Loaders)
-            {
-                doRemoveLoader(type);
-            }
-        }
-
         public void AddWiper(AWiper wiper)
         {
             wiper.SetResources(resourceHandles);
             wiper.SetManager(this);
             wiper.Start();
-            lock (wipers)
-            {
+            lock (wipers) {
                 wipers.Add(wiper);
             }
         }
 
         public void RemoveWiper(AWiper wiper)
         {
-            lock (wipers)
-            {
+            lock (wipers) {
                 wipers.Remove(wiper);
             }
             wiper.Stop();
@@ -131,15 +109,10 @@ namespace ResourceManagement
             wiper.SetManager(null);
         }
 
-        #region IDisposable Members
-
         public void Dispose()
         {
-
-            lock (wipers)
-            {
-                foreach (var wiper in wipers)
-                {
+            lock (wipers) {
+                foreach (var wiper in wipers) {
                     wiper.Stop();
                     wiper.SetResources(null);
                     wiper.SetManager(null);
@@ -147,18 +120,12 @@ namespace ResourceManagement
                 wipers.Clear();
             }
             
-            lock (Loaders)
-	        {
+            lock (Loaders) {
                 var types = Loaders.Keys.ToArray();
-                foreach (var type in types)
-                {
+                foreach (var type in types) {
                     doRemoveLoader(type);
                 }
 	        }
-            
-            
         }
-
-        #endregion
     }
 }

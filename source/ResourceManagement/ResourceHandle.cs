@@ -16,32 +16,19 @@ namespace ResourceManagement
 
     public class ResourceHandle
     {
-        public ResourceProperties 
-            active = new ResourceProperties {
-                resource = null,
-                state = ResourceState.Empty
-            },
-            inactive = new ResourceProperties()
-            {
-                resource = null,
-                state = ResourceState.Empty
-            };
+        public string Name { get; private set; }
 
-        
+        public ResourceProperties active = new ResourceProperties() { state = ResourceState.Empty };
+        public ResourceProperties inactive = new ResourceProperties() { state = ResourceState.Empty };
+                
         private IResourceLoader resourceLoader;
-        private int pendingSlot = 0;
-        private int pendingOperation = 0;
+        private int pendingSlot;
+        private int pendingOperation;
 
         public ResourceHandle(string name, IResourceLoader resourceLoader)
         {
             this.Name = name;
             this.resourceLoader = resourceLoader;
-        }
-
-        public string Name
-        {
-            get;
-            private set;
         }
 
         internal AResource DebugAcquire()
@@ -108,29 +95,30 @@ namespace ResourceManagement
 
         public void Load()
         {
-            if ((Interlocked.CompareExchange(ref pendingOperation, 1, 0) == 0))
-            {
+            if ((Interlocked.CompareExchange(ref pendingOperation, 1, 0) == 0)) {
                 switch (inactive.state)
                 {
                     case ResourceState.Empty:
                         inactive.state = ResourceState.Loading;
                         resourceLoader.Load(this);
                         return;
+
                     case ResourceState.Ready:
-                        if (inactive.resource.IsAcquired)
-                        {
+                        if (inactive.resource.IsAcquired) {
                             Interlocked.Decrement(ref pendingOperation);
                         }
-                        else
-                        {
+                        else {
                             inactive.state = ResourceState.Unloading;
                             resourceLoader.Reload(this);
                         }
                         return;
+
                     case ResourceState.Loading:
                         throw new NotSupportedException("tried to load resource while loading");
+
                     case ResourceState.Unloading:
                         throw new NotSupportedException("tried to load resource while unloading");
+
                     default:
                         throw new NotSupportedException("this should never occur!");
                 }
@@ -146,14 +134,18 @@ namespace ResourceManagement
                 case ResourceState.Empty:
                     resourceLoader.Load(this, evt);
                     return;
+
                 case ResourceState.Ready:
                     while (inactive.resource.IsAcquired) ;
                     resourceLoader.Reload(this, evt);
                     return;
+
                 case ResourceState.Loading:
                     throw new NotSupportedException("tried to load resource while loading");
+
                 case ResourceState.Unloading:
                     throw new NotSupportedException("tried to load resource while unloading");
+
                 default:
                     throw new NotSupportedException("this should never occur!");
             }
@@ -161,17 +153,14 @@ namespace ResourceManagement
 
         public void Unload()
         {
-            if ((Interlocked.CompareExchange(ref pendingOperation, 1, 0) == 0))
-            {
+            if ((Interlocked.CompareExchange(ref pendingOperation, 1, 0) == 0)) {
                 switch (inactive.state)
                 {
                     case ResourceState.Ready:
-                        if (inactive.resource.IsAcquired)
-                        {
+                        if (inactive.resource.IsAcquired) {
                             Interlocked.Decrement(ref pendingOperation);
                         }
-                        else
-                        {
+                        else {
                             inactive.state = ResourceState.Unloading;
                             resourceLoader.Unload(this);
                         }
@@ -183,29 +172,29 @@ namespace ResourceManagement
                             case ResourceState.Ready:
                                 bool swapped = false;
                                 while (Interlocked.CompareExchange(ref pendingSlot, 1, 0) != 0) ;
-                                if (!active.resource.IsAcquired)
-                                {
+                                if (!active.resource.IsAcquired) {
                                     ResourceProperties temp = active;
                                     active = inactive;
                                     inactive = temp;
                                     swapped = true;
                                 }
                                 Interlocked.Decrement(ref pendingSlot);
-                                if (swapped)
-                                {
+                                if (swapped) {
                                     inactive.state = ResourceState.Unloading;
                                     resourceLoader.Unload(this);
                                 }
-                                else
-                                {
+                                else {
                                     Interlocked.Decrement(ref pendingOperation);
                                 }
                                 return;
+
                             case ResourceState.Empty:
                                 Interlocked.Decrement(ref pendingOperation);
                                 return;
+
                             case ResourceState.Loading:
                                 throw new NotSupportedException("tried to unload resource while loading");
+
                             case ResourceState.Unloading:
                                 throw new NotSupportedException("tried to unload resource while unloading");
                             
@@ -215,8 +204,10 @@ namespace ResourceManagement
 
                     case ResourceState.Loading:
                         throw new NotSupportedException("tried to unload resource while loading");
+
                     case ResourceState.Unloading:
                         throw new NotSupportedException("tried to unload resource while unloading");
+
                     default:
                         throw new NotSupportedException("this should never occur!");
                 }
@@ -234,6 +225,7 @@ namespace ResourceManagement
                     inactive.state = ResourceState.Unloading;
                     resourceLoader.Unload(this, evt);
                     return;
+
                 case ResourceState.Empty:
                     switch (active.state)
                     {
@@ -262,8 +254,10 @@ namespace ResourceManagement
 
                 case ResourceState.Loading:
                     throw new NotSupportedException("tried to unload resource while loading");
+
                 case ResourceState.Unloading:
                     throw new NotSupportedException("tried to unload resource while unloading");
+
                 default:
                     throw new NotSupportedException("this should never occur!");
             }

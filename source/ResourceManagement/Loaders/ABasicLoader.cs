@@ -11,12 +11,22 @@ namespace ResourceManagement.Loaders
     {
         ResourceHandle defaultResource;
 
+        abstract public string Type { get; }
+
+        public ResourceHandle Default
+        {
+            get
+            {
+                if (defaultResource == null) {
+                    loadDefault();
+                }
+                return defaultResource;
+            }
+        }
+
         abstract protected AResource doLoad(string name);
-
         abstract protected void doUnload(AResource resource);
-
-        #region IResourceLoader Members
-
+        
         public void Load(ResourceHandle handle, IEvent evt)
         {
             try
@@ -60,9 +70,7 @@ namespace ResourceManagement.Loaders
         {
             try
             {
-                handle.inactive.resource
-                    = doLoad(handle.Name);
-
+                handle.inactive.resource = doLoad(handle.Name);
                 handle.inactive.state = ResourceState.Ready;
                 handle.Swap();
                 
@@ -93,8 +101,7 @@ namespace ResourceManagement.Loaders
             {
                 doUnload(handle.inactive.resource);
                 handle.inactive.state = ResourceState.Loading;
-                handle.inactive.resource
-                    = doLoad(handle.Name);
+                handle.inactive.resource = doLoad(handle.Name);
                 
                 handle.Swap();
                 handle.active.state = ResourceState.Ready;
@@ -105,11 +112,6 @@ namespace ResourceManagement.Loaders
             }
         }
 
-        abstract public string Type
-        {
-            get;
-        }
-
         private void loadDefault()
         {
             defaultResource = new ResourceHandle("default", this);
@@ -118,24 +120,9 @@ namespace ResourceManagement.Loaders
             evt.Wait();
         }
 
-        public ResourceHandle Default
-        {
-            get
-            {
-                if (defaultResource == null)
-                {
-                    loadDefault();
-                }
-                return defaultResource;
-            }
-        }
-
-        #endregion
-
         ~ABasicLoader()
         {
-            if (defaultResource != null)
-            {
+            if (defaultResource != null) {
                 IEvent evt = new BasicEvent();
                 defaultResource.Unload(evt);
                 evt.Wait();
