@@ -27,7 +27,11 @@ namespace Game.Behaviors
 
         public override void OnUpdate(float deltaTime)
         {
-            Attribute<bool> isFiring = (Attribute<bool>) entity[Key_IsFiring];
+            if (entity.IsDead) {
+                return;
+            }
+
+            Attribute<bool> isFiring = (Attribute<bool>)entity[Key_IsFiring];
 
             if (isFiring) {
                 Attribute<float> firingSpeed = (Attribute<float>)entity[Key_FiringSpeed];

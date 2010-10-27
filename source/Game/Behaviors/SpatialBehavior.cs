@@ -37,6 +37,10 @@ namespace Game.Behaviors
 
         public override void OnUpdate(float deltaTime)
         {
+            if (entity.IsDead) {
+                return;
+            }
+
             bool isMoving = entity[Key_IsMoving] as Attribute<bool>;
 
             if (isMoving) {

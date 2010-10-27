@@ -39,8 +39,6 @@ namespace Game.Behaviors
 
             Attribute<bool> isRespawning = entity[Key_IsRespawning] as Attribute<bool>;
             if (isRespawning) {
-                entity.State = EntityState.Inactive;
-
                 elapsedTime += deltaTime;
                 Attribute<float> respawnTime = entity[Key_RespawnTime] as Attribute<float>;
 
@@ -55,6 +53,8 @@ namespace Game.Behaviors
                     Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
                     position.Value.X = entity.Game.WorldWidth / 2f - (75f / 2f);
                     position.Value.Y = entity.Game.WorldHeight - 100 - (75f / 2f);
+
+                    entity.State = EntityState.Active;
 
                     Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type + " respawned.");
                 }
@@ -73,6 +73,7 @@ namespace Game.Behaviors
                 case RespawnEntityEvent.RESPAWN_ENTITY: {
                     Attribute<bool> isRespawning = entity[Key_IsRespawning] as Attribute<bool>;
                     isRespawning.Value = true;
+                    entity.State = EntityState.Dead;
                     break;
                 }
             }
@@ -80,6 +81,10 @@ namespace Game.Behaviors
 
         private void applyDamage(int damage)
         {
+            if (entity.IsDead) {
+                return;
+            }
+
             Attribute<int> health = entity[Key_Health] as Attribute<int>;
             health.Value -= damage;
 

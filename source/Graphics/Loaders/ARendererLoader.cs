@@ -122,7 +122,7 @@ namespace Graphics.Loaders
                         }
                         evt.Finish();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         evt.Abort();
                     }

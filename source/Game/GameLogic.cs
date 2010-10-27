@@ -123,14 +123,7 @@ namespace Game
         {
             List<Entity> tmp = new List<Entity>(Entities.Values);
             foreach (Entity entity in tmp) {
-                switch (entity.State) {
-                    case EntityState.Active:
-                        entity.Update(deltaTime);
-                        break;
-                    case EntityState.Inactive:
-                        entity.Update(deltaTime);
-                        break;
-                }
+                entity.Update(deltaTime);
             }
 
             EventManager.Tick();

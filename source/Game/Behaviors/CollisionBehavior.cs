@@ -20,6 +20,10 @@ namespace Game.Behaviors
 
         public override void OnUpdate(float deltaTime)
         {
+            if (entity.IsDead) {
+                return;
+            }
+
             foreach (Entity other in entity.Game.Entities.Values) {
                 if (entity.ID == other.ID || other.State != EntityState.Active) {
                     continue;
