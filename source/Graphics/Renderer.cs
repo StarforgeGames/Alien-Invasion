@@ -11,6 +11,7 @@ using ResourceManagement.Resources;
 using Graphics.Resources;
 using System.Collections.Generic;
 using ResourceManagement;
+using System.Runtime.InteropServices;
 
 namespace Graphics
 {
@@ -69,6 +70,28 @@ namespace Graphics
 
             renderFrame.Resize += new EventHandler(RenderFrame_Resize);
 
+
+            InitDebugFont();
+            QueryPerformanceFrequency(out tickFrequency);
+
+        }
+
+        SlimDX.Direct3D10.Font debugFont;
+
+        private void InitDebugFont()
+        {
+            FontDescription fontDesc = new FontDescription()
+            {
+                Height = 16,
+                Width = 0,
+                Weight = FontWeight.Bold,
+                MipLevels = 1,
+                IsItalic = false,
+                PitchAndFamily = FontPitchAndFamily.Default | FontPitchAndFamily.DontCare,
+                FaceName = "Arial"
+            };
+
+            debugFont = new SlimDX.Direct3D10.Font(device, fontDesc);
         }
 
         void RenderFrame_Resize(object sender, EventArgs e)
@@ -199,9 +222,22 @@ namespace Graphics
             stateChanged = true;
         }
 
+        /// <summary>
+        /// Use Windows API functions as they have a higher resolution which is preferable for Direct3D Applications.
+        /// </summary>
+        /// <see cref="http://msdn.microsoft.com/en-us/library/aa964692%28VS.80%29.aspx"/>
+        [DllImport("Kernel32.dll")]
+        private static extern bool QueryPerformanceCounter(out long lpPerformanceCount);
+
+        [DllImport("Kernel32.dll")]
+        private static extern bool QueryPerformanceFrequency(out long lpFrequency);
+
+        long lastTick;
+        long tickFrequency;
+
         private void renderLoop()
         {
-            Color4 color = new Color4(Color.DarkBlue);
+            Color4 color = new Color4(Color.Black);
             Random rand = new Random(2434545);
 
             
@@ -215,7 +251,7 @@ namespace Graphics
                         if (!commandQueue.Empty)
                         {
                             commandQueue.Execute(CommandsPerFrame);
-                            color = new Color4((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
+                            //color = new Color4((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
                         }
                     }
 
@@ -260,7 +296,7 @@ namespace Graphics
 
                                             for (int j = 0; j < posArray.Length; ++j)
                                             {
-                                                effect.GetVariableByName("posi").AsVector().Set(posArray[i]);
+                                                effect.GetVariableByName("posi").AsVector().Set(posArray[j]);
                                                 pass.Apply();
                                                 device.Draw(4, 0);
                                             }
@@ -271,7 +307,20 @@ namespace Graphics
                                 }
                             }
                         }
+                        long tick;
+                        QueryPerformanceCounter(out tick);
+
+                        long diff = tick - lastTick;
+                        lastTick = tick;
+                        if (diff < 1)
+                        {
+                            diff = 1;
+                        }
+
+
+                        debugFont.Draw(null, "fps: " + (tickFrequency / diff).ToString(), new Rectangle(10, 10, 100, 20), FontDrawFlags.Left, new Color4(255.0f, 1.0f, 1.0f, 255.0f));
                         swapChain.Present(0, PresentFlags.None);
+                        
                     }
                    // Thread.Sleep(1000);
                 }

@@ -13,10 +13,12 @@ namespace Graphics
         {
             get
             {
+                bool empty;
                 lock (queue)
                 {
-                    return !queue.Any();
+                     empty = !queue.Any();
                 }
+                return empty;
             }
         }
 
