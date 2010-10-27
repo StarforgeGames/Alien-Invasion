@@ -25,7 +25,7 @@ namespace ResourceManagement.Loaders
         {
             TextResource res = new TextResource();
             res.text = name;
-            System.Threading.Thread.Sleep(rand.Next(1000));
+            //System.Threading.Thread.Sleep(rand.Next(1000));
             return res;
         }
 
@@ -33,7 +33,7 @@ namespace ResourceManagement.Loaders
         {
             TextResource res = (TextResource)resource;
             res.text = "";
-            System.Threading.Thread.Sleep(rand.Next(1000));
+            //System.Threading.Thread.Sleep(rand.Next(1000));
         }
 
         public override string Type
