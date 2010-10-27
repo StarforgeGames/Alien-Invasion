@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Entity>
+	<behaviors>
+		<SpatialBehavior />
+		<RenderBehavior />
+		<CombatBehavior />
+		<CollisionBehavior />
+		<HealthBehavior />
+	</behaviors>
+	<attributes>
+		<Resource key="Material" type="material" name="alien_ray"/>
+		<Resource key="Mesh" type="mesh" name="quad"/>
+		<float key="Speed">75</float>
+		<float key="FiringSpeed">0.75</float>
+	</attributes>
+</Entity>
