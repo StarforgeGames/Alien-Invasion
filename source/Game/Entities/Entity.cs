@@ -23,7 +23,7 @@ namespace Game.Entities
         public string Type { get; private set; }
 
         public int ID { get { return id; } }
-        private static int nextEntityId = 1;
+        private static int nextEntityID;
         private readonly int id;
 
         public GameLogic Game { get; private set; }
@@ -52,7 +52,7 @@ namespace Game.Entities
             this.Type = type;
             this.Game = game;
 
-            id = nextEntityId++;
+            id = ++nextEntityID;
 
             EventManager = game.EventManager;
         }
