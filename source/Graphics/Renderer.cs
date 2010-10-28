@@ -55,14 +55,20 @@ namespace Graphics
 
             BlendStateDescription statedescr = new BlendStateDescription();
 
-            statedescr.BlendOperation = BlendOperation.Maximum;
-            statedescr.SetBlendEnable(0, false);
+            
+            statedescr.SetBlendEnable(0, true);
   //          statedescr.SetBlendEnable(1, true);
             statedescr.SetWriteMask(0, SlimDX.Direct3D10.ColorWriteMaskFlags.All);
 //            statedescr.SetWriteMask(1, SlimDX.Direct3D10.ColorWriteMaskFlags.All);
-            statedescr.DestinationBlend = SlimDX.Direct3D10.BlendOption.DestinationColor;
-            statedescr.SourceBlend = SlimDX.Direct3D10.BlendOption.SourceColor;
 
+            statedescr.BlendOperation = BlendOperation.Add;
+            statedescr.DestinationBlend = SlimDX.Direct3D10.BlendOption.InverseSourceAlpha;
+            statedescr.SourceBlend = SlimDX.Direct3D10.BlendOption.SourceAlpha;
+
+            statedescr.AlphaBlendOperation = BlendOperation.Add;
+            statedescr.DestinationAlphaBlend = SlimDX.Direct3D10.BlendOption.Zero;
+            statedescr.SourceAlphaBlend = SlimDX.Direct3D10.BlendOption.Zero;
+            
             BlendState newstate = BlendState.FromDescription(device, statedescr);
 
             device.OutputMerger.BlendState = newstate;
