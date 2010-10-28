@@ -89,7 +89,7 @@ namespace Game
             Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(startX, startY));
             evt.AddAttribute(SpatialBehavior.Key_Position, position);
 
-            Rectangle rect = new Rectangle(position, 75, 75);
+            Rectangle rect = new Rectangle(position, new Vector2D(75, 75));
             Attribute<Rectangle> bounds = new Attribute<Rectangle>(rect);
             evt.AddAttribute(SpatialBehavior.Key_Bounds, bounds);
 
@@ -112,7 +112,7 @@ namespace Game
             Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(x, y));
             evt.AddAttribute(SpatialBehavior.Key_Position, position);
 
-            Rectangle rect = new Rectangle(position, 75, 75);
+            Rectangle rect = new Rectangle(position, new Vector2D(75, 75));
             Attribute<Rectangle> bounds = new Attribute<Rectangle>(rect);
             evt.AddAttribute(SpatialBehavior.Key_Bounds, bounds);
 

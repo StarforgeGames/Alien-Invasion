@@ -63,7 +63,7 @@ namespace Game.Behaviors
             Attribute<Vector2D> pewpewPosition = new Attribute<Vector2D>(new Vector2D(startX, startY));
             evt.AddAttribute(SpatialBehavior.Key_Position, pewpewPosition);
 
-            Rectangle rect = new Rectangle(pewpewPosition, 5, 15);
+            Rectangle rect = new Rectangle(pewpewPosition, new Vector2D(5, 15));
             Attribute<Rectangle> pewpewBounds = new Attribute<Rectangle>(rect);
             evt.AddAttribute(SpatialBehavior.Key_Bounds, pewpewBounds);
 
