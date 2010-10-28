@@ -47,9 +47,16 @@ namespace Graphics
             var position = entity["Position"] as Attribute<Vector2D>;
             var bounds = entity["Bounds"] as Attribute<Rectangle>;
 
-            frontObjects.Add(new RenderObject(material.Value, mesh.Value, new Vector2(position.Value.X / game.WorldWidth, position.Value.Y / game.WorldWidth), new Vector2(bounds.Value.Width / game.WorldWidth, bounds.Value.Height / game.WorldHeight)));
+            frontObjects.Add(new RenderObject(
+                material.Value, mesh.Value, 
+                convertToRelative(position.Value),
+                convertToRelative(bounds.Value.Dimensions)));
         }
 
+        private Vector2 convertToRelative(Vector2D vec)
+        {
+            return new Vector2(vec.X / game.WorldWidth, vec.Y / game.WorldHeight);
+        }
 
         public void OnUpdate(float deltaTime)
         {
