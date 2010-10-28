@@ -53,25 +53,7 @@ namespace Graphics
             control.BackColor = Color.Empty;
 
 
-            BlendStateDescription statedescr = new BlendStateDescription();
-
-            
-            statedescr.SetBlendEnable(0, true);
-  //          statedescr.SetBlendEnable(1, true);
-            statedescr.SetWriteMask(0, SlimDX.Direct3D10.ColorWriteMaskFlags.All);
-//            statedescr.SetWriteMask(1, SlimDX.Direct3D10.ColorWriteMaskFlags.All);
-
-            statedescr.BlendOperation = BlendOperation.Add;
-            statedescr.DestinationBlend = SlimDX.Direct3D10.BlendOption.InverseSourceAlpha;
-            statedescr.SourceBlend = SlimDX.Direct3D10.BlendOption.SourceAlpha;
-
-            statedescr.AlphaBlendOperation = BlendOperation.Add;
-            statedescr.DestinationAlphaBlend = SlimDX.Direct3D10.BlendOption.Zero;
-            statedescr.SourceAlphaBlend = SlimDX.Direct3D10.BlendOption.Zero;
-            
-            BlendState newstate = BlendState.FromDescription(device, statedescr);
-
-            device.OutputMerger.BlendState = newstate;
+            InitBlending();
 
 
             renderFrame.Resize += new EventHandler(RenderFrame_Resize);
@@ -83,6 +65,27 @@ namespace Graphics
         }
 
         SlimDX.Direct3D10.Font debugFont;
+
+        private void InitBlending()
+        {
+            BlendStateDescription statedescr = new BlendStateDescription();
+
+
+            statedescr.SetBlendEnable(0, true);
+            statedescr.SetWriteMask(0, SlimDX.Direct3D10.ColorWriteMaskFlags.All);
+
+            statedescr.BlendOperation = BlendOperation.Add;
+            statedescr.DestinationBlend = SlimDX.Direct3D10.BlendOption.InverseSourceAlpha;
+            statedescr.SourceBlend = SlimDX.Direct3D10.BlendOption.SourceAlpha;
+
+            statedescr.AlphaBlendOperation = BlendOperation.Add;
+            statedescr.DestinationAlphaBlend = SlimDX.Direct3D10.BlendOption.Zero;
+            statedescr.SourceAlphaBlend = SlimDX.Direct3D10.BlendOption.Zero;
+
+            BlendState newstate = BlendState.FromDescription(device, statedescr);
+
+            device.OutputMerger.BlendState = newstate;
+        }
 
         private void InitDebugFont()
         {
@@ -242,97 +245,24 @@ namespace Graphics
         long tickFrequency;
 
         private void renderLoop()
-        {
-            Color4 color = new Color4(Color.Black);
-            Random rand = new Random(2434545);
-
-            
-            
+        {   
             while (IsRendering || HandleCommands)
             {
                 try
                 {
                     if (HandleCommands)
                     {
-                        if (!commandQueue.Empty)
-                        {
-                            commandQueue.Execute(CommandsPerFrame);
-                            //color = new Color4((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
-                        }
+                        executeCommands();
                     }
 
                     if (IsRendering)
                     {
-                        device.ClearRenderTargetView(
-                            views[0],
-                            color);
-                        
-                        RenderObjects objs = extractor.Scene;
-
-                        extractor.ExtractNext = true;
-                        foreach (var obj in objs.Objs)
-                        {
-                            using (MeshResource mesh = (MeshResource)obj.Key.Acquire())
-                            {
-                                device.InputAssembler.SetPrimitiveTopology(mesh.primitiveTopology);
-                                device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(mesh.buffer, mesh.size / 4, 0));
-
-                                foreach (var matRes in obj.Value)
-                                {
-                                    using (MaterialResource material = (MaterialResource)matRes.Key.Acquire())
-                                    {
-                                        var positions = from RenderObject mat in matRes.Value
-                                                        select mat.position;
-                                        Vector2[] posArray = positions.ToArray();
-                                        Effect effect = material.effect.effect;
-
-                                        effect.GetVariableByName("tex2D").AsResource().SetResource(material.texture.texture);
-
-
-
-                                        EffectTechnique tech = effect.GetTechniqueByName("Full");
-                                        for (int i = 0; i < tech.Description.PassCount; ++i)
-                                        {
-                                            EffectPass pass = tech.GetPassByIndex(i);
-                                            InputLayout layout = new InputLayout(device, pass.Description.Signature, mesh.inputLayout);
-                                            device.InputAssembler.SetInputLayout(layout);
-                                            effect.GetVariableByName("bounds").AsVector().Set(matRes.Value.First().bounds);
-
-
-
-                                            for (int j = 0; j < posArray.Length; ++j)
-                                            {
-                                                effect.GetVariableByName("posi").AsVector().Set(posArray[j]);
-                                                pass.Apply();
-                                                device.Draw(4, 0);
-                                            }
-
-
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        long tick;
-                        QueryPerformanceCounter(out tick);
-
-                        long diff = tick - lastTick;
-                        lastTick = tick;
-                        if (diff < 1)
-                        {
-                            diff = 1;
-                        }
-
-
-                        debugFont.Draw(null, "fps: " + (tickFrequency / diff).ToString(), new Rectangle(10, 10, 100, 20), FontDrawFlags.Left, new Color4(255.0f, 1.0f, 1.0f, 255.0f));
-                        swapChain.Present(0, PresentFlags.None);
-                        
+                        render();
                     }
-                   // Thread.Sleep(1000);
                 }
                 catch (SlimDX.DXGI.DXGIException)
                 {
-                   // IsRendering = false;
+                    IsRendering = false;
                 }
 
                 if (stateChanged)
@@ -348,6 +278,99 @@ namespace Graphics
                 evt.Finish();
             }
             
+        }
+
+        private void executeCommands()
+        {
+            if (!commandQueue.Empty)
+            {
+                commandQueue.Execute(CommandsPerFrame);
+            }
+        }
+
+        private void render()
+        {
+            clearRenderTargets();
+            
+            RenderObjects objs = extractor.Scene;
+
+            extractor.ExtractNext = true;
+            foreach (var obj in objs.Objs)
+            {
+                using (MeshResource mesh = (MeshResource)obj.Key.Acquire())
+                {
+                    device.InputAssembler.SetPrimitiveTopology(mesh.primitiveTopology);
+                    device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(mesh.buffer, mesh.size / 4, 0));
+
+                    foreach (var matRes in obj.Value)
+                    {
+                        using (MaterialResource material = (MaterialResource)matRes.Key.Acquire())
+                        {
+                            var positions = from RenderObject mat in matRes.Value
+                                            select mat.position;
+                            Vector2[] posArray = positions.ToArray();
+                            Effect effect = material.effect.effect;
+
+                            effect.GetVariableByName("tex2D").AsResource().SetResource(material.texture.texture);
+
+
+
+                            EffectTechnique tech = effect.GetTechniqueByName("Full");
+                            for (int i = 0; i < tech.Description.PassCount; ++i)
+                            {
+                                EffectPass pass = tech.GetPassByIndex(i);
+                                InputLayout layout = new InputLayout(device, pass.Description.Signature, mesh.inputLayout);
+                                device.InputAssembler.SetInputLayout(layout);
+                                effect.GetVariableByName("bounds").AsVector().Set(matRes.Value.First().bounds);
+
+
+
+                                for (int j = 0; j < posArray.Length; ++j)
+                                {
+                                    effect.GetVariableByName("posi").AsVector().Set(posArray[j]);
+                                    pass.Apply();
+                                    device.Draw(4, 0);
+                                }
+
+
+                            }
+                        }
+                    }
+                }
+            }
+            renderDebugOutput();
+
+
+            
+            swapChain.Present(0, PresentFlags.None);         
+        }
+
+        private void clearRenderTargets()
+        {
+            foreach (var view in views)
+            {
+                device.ClearRenderTargetView(view, Color.Black);    
+            }
+        }
+
+        private void renderDebugOutput()
+        {
+            long tick;
+            QueryPerformanceCounter(out tick);
+
+            long diff = tick - lastTick;
+            lastTick = tick;
+            if (diff < 1)
+            {
+                diff = 1;
+            }
+
+            debugFont.Draw(
+                null, 
+                "fps: " + (tickFrequency / diff).ToString(),
+                new Rectangle(10, 10, 100, 20),
+                FontDrawFlags.Left, 
+                new Color4(255.0f, 1.0f, 1.0f, 255.0f));
         }
 
         public void WaitForCompletion()

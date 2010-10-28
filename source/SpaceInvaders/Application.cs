@@ -38,33 +38,6 @@ namespace SpaceInvaders
             resourceManager.AddLoader(new DummyLoader());
             resourceManager.AddWiper(new DebugWiper());
 
-            
-            //resourceManager.AddLoader(new DummyLoader());
-
-
-
-
-
-           // resourceManager.AddWiper(debugWiper);
-
-            // some testing code
-            //resourceManager.GetResource("player", "texture");
-            //using (var test1 = resourceManager.GetResource("player", "texture").Acquire())
-            {
-                using (var test2 = resourceManager.GetResource("quad", "mesh").Acquire())
-                {
-                    using (var test3 = resourceManager.GetResource("SimplePassThrough", "effect").Acquire())
-                    {
-                    }
-                }
-            }
-
-            /*resourceManager.GetResource("default", "material");
-            resourceManager.GetResource("player", "material");*/
-            //System.Threading.Thread.Sleep(1000);
-            //resourceManager.GetResource("quad", "mesh").Acquire();
-            
-            // end of testing code
             Game.EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
                         GameState.Menu));
         }
