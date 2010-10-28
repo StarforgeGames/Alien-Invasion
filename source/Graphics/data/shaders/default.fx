@@ -38,7 +38,6 @@ PS_IN VS(VS_IN input)
 float4 PS(PS_IN input) : SV_Target
 {
 	return tex2D.Sample(linearSampler, input.tex);
-	//return float4(1.0, 1.0, 1.0, 1.0);
 }
 
 

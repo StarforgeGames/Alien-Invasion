@@ -95,7 +95,6 @@
     <Compile Include="Loaders\MeshLoader.cs" />
     <Compile Include="Loaders\MeshParser.cs" />
     <Compile Include="Loaders\TextureLoader.cs" />
-    <Compile Include="Primitives\XPlane.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\EffectResource.cs" />
