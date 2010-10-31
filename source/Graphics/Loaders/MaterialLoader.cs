@@ -14,8 +14,8 @@ namespace Graphics.Loaders
     {
         ResourceManager manager;
 
-        string baseDirectory = @"data\materials\";
-        string extension = @".material";
+        readonly string baseDirectory = @"data\materials\";
+        readonly string extension = @".mtl";
 
         public MaterialLoader(ResourceManager manager)
         {
