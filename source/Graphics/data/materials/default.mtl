@@ -1,0 +1,9 @@
+﻿(material
+	(effect "SimplePassThrough")
+	(texture "tex2d" "name")
+	(matrix "blub" 
+		1.0f 1.0f 1.0f
+		1.0f 1.0f 1.0f
+		1.0f 1.0f 1.0f
+	)
+)
