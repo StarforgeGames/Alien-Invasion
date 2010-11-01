@@ -33,6 +33,12 @@ namespace Game
         public EntityFactory EntityFactory { get; private set; }
         public Dictionary<int, Entity> Entities { get; private set; }
 
+        public bool IsRunning { get { return State == GameState.InGame; } }
+        public bool IsPaused { get { return State != GameState.InGame; } }
+
+        private List<int> entitiesToRemove = new List<int>();
+        private List<Entity> entitiesToAdd = new List<Entity>();
+
         public GameLogic(int worldWidth, int worldHeight, ResourceManager resourceManager)
         {
             State = GameState.StartUp;
@@ -59,12 +65,19 @@ namespace Game
 
         private void changeState(GameState newState)
         {
+            GameState oldState = State;
             this.State = newState;
 
             switch (newState) {
                 case GameState.Menu:
+                    if (oldState == GameState.Menu) {
+                        State = GameState.InGame;
+                        EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
+                            GameState.InGame));
+                    }
                     break;
                 case GameState.Loading:
+                    reset();
                     createAndInitializePlayer();
                     createAndInitializeAliens();
 
@@ -74,10 +87,24 @@ namespace Game
                 case GameState.InGame:
                     break;
                 case GameState.Paused:
+                    if (oldState == GameState.Paused) {
+                        State = GameState.InGame;
+                        EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
+                            GameState.InGame));
+                    }
                     break;
                 case GameState.GameOver:
                     break;
             }
+        }
+
+        private void reset()
+        {
+            entitiesToAdd.Clear();
+            entitiesToRemove.AddRange(Entities.Keys);
+
+            EventManager.Reset();
+            ProcessManager.Reset();
         }
 
         private void createAndInitializePlayer()
@@ -85,23 +112,31 @@ namespace Game
             CreateEntityEvent evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, "player");
 
             float startX = WorldWidth / 2f - (75f / 2f);
-            float startY = WorldHeight - 100 - (75f / 2f);
+            float startY = WorldHeight - 50 - (75f / 2f);
             Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(startX, startY));
             evt.AddAttribute(SpatialBehavior.Key_Position, position);
-
-            Rectangle rect = new Rectangle(position, new Vector2D(75, 75));
-            Attribute<Rectangle> bounds = new Attribute<Rectangle>(rect);
-            evt.AddAttribute(SpatialBehavior.Key_Bounds, bounds);
+            Attribute<Vector2D> dimensions = new Attribute<Vector2D>(new Vector2D(75, 75));
+            evt.AddAttribute(SpatialBehavior.Key_Dimensions, dimensions);
 
             EventManager.QueueEvent(evt);
         }
 
         private void createAndInitializeAliens()
         {
-            for (int i = 1; i < 7; i++) {
-                createAndInitializeAlien("alien_ray", 100 * i, 75);
-                createAndInitializeAlien("alien_pincher", 100 * i, 200);
-                createAndInitializeAlien("alien_hammerhead", 100 * i, 325);
+            createRowOfAliens("alien_ray", 60, 35);
+            createRowOfAliens("alien_ray", 105, 35);
+            createRowOfAliens("alien_pincher", 155, 50);
+            createRowOfAliens("alien_pincher", 200, 50);
+            createRowOfAliens("alien_hammerhead", 255, 75);
+            createRowOfAliens("alien_hammerhead", 325, 75);
+        }
+
+        private void createRowOfAliens(string alienType, int posY, int width)
+        {
+            int posX = 115;
+            while (posX < WorldWidth - 100) {
+                createAndInitializeAlien(alienType, posX, posY);
+                posX += width + 25;
             }
         }
 
@@ -112,22 +147,59 @@ namespace Game
             Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(x, y));
             evt.AddAttribute(SpatialBehavior.Key_Position, position);
 
-            Rectangle rect = new Rectangle(position, new Vector2D(75, 75));
-            Attribute<Rectangle> bounds = new Attribute<Rectangle>(rect);
-            evt.AddAttribute(SpatialBehavior.Key_Bounds, bounds);
-
             EventManager.QueueEvent(evt);
         }
 
         public void Update(float deltaTime)
         {
-            List<Entity> tmp = new List<Entity>(Entities.Values);
-            foreach (Entity entity in tmp) {
-                entity.Update(deltaTime);
+            if (IsRunning) {
+                simulate(deltaTime);
             }
 
             EventManager.Tick();
+
+            addNewEntities();
+            destroyEntities();
+        }
+
+        private void simulate(float deltaTime)
+        {
+            foreach (Entity entity in Entities.Values) {
+                entity.Update(deltaTime);
+            }
+
             ProcessManager.OnUpdate(deltaTime);
+        }
+
+        private void addNewEntities()
+        {
+            foreach (Entity entity in entitiesToAdd) {
+                Entities.Add(entity.ID, entity);
+
+                NewEntityEvent newEntityEvent = new NewEntityEvent(NewEntityEvent.NEW_ENTITY, entity.ID);
+                EventManager.QueueEvent(newEntityEvent);
+
+                System.Console.WriteLine("[" + this.GetType().Name + "] Added entity " + entity);
+            }
+
+            entitiesToAdd.Clear();
+        }
+
+        private void destroyEntities()
+        {
+            foreach (int entityID in entitiesToRemove) {
+                Entity entity = Entities[entityID];
+                if (entity.Type == "player") {
+                    GameStateChangedEvent changeState = new GameStateChangedEvent(
+                        GameStateChangedEvent.GAME_STATE_CHANGED, GameState.GameOver);
+                    EventManager.QueueEvent(changeState);
+                }
+
+                Entities.Remove(entityID);
+                System.Console.WriteLine("[" + this.GetType().Name + "] Destroyed entity #" + entityID);
+            }
+
+            entitiesToRemove.Clear();
         }
 
         public void OnEvent(Event evt)
@@ -143,10 +215,7 @@ namespace Game
                     break;
                 case DestroyEntityEvent.DESTROY_ENTITY:
                     DestroyEntityEvent destroyEvent = evt as DestroyEntityEvent;
-                    Entities.Remove(destroyEvent.EntityID);
-
-                    System.Console.WriteLine("[" + this.GetType().Name + "] Destroyed entity #" 
-                        + destroyEvent.EntityID);
+                    removeEntity(destroyEvent.EntityID);
                     break;
                 case GameStateChangedEvent.GAME_STATE_CHANGED:
                     GameStateChangedEvent stateChangedEvent = evt as GameStateChangedEvent;
@@ -158,12 +227,17 @@ namespace Game
         private void addEntity(string id, Dictionary<string, object> attributes = null)
         {
             Entity entity = EntityFactory.New(id, attributes);
-            Entities.Add(entity.ID, entity);
+            addEntity(entity);
         }
 
         private void addEntity(Entity entity)
         {
-            Entities.Add(entity.ID, entity);
+            entitiesToAdd.Add(entity);
+        }
+
+        private void removeEntity(int entityID)
+        {
+            entitiesToRemove.Add(entityID);
         }
     }
 

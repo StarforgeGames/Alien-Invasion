@@ -12,6 +12,7 @@ namespace Game.EventManagement
         bool QueueEvent(Event msg);
         bool AbortEvent(Event msg);
         bool Tick();
+        void Reset();
     }
 
 }

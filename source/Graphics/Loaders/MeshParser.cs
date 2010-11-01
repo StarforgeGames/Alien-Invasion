@@ -14,8 +14,7 @@ namespace Graphics.Loaders
     {
         public void parse(string fileName)
         {
-            string file = File.ReadAllText(fileName);
-            
+            string file = File.ReadAllText(fileName);            
         }
     }
 }

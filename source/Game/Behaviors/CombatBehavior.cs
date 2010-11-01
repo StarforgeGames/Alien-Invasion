@@ -56,16 +56,15 @@ namespace Game.Behaviors
             evt.AddAttribute(ProjectileBehavior.Key_ProjectileOwner, owner);
 
             Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
-            Attribute<Rectangle> bounds = entity[SpatialBehavior.Key_Bounds] as Attribute<Rectangle>;
+            Attribute<Vector2D> dimensions = entity[SpatialBehavior.Key_Dimensions] as Attribute<Vector2D>;
 
-            float startX = position.Value.X + (bounds.Value.Width / 2f) - 2.5f;
-            float startY = position.Value.Y + (bounds.Value.Height / 2f);
+            float startX = position.Value.X + (dimensions.Value.X / 2f);
+            float startY = position.Value.Y + (dimensions.Value.Y / 2f);
             Attribute<Vector2D> pewpewPosition = new Attribute<Vector2D>(new Vector2D(startX, startY));
             evt.AddAttribute(SpatialBehavior.Key_Position, pewpewPosition);
 
-            Rectangle rect = new Rectangle(pewpewPosition, new Vector2D(5, 15));
-            Attribute<Rectangle> pewpewBounds = new Attribute<Rectangle>(rect);
-            evt.AddAttribute(SpatialBehavior.Key_Bounds, pewpewBounds);
+            Attribute<Vector2D> pewpewDimensions = new Attribute<Vector2D>(new Vector2D(5, 15));
+            evt.AddAttribute(SpatialBehavior.Key_Dimensions, pewpewDimensions);
 
             EventManager.QueueEvent(evt);
         }

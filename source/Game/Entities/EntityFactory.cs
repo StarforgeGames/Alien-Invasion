@@ -34,9 +34,6 @@ namespace Game.Entities
                 }
             }
 
-            NewEntityEvent newEntityEvent = new NewEntityEvent(NewEntityEvent.NEW_ENTITY, entity.ID);
-            eventManager.QueueEvent(newEntityEvent);
-
             return entity;
         }
     }
