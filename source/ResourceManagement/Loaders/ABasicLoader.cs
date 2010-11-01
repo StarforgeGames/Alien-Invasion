@@ -26,6 +26,19 @@ namespace ResourceManagement.Loaders
 
         abstract protected AResource doLoad(string name);
         abstract protected void doUnload(AResource resource);
+
+        public void Load(ResourceHandle handle)
+        {
+            try {
+                handle.inactive.resource = doLoad(handle.Name);
+                handle.inactive.state = ResourceState.Ready;
+                handle.Swap();
+
+            }
+            finally {
+                handle.Finished();
+            }
+        }
         
         public void Load(ResourceHandle handle, IEvent evt)
         {
@@ -37,6 +50,18 @@ namespace ResourceManagement.Loaders
             catch(Exception)
             {
                 evt.Abort();
+            }
+        }
+
+        public void Unload(ResourceHandle handle)
+        {
+            try {
+                doUnload(handle.inactive.resource);
+                handle.inactive.resource = null;
+                handle.inactive.state = ResourceState.Empty;
+            }
+            finally {
+                handle.Finished();
             }
         }
 
@@ -53,6 +78,21 @@ namespace ResourceManagement.Loaders
             }
         }
 
+        public void Reload(ResourceHandle handle)
+        {
+            try {
+                doUnload(handle.inactive.resource);
+                handle.inactive.state = ResourceState.Loading;
+                handle.inactive.resource = doLoad(handle.Name);
+
+                handle.Swap();
+                handle.active.state = ResourceState.Ready;
+            }
+            finally {
+                handle.Finished();
+            }
+        }
+
         public void Reload(ResourceHandle handle, IEvent evt)
         {
             try
@@ -63,52 +103,6 @@ namespace ResourceManagement.Loaders
             catch (Exception)
             {
                 evt.Abort();
-            }
-        }
-
-        public void Load(ResourceHandle handle)
-        {
-            try
-            {
-                handle.inactive.resource = doLoad(handle.Name);
-                handle.inactive.state = ResourceState.Ready;
-                handle.Swap();
-                
-            }
-            finally
-            {
-                handle.Finished();
-            }
-        }
-
-        public void Unload(ResourceHandle handle)
-        {
-            try
-            {
-                doUnload(handle.inactive.resource);
-                handle.inactive.resource = null;
-                handle.inactive.state = ResourceState.Empty;
-            }
-            finally
-            {
-                handle.Finished();
-            }
-        }
-
-        public void Reload(ResourceHandle handle)
-        {
-            try
-            {
-                doUnload(handle.inactive.resource);
-                handle.inactive.state = ResourceState.Loading;
-                handle.inactive.resource = doLoad(handle.Name);
-                
-                handle.Swap();
-                handle.active.state = ResourceState.Ready;
-            }
-            finally
-            {
-                handle.Finished();
             }
         }
 

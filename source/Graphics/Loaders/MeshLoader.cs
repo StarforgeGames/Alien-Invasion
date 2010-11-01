@@ -15,8 +15,8 @@ namespace Graphics.Loaders
 {
     public class MeshLoader : ARendererLoader<byte[]>
     {
-        string baseDirectory = @"data\meshes\";
-        string extension = @".mesh";
+        readonly string baseDirectory = @"data\meshes\";
+        readonly string extension = @".mesh";
 
         public MeshLoader(Renderer renderer) : base(renderer)
         {

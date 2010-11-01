@@ -74,9 +74,11 @@ namespace SpaceInvaders.Input
                 case Keys.Space:
                     eventManager.QueueEvent(new FireWeaponEvent(FireWeaponEvent.STOP_FIRING, playerEntity.ID));
                     break;
-                case Keys.Escape:
+                case Keys.P:
+                    goto case Keys.Pause;
+                case Keys.Pause:
                     eventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
-                        GameState.Menu));
+                        GameState.Paused));
                     break;
             }
         }

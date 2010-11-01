@@ -13,8 +13,8 @@ namespace Graphics.Loaders
 {
     public class TextureLoader : ARendererLoader<byte[]>
     {
-        string baseDirectory = @"data\sprites\";
-        string extension = @".png";
+        readonly string baseDirectory = @"data\sprites\";
+        readonly string extension = @".png";
 
         protected override byte[] ReadResourceWithName(string name)
         {

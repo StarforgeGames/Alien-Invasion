@@ -14,8 +14,8 @@ namespace Graphics.Loaders
 {
     public class EffectLoader : ARendererLoader<byte[]>
     {
-        string baseDirectory = @"data\shaders\";
-        string extension = @".fx";
+        readonly string baseDirectory = @"data\shaders\";
+        readonly string extension = @".fx";
 
         public EffectLoader(Renderer renderer) : base(renderer)
         {
