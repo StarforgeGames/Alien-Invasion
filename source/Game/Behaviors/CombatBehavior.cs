@@ -58,8 +58,8 @@ namespace Game.Behaviors
             Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
             Attribute<Rectangle> bounds = entity[SpatialBehavior.Key_Bounds] as Attribute<Rectangle>;
 
-            float startX = position.Value.X + (bounds.Value.Width / 2f);
-            float startY = position.Value.Y - (bounds.Value.Height / 2f);
+            float startX = position.Value.X + (bounds.Value.Width / 2f) - 2.5f;
+            float startY = position.Value.Y + (bounds.Value.Height / 2f);
             Attribute<Vector2D> pewpewPosition = new Attribute<Vector2D>(new Vector2D(startX, startY));
             evt.AddAttribute(SpatialBehavior.Key_Position, pewpewPosition);
 

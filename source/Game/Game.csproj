@@ -119,6 +119,7 @@
     </Content>
     <Content Include="data\entities\alien_ray.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="data\entities\pewpew.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
