@@ -8,6 +8,10 @@
 		<HealthBehavior />
 	</behaviors>
 	<attributes>
+		<Vector2D key="Dimensions">			
+			<x>50</x>
+			<y>38</y>
+		</Vector2D>
 		<Resource key="Material" type="material" name="alien_pincher"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
 		<float key="Speed">75</float>
