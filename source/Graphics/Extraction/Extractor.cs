@@ -45,12 +45,12 @@ namespace Graphics
             var material = entity["Material"] as Attribute<ResourceHandle>;
             var mesh = entity["Mesh"] as Attribute<ResourceHandle>;
             var position = entity["Position"] as Attribute<Vector2D>;
-            var bounds = entity["Bounds"] as Attribute<Rectangle>;
+            var dimensions = entity["Dimensions"] as Attribute<Vector2D>;
 
             frontObjects.Add(new RenderObject(
                 material.Value, mesh.Value, 
                 convertToRelative(position.Value),
-                convertToRelative(bounds.Value.Dimensions)));
+                convertToRelative(dimensions.Value)));
         }
 
         private Vector2 convertToRelative(Vector2D vec)

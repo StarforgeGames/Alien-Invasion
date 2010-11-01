@@ -177,6 +177,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application.cs" />
+    <Compile Include="Controls\GameOverScreen.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\GameOverScreen.Designer.cs">
+      <DependentUpon>GameOverScreen.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PauseScreen.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -198,6 +204,9 @@
     <Compile Include="Views\PlayerView.cs" />
     <EmbeddedResource Include="Controls\GameMainMenu.resx">
       <DependentUpon>GameMainMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\GameOverScreen.resx">
+      <DependentUpon>GameOverScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PauseScreen.resx">
       <DependentUpon>PauseScreen.cs</DependentUpon>

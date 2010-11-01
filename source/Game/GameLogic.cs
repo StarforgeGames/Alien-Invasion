@@ -115,10 +115,8 @@ namespace Game
             float startY = WorldHeight - 100 - (75f / 2f);
             Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(startX, startY));
             evt.AddAttribute(SpatialBehavior.Key_Position, position);
-
-            Rectangle rect = new Rectangle(position, new Vector2D(75, 75));
-            Attribute<Rectangle> bounds = new Attribute<Rectangle>(rect);
-            evt.AddAttribute(SpatialBehavior.Key_Bounds, bounds);
+            Attribute<Vector2D> dimensions = new Attribute<Vector2D>(new Vector2D(75, 75));
+            evt.AddAttribute(SpatialBehavior.Key_Dimensions, dimensions);
 
             EventManager.QueueEvent(evt);
         }
@@ -139,9 +137,8 @@ namespace Game
             Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(x, y));
             evt.AddAttribute(SpatialBehavior.Key_Position, position);
 
-            Rectangle rect = new Rectangle(position, new Vector2D(75, 75));
-            Attribute<Rectangle> bounds = new Attribute<Rectangle>(rect);
-            evt.AddAttribute(SpatialBehavior.Key_Bounds, bounds);
+            Attribute<Vector2D> dimensions = new Attribute<Vector2D>(new Vector2D(75, 75));
+            evt.AddAttribute(SpatialBehavior.Key_Dimensions, dimensions);
 
             EventManager.QueueEvent(evt);
         }
@@ -184,6 +181,13 @@ namespace Game
         private void destroyEntities()
         {
             foreach (int entityID in entitiesToRemove) {
+                Entity entity = Entities[entityID];
+                if (entity.Type == "player") {
+                    GameStateChangedEvent changeState = new GameStateChangedEvent(
+                        GameStateChangedEvent.GAME_STATE_CHANGED, GameState.GameOver);
+                    EventManager.QueueEvent(changeState);
+                }
+
                 Entities.Remove(entityID);
                 System.Console.WriteLine("[" + this.GetType().Name + "] Destroyed entity #" + entityID);
             }

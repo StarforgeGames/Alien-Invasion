@@ -19,9 +19,9 @@ namespace Game.Behaviors
 
         public override void OnUpdate(float deltaTime)
         {
-            Attribute<Rectangle> bounds = entity[SpatialBehavior.Key_Bounds] as Attribute<Rectangle>;
+            Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
 
-            if (bounds.Value.Top <= 0 || bounds.Value.Bottom >= entity.Game.WorldHeight) {
+            if (position.Value.Y <= 0) {
                 killEntity();
 
                 Console.WriteLine("[" + this.GetType().Name +"] " + entity.Type + " died in vain.");
