@@ -4,7 +4,7 @@ using Game;
 using Game.EventManagement;
 using Game.EventManagement.Events;
 
-namespace SpaceInvaders.Menus
+namespace SpaceInvaders.Controls
 {
     public partial class GameMainMenu : UserControl
     {

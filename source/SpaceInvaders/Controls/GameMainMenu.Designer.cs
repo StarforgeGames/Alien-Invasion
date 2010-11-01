@@ -1,4 +1,4 @@
-﻿namespace SpaceInvaders.Menus
+﻿namespace SpaceInvaders.Controls
 {
     partial class GameMainMenu
     {

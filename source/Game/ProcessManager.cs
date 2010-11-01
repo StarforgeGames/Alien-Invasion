@@ -38,6 +38,11 @@ namespace Game
                 }
             }
         }
+
+        public void Reset()
+        {
+            processes.Clear();
+        }
     }
 
 }

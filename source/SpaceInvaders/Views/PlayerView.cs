@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Game;
@@ -7,11 +8,10 @@ using Game.EventManagement;
 using Game.EventManagement.Events;
 using Graphics;
 using Graphics.Loaders;
-using SpaceInvaders.Input;
-using SpaceInvaders.Menus;
-using ResourceManagement;
 using ResourceManagement.Loaders;
-using System.Collections.Generic;
+using SpaceInvaders.Controls;
+using SpaceInvaders.Input;
+using SpaceInvaders.Controls;
 
 namespace SpaceInvaders.Views
 {
@@ -25,6 +25,7 @@ namespace SpaceInvaders.Views
         public Form RenderForm { get; private set; }
 
         private GameMainMenu mainMenuControl;
+        private PauseScreen pauseControl;
 
         public GameViewType Type { get { return GameViewType.PlayerView; } }
         public int ID
@@ -69,7 +70,11 @@ namespace SpaceInvaders.Views
             mainMenuControl.Location = new Point((RenderForm.Width - mainMenuControl.Width) / 2, 100); ;
             RenderForm.Controls.Add(mainMenuControl);
 
-            
+            pauseControl = new PauseScreen();
+            pauseControl.Location = new Point(
+                (RenderForm.Width - pauseControl.Width) / 2,
+                (RenderForm.Height / 2) - pauseControl.Height); ;
+            RenderForm.Controls.Add(pauseControl);
 
             registerGameEventListeners();
         }
@@ -77,6 +82,7 @@ namespace SpaceInvaders.Views
         private void registerGameEventListeners()
         {
             EventManager.AddListener(this, typeof(NewEntityEvent));
+            EventManager.AddListener(this, typeof(DestroyEntityEvent));
             EventManager.AddListener(this, typeof(GameStateChangedEvent));
         }
 
@@ -97,20 +103,45 @@ namespace SpaceInvaders.Views
             Console.WriteLine("[" + this.GetType().Name + "] New " + playerEntity + " found, attaching to controller");
         }
 
+        public void OnDetach()
+        {
+            if (playerEntity == null) {
+                return;
+            }
+
+            Console.WriteLine("[" + this.GetType().Name + "] Detaching " + playerEntity + " from controller");
+
+            RenderForm.KeyUp -= new KeyEventHandler(controller.OnKeyUp);
+            RenderForm.KeyDown -= new KeyEventHandler(controller.OnKeyDown);
+            controller = null;
+
+            this.playerEntity = null;
+        }
+
         public void OnEvent(Event evt)
         {
             switch (evt.Type) {
-                case NewEntityEvent.NEW_ENTITY:
+                case NewEntityEvent.NEW_ENTITY: {
                     NewEntityEvent newEntityEvent = (NewEntityEvent)evt;
                     Entity entity = Game.Entities[newEntityEvent.EntityID];
                     if (entity.Type == "player") {
                         OnAttach(entity);
                     }
                     break;
-                case GameStateChangedEvent.GAME_STATE_CHANGED:
+                }
+                case DestroyEntityEvent.DESTROY_ENTITY: {
+                    DestroyEntityEvent destroyEntityEvent = (DestroyEntityEvent)evt;
+                    Entity entity = Game.Entities[destroyEntityEvent.EntityID];
+                    if (entity.Type == "player") {
+                        OnDetach();
+                    }
+                    break;
+                }
+                case GameStateChangedEvent.GAME_STATE_CHANGED: {
                     GameStateChangedEvent stateChangedEvent = (GameStateChangedEvent)evt;
                     onGameStateChanged(stateChangedEvent.NewState);
                     break;
+                }
             }
         }
 
@@ -119,18 +150,27 @@ namespace SpaceInvaders.Views
             switch (newState) {
                 case GameState.StartUp:
                     hideControl(mainMenuControl);
+                    hideControl(pauseControl);
                     break;
                 case GameState.Menu:
                     showControl(mainMenuControl);
+                    hideControl(pauseControl);
                     break;
                 case GameState.Loading:
+                    OnDetach();
                     hideControl(mainMenuControl);
+                    hideControl(pauseControl);
                     break;
                 case GameState.InGame:
+                    hideControl(mainMenuControl);
+                    hideControl(pauseControl);
                     break;
                 case GameState.Paused:
+                    showControl(pauseControl);
                     break;
                 case GameState.GameOver:
+                    hideControl(mainMenuControl);
+                    hideControl(pauseControl);
                     break;
                 case GameState.Quit:
                     RenderForm.Close();
@@ -144,7 +184,6 @@ namespace SpaceInvaders.Views
         {
             control.Enabled = true;
             control.Visible = true;
-            control.Focus();
         }
 
         private void hideControl(Control control)
