@@ -104,7 +104,7 @@ namespace Game.EventManagement
         public bool Tick()
         {
             List<Event> queueToProcess = ActiveQueue;
-            SwapActiveQueue();
+            swapActiveQueue();
             ActiveQueue.Clear();
 
             foreach (Event evt in queueToProcess) {
@@ -114,9 +114,14 @@ namespace Game.EventManagement
             return true;
         }
 
-        private void SwapActiveQueue()
+        private void swapActiveQueue()
         {
             activeQueueId = ++activeQueueId % numOfQueues;
+        }
+
+        public void Reset()
+        {
+            ActiveQueue.Clear();
         }
     }
 

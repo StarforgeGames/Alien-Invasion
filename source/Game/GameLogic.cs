@@ -33,6 +33,12 @@ namespace Game
         public EntityFactory EntityFactory { get; private set; }
         public Dictionary<int, Entity> Entities { get; private set; }
 
+        public bool IsRunning { get { return State == GameState.InGame; } }
+        public bool IsPaused { get { return State != GameState.InGame; } }
+
+        private List<int> entitiesToRemove = new List<int>();
+        private List<Entity> entitiesToAdd = new List<Entity>();
+
         public GameLogic(int worldWidth, int worldHeight, ResourceManager resourceManager)
         {
             State = GameState.StartUp;
@@ -59,12 +65,19 @@ namespace Game
 
         private void changeState(GameState newState)
         {
+            GameState oldState = State;
             this.State = newState;
 
             switch (newState) {
                 case GameState.Menu:
+                    if (oldState == GameState.Menu) {
+                        State = GameState.InGame;
+                        EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
+                            GameState.InGame));
+                    }
                     break;
                 case GameState.Loading:
+                    reset();
                     createAndInitializePlayer();
                     createAndInitializeAliens();
 
@@ -74,10 +87,24 @@ namespace Game
                 case GameState.InGame:
                     break;
                 case GameState.Paused:
+                    if (oldState == GameState.Paused) {
+                        State = GameState.InGame;
+                        EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
+                            GameState.InGame));
+                    }
                     break;
                 case GameState.GameOver:
                     break;
             }
+        }
+
+        private void reset()
+        {
+            entitiesToAdd.Clear();
+            entitiesToRemove.AddRange(Entities.Keys);
+
+            EventManager.Reset();
+            ProcessManager.Reset();
         }
 
         private void createAndInitializePlayer()
@@ -121,13 +148,47 @@ namespace Game
 
         public void Update(float deltaTime)
         {
-            List<Entity> tmp = new List<Entity>(Entities.Values);
-            foreach (Entity entity in tmp) {
-                entity.Update(deltaTime);
+            if (IsRunning) {
+                simulate(deltaTime);
             }
 
             EventManager.Tick();
+
+            addNewEntities();
+            destroyEntities();
+        }
+
+        private void simulate(float deltaTime)
+        {
+            foreach (Entity entity in Entities.Values) {
+                entity.Update(deltaTime);
+            }
+
             ProcessManager.OnUpdate(deltaTime);
+        }
+
+        private void addNewEntities()
+        {
+            foreach (Entity entity in entitiesToAdd) {
+                Entities.Add(entity.ID, entity);
+
+                NewEntityEvent newEntityEvent = new NewEntityEvent(NewEntityEvent.NEW_ENTITY, entity.ID);
+                EventManager.QueueEvent(newEntityEvent);
+
+                System.Console.WriteLine("[" + this.GetType().Name + "] Added entity " + entity);
+            }
+
+            entitiesToAdd.Clear();
+        }
+
+        private void destroyEntities()
+        {
+            foreach (int entityID in entitiesToRemove) {
+                Entities.Remove(entityID);
+                System.Console.WriteLine("[" + this.GetType().Name + "] Destroyed entity #" + entityID);
+            }
+
+            entitiesToRemove.Clear();
         }
 
         public void OnEvent(Event evt)
@@ -143,10 +204,7 @@ namespace Game
                     break;
                 case DestroyEntityEvent.DESTROY_ENTITY:
                     DestroyEntityEvent destroyEvent = evt as DestroyEntityEvent;
-                    Entities.Remove(destroyEvent.EntityID);
-
-                    System.Console.WriteLine("[" + this.GetType().Name + "] Destroyed entity #" 
-                        + destroyEvent.EntityID);
+                    removeEntity(destroyEvent.EntityID);
                     break;
                 case GameStateChangedEvent.GAME_STATE_CHANGED:
                     GameStateChangedEvent stateChangedEvent = evt as GameStateChangedEvent;
@@ -158,12 +216,17 @@ namespace Game
         private void addEntity(string id, Dictionary<string, object> attributes = null)
         {
             Entity entity = EntityFactory.New(id, attributes);
-            Entities.Add(entity.ID, entity);
+            addEntity(entity);
         }
 
         private void addEntity(Entity entity)
         {
-            Entities.Add(entity.ID, entity);
+            entitiesToAdd.Add(entity);
+        }
+
+        private void removeEntity(int entityID)
+        {
+            entitiesToRemove.Add(entityID);
         }
     }
 
