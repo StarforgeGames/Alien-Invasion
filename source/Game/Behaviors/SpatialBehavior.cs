@@ -13,7 +13,7 @@ namespace Game.Behaviors
     {
         // Attribute Keys
         public const string Key_Position = "Position";
-        public const string Key_Bounds = "Bounds";
+        public const string Key_Dimensions = "Dimensions";
         public const string Key_Orientation = "Orientation";
         public const string Key_Speed = "Speed";
         public const string Key_IsMoving = "IsMoving";
@@ -21,10 +21,8 @@ namespace Game.Behaviors
         public SpatialBehavior(Entity entity)
             : base (entity)
         {
-            Vector2D position = new Vector2D(0, 0);
-            entity.AddAttribute(Key_Position, new Attribute<Vector2D>(position));
-            Rectangle bounds = new Rectangle(position, new Vector2D(1, 1));
-            entity.AddAttribute(Key_Bounds, new Attribute<Rectangle>(bounds));
+            entity.AddAttribute(Key_Position, new Attribute<Vector2D>(new Vector2D(0, 0)));
+            entity.AddAttribute(Key_Dimensions, new Attribute<Vector2D>(new Vector2D(0, 0)));
             entity.AddAttribute(Key_Orientation, new Attribute<Vector2D>(new Vector2D(0, 0)));
             entity.AddAttribute(Key_Speed, new Attribute<float>(0));
             entity.AddAttribute(Key_IsMoving, new Attribute<bool>(false));
@@ -56,23 +54,23 @@ namespace Game.Behaviors
 
         private void checkBounds(Attribute<Vector2D> position)
         {
-            Attribute<Rectangle> bounds = entity[Key_Bounds] as Attribute<Rectangle>;
+            Attribute<Vector2D> dimensions = entity[Key_Dimensions] as Attribute<Vector2D>;
 
-            if (bounds.Value.Left <= 0) {
+            if (position.Value.X <= 0) {
                 position.Value.X = 0;
                 setMovement(false, Direction.West);
             }
-            else if (bounds.Value.Right > entity.Game.WorldWidth) {
-                position.Value.X = entity.Game.WorldWidth - bounds.Value.Width;
+            else if ((position.Value.X + dimensions.Value.X) > entity.Game.WorldWidth) {
+                position.Value.X = entity.Game.WorldWidth - dimensions.Value.X;
                 setMovement(false, Direction.East);
             }
 
-            if (bounds.Value.Top <= 0) {
+            if (position.Value.Y <= 0) {
                 position.Value.Y = 0;
                 setMovement(false, Direction.North);
             }
-            else if (bounds.Value.Bottom >= entity.Game.WorldHeight) {
-                position.Value.Y = entity.Game.WorldHeight - bounds.Value.Height;
+            else if ((position.Value.Y + dimensions.Value.Y) >= entity.Game.WorldHeight) {
+                position.Value.Y = entity.Game.WorldHeight - dimensions.Value.Y;
                 setMovement(false, Direction.South);
             }
         }

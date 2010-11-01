@@ -26,6 +26,7 @@ namespace SpaceInvaders.Views
 
         private GameMainMenu mainMenuControl;
         private PauseScreen pauseControl;
+        private GameOverScreen gameOverControl;
 
         public GameViewType Type { get { return GameViewType.PlayerView; } }
         public int ID
@@ -73,8 +74,14 @@ namespace SpaceInvaders.Views
             pauseControl = new PauseScreen();
             pauseControl.Location = new Point(
                 (RenderForm.Width - pauseControl.Width) / 2,
-                (RenderForm.Height / 2) - pauseControl.Height); ;
+                (RenderForm.Height / 2) - pauseControl.Height);
             RenderForm.Controls.Add(pauseControl);
+
+            gameOverControl = new GameOverScreen(EventManager);
+            gameOverControl.Location = new Point(
+                (RenderForm.Width - gameOverControl.Width) / 2,
+                (RenderForm.Height / 2) - gameOverControl.Height);
+            RenderForm.Controls.Add(gameOverControl);
 
             registerGameEventListeners();
         }
@@ -99,8 +106,19 @@ namespace SpaceInvaders.Views
             controller = new PlayerController(playerEntity);
             RenderForm.KeyDown += new KeyEventHandler(controller.OnKeyDown);
             RenderForm.KeyUp += new KeyEventHandler(controller.OnKeyUp);
+            RenderForm.KeyDown += new KeyEventHandler(RenderForm_KeyDown);
 
             Console.WriteLine("[" + this.GetType().Name + "] New " + playerEntity + " found, attaching to controller");
+        }
+
+        void RenderForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode) {
+                case Keys.Escape:
+                    EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
+                        GameState.Menu));
+                    break;
+            }
         }
 
         public void OnDetach()
@@ -151,26 +169,32 @@ namespace SpaceInvaders.Views
                 case GameState.StartUp:
                     hideControl(mainMenuControl);
                     hideControl(pauseControl);
+                    hideControl(gameOverControl);
                     break;
                 case GameState.Menu:
                     showControl(mainMenuControl);
                     hideControl(pauseControl);
+                    hideControl(gameOverControl);
                     break;
                 case GameState.Loading:
                     OnDetach();
                     hideControl(mainMenuControl);
                     hideControl(pauseControl);
+                    hideControl(gameOverControl);
                     break;
                 case GameState.InGame:
                     hideControl(mainMenuControl);
                     hideControl(pauseControl);
+                    hideControl(gameOverControl);
                     break;
                 case GameState.Paused:
                     showControl(pauseControl);
+                    hideControl(gameOverControl);
                     break;
                 case GameState.GameOver:
                     hideControl(mainMenuControl);
                     hideControl(pauseControl);
+                    showControl(gameOverControl);
                     break;
                 case GameState.Quit:
                     RenderForm.Close();

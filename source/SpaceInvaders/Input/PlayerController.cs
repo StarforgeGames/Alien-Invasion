@@ -80,10 +80,6 @@ namespace SpaceInvaders.Input
                     eventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
                         GameState.Paused));
                     break;
-                case Keys.Escape:
-                    eventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
-                        GameState.Menu));
-                    break;
             }
         }
 

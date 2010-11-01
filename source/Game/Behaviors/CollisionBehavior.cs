@@ -40,8 +40,7 @@ namespace Game.Behaviors
                     continue;
                 }
 
-                Attribute<Rectangle> otherBounds = other[SpatialBehavior.Key_Bounds] as Attribute<Rectangle>;
-                if (isColliding(otherBounds)) {
+                if (isColliding(other)) {
                     Console.WriteLine("[" + this.GetType().Name + "] " + entity.Type + " collided with " + other.Type
                         + "!");
 
@@ -53,9 +52,9 @@ namespace Game.Behaviors
 
                     Attribute<int> collisionDmg = entity[Key_CollisionDamage] as Attribute<int>;
                     DamageEvent dmgMsg = new DamageEvent(DamageEvent.RECEIVE_DAMAGE,
-                        other.ID,
+                        entity.ID,
                         collisionDmg, 
-                        entity.ID);
+                        other.ID);
                     EventManager.QueueEvent(dmgMsg);
                 }
             }
@@ -65,14 +64,18 @@ namespace Game.Behaviors
         {
         }
 
-        private bool isColliding(Attribute<Rectangle> other)
+        private bool isColliding(Entity other)
         {
-            Attribute<Rectangle> bounds = entity[SpatialBehavior.Key_Bounds] as Attribute<Rectangle>;
+            Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
+            Attribute<Vector2D> dimensions = entity[SpatialBehavior.Key_Dimensions] as Attribute<Vector2D>;
 
-            return bounds.Value.Left <= other.Value.Right
-                && bounds.Value.Top <= other.Value.Bottom
-                && bounds.Value.Right >= other.Value.Left
-                && bounds.Value.Bottom >= other.Value.Top;
+            Attribute<Vector2D> otherPosition = other[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
+            Attribute<Vector2D> otherDimensions = other[SpatialBehavior.Key_Dimensions] as Attribute<Vector2D>;
+
+            return position.Value.X <= otherPosition.Value.X + otherDimensions.Value.X
+                && position.Value.Y <= otherPosition.Value.Y + otherDimensions.Value.Y
+                && position.Value.X + dimensions.Value.X >= otherPosition.Value.X
+                && position.Value.Y + dimensions.Value.Y >= otherPosition.Value.Y;
         }
     }
 }
