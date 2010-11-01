@@ -123,32 +123,29 @@ namespace Game
 
         private void createAndInitializeAliens()
         {
-            createRowOfAliens("alien_ray", 60, 35, 35);
-            createRowOfAliens("alien_ray", 105, 35, 35);
-            createRowOfAliens("alien_pincher", 155, 50, 38);
-            createRowOfAliens("alien_pincher", 200, 50, 38);
-            createRowOfAliens("alien_hammerhead", 255, 75, 52);
-            createRowOfAliens("alien_hammerhead", 325, 75, 52);
+            createRowOfAliens("alien_ray", 60, 35);
+            createRowOfAliens("alien_ray", 105, 35);
+            createRowOfAliens("alien_pincher", 155, 50);
+            createRowOfAliens("alien_pincher", 200, 50);
+            createRowOfAliens("alien_hammerhead", 255, 75);
+            createRowOfAliens("alien_hammerhead", 325, 75);
         }
 
-        private void createRowOfAliens(string alienType, int posY, int width, int height)
+        private void createRowOfAliens(string alienType, int posY, int width)
         {
             int posX = 115;
             while (posX < WorldWidth - 100) {
-                createAndInitializeAlien(alienType, posX, posY, width, height);
+                createAndInitializeAlien(alienType, posX, posY);
                 posX += width + 25;
             }
         }
 
-        private void createAndInitializeAlien(string type, float x, float y, float width, float height)
+        private void createAndInitializeAlien(string type, float x, float y)
         {
             CreateEntityEvent evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, type);
 
             Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(x, y));
             evt.AddAttribute(SpatialBehavior.Key_Position, position);
-
-            Attribute<Vector2D> dimensions = new Attribute<Vector2D>(new Vector2D(width, height));
-            evt.AddAttribute(SpatialBehavior.Key_Dimensions, dimensions);
 
             EventManager.QueueEvent(evt);
         }
