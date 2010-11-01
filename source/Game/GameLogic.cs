@@ -112,7 +112,7 @@ namespace Game
             CreateEntityEvent evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, "player");
 
             float startX = WorldWidth / 2f - (75f / 2f);
-            float startY = WorldHeight - 100 - (75f / 2f);
+            float startY = WorldHeight - 50 - (75f / 2f);
             Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(startX, startY));
             evt.AddAttribute(SpatialBehavior.Key_Position, position);
             Attribute<Vector2D> dimensions = new Attribute<Vector2D>(new Vector2D(75, 75));
@@ -123,21 +123,31 @@ namespace Game
 
         private void createAndInitializeAliens()
         {
-            for (int i = 1; i < 7; i++) {
-                createAndInitializeAlien("alien_ray", 100 * i, 75);
-                createAndInitializeAlien("alien_pincher", 100 * i, 200);
-                createAndInitializeAlien("alien_hammerhead", 100 * i, 325);
+            createRowOfAliens("alien_ray", 60, 35, 35);
+            createRowOfAliens("alien_ray", 105, 35, 35);
+            createRowOfAliens("alien_pincher", 155, 50, 38);
+            createRowOfAliens("alien_pincher", 200, 50, 38);
+            createRowOfAliens("alien_hammerhead", 255, 75, 52);
+            createRowOfAliens("alien_hammerhead", 325, 75, 52);
+        }
+
+        private void createRowOfAliens(string alienType, int posY, int width, int height)
+        {
+            int posX = 115;
+            while (posX < WorldWidth - 100) {
+                createAndInitializeAlien(alienType, posX, posY, width, height);
+                posX += width + 25;
             }
         }
 
-        private void createAndInitializeAlien(string type, float x, float y)
+        private void createAndInitializeAlien(string type, float x, float y, float width, float height)
         {
             CreateEntityEvent evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, type);
 
             Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(x, y));
             evt.AddAttribute(SpatialBehavior.Key_Position, position);
 
-            Attribute<Vector2D> dimensions = new Attribute<Vector2D>(new Vector2D(75, 75));
+            Attribute<Vector2D> dimensions = new Attribute<Vector2D>(new Vector2D(width, height));
             evt.AddAttribute(SpatialBehavior.Key_Dimensions, dimensions);
 
             EventManager.QueueEvent(evt);
