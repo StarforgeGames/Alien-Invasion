@@ -47,23 +47,30 @@ namespace Graphics
             var position = entity["Position"] as Attribute<Vector2D>;
             var dimensions = entity["Dimensions"] as Attribute<Vector2D>;
 
+            Matrix mat = new Matrix();
+            /*mat = Matrix.Multiply(Matrix.Scaling(dimensions.Value.X, dimensions.Value.Y, 1.0f),
+                Matrix.Translation(position.Value.X, position.Value.Y, 0.0f));*/
+            mat.M11 = dimensions.Value.X;
+            mat.M22 = dimensions.Value.Y;
+            mat.M33 = 1.0f;
+            mat.M44 = 1.0f;
+            mat.M41 = position.Value.X;
+            mat.M42 = position.Value.Y;
+            
+
             frontObjects.Add(new RenderObject(
                 material.Value, mesh.Value, 
-                convertToRelative(position.Value),
-                convertToRelative(dimensions.Value)));
+                mat));
         }
 
-        private Vector2 convertToRelative(Vector2D vec)
-        {
-            return new Vector2(vec.X / game.WorldWidth, vec.Y / game.WorldHeight);
-        }
 
         public void OnUpdate(float deltaTime)
         {
             if (ExtractNext)
             {
                 frontObjects.Clear();
-                frontObjects.SetCamera(new Matrix());
+                frontObjects.Camera = Matrix.OrthoOffCenterLH(0.0f, game.WorldWidth, 0.0f, game.WorldHeight, 0.0f, 1.0f);
+                
                 foreach (var GameObject in game.Entities)
                 {
                     if (GameObject.Value["IsRenderable"] != null)

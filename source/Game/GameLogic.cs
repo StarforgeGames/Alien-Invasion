@@ -112,7 +112,7 @@ namespace Game
             CreateEntityEvent evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, "player");
 
             float startX = WorldWidth / 2f - (75f / 2f);
-            float startY = WorldHeight - 50 - (75f / 2f);
+            float startY = 50 - (75f / 2f);
             Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(startX, startY));
             evt.AddAttribute(SpatialBehavior.Key_Position, position);
             Attribute<Vector2D> dimensions = new Attribute<Vector2D>(new Vector2D(75, 75));
@@ -123,12 +123,12 @@ namespace Game
 
         private void createAndInitializeAliens()
         {
-            createRowOfAliens("alien_ray", 60, 35);
-            createRowOfAliens("alien_ray", 105, 35);
-            createRowOfAliens("alien_pincher", 155, 50);
-            createRowOfAliens("alien_pincher", 200, 50);
-            createRowOfAliens("alien_hammerhead", 255, 75);
-            createRowOfAliens("alien_hammerhead", 325, 75);
+            createRowOfAliens("alien_ray", WorldHeight - 60, 35);
+            createRowOfAliens("alien_ray", WorldHeight - 105, 35);
+            createRowOfAliens("alien_pincher", WorldHeight - 155, 50);
+            createRowOfAliens("alien_pincher", WorldHeight - 200, 50);
+            createRowOfAliens("alien_hammerhead", WorldHeight - 255, 75);
+            createRowOfAliens("alien_hammerhead", WorldHeight - 325, 75);
         }
 
         private void createRowOfAliens(string alienType, int posY, int width)
