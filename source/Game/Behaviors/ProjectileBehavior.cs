@@ -21,7 +21,7 @@ namespace Game.Behaviors
         {
             Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
 
-            if (position.Value.Y <= 0) {
+            if (position.Value.Y >= 600 - 15) { // ToDo: Size is currently hard-coded, should refer to window size and projectile height
                 killEntity();
 
                 Console.WriteLine("[" + this.GetType().Name +"] " + entity.Type + " died in vain.");
