@@ -96,13 +96,13 @@ namespace Game.Behaviors
             Attribute<Vector2D> entityDirection = entity[Key_Orientation] as Attribute<Vector2D>;
             switch (direction) {
                 case Direction.North:
-                    entityDirection.Value.Y = isMoving ? -1f : 0f;
+                    entityDirection.Value.Y = isMoving ? 1f : 0f;
                     break;
                 case Direction.West:
                     entityDirection.Value.X = isMoving ? -1f : 0f;
                     break;
                 case Direction.South:
-                    entityDirection.Value.Y = isMoving ? 1f : 0f;
+                    entityDirection.Value.Y = isMoving ? -1f : 0f;
                     break;
                 case Direction.East:
                     entityDirection.Value.X = isMoving ? 1f : 0f;

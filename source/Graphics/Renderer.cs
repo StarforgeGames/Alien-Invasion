@@ -37,6 +37,16 @@ namespace Graphics
         private bool HandleCommands;
         private bool stateChanged;
 
+        SlimDX.Direct3D10.Buffer instanceBuffer;
+        private const int InstanceCount = 20;
+        private static InputElement[] elem = new InputElement[] {
+            new InputElement("model", 0, Format.R32G32B32A32_Float, 0, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("model", 1, Format.R32G32B32A32_Float, 16, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("model", 2, Format.R32G32B32A32_Float, 32, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("model", 3, Format.R32G32B32A32_Float, 48, 1, InputClassification.PerInstanceData, 1),
+
+        };
+
         public Renderer(Control control, Extractor extractor)
         {
             this.extractor = extractor;
@@ -245,7 +255,17 @@ namespace Graphics
         long tickFrequency;
 
         private void renderLoop()
-        {   
+        {
+            instanceBuffer = new SlimDX.Direct3D10.Buffer(device, new BufferDescription()
+            {
+                BindFlags = BindFlags.VertexBuffer,
+                CpuAccessFlags = CpuAccessFlags.Write,
+                OptionFlags = ResourceOptionFlags.None,
+                SizeInBytes = sizeof(float) * 4 * 4 * InstanceCount,
+                Usage = ResourceUsage.Dynamic
+            });
+
+
             while (IsRendering || HandleCommands)
             {
                 try
@@ -271,6 +291,8 @@ namespace Graphics
                     evt.Finish();
                 }
             }
+
+            instanceBuffer.Dispose();
 
             if (stateChanged)
             {
@@ -301,35 +323,48 @@ namespace Graphics
                 {
                     device.InputAssembler.SetPrimitiveTopology(mesh.primitiveTopology);
                     device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(mesh.buffer, mesh.size / 4, 0));
+                    device.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(instanceBuffer, 16 * 4, 0));
 
                     foreach (var matRes in obj.Value)
                     {
                         using (MaterialResource material = (MaterialResource)matRes.Key.Acquire())
                         {
                             var positions = from RenderObject mat in matRes.Value
-                                            select mat.position;
-                            Vector2[] posArray = positions.ToArray();
+                                            select mat.model;
+                            Matrix[] posArray = positions.ToArray();
                             Effect effect = material.effect.effect;
 
+                            effect.GetVariableByName("view").AsMatrix().SetMatrix(objs.Camera);
+
                             effect.GetVariableByName("tex2D").AsResource().SetResource(material.texture.texture);
-
-
 
                             EffectTechnique tech = effect.GetTechniqueByName("Full");
                             for (int i = 0; i < tech.Description.PassCount; ++i)
                             {
                                 EffectPass pass = tech.GetPassByIndex(i);
-                                InputLayout layout = new InputLayout(device, pass.Description.Signature, mesh.inputLayout);
+                                
+                                List<InputElement> elems = new List<InputElement>(mesh.inputLayout);
+                                elems.AddRange(elem);
+
+                                InputLayout layout = new InputLayout(device, pass.Description.Signature, elems.ToArray());
                                 device.InputAssembler.SetInputLayout(layout);
-                                effect.GetVariableByName("bounds").AsVector().Set(matRes.Value.First().bounds);
-
-
-
-                                for (int j = 0; j < posArray.Length; ++j)
+                                
+                                
+                                for (int j = 0; j < posArray.Length; j += InstanceCount)
                                 {
-                                    effect.GetVariableByName("posi").AsVector().Set(posArray[j]);
+                                    int curInstanceCount;
+                                    using (DataStream stream = instanceBuffer.Map(MapMode.WriteDiscard, SlimDX.Direct3D10.MapFlags.None))
+                                    {
+                                        curInstanceCount = Math.Min(InstanceCount, posArray.Length - j);
+                                        
+                                        stream.WriteRange<Matrix>(posArray, j, curInstanceCount);
+                                        instanceBuffer.Unmap();
+                                    }
+                                    //effect.GetVariableByName("model").AsMatrix().SetMatrix(posArray[j]);
+                                    
                                     pass.Apply();
-                                    device.Draw(4, 0);
+                                    device.DrawInstanced(4, curInstanceCount, 0, 0);
+                                    //device.Draw(4, 0);
                                 }
 
 
