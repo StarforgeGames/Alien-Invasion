@@ -90,7 +90,7 @@ namespace Game.Behaviors
 
             Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
             position.Value.X = entity.Game.WorldWidth / 2f - (75f / 2f);
-            position.Value.Y = entity.Game.WorldHeight - 100 - (75f / 2f);
+            position.Value.Y = 100 - (75f / 2f);
 
             entity.State = EntityState.Active;
 

@@ -10,14 +10,14 @@ namespace Graphics
     public class RenderObject
     {
         public readonly ResourceHandle material, mesh;
-        public readonly Vector2 position, bounds;
+        public readonly Matrix model;
 
-        public RenderObject(ResourceHandle material, ResourceHandle mesh, Vector2 position, Vector2 bounds)
+        public RenderObject(ResourceHandle material, ResourceHandle mesh, Matrix model)
         {
             this.material = material;
             this.mesh = mesh;
-            this.position = position;
-            this.bounds = bounds;
+            this.model = model;
+            
         }
     }
 }

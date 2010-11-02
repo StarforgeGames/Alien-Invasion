@@ -10,7 +10,8 @@ namespace Graphics
     public class RenderObjects
     {
         public Dictionary<ResourceHandle, Dictionary<ResourceHandle, List<RenderObject>>> Objs = new Dictionary<ResourceHandle,Dictionary<ResourceHandle,List<RenderObject>>>();
-        private Matrix camera;
+
+        public Matrix Camera { get; set; }
 
         internal void Clear()
         {
@@ -40,11 +41,6 @@ namespace Graphics
                 curRender = curObj[obj.material];
             }
             curRender.Add(obj);
-        }
-
-        public void SetCamera(Matrix camera)
-        {
-            this.camera = camera;
         }
     }
 }

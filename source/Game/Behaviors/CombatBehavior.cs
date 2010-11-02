@@ -58,7 +58,7 @@ namespace Game.Behaviors
             Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
             Attribute<Vector2D> dimensions = entity[SpatialBehavior.Key_Dimensions] as Attribute<Vector2D>;
 
-            float startX = position.Value.X + (dimensions.Value.X / 2f);
+            float startX = position.Value.X +(dimensions.Value.X / 2f) - 1.5f; // offset by projectile width
             float startY = position.Value.Y + (dimensions.Value.Y / 2f);
             Attribute<Vector2D> pewpewPosition = new Attribute<Vector2D>(new Vector2D(startX, startY));
             evt.AddAttribute(SpatialBehavior.Key_Position, pewpewPosition);
