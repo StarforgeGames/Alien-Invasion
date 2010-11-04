@@ -10,8 +10,7 @@
 		<Resource key="Material" type="material" name="pewpew"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
 		<float key="Speed">400</float>
-		<bool key="IsMoving">true</bool>
-		<Vector2D key="Orientation">
+		<Vector2D key="MoveDirection">
 			<x>0</x>
 			<y>1</y>
 		</Vector2D>
