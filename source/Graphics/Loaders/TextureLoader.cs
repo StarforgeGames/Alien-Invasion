@@ -11,14 +11,19 @@ using Graphics.Resources;
 
 namespace Graphics.Loaders
 {
-    public class TextureLoader : ARendererLoader<byte[]>
+    public class TextureLoader : ARendererLoader<byte[]>, IFileLoader
     {
-        readonly string baseDirectory = @"data\sprites\";
-        readonly string extension = @".png";
+        public ResourceNameConverter Converter
+        {
+            get { return converter; }
+        }
+        
+        private readonly ResourceNameConverter converter = 
+            new ResourceNameConverter(@"data\sprites\", @".png");
 
         protected override byte[] ReadResourceWithName(string name)
         {
-            return File.ReadAllBytes(baseDirectory + name + extension);
+            return File.ReadAllBytes(converter.getFilenameFrom(name));
         }
 
         protected override AResource doLoad(byte[] data)
@@ -41,5 +46,6 @@ namespace Graphics.Loaders
         {
             get { return "texture"; }
         }
+
     }
 }

@@ -13,10 +13,15 @@ using SlimDX.DXGI;
 
 namespace Graphics.Loaders
 {
-    public class MeshLoader : ARendererLoader<byte[]>
+    public class MeshLoader : ARendererLoader<byte[]>, IFileLoader
     {
-        readonly string baseDirectory = @"data\meshes\";
-        readonly string extension = @".mesh";
+        public ResourceNameConverter Converter
+        {
+            get { return converter; }
+        }
+
+        private readonly ResourceNameConverter converter =
+            new ResourceNameConverter(@"data\meshes\", @".mesh");
 
         public MeshLoader(Renderer renderer) : base(renderer)
         {
@@ -25,7 +30,7 @@ namespace Graphics.Loaders
 
         protected override byte[] ReadResourceWithName(string name)
         {
-            return File.ReadAllBytes(baseDirectory + name + extension);
+            return File.ReadAllBytes(converter.getFilenameFrom(name));
         }
 
         protected override AResource doLoad(byte[] data)
