@@ -322,6 +322,7 @@ namespace Graphics
                 using (MeshResource mesh = (MeshResource)obj.Key.Acquire())
                 {
                     device.InputAssembler.SetPrimitiveTopology(mesh.primitiveTopology);
+                    
                     device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(mesh.buffer, mesh.size / 4, 0));
                     device.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(instanceBuffer, 16 * 4, 0));
 
@@ -346,26 +347,26 @@ namespace Graphics
                                 List<InputElement> elems = new List<InputElement>(mesh.inputLayout);
                                 elems.AddRange(elem);
 
-                                InputLayout layout = new InputLayout(device, pass.Description.Signature, elems.ToArray());
-                                device.InputAssembler.SetInputLayout(layout);
-                                
-                                
-                                for (int j = 0; j < posArray.Length; j += InstanceCount)
+                                using (InputLayout layout = new InputLayout(device, pass.Description.Signature, elems.ToArray()))
                                 {
-                                    int curInstanceCount;
-                                    using (DataStream stream = instanceBuffer.Map(MapMode.WriteDiscard, SlimDX.Direct3D10.MapFlags.None))
+                                    device.InputAssembler.SetInputLayout(layout);
+
+                                    for (int j = 0; j < posArray.Length; j += InstanceCount)
                                     {
-                                        curInstanceCount = Math.Min(InstanceCount, posArray.Length - j);
-                                        
-                                        stream.WriteRange<Matrix>(posArray, j, curInstanceCount);
-                                        instanceBuffer.Unmap();
+                                        int curInstanceCount;
+                                        using (DataStream stream = instanceBuffer.Map(MapMode.WriteDiscard, SlimDX.Direct3D10.MapFlags.None))
+                                        {
+                                            curInstanceCount = Math.Min(InstanceCount, posArray.Length - j);
+
+                                            stream.WriteRange<Matrix>(posArray, j, curInstanceCount);
+                                            instanceBuffer.Unmap();
+                                        }
+
+                                        pass.Apply();
+                                        device.DrawInstanced(4, curInstanceCount, 0, 0);
                                     }
 
-                                    pass.Apply();
-                                    device.DrawInstanced(4, curInstanceCount, 0, 0);
                                 }
-
-
                             }
                         }
                     }
