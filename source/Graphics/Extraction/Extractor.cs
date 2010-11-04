@@ -48,8 +48,6 @@ namespace Graphics
             var dimensions = entity["Dimensions"] as Attribute<Vector2D>;
 
             Matrix mat = new Matrix();
-            /*mat = Matrix.Multiply(Matrix.Scaling(dimensions.Value.X, dimensions.Value.Y, 1.0f),
-                Matrix.Translation(position.Value.X, position.Value.Y, 0.0f));*/
             mat.M11 = dimensions.Value.X;
             mat.M22 = dimensions.Value.Y;
             mat.M33 = 1.0f;

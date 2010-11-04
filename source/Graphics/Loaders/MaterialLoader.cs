@@ -10,12 +10,17 @@ using Graphics.Resources;
 
 namespace Graphics.Loaders
 {
-    public class MaterialLoader : ABasicLoader
+    public class MaterialLoader : ABasicLoader, IFileLoader
     {
         ResourceManager manager;
 
-        readonly string baseDirectory = @"data\materials\";
-        readonly string extension = @".mtl";
+        public ResourceNameConverter Converter
+        {
+            get { return converter; }
+        }
+
+        private readonly ResourceNameConverter converter =
+            new ResourceNameConverter(@"data\materials\", @".mtl");
 
         public MaterialLoader(ResourceManager manager)
         {
