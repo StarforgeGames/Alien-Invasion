@@ -15,7 +15,7 @@ namespace ResourceManagement
         public Dictionary<string, IResourceLoader> Loaders { get; private set; }
 
         private Dictionary<string, Dictionary<string, ResourceHandle>> resourceHandles = 
-            new Dictionary<string,Dictionary<string, ResourceHandle>>();
+            new Dictionary<string, Dictionary<string, ResourceHandle>>();
         private List<AWiper> wipers = new List<AWiper>();
     
         public ResourceManager(IAsyncExecutor executor)
