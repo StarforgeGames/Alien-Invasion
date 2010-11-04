@@ -1,12 +1,15 @@
 Texture2D tex2D;
 
-float4x4 view;
+cbuffer perFrame
+{
+	float4x4 viewProj;
+};
 
 SamplerState linearSampler
 {
     Filter = ANISOTROPIC;
-    AddressU = Wrap;
-    AddressV = Wrap;
+    AddressU = Clamp;
+    AddressV = Clamp;
 };
 
 
@@ -33,11 +36,8 @@ PS_IN VS(VS_IN input)
 	output.pos.xy = (input.pos.xy  * bounds + posi) * 2.0f - 1.0f;
 	output.pos.y *= -1.0f;*/
 	
-	float4x4 mv = mul(input.model, view);
-	//output.pos = mul(input.pos, input.model);
-	output.pos = mul(mul(input.pos, input.model), view);
-	//output.pos = input.pos;
-	//output.pos.y *= -1.0f;
+	float4x4 mv = mul(input.model, viewProj);
+	output.pos = mul(mul(input.pos, input.model), viewProj);
 	output.tex = input.tex;
 	
 	return output;

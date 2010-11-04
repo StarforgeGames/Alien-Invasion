@@ -10,11 +10,11 @@ namespace Graphics.Resources
 {
     public class MaterialResource : AResource
     {
-        public EffectResource effect = null;
-        public TextureResource texture = null;
+        public EffectResource effect;
+        public TextureResource texture;
         
-        ResourceHandle effectHandle;
-        ResourceHandle textureHandle;
+        private ResourceHandle effectHandle;
+        private ResourceHandle textureHandle;
 
         public MaterialResource(ResourceHandle effectHandle, ResourceHandle textureHandle)
         {

@@ -334,7 +334,7 @@ namespace Graphics
                             Matrix[] posArray = positions.ToArray();
                             Effect effect = material.effect.effect;
 
-                            effect.GetVariableByName("view").AsMatrix().SetMatrix(objs.Camera);
+                            effect.GetVariableByName("viewProj").AsMatrix().SetMatrix(objs.Camera);
 
                             effect.GetVariableByName("tex2D").AsResource().SetResource(material.texture.texture);
 
@@ -360,11 +360,9 @@ namespace Graphics
                                         stream.WriteRange<Matrix>(posArray, j, curInstanceCount);
                                         instanceBuffer.Unmap();
                                     }
-                                    //effect.GetVariableByName("model").AsMatrix().SetMatrix(posArray[j]);
-                                    
+
                                     pass.Apply();
                                     device.DrawInstanced(4, curInstanceCount, 0, 0);
-                                    //device.Draw(4, 0);
                                 }
 
 
