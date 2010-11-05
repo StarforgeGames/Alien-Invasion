@@ -20,10 +20,10 @@ namespace Game.Behaviors
         public override void OnUpdate(float deltaTime)
         {
             Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
+            Attribute<Vector2D> dimensions = entity[SpatialBehavior.Key_Dimensions] as Attribute<Vector2D>;
 
-            if (position.Value.Y >= 600 - 15) { // ToDo: Size is currently hard-coded, should refer to window size and projectile height
+            if (position.Value.Y >= entity.Game.WorldHeight - dimensions.Value.Y) {
                 killEntity();
-
                 Console.WriteLine("[" + this.GetType().Name +"] " + entity.Type + " died in vain.");
             }
         }

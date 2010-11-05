@@ -68,7 +68,9 @@ namespace SpaceInvaders.Views
             game.ResourceManager.AddLoader(new MaterialLoader(game.ResourceManager));
 
             mainMenuControl = new GameMainMenu(EventManager);
-            mainMenuControl.Location = new Point((RenderForm.Width - mainMenuControl.Width) / 2, 100); ;
+            mainMenuControl.Location = new Point(
+                (RenderForm.Width - mainMenuControl.Width) / 2,
+                (RenderForm.Height - mainMenuControl.Height) / 2 - 50); ;
             RenderForm.Controls.Add(mainMenuControl);
 
             pauseControl = new PauseScreen();

@@ -27,7 +27,7 @@ namespace SpaceInvaders
 
         public Application()
         {
-            Game = new GameLogic(800, 600, resourceManager);
+            Game = new GameLogic(1024, 768, resourceManager);
 
             Views = new List<IGameView>();
             PlayerView playerView = new PlayerView(Game);
