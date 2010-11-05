@@ -84,7 +84,7 @@ namespace SpaceInvaders
                 case GameStateChangedEvent.GAME_STATE_CHANGED: {
                     GameStateChangedEvent stateChangedEvent = evt as GameStateChangedEvent;
 
-                    if (stateChangedEvent.NewState == GameState.Paused) {
+                    if (stateChangedEvent.NewState != GameState.Running) {
                         clock.Stop();
                     }
                     else {
