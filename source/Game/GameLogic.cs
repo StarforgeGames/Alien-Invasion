@@ -14,7 +14,7 @@ namespace Game
         StartUp,
         Menu,
         Loading,
-        InGame,
+        Running,
         Paused,
         GameOver,
         Quit
@@ -34,8 +34,8 @@ namespace Game
         public EntityFactory EntityFactory { get; private set; }
         public Dictionary<int, Entity> Entities { get; private set; }
 
-        public bool IsRunning { get { return State == GameState.InGame; } }
-        public bool IsPaused { get { return State != GameState.InGame; } }
+        public bool IsRunning { get { return State == GameState.Running; } }
+        public bool IsPaused { get { return State != GameState.Running; } }
 
         private List<int> entitiesToRemove = new List<int>();
         private List<Entity> entitiesToAdd = new List<Entity>();
@@ -72,9 +72,9 @@ namespace Game
             switch (newState) {
                 case GameState.Menu:
                     if (oldState == GameState.Menu) {
-                        State = GameState.InGame;
+                        State = GameState.Running;
                         EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
-                            GameState.InGame));
+                            GameState.Running));
                     }
                     break;
                 case GameState.Loading:
@@ -83,15 +83,15 @@ namespace Game
                     createAndInitializeAliens();
 
                     EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
-                        GameState.InGame));
+                        GameState.Running));
                     break;
-                case GameState.InGame:
+                case GameState.Running:
                     break;
                 case GameState.Paused:
                     if (oldState == GameState.Paused) {
-                        State = GameState.InGame;
+                        State = GameState.Running;
                         EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
-                            GameState.InGame));
+                            GameState.Running));
                     }
                     break;
                 case GameState.GameOver:

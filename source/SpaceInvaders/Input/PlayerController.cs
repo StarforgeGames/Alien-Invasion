@@ -154,13 +154,13 @@ namespace SpaceInvaders.Input
                     eventManager.Trigger(new DebugEvent(DebugEvent.DECREASE_SPEED));
                     break;
                 case Keys.F10:
-                    eventManager.Trigger(new DebugEvent(DebugEvent.RESET_SPEED));
+                    eventManager.Trigger(new DebugEvent(DebugEvent.SINGLE_STEP));
                     break;
                 case Keys.F11:
                     eventManager.Trigger(new DebugEvent(DebugEvent.INCREASE_SPEED));
                     break;
                 case Keys.F12:
-                    eventManager.Trigger(new DebugEvent(DebugEvent.SINGLE_STEP));
+                    eventManager.Trigger(new DebugEvent(DebugEvent.RESET_SPEED));
                     break;
 
                 default:

@@ -181,7 +181,7 @@ namespace SpaceInvaders.Views
                     hideControl(pauseControl);
                     hideControl(gameOverControl);
                     break;
-                case GameState.InGame:
+                case GameState.Running:
                     hideControl(mainMenuControl);
                     hideControl(pauseControl);
                     hideControl(gameOverControl);
