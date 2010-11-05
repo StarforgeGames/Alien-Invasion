@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Entity>
+	<behaviors>
+		<SpatialBehavior />
+		<RenderBehavior />
+		<ProjectileBehavior />
+		<CollisionBehavior />
+	</behaviors>
+	<attributes>
+		<Resource key="Material" type="material" name="pewpew"/>
+		<Resource key="Mesh" type="mesh" name="quad"/>
+		<float key="Speed">400</float>
+		<Vector2D key="MoveDirection">
+			<x>0</x>
+			<y>1</y>
+		</Vector2D>
+	</attributes>
+</Entity>

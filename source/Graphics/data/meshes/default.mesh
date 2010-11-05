@@ -1,0 +1,30 @@
+(mesh
+	(topology triangle_strip)
+	(layout
+		(element POSITION float rgba)
+		(element COLOR float rgba)
+		(element TEXCOORD float rg)
+	)
+	(data
+		(vertex
+			(POSITION 0.0f 0.0f 1.0f 1.0f)
+			(COLOR  1.0f 1.0f 1.0f 1.0f)
+			(TEXCOORD  0.0f 0.0f)
+		)
+		(vertex
+			(POSITION 0.0f 1.0f 1.0f 1.0f)
+			(COLOR  1.0f 1.0f 1.0f 1.0f)
+			(TEXCOORD  0.0f 1.0f)
+		)
+		(vertex
+			(POSITION 1.0f 1.0f 1.0f 1.0f)
+			(COLOR  1.0f 1.0f 1.0f 1.0f)
+			(TEXCOORD  1.0f 1.0f)
+		)
+		(vertex
+			(POSITION 1.0f 0.0f 1.0f 1.0f)
+			(COLOR  1.0f 1.0f 1.0f 1.0f)
+			(TEXCOORD  1.0f 0.0f)
+		)
+	)
+)
