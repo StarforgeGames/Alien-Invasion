@@ -333,11 +333,11 @@ namespace Graphics
                             var positions = from RenderObject mat in matRes.Value
                                             select mat.model;
                             Matrix[] posArray = positions.ToArray();
-                            Effect effect = material.effect.effect;
 
-                            effect.GetVariableByName("viewProj").AsMatrix().SetMatrix(objs.Camera);
+                            material.Apply();
+                            material.Set("viewProj", objs.Camera);
 
-                            effect.GetVariableByName("tex2D").AsResource().SetResource(material.texture.texture);
+                            Effect effect = material.Effect;
 
                             EffectTechnique tech = effect.GetTechniqueByName("Full");
                             for (int i = 0; i < tech.Description.PassCount; ++i)
