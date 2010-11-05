@@ -128,6 +128,8 @@ namespace Graphics
 
                     SetDefaultRenderingBuffer();
                     SetDefaultViewport();
+
+                    InitBlending();
                 });
         }
 
