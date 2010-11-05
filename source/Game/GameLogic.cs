@@ -2,6 +2,7 @@
 using Game.Behaviors;
 using Game.Entities;
 using Game.EventManagement;
+using Game.EventManagement.Debug;
 using Game.EventManagement.Events;
 using Game.Utility;
 using ResourceManagement;
@@ -152,10 +153,7 @@ namespace Game
 
         public void Update(float deltaTime)
         {
-            if (IsRunning) {
-                simulate(deltaTime);
-            }
-
+            simulate(deltaTime);
             EventManager.Tick();
 
             addNewEntities();
@@ -204,10 +202,6 @@ namespace Game
 
         public void OnEvent(Event evt)
         {
-            if (evt.RecipientID != 0) {
-                return;
-            }
-
             switch (evt.Type) {
                 case CreateEntityEvent.CREATE_ENTITY:
                     CreateEntityEvent createEvent = evt as CreateEntityEvent;

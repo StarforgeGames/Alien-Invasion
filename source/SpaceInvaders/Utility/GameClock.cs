@@ -6,7 +6,7 @@ namespace SpaceInvaders
     /// <summary>
     /// Class that keeps track of in-game time, taking pausing and stopping the game into account.
     /// </summary>
-    public class GameTimer
+    public class GameClock
     {
         /// <summary>
         /// Returns the current game time since start.
@@ -14,16 +14,33 @@ namespace SpaceInvaders
         public float Time {
             get 
             {
-                if (isStopped)
+                if (isStopped) {
                     return (float)((stopTime - baseTime) * secondsPerCount);
-                else
+                }
+                else {
                     return (float)((currentTime - pausedTime - baseTime) * secondsPerCount);
+                }
             }
         }
+
         /// <summary>
         /// Returns the time difference since the last tick.
         /// </summary>
         public float DeltaTime { get; set; }
+
+        private float timeScale;
+        public float TimeScale { 
+            get { 
+                return timeScale; 
+            }
+            set
+            {
+                timeScale = value;
+                if (value < 0.0f) {
+                    timeScale = 0.0f;
+                }
+            }
+        }
 
         private double secondsPerCount;
 
@@ -34,19 +51,19 @@ namespace SpaceInvaders
         private Int64 currentTime;
 
         private bool isStopped;
+        private bool doSingleStep;
 
+        private readonly float singleStep = 1.0f / 30.0f;
+        private readonly float debugBreakpointThreshold = 1.0f / 10.0f;
 
-        public GameTimer()
+        public GameClock()
+            : this(1.0f)
+        { }
+
+        public GameClock(float timeScale)
         {
-            DeltaTime = -1.0f;
-            secondsPerCount = 0.0;
-            baseTime = 0;
-            pausedTime = 0;
-            stopTime = 0;
-            previousTime = 0;
-            currentTime = 0;
-
-            isStopped = false;
+            this.DeltaTime = -1.0f;
+            this.TimeScale = timeScale;
 
             long countsPerSec;
             QueryPerformanceFrequency(out countsPerSec);
@@ -103,7 +120,13 @@ namespace SpaceInvaders
         /// </summary>
         public void Tick()
         {
-            if (isStopped) {
+            if (isStopped || timeScale <= 0.0f) {
+                if (doSingleStep) {
+                    DeltaTime = singleStep;
+                    doSingleStep = false;
+                    return;
+                }
+
                 DeltaTime = 0.0f;
                 return;
             }
@@ -111,22 +134,27 @@ namespace SpaceInvaders
             long currTime;
             QueryPerformanceCounter(out currTime);
             currentTime = currTime;
-
-            float currDelta;
-
-            // Time difference between this frame and the previous
-            currDelta = (float)((currentTime - previousTime) * secondsPerCount);
-
-            // Prepare for next frame
+            
+            float currentDelta;
+            currentDelta = (float)((currentTime - previousTime) * secondsPerCount) * timeScale;
             previousTime = currentTime;
 
             // Force non-negative.  The DXSDK's CDXUTTimer mentions that if the processor goes into a power save mode 
             // or we get shuffled to another processor, then DeltaTime can be negative.
-            if (currDelta < 0.0f)
+            if (currentDelta < 0.0f) {
                 DeltaTime = 0.0f;
-            else
-                DeltaTime = currDelta;
+            }
+            else if(currentDelta > debugBreakpointThreshold) {
+                DeltaTime = singleStep;
+            }
+            else {
+                DeltaTime = currentDelta;
+            }
+        }
 
+        public void SingleStep()
+        {
+            doSingleStep = true;
         }
 
         /// <summary>

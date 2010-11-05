@@ -47,6 +47,7 @@ namespace SpaceInvaders.Views
             RenderForm.Size = new Size(Game.WorldWidth, Game.WorldHeight);
             RenderForm.Text = "Space Invaders";
             RenderForm.BackColor = Color.Empty;
+            RenderForm.KeyPreview = true;
             
 
             extractor = new Extractor(game);
@@ -95,7 +96,6 @@ namespace SpaceInvaders.Views
         public void OnUpdate(float deltaTime)
         {
             extractor.OnUpdate(deltaTime);
-            // TODO: Run Extractor and stuff
         }
 
         public void OnAttach(Entity entity)
