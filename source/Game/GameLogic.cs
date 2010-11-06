@@ -125,10 +125,10 @@ namespace Game
         private void createAndInitializeAliens()
         {
             createRowOfAliens("alien_ray", WorldHeight - 100, 16, 42);
-            createRowOfAliens("alien_pincher", WorldHeight - 155, 12, 56);
-            createRowOfAliens("alien_pincher", WorldHeight - 200, 12, 56);
-            createRowOfAliens("alien_hammerhead", WorldHeight - 255, 8, 85);
-            createRowOfAliens("alien_hammerhead", WorldHeight - 325, 8, 85);
+            createRowOfAliens("alien_pincher", WorldHeight - 180, 12, 56);
+            createRowOfAliens("alien_pincher", WorldHeight - 260, 12, 56);
+            createRowOfAliens("alien_hammerhead", WorldHeight - 320, 8, 85);
+            createRowOfAliens("alien_hammerhead", WorldHeight - 390, 8, 85);
         }
 
         private void createRowOfAliens(string alienType, int posY, int number, int margin)
