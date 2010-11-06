@@ -107,19 +107,8 @@ namespace SpaceInvaders.Views
             controller = new PlayerController(playerEntity);
             RenderForm.KeyDown += new KeyEventHandler(controller.OnKeyDown);
             RenderForm.KeyUp += new KeyEventHandler(controller.OnKeyUp);
-            RenderForm.KeyDown += new KeyEventHandler(RenderForm_KeyDown);
 
             Console.WriteLine("[" + this.GetType().Name + "] New " + playerEntity + " found, attaching to controller");
-        }
-
-        void RenderForm_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode) {
-                case Keys.Escape:
-                    EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
-                        GameState.Menu));
-                    break;
-            }
         }
 
         public void OnDetach()
