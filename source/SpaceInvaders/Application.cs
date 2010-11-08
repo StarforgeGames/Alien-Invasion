@@ -8,6 +8,8 @@ using ResourceManagement.Loaders;
 using ResourceManagement.Wipers;
 using SlimDX.Windows;
 using SpaceInvaders.Views;
+using Game.EventManagement;
+using Game.EventManagement.Debug;
 
 namespace SpaceInvaders
 {
@@ -15,21 +17,17 @@ namespace SpaceInvaders
     /// <summary>
     /// Concrete class for the game.
     /// </summary>
-    class Application
+    class Application :IEventListener
     {
-        public double GameLifeTime { get; private set; }
-
         public GameLogic Game { get; private set; }
         public List<IGameView> Views { get; private set; }
 
-        private GameTimer timer = new GameTimer();
+        private GameClock clock = new GameClock();
         private ResourceManager resourceManager = new ResourceManager(new ThreadPoolExecutor());
-        
-       
 
         public Application()
         {
-            Game = new GameLogic(800, 600, resourceManager);
+            Game = new GameLogic(1024, 768, resourceManager);
 
             Views = new List<IGameView>();
             PlayerView playerView = new PlayerView(Game);
@@ -41,16 +39,14 @@ namespace SpaceInvaders
 
             Game.EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
                         GameState.Menu));
+
+            registerGameEventListeners();
         }
 
-        public void Update(float deltaTime)
+        private void registerGameEventListeners()
         {
-            GameLifeTime += deltaTime;
-            Game.Update(deltaTime);
-
-            foreach (IGameView view in Views) {
-                view.OnUpdate(deltaTime);
-            }
+            Game.EventManager.AddListener(this, typeof(GameStateChangedEvent));
+            Game.EventManager.AddListener(this, typeof(DebugEvent));
         }
 
         /// <summary>
@@ -58,19 +54,61 @@ namespace SpaceInvaders
         /// </summary>
         public void Run()
         {
-            timer.Reset();
-            PlayerView playerView = Views.Find(x => x.Type == GameViewType.PlayerView) as PlayerView;
+            clock.Reset();
 
-            MessagePump.Run(playerView.RenderForm, () =>
-            {
-                timer.Tick();
-                float deltaTime = timer.DeltaTime;
-                Update(deltaTime);
-            });
+            using (PlayerView playerView = Views.Find(x => x.Type == GameViewType.PlayerView) as PlayerView) {
 
-            playerView.Dispose();
+                MessagePump.Run(playerView.RenderForm, () => {
+                    clock.Tick();
+                    float deltaTime = clock.DeltaTime;
+                    Update(deltaTime);
+                });
+
+            }
 
             resourceManager.Dispose();
+        }
+
+        public void Update(float deltaTime)
+        {
+            Game.Update(deltaTime);
+
+            foreach (IGameView view in Views) {
+                view.OnUpdate(deltaTime);
+            }
+        }
+
+        public void OnEvent(Event evt)
+        {
+            switch (evt.Type) {
+                case GameStateChangedEvent.GAME_STATE_CHANGED: {
+                    GameStateChangedEvent stateChangedEvent = evt as GameStateChangedEvent;
+
+                    if (stateChangedEvent.NewState != GameState.Running) {
+                        clock.Stop();
+                    }
+                    else {
+                        clock.Start();
+                    }
+                    break;
+                }
+                case DebugEvent.DECREASE_SPEED: {
+                    clock.TimeScale -= 0.1f;
+                    break;
+                }
+                case DebugEvent.SINGLE_STEP: {
+                    clock.SingleStep();
+                    break;
+                }
+                case DebugEvent.INCREASE_SPEED: {
+                    clock.TimeScale += 0.1f;
+                    break;
+                }
+                case DebugEvent.RESET_SPEED: {
+                    clock.TimeScale = 1.0f;
+                    break;
+                }
+            }
         }
     }
 
