@@ -13,7 +13,7 @@ using SlimDX.DXGI;
 
 namespace Graphics.Loaders
 {
-    public class MeshLoader : ARendererLoader<byte[]>, IFileLoader
+    public class MeshLoader : ARendererLoader<MeshResource, byte[]>, IFileLoader
     {
         public ResourceNameConverter Converter
         {
@@ -28,16 +28,16 @@ namespace Graphics.Loaders
         }
 
 
-        protected override byte[] ReadResourceWithName(string name)
+        protected override MeshResource ReadResourceWithName(string name, out byte[] data)
         {
-            return File.ReadAllBytes(converter.getFilenameFrom(name));
+            data = File.ReadAllBytes(converter.getFilenameFrom(name));
+            return new MeshResource();
         }
 
-        protected override AResource doLoad(byte[] data)
+        protected override AResource doLoad(MeshResource res, byte[] data)
         {
 
             // currently dummy code since true loading is not implemented yet.
-            MeshResource res = new MeshResource();
 
             using (var stream = new DataStream(6 * 4 * 4, true, true))
             {

@@ -89,6 +89,7 @@
     <Compile Include="Extraction\RenderObjects.cs" />
     <Compile Include="CommandQueue.cs" />
     <Compile Include="Counter.cs" />
+    <Compile Include="Loaders\AnimationLoader.cs" />
     <Compile Include="Loaders\ARendererLoader.cs" />
     <Compile Include="Loaders\EffectLoader.cs" />
     <Compile Include="Loaders\MaterialLoader.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Loaders\TextureLoader.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\AnimationResource.cs" />
     <Compile Include="Resources\EffectResource.cs" />
     <Compile Include="Resources\MaterialResource.cs" />
     <Compile Include="Resources\MeshResource.cs" />
