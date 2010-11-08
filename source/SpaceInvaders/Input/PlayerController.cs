@@ -6,6 +6,7 @@ using Game.EventManagement.Events;
 using System.Collections.Generic;
 using System;
 using Game.Utility;
+using Game.EventManagement.Debug;
 
 namespace SpaceInvaders.Input
 {
@@ -33,6 +34,7 @@ namespace SpaceInvaders.Input
         public void OnKeyDown(object sender, KeyEventArgs e)
         {
             isKeyDown[e.KeyCode] = true;
+            e.Handled = true;
 
             switch (e.KeyCode) {
                 case Keys.W:
@@ -57,6 +59,9 @@ namespace SpaceInvaders.Input
                     break;
                 case Keys.Space:
                     eventManager.QueueEvent(new FireWeaponEvent(FireWeaponEvent.START_FIRING, playerEntity.ID));
+                    break;
+                default:
+                    e.Handled = false;
                     break;
             }
         }
@@ -111,6 +116,7 @@ namespace SpaceInvaders.Input
         public void OnKeyUp(object sender, KeyEventArgs e)
         {
             isKeyDown[e.KeyCode] = false;
+            e.Handled = true;
 
             switch (e.KeyCode) {
                 case Keys.W:
@@ -141,6 +147,28 @@ namespace SpaceInvaders.Input
                 case Keys.Pause:
                     eventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
                         GameState.Paused));
+                    break;
+                case Keys.Escape:
+                    eventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
+                        GameState.Menu));
+                    break;
+
+                // Debug Keys
+                case Keys.F9:
+                    eventManager.Trigger(new DebugEvent(DebugEvent.DECREASE_SPEED));
+                    break;
+                case Keys.F10:
+                    eventManager.Trigger(new DebugEvent(DebugEvent.SINGLE_STEP));
+                    break;
+                case Keys.F11:
+                    eventManager.Trigger(new DebugEvent(DebugEvent.INCREASE_SPEED));
+                    break;
+                case Keys.F12:
+                    eventManager.Trigger(new DebugEvent(DebugEvent.RESET_SPEED));
+                    break;
+
+                default:
+                    e.Handled = false;
                     break;
             }
         }

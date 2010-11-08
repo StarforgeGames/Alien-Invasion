@@ -35,7 +35,7 @@
             this.pausedLabel.AutoSize = true;
             this.pausedLabel.Font = new System.Drawing.Font("Arial", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pausedLabel.ForeColor = System.Drawing.SystemColors.Info;
-            this.pausedLabel.Location = new System.Drawing.Point(35, 0);
+            this.pausedLabel.Location = new System.Drawing.Point(3, 0);
             this.pausedLabel.Name = "pausedLabel";
             this.pausedLabel.Size = new System.Drawing.Size(219, 56);
             this.pausedLabel.TabIndex = 0;
@@ -48,7 +48,7 @@
             this.BackColor = System.Drawing.SystemColors.WindowText;
             this.Controls.Add(this.pausedLabel);
             this.Name = "PauseScreen";
-            this.Size = new System.Drawing.Size(300, 55);
+            this.Size = new System.Drawing.Size(220, 55);
             this.ResumeLayout(false);
             this.PerformLayout();
 

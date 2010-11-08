@@ -47,6 +47,7 @@ namespace SpaceInvaders.Views
             RenderForm.Size = new Size(Game.WorldWidth, Game.WorldHeight);
             RenderForm.Text = "Space Invaders";
             RenderForm.BackColor = Color.Empty;
+            RenderForm.KeyPreview = true;
             
 
             extractor = new Extractor(game);
@@ -67,7 +68,9 @@ namespace SpaceInvaders.Views
             game.ResourceManager.AddLoader(new MaterialLoader(game.ResourceManager));
 
             mainMenuControl = new GameMainMenu(EventManager);
-            mainMenuControl.Location = new Point((RenderForm.Width - mainMenuControl.Width) / 2, 100); ;
+            mainMenuControl.Location = new Point(
+                (RenderForm.Width - mainMenuControl.Width) / 2,
+                (RenderForm.Height - mainMenuControl.Height) / 2 - 50); ;
             RenderForm.Controls.Add(mainMenuControl);
 
             pauseControl = new PauseScreen();
@@ -95,7 +98,6 @@ namespace SpaceInvaders.Views
         public void OnUpdate(float deltaTime)
         {
             extractor.OnUpdate(deltaTime);
-            // TODO: Run Extractor and stuff
         }
 
         public void OnAttach(Entity entity)
@@ -105,19 +107,8 @@ namespace SpaceInvaders.Views
             controller = new PlayerController(playerEntity);
             RenderForm.KeyDown += new KeyEventHandler(controller.OnKeyDown);
             RenderForm.KeyUp += new KeyEventHandler(controller.OnKeyUp);
-            RenderForm.KeyDown += new KeyEventHandler(RenderForm_KeyDown);
 
             Console.WriteLine("[" + this.GetType().Name + "] New " + playerEntity + " found, attaching to controller");
-        }
-
-        void RenderForm_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode) {
-                case Keys.Escape:
-                    EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
-                        GameState.Menu));
-                    break;
-            }
         }
 
         public void OnDetach()
@@ -181,7 +172,7 @@ namespace SpaceInvaders.Views
                     hideControl(pauseControl);
                     hideControl(gameOverControl);
                     break;
-                case GameState.InGame:
+                case GameState.Running:
                     hideControl(mainMenuControl);
                     hideControl(pauseControl);
                     hideControl(gameOverControl);

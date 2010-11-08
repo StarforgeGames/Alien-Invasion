@@ -89,6 +89,7 @@
     <Compile Include="Entities\AttributeParser\Vector2DParser.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityFactory.cs" />
+    <Compile Include="EventManagement\Debug\DebugEvent.cs" />
     <Compile Include="EventManagement\Debug\EventLogger.cs" />
     <Compile Include="EventManagement\Events\CollisionEvent.cs" />
     <Compile Include="EventManagement\Events\CreateEntityEvent.cs" />
