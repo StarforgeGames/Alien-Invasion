@@ -7,7 +7,7 @@ using SlimDX.Direct3D10;
 
 namespace Graphics.Resources
 {
-    class MeshResource : AResource
+    public class MeshResource : AResource
     {
         public SlimDX.Direct3D10.Buffer buffer;
         public int size;

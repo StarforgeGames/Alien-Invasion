@@ -17,7 +17,6 @@ namespace Graphics.Resources
             //Effect.FromPointer(null).GetVariableBySemantic("")
             //Effect.FromPointer(null).GetVariableByName("").AsResource().
             
-            
         }
     }
 }

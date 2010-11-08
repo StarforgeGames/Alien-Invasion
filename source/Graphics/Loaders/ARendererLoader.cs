@@ -11,7 +11,7 @@ using Graphics;
 
 namespace Graphics.Loaders
 {
-    public abstract class ARendererLoader<T> : IResourceLoader, IDisposable
+    public abstract class ARendererLoader<ResType, Intermediate> : IResourceLoader, IDisposable
     {
         protected Renderer renderer;
         ResourceHandle defaultResource;
@@ -21,9 +21,9 @@ namespace Graphics.Loaders
             this.renderer = renderer;
         }
 
-        abstract protected T ReadResourceWithName(string name);
+        abstract protected ResType ReadResourceWithName(string name, out Intermediate data);
 
-        abstract protected AResource doLoad(T data);
+        abstract protected AResource doLoad(ResType res, Intermediate data);
 
         abstract protected void doUnload(AResource resource);
 
@@ -37,9 +37,9 @@ namespace Graphics.Loaders
                 throw new NotSupportedException("Default Resource was not loaded properly");
         }
 
-        private void RendererLoad(ResourceHandle handle, T data)
+        private void RendererLoad(ResourceHandle handle, ResType res, Intermediate data)
         {
-            handle.inactive.resource = doLoad(data);
+            handle.inactive.resource = doLoad(res, data);
             handle.inactive.state = ResourceState.Ready;
 
             handle.Swap();
@@ -78,12 +78,13 @@ namespace Graphics.Loaders
         {
             try
             {
-                T data = ReadResourceWithName(handle.Name);
+                Intermediate data;
+                ResType res = ReadResourceWithName(handle.Name, out data);
                 renderer.commandQueue.Add(() =>
                 {
                     try
                     {
-                        RendererLoad(handle, data);
+                        RendererLoad(handle, res, data);
                     }
                     catch (Exception)
                     {
@@ -107,14 +108,15 @@ namespace Graphics.Loaders
         {
             try
             {
-                T data = ReadResourceWithName(handle.Name);
+                Intermediate data;
+                ResType res = ReadResourceWithName(handle.Name, out data);
                 renderer.commandQueue.Add(() =>
                 {
                     try
                     {
                         try
                         {
-                            RendererLoad(handle, data);
+                            RendererLoad(handle, res, data);
                         }
                         finally
                         {

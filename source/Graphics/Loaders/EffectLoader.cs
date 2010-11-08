@@ -12,7 +12,7 @@ using Graphics.Resources;
 
 namespace Graphics.Loaders
 {
-    public class EffectLoader : ARendererLoader<byte[]>, IFileLoader
+    public class EffectLoader : ARendererLoader<EffectResource, byte[]>, IFileLoader
     {
         public ResourceNameConverter Converter
         {
@@ -26,14 +26,14 @@ namespace Graphics.Loaders
         {
         }
 
-        protected override byte[] ReadResourceWithName(string name)
+        protected override EffectResource ReadResourceWithName(string name, out byte[] data)
         {
-            return File.ReadAllBytes(converter.getFilenameFrom(name));
+            data = File.ReadAllBytes(converter.getFilenameFrom(name));
+            return new EffectResource();
         }
 
-        protected override AResource doLoad(byte[] data)
+        protected override AResource doLoad(EffectResource res, byte[] data)
         {
-            EffectResource res = new EffectResource();
 
             res.effect = Effect.FromMemory(
                 device: renderer.device,

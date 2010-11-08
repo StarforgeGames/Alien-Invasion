@@ -11,7 +11,7 @@ using Graphics.Resources;
 
 namespace Graphics.Loaders
 {
-    public class TextureLoader : ARendererLoader<byte[]>, IFileLoader
+    public class TextureLoader : ARendererLoader<TextureResource, byte[]>, IFileLoader
     {
         public ResourceNameConverter Converter
         {
@@ -21,14 +21,14 @@ namespace Graphics.Loaders
         private readonly ResourceNameConverter converter = 
             new ResourceNameConverter(@"data\sprites\", @".png");
 
-        protected override byte[] ReadResourceWithName(string name)
+        protected override TextureResource ReadResourceWithName(string name, out byte[] data)
         {
-            return File.ReadAllBytes(converter.getFilenameFrom(name));
+            data =  File.ReadAllBytes(converter.getFilenameFrom(name));
+            return new TextureResource();
         }
 
-        protected override AResource doLoad(byte[] data)
+        protected override AResource doLoad(TextureResource res, byte[] data)
         {
-            TextureResource res = new TextureResource();
             res.texture = ShaderResourceView.FromMemory(renderer.device, data);
             return res;
         }
@@ -46,6 +46,5 @@ namespace Graphics.Loaders
         {
             get { return "texture"; }
         }
-
     }
 }
