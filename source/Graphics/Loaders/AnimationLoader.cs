@@ -3,29 +3,46 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Graphics.Resources;
+using ResourceManagement.Resources;
+using SlimDX.Direct3D10;
+using ResourceManagement.Loaders;
+using ResourceManagement;
 
 namespace Graphics.Loaders
 {
-    public class AnimationLoader : TextureLoader
+    public class AnimationLoader : ABasicLoader, IFileLoader
     {
-        public AnimationLoader(Renderer renderer) : base(renderer)
+        private ResourceManager manager;
+
+        public AnimationLoader(ResourceManager manager)
         {
+            this.manager = manager;
         }
 
         public override string Type
         {
-            get
-            {
-                return base.Type;
-            }
+            get { return "animation"; }
         }
 
-        protected override Resources.TextureResource ReadResourceWithName(string name, out byte[] data)
+        protected override AResource doLoad(string name)
         {
-            AnimationResource res = new AnimationResource();
+
+            var res = new AnimationResource(manager.GetResource("dummy", "texture")); // todo load correct texture
             
             throw new NotImplementedException();
-            //return 
         }
+
+        protected override void doUnload(AResource resource)
+        {
+            // do nothing since the animation resource does not consume much memory and will be collected by the gc.
+        }
+
+        public ResourceNameConverter Converter
+        {
+            get { return converter; }
+        }
+
+        private readonly ResourceNameConverter converter =
+            new ResourceNameConverter(@"data\animations\", @".animation");
     }
 }
