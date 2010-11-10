@@ -52,8 +52,8 @@ namespace Graphics
             mat.M22 = dimensions.Value.Y;
             mat.M33 = 1.0f;
             mat.M44 = 1.0f;
-            mat.M41 = position.Value.X;
-            mat.M42 = position.Value.Y;
+            mat.M14 = position.Value.X;
+            mat.M24 = position.Value.Y;
             
 
             frontObjects.Add(new RenderObject(
