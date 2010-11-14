@@ -157,6 +157,10 @@ namespace Game
 
             addNewEntities();
             destroyEntities();
+
+            if (IsRunning) {
+                checkForVictoryConditions();
+            }
         }
 
         private void simulate(float deltaTime)
@@ -166,6 +170,19 @@ namespace Game
             }
 
             ProcessManager.OnUpdate(deltaTime);
+        }
+
+        private void checkForVictoryConditions()
+        {
+            foreach (Entity entity in Entities.Values) {
+                if (entity.Type.StartsWith("alien_")) {
+                    return;
+                }
+            }
+
+            GameStateChangedEvent changeState = new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
+                GameState.GameOver);
+            EventManager.QueueEvent(changeState);
         }
 
         private void addNewEntities()
