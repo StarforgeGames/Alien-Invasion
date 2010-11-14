@@ -10,7 +10,7 @@
 	<attributes>
 		<Vector2D key="Dimensions">			
 			<x>50</x>
-			<y>75</y>
+			<y>70</y>
 		</Vector2D>
 		<Resource key="Material" type="material" name="alien_pincher"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
