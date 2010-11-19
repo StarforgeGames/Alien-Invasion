@@ -47,6 +47,11 @@ namespace LispInterpreter
             str.Append("\"");
             return str.ToString();
         }
+
+        public static LispString operator +(LispString c1, LispString c2)
+        {
+            return new LispString(c1.p + c2.p);
+        }
     }
   
 }

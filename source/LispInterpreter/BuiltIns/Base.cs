@@ -33,9 +33,24 @@ namespace LispInterpreter.BuiltIns
             return new LispFunction(args[0], args[1]);
         }
 
-        static public dynamic plus(dynamic[] args, LispEnvironment env)
+        static public dynamic add(dynamic[] args, LispEnvironment env)
         {
             return args[0].Eval(null, env) + args[1].Eval(null, env);
+        }
+
+        static public dynamic sub(dynamic[] args, LispEnvironment env)
+        {
+            return args[0].Eval(null, env) - args[1].Eval(null, env);
+        }
+
+        static public dynamic mul(dynamic[] args, LispEnvironment env)
+        {
+            return args[0].Eval(null, env) * args[1].Eval(null, env);
+        }
+
+        static public dynamic div(dynamic[] args, LispEnvironment env)
+        {
+            return args[0].Eval(null, env) / args[1].Eval(null, env);
         }
     }
 }

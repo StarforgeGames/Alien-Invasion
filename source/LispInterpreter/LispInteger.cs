@@ -29,5 +29,20 @@ namespace LispInterpreter
         {
             return new LispInteger(c1.value + c2.value);
         }
+
+        public static LispInteger operator -(LispInteger c1, LispInteger c2)
+        {
+            return new LispInteger(c1.value - c2.value);
+        }
+
+        public static LispInteger operator *(LispInteger c1, LispInteger c2)
+        {
+            return new LispInteger(c1.value * c2.value);
+        }
+
+        public static LispInteger operator /(LispInteger c1, LispInteger c2)
+        {
+            return new LispInteger(c1.value / c2.value);
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿((lambda (a) (plus a 1)) 2)
+﻿((lambda (a) (add a 1)) 2)
 
 (material
 	(effect "SimplePassThrough")

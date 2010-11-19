@@ -28,5 +28,25 @@ namespace LispInterpreter
         {
             return value.ToString();
         }
+
+        public static LispFloat operator +(LispFloat c1, LispFloat c2)
+        {
+            return new LispFloat(c1.value + c2.value);
+        }
+
+        public static LispFloat operator -(LispFloat c1, LispFloat c2)
+        {
+            return new LispFloat(c1.value - c2.value);
+        }
+
+        public static LispFloat operator *(LispFloat c1, LispFloat c2)
+        {
+            return new LispFloat(c1.value * c2.value);
+        }
+
+        public static LispFloat operator /(LispFloat c1, LispFloat c2)
+        {
+            return new LispFloat(c1.value / c2.value);
+        }
     }
 }
