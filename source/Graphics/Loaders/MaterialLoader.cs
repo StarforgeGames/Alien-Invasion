@@ -7,12 +7,14 @@ using ResourceManagement.Loaders;
 using ResourceManagement.Resources;
 using System.IO;
 using Graphics.Resources;
+using LispInterpreter;
 
 namespace Graphics.Loaders
 {
     public class MaterialLoader : ABasicLoader, IFileLoader
     {
         ResourceManager manager;
+        Interpreter inter = new Interpreter();
 
         public ResourceNameConverter Converter
         {
@@ -25,12 +27,15 @@ namespace Graphics.Loaders
         public MaterialLoader(ResourceManager manager)
         {
             this.manager = manager;
+            
         }
 
         protected override AResource doLoad(string name)
         {
             // not implemented yet:
-            // StringReader reader = new StringReader(File.ReadAllText(baseDirectory + name + extension));
+            //string text = File.ReadAllText(converter.getFilenameFrom(name));
+            
+            //inter.Eval(text.ToCharArray());
 
             // currently dummy code since true loading is not implemented yet.
             MaterialResource res = new MaterialResource(
