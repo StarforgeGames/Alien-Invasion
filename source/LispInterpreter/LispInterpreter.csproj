@@ -84,7 +84,6 @@
     <Compile Include="LispEnvironment.cs" />
     <Compile Include="LispFloat.cs" />
     <Compile Include="LispFunction.cs" />
-    <Compile Include="LispLambda.cs" />
     <Compile Include="LispList.cs" />
     <Compile Include="LispInteger.cs" />
     <Compile Include="LispNil.cs" />
@@ -92,6 +91,7 @@
     <Compile Include="LispString.cs" />
     <Compile Include="LispSymbol.cs" />
     <Compile Include="LispTypeExtensions.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
