@@ -24,8 +24,8 @@ namespace LispInterpreter.BuiltIns
 
         static public dynamic label(dynamic[] args, LispEnvironment env)
         {
-            
-            throw new NotImplementedException();
+            dynamic func = args[1].Rest;
+            return new LispFunction(func.First, func.Rest.First, args[0]);
         }
 
         static public dynamic lambda(dynamic[] args, LispEnvironment env)
@@ -33,21 +33,25 @@ namespace LispInterpreter.BuiltIns
             return new LispFunction(args[0], args[1]);
         }
 
+        [Alias("+")]
         static public dynamic add(dynamic[] args, LispEnvironment env)
         {
             return args[0].Eval(null, env) + args[1].Eval(null, env);
         }
 
+        [Alias("-")]
         static public dynamic sub(dynamic[] args, LispEnvironment env)
         {
             return args[0].Eval(null, env) - args[1].Eval(null, env);
         }
 
+        [Alias("*")]
         static public dynamic mul(dynamic[] args, LispEnvironment env)
         {
             return args[0].Eval(null, env) * args[1].Eval(null, env);
         }
 
+        [Alias("/")]
         static public dynamic div(dynamic[] args, LispEnvironment env)
         {
             return args[0].Eval(null, env) / args[1].Eval(null, env);

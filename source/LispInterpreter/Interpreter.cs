@@ -23,7 +23,6 @@ namespace LispInterpreter
 
         public Interpreter()
         {
-            //global.Add(new LispSymbol("lambda"), new LispLambda());
             Load(typeof(Base));
         }
 
@@ -46,11 +45,25 @@ namespace LispInterpreter
             {
                 if (methodInfo.IsStatic)
                 {
+                    
                     var method = Expression.Call(methodInfo, args, localEnv);
 
                     var lambda = Expression.Lambda<Func<dynamic[], LispEnvironment, dynamic>>(method, args, localEnv);
 
-                    global.Add(new LispSymbol(methodInfo.Name), lambda.Compile());
+                    var cLambda = lambda.Compile();
+
+                    if (methodInfo.GetCustomAttributes(typeof(AliasAttribute), false).Any())
+                    {
+                        foreach (var attribute in methodInfo.GetCustomAttributes(typeof(AliasAttribute), false))
+                        {
+                            AliasAttribute attr = (AliasAttribute)attribute;
+                            global.Add(new LispSymbol(attr.Alias), cLambda, builtIns.Name + "." + methodInfo.Name);
+                        }
+                    }
+                    else
+                    {
+                        global.Add(new LispSymbol(methodInfo.Name), cLambda, builtIns.Name + "." + methodInfo.Name);
+                    }
                 }
             }
 

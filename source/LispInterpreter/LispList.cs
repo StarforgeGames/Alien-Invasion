@@ -146,5 +146,13 @@ namespace LispInterpreter
 
             return str.ToString();
         }
+
+        public dynamic this [int index]
+        {
+            get
+            {
+                return list[index];
+            }
+        }
     }
 }
