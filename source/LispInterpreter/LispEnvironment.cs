@@ -22,9 +22,14 @@ namespace LispInterpreter
             env.Add(symbol, element);
         }
 
+        public void Add(LispSymbol symbol, Func<dynamic[], LispEnvironment, dynamic> func, string alias)
+        {
+            env.Add(symbol, new LispBuiltInFunction(func, alias));
+        }
+
         public void Add(LispSymbol symbol, Func<dynamic[], LispEnvironment, dynamic> func)
         {
-            env.Add(symbol, new LispBuiltInFunction(func, symbol.ToString()));
+            Add(symbol, func, symbol.ToString());
         }
 
         public LispElement Lookup(LispSymbol symbol)
