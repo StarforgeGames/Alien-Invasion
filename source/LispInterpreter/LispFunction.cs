@@ -7,26 +7,25 @@ namespace LispInterpreter
 {
     class LispFunction : LispElement
     {
-        private dynamic[] parameters;
+        private LispList parameters;
         private LispElement body;
         private LispSymbol funcName;
 
-        public LispFunction(dynamic parameters, LispElement body)
-            : this((object)parameters, body, null)
+        public LispFunction(LispList parameters, LispElement body)
+            : this(parameters, body, null)
         {
             
         }
 
-        public LispFunction(dynamic parameters, LispElement body, LispSymbol funcName)
+        public LispFunction(LispList parameters, LispElement body, LispSymbol funcName)
         {
-            this.parameters = parameters.Elems;
+            this.parameters = parameters;
             this.body = body;
             this.funcName = funcName;
         }
 
         public dynamic Eval(dynamic e, LispEnvironment env)
         {
-            var par = parameters.AsEnumerable().GetEnumerator();
             var val = e.Enumerator;
 
             LispEnvironment childEnv = new LispEnvironment(env);
@@ -35,7 +34,7 @@ namespace LispInterpreter
             if (funcName != null)
                 childEnv.Add(funcName, this);
 
-            foreach (var parameter in parameters)
+            foreach (var parameter in parameters.Elems)
             {
                 val.MoveNext();
                 childEnv.Add(parameter, val.Current.Eval(null, env));
@@ -48,7 +47,7 @@ namespace LispInterpreter
         {
             StringBuilder str = new StringBuilder("(lambda (");
             bool first = true;
-            foreach (var parameter in parameters)
+            foreach (var parameter in parameters.Elems)
             {
                 if (first)
                 {
