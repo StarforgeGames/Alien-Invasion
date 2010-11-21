@@ -25,12 +25,12 @@ namespace LispInterpreter.BuiltIns
         static public dynamic label(LispList args, LispEnvironment env)
         {
             dynamic func = args[1].Rest;
-            return new LispFunction(func.First, func.Rest.First, args[0]);
+            return new LispFunction(func.First, func.Rest.First, env, args[0]);
         }
 
         static public dynamic lambda(LispList args, LispEnvironment env)
         {
-            return new LispFunction(args[0], args[1]);
+            return new LispFunction(args[0], args[1], env);
         }
 
         [Alias("+")]

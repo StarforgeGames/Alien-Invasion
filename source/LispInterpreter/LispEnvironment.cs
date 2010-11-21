@@ -6,7 +6,7 @@ using System.Text;
 
 namespace LispInterpreter
 {
-    public class LispEnvironment
+    public class LispEnvironment : ICloneable
     {
         Dictionary<LispSymbol, dynamic> env
             = new Dictionary<LispSymbol,dynamic>();
@@ -48,5 +48,11 @@ namespace LispInterpreter
             }
         }
 
+        public object Clone()
+        {
+            //ToDo: make deep copy of environment!!!!
+            return this;
+            //throw new NotImplementedException();
+        }
     }
 }

@@ -33,7 +33,7 @@ namespace Graphics.Loaders
         protected override AResource doLoad(string name)
         {
             // not implemented yet:
-            string text = File.ReadAllText(converter.getFilenameFrom(name));
+            string text = File.ReadAllText(converter.getFilenameFrom("default"));
             
             inter.Eval(text.ToCharArray());
 

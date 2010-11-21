@@ -10,25 +10,27 @@ namespace LispInterpreter
         private LispList parameters;
         private LispElement body;
         private LispSymbol funcName;
+        private LispEnvironment funcEnv;
 
-        public LispFunction(LispList parameters, LispElement body)
-            : this(parameters, body, null)
+        public LispFunction(LispList parameters, LispElement body, LispEnvironment funcEnv)
+            : this(parameters, body, funcEnv, null)
         {
             
         }
 
-        public LispFunction(LispList parameters, LispElement body, LispSymbol funcName)
+        public LispFunction(LispList parameters, LispElement body, LispEnvironment funcEnv, LispSymbol funcName)
         {
             this.parameters = parameters;
             this.body = body;
             this.funcName = funcName;
+            this.funcEnv = (LispEnvironment)funcEnv.Clone();
         }
 
         public dynamic Eval(dynamic e, LispEnvironment env)
         {
             var val = e.Enumerator;
 
-            LispEnvironment childEnv = new LispEnvironment(env);
+            LispEnvironment childEnv = new LispEnvironment(funcEnv);
 
             // we need support for recursion
             if (funcName != null)

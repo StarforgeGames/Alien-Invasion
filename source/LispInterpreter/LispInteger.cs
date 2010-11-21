@@ -11,7 +11,6 @@ namespace LispInterpreter
 
         public LispInteger(int value)
         {
-            // TODO: Complete member initialization
             this.value = value;
         }
 
