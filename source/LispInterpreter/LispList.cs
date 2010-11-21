@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LispInterpreter
 {
-    class LispList : LispElement
+    public class LispList : LispElement
     {
         List<dynamic> list;
 
@@ -33,27 +33,6 @@ namespace LispInterpreter
 
             if (isFunction(elem))
             {
-                /*dynamic parameters = getParams(elem);
-                dynamic body = getBody(elem);
-
-                var par = parameters.Enumerator;
-
-                var parameterValues = Rest;
-
-                LispEnvironment childEnv = new LispEnvironment(env);
-
-                if (parameterValues != null)
-                {
-                    var val = parameterValues.Enumerator;
-
-                    while (par.MoveNext() && val.MoveNext())
-                    {
-                        childEnv.Add(par.Current, val.Current.Eval(null, env));
-                    }
-                }
-
-                body.Eval(null, env);*/
-
                 return elem.Eval(null, env).Eval(Rest, env);
             }
             else

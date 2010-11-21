@@ -38,7 +38,7 @@ namespace LispInterpreter
         public void Load(Type builtIns)
         {
             ParameterExpression localEnv = Expression.Parameter(typeof(LispEnvironment), "env");
-            ParameterExpression args = Expression.Parameter(typeof(dynamic[]), "args");
+            ParameterExpression args = Expression.Parameter(typeof(LispList), "args");
 
             var methodInfos = builtIns.GetMethods();//BindingFlags.Static);
             foreach (var methodInfo in methodInfos)
@@ -48,7 +48,7 @@ namespace LispInterpreter
                     
                     var method = Expression.Call(methodInfo, args, localEnv);
 
-                    var lambda = Expression.Lambda<Func<dynamic[], LispEnvironment, dynamic>>(method, args, localEnv);
+                    var lambda = Expression.Lambda<Func<LispList, LispEnvironment, dynamic>>(method, args, localEnv);
 
                     var cLambda = lambda.Compile();
 
