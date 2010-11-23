@@ -9,6 +9,11 @@ namespace LispInterpreter
     {
         private int value;
 
+        public int Value
+        {
+            get { return value; }
+        }
+
         public LispInteger(int value)
         {
             this.value = value;
