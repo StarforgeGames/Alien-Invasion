@@ -9,6 +9,11 @@ namespace LispInterpreter
     {
         private string p;
 
+        public string Value
+        {
+            get { return p; }
+        }
+
         public LispString(string p)
         {
             this.p = p;

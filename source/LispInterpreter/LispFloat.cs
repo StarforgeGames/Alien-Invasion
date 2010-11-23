@@ -9,6 +9,11 @@ namespace LispInterpreter
     {
         private double value;
 
+        public double Value
+        {
+            get { return value; }
+        }
+
         public LispFloat(double value)
         {
             // TODO: Complete member initialization

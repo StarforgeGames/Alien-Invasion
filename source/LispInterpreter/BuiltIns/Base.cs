@@ -56,5 +56,15 @@ namespace LispInterpreter.BuiltIns
         {
             return args[0].Eval(null, env) / args[1].Eval(null, env);
         }
+
+        static public dynamic eval(LispList args, LispEnvironment env)
+        {
+            return args[0].Eval(null, env).Eval(null, env);
+        }
+
+        static public dynamic objTest(LispList args, LispEnvironment env)
+        {
+            return new LispObject("hallo welt".ToCharArray());
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿(label g (lambda (a) (+ a 1)) 2)
+﻿((objTest) Get 2)
+
+(label g (lambda (a) (+ a 1)) 2)
 ((lambda (a) (+ a 1)) 2)
 
 (material
