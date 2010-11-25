@@ -36,25 +36,49 @@ namespace LispInterpreter.BuiltIns
         [Alias("+")]
         static public dynamic add(LispList args, LispEnvironment env)
         {
-            return args[0].Eval(null, env) + args[1].Eval(null, env);
+            var accum = args.First.Eval(null, env);
+
+            foreach (var elem in args.Elems.Skip(1))
+            {
+                accum += elem.Eval(null, env);
+            }
+            return accum;
         }
 
         [Alias("-")]
         static public dynamic sub(LispList args, LispEnvironment env)
         {
-            return args[0].Eval(null, env) - args[1].Eval(null, env);
+            var accum = args.First.Eval(null, env);
+
+            foreach (var elem in args.Elems.Skip(1))
+            {
+                accum -= elem.Eval(null, env);
+            }
+            return accum;
         }
 
         [Alias("*")]
         static public dynamic mul(LispList args, LispEnvironment env)
         {
-            return args[0].Eval(null, env) * args[1].Eval(null, env);
+            var accum = args.First.Eval(null, env);
+
+            foreach (var elem in args.Elems.Skip(1))
+            {
+                accum *= elem.Eval(null, env);
+            }
+            return accum;
         }
 
         [Alias("/")]
         static public dynamic div(LispList args, LispEnvironment env)
         {
-            return args[0].Eval(null, env) / args[1].Eval(null, env);
+            var accum = args.First.Eval(null, env);
+
+            foreach (var elem in args.Elems.Skip(1))
+            {
+                accum /= elem.Eval(null, env);
+            }
+            return accum;
         }
 
         static public dynamic eval(LispList args, LispEnvironment env)
