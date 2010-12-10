@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 
@@ -7,9 +7,9 @@ namespace ResourceManagement.Wipers
 {
     public abstract class AWiper
     {
-        protected Dictionary<string, Dictionary<string, ResourceHandle>> resources;
+        protected ConcurrentDictionary<string, ConcurrentDictionary<string, ResourceHandle>> resources;
         protected ResourceManager manager;
-        public void SetResources(Dictionary<string, Dictionary<string, ResourceHandle>> resources)
+        public void SetResources(ConcurrentDictionary<string, ConcurrentDictionary<string, ResourceHandle>> resources)
         {
             this.resources = resources;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,9 @@ namespace ResourceManagement.Debug
 {
     public partial class ResourceManagementMonitor : Form
     {
-        protected Dictionary<string, Dictionary<string, ResourceHandle>> resources;
+        protected ConcurrentDictionary<string, ConcurrentDictionary<string, ResourceHandle>> resources;
 
-        public ResourceManagementMonitor(Dictionary<string, Dictionary<string, ResourceHandle>> resources)
+        public ResourceManagementMonitor(ConcurrentDictionary<string, ConcurrentDictionary<string, ResourceHandle>> resources)
         {
             this.resources = resources;
             InitializeComponent();
@@ -40,13 +41,12 @@ namespace ResourceManagement.Debug
         private void timer1_Tick(object sender, EventArgs e)
         {
             object source;
-            lock (resources)
-            {
-                source = (from a in this.resources
-                                        from b in a.Value
-                                        select test(a, b)
-                                    ).ToArray();
-            }
+            
+            source = (from a in this.resources
+                                    from b in a.Value
+                                    select test(a, b)
+                                ).ToArray();
+            
             this.data.DataSource = source;
         }
 
@@ -62,7 +62,7 @@ namespace ResourceManagement.Debug
             public AResource inactive { get; set; }
         }
 
-        private Output test(KeyValuePair<string, Dictionary<string, ResourceHandle>> a, KeyValuePair<string, ResourceHandle> b)
+        private Output test(KeyValuePair<string, ConcurrentDictionary<string, ResourceHandle>> a, KeyValuePair<string, ResourceHandle> b)
         {
             using (var blub = b.Value.DebugAcquire())
             {
