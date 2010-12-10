@@ -433,7 +433,8 @@ namespace Graphics
             {
                 view.Dispose();
             }
-
+            debugFont.Dispose();
+            instanceBuffer.Dispose();   
             device.Dispose();
             swapChain.Dispose();
         }
