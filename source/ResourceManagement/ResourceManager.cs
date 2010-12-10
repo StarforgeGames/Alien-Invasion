@@ -11,12 +11,14 @@ namespace ResourceManagement
 {
     public class ResourceManager : IDisposable
     {
+        private const int ConcurrencyLevel = 4;
+
         public IAsyncExecutor AsyncExecutor { get; private set; }
         public ConcurrentDictionary<string, IResourceLoader> AsyncLoaders { get; private set; }
         public ConcurrentDictionary<string, IResourceLoader> Loaders { get; private set; }
 
-        private Dictionary<string, Dictionary<string, ResourceHandle>> resourceHandles = 
-            new Dictionary<string, Dictionary<string, ResourceHandle>>();
+        private ConcurrentDictionary<string, ConcurrentDictionary<string, ResourceHandle>> resourceHandles =
+            new ConcurrentDictionary<string, ConcurrentDictionary<string, ResourceHandle>>(ConcurrencyLevel, 16);
         private List<AWiper> wipers = new List<AWiper>();
     
         public ResourceManager(IAsyncExecutor executor)
@@ -38,18 +40,12 @@ namespace ResourceManagement
                 if (identifier.Name == "default") {
                     return AsyncLoaders[identifier.Type].Default;
                 }
-                lock (resourceHandles) {
-                    var resourcesOfSameType = resourceHandles[identifier.Type];
-
-                    if (!resourcesOfSameType.ContainsKey(identifier.Name)) {
-                        ResourceHandle handle = new ResourceHandle(identifier.Name, AsyncLoaders[identifier.Type]);
-                        lock (resourcesOfSameType) {
-                            resourcesOfSameType.Add(identifier.Name, handle);
-                        }
-                    }
-
-                    return resourcesOfSameType[identifier.Name];
-                }
+                var resourcesOfSameType = resourceHandles[identifier.Type];
+                    
+                return resourcesOfSameType.GetOrAdd(
+                    identifier.Name,
+                    (name) => 
+                        new ResourceHandle(identifier.Name, AsyncLoaders[identifier.Type]));
             }
             catch (Exception e)
             {                
@@ -61,13 +57,17 @@ namespace ResourceManagement
         {
             var asyncLoader = new AsyncLoader(loader, AsyncExecutor);
             AsyncLoaders.AddOrUpdate(loader.Type, asyncLoader, (a, b) => asyncLoader);
-            lock (resourceHandles) {
-                resourceHandles.Add(loader.Type, new Dictionary<string, ResourceHandle>());
-            }
 
-            var dummy = AsyncLoaders[loader.Type].Default;
-                
-            Loaders.AddOrUpdate(loader.Type, loader, (a, b) => loader);
+            if (resourceHandles.TryAdd(loader.Type, new ConcurrentDictionary<string, ResourceHandle>(16, 256)))
+            {
+                var dummy = AsyncLoaders[loader.Type].Default;
+
+                Loaders.AddOrUpdate(loader.Type, loader, (a, b) => loader);
+            }
+            else
+            {
+                throw new NotSupportedException("Error: Loadertype '" + loader.Type + "' already registered.");
+            }
         }
 
         public void RemoveLoader(string type)
@@ -84,9 +84,12 @@ namespace ResourceManagement
                 IResourceLoader dummy;
                 AsyncLoaders.TryRemove(type, out dummy);
             }
-            if (resourceHandles.ContainsKey(type))
+
+            ConcurrentDictionary<string, ResourceHandle> handles;
+
+            if (resourceHandles.TryGetValue(type, out handles))
             {
-                foreach (var handle in resourceHandles[type])
+                foreach (var handle in handles)
                 {
                     IEvent evt1 = new BasicEvent();
                     handle.Value.Unload(evt1);
@@ -97,7 +100,7 @@ namespace ResourceManagement
                     evt1.Wait();
                     evt2.Wait();
                 }
-                resourceHandles[type] = null;
+                resourceHandles.TryRemove(type, out handles);
             }
         }
 
