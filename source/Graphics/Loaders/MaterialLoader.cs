@@ -36,7 +36,6 @@ namespace Graphics.Loaders
             string text = File.ReadAllText(converter.getFilenameFrom("default"));
             
             inter.Eval(text.ToCharArray());
-
             // currently dummy code since true loading is not implemented yet.
             MaterialResource res = new MaterialResource(
                 effectHandle: manager.GetResource("default", "effect"),

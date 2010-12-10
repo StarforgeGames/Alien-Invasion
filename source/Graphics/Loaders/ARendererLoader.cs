@@ -130,11 +130,11 @@ namespace Graphics.Loaders
                     }
                 });
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 handle.Finished();
                 evt.Abort();
-                throw e;
+                throw;
             }
         }
 
@@ -154,10 +154,10 @@ namespace Graphics.Loaders
                     }
                 });
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 handle.Finished();
-                throw e;
+                throw;
             }
 
             Load(handle);
@@ -179,11 +179,11 @@ namespace Graphics.Loaders
                     }
                 });
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 handle.Finished();
                 evt.Abort();
-                throw e;
+                throw;
             }
 
             Load(handle, evt);
@@ -209,10 +209,10 @@ namespace Graphics.Loaders
                     }
                 });
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 handle.Finished();
-                throw e;
+                throw;
             }
         }
 
@@ -238,11 +238,11 @@ namespace Graphics.Loaders
                     
                 });
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 handle.Finished();
                 evt.Abort();
-                throw e;
+                throw;
             }
         }
 
