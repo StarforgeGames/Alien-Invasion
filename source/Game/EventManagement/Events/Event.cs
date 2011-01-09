@@ -5,7 +5,7 @@ namespace Game.EventManagement.Events
 
     public abstract class Event : EventArgs
     {
-        public string Type { get; set; }
+        public string Type { get; private set; }
         public int RecipientID { get; private set; }
 
         public Event(string type)
