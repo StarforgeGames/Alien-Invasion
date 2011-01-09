@@ -1,4 +1,8 @@
-﻿((objTest) Get 2)
+﻿(+ 1 2 3 4 5)
+
+
+
+((objTest) Get 2)
 
 (label g (lambda (a) (+ a 1)) 2)
 ((lambda (a) (+ a 1)) 2)
@@ -11,6 +15,13 @@
 		1.0 1.0 1.0
 		1.0 1.0 1.0
 		1.0 1.0 1.0
+	)
+	(perFrame 
+		(matrix "shaderbinding" "programvariable")
+		(float "shaderbinding" "programvariable")
+	)
+	(perInstance
+		(integer "shaderbinding" "programvariable")
 	)
 )
 (first '(3.0 2 1.0))

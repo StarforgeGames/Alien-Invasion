@@ -34,6 +34,7 @@ namespace Graphics
         {
             this.game = game;
         }
+
         public bool ExtractNext
         {
             private get;
@@ -54,7 +55,6 @@ namespace Graphics
             mat.M44 = 1.0f;
             mat.M14 = position.Value.X;
             mat.M24 = position.Value.Y;
-            
 
             frontObjects.Add(new RenderObject(
                 material.Value, mesh.Value, 

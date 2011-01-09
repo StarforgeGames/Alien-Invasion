@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 
@@ -7,32 +7,20 @@ namespace Graphics
 {
     public class CommandQueue
     {
-        Queue<Action> queue = new Queue<Action>();
+        ConcurrentQueue<Action> queue = new ConcurrentQueue<Action>();
         
         public bool Empty
         {
             get
             {
-                bool empty;
-                lock (queue)
-                {
-                     empty = !queue.Any();
-                }
-                return empty;
+                return queue.IsEmpty;
             }
         }
 
         public void Execute()
         {
-            Action command = null;
-            lock (queue)
-            {
-                if (queue.Any())
-                {
-                    command = queue.Dequeue();
-                }
-            }
-            if (command != null)
+            Action command;
+            if (queue.TryDequeue(out command))
             {
                 command();
             }
@@ -48,21 +36,17 @@ namespace Graphics
 
         public void Add(Action action)
         {
-            lock (queue)
-            {
-                queue.Enqueue(action);
-            }
+            queue.Enqueue(action);
         }
 
         public void ExecuteAll()
         {
-            lock (queue)
+            var tempQueue = queue;
+            queue = new ConcurrentQueue<Action>();
+
+            foreach (var command in tempQueue)
             {
-                foreach (var command in queue)
-                {
-                    command();
-                }
-                queue.Clear();
+                command();
             }
         }
 

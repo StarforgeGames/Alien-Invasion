@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.IO;
@@ -32,31 +32,28 @@ namespace ResourceManagement.Wipers
                 System.Console.WriteLine("File changed: '" + e.Name + "', change type: '" + e.ChangeType + "'");
 
                 IResourceLoader loader;
-                lock (manager.Loaders)
-                {
-                    loader = (from l in manager.Loaders.Values
-                                  where l is IFileLoader
-                                  where ((IFileLoader)l).Converter.isResourceFor(e.Name)
-                                  select l).First();
-                }
+
+                loader = (from l in manager.Loaders.Values
+                                where l is IFileLoader
+                                where ((IFileLoader)l).Converter.isResourceFor(e.Name)
+                                select l).First();
+
                 string resourceName = ((IFileLoader)loader).Converter.getResourceNameFrom(e.Name);
 
-                lock (resources)
+                ConcurrentDictionary<string, ResourceHandle> resourcesOfType;
+
+                if (resources.TryGetValue(loader.Type, out resourcesOfType))
                 {
-                    var resourceType = resources[loader.Type];
-                    lock (resourceType)
+                    ResourceHandle handle;
+                    if (resourcesOfType.TryGetValue(resourceName, out handle))
                     {
-                        if (resourceType.ContainsKey(resourceName))
+                        if (handle.active.state == ResourceState.Ready)
                         {
-                            ResourceHandle res = resourceType[resourceName];
-                            if(res.active.state == ResourceState.Ready)
-                            {
-                                res.Load();
-                            }
+                            handle.Load();
                         }
                     }
+
                 }
-                
             }
             toggle = !toggle;
             oldArgs = e;
