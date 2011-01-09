@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -52,38 +52,42 @@ namespace ResourceManagement.Debug
             time = rand.Next(5000, 10000);
             while (running)
             {
-                int index1 = rand.Next(resources.Count);
-                lock (resources) // suboptimale lösung. wiper sollten keine exklusive Locks auf die resourcen setzen, da sie nur lesend zugreifen
+                try
                 {
+                    int index1 = rand.Next(resources.Count);
+
                     var currentResourceType = resources.ElementAt(index1).Value;
-                    lock (currentResourceType)
+
+                    if (currentResourceType.Count > 0)
                     {
-                        if (currentResourceType.Count > 0)
+                        int index2 = rand.Next(currentResourceType.Count);
+                        int operation = rand.Next(2);
+                        var currentResource = currentResourceType.ElementAt(index2).Value;
+                        switch (operation)
                         {
-                            int index2 = rand.Next(currentResourceType.Count);
-                            int operation = rand.Next(2);
-                            var currentResource = currentResourceType.ElementAt(index2).Value;
-                            switch (operation)
-                            {
-                                case 0:
+                            case 0:
 
-                                    currentResource.Load();
-                                    break;
-                                case 1:
+                                currentResource.Load();
+                                break;
+                            case 1:
 
-                                    currentResource.Unload();
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        if (rand.Next(2) == 1)
-                        {
-                            int i = rand.Next(10);
-                            manager.GetResource("blub" + i, "txt");
+                                currentResource.Unload();
+                                break;
+                            default:
+                                break;
                         }
                     }
+                    if (rand.Next(2) == 1)
+                    {
+                        int i = rand.Next(10);
+                        manager.GetResource("blub" + i, "txt");
+                    }
                 }
+                catch (Exception)
+                {
+                
+                }
+                
                 System.Threading.Thread.Sleep(time);
             }
             

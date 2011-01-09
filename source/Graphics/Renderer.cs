@@ -255,6 +255,8 @@ namespace Graphics
 
         long lastTick;
         long tickFrequency;
+        private Rectangle debugRect = new Rectangle(10, 10, 100, 20);
+        private Color4 debugColor = new Color4(255.0f, 1.0f, 1.0f, 255.0f);
 
         private void renderLoop()
         {
@@ -404,9 +406,9 @@ namespace Graphics
             debugFont.Draw(
                 null, 
                 "fps: " + (tickFrequency / diff).ToString(),
-                new Rectangle(10, 10, 100, 20),
+                debugRect,
                 FontDrawFlags.Left, 
-                new Color4(255.0f, 1.0f, 1.0f, 255.0f));
+                debugColor);
         }
 
         public void WaitForCompletion()
@@ -431,7 +433,8 @@ namespace Graphics
             {
                 view.Dispose();
             }
-
+            debugFont.Dispose();
+            instanceBuffer.Dispose();   
             device.Dispose();
             swapChain.Dispose();
         }
