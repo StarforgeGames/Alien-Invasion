@@ -1,0 +1,16 @@
+﻿((objTest) Get 2)
+
+(label g (lambda (a) (+ a 1)) 2)
+((lambda (a) (+ a 1)) 2)
+
+(material
+	(effect "SimplePassThrough")
+	(texture "tex2d" "name")
+	(animation "binding" "name")
+	(matrix "blub" 
+		1.0 1.0 1.0
+		1.0 1.0 1.0
+		1.0 1.0 1.0
+	)
+)
+(first '(3.0 2 1.0))
