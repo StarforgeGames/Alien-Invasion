@@ -24,8 +24,6 @@ namespace Game.Behaviors
         {
             this.entity = entity;
             this.EventManager = entity.EventManager;
-
-            initializeHandledEventTypes();
         }
 
         protected virtual void initializeHandledEventTypes()

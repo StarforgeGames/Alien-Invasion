@@ -15,6 +15,8 @@ namespace Game.Behaviors
             : base(entity)
         {
             entity.AddAttribute(Key_ProjectileOwner, new Attribute<Entity>(null));
+
+            initializeHandledEventTypes();
         }
 
         public override void OnUpdate(float deltaTime)

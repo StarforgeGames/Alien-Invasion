@@ -19,6 +19,8 @@ namespace Game.Behaviors
             entity.AddAttribute(Key_Material, new Attribute<ResourceHandle>(null));
             entity.AddAttribute(Key_Mesh, new Attribute<ResourceHandle>(null));
             entity.AddAttribute(Key_IsRenderable, new Attribute<bool>(true));
+
+            initializeHandledEventTypes();
         }
 
         public override void OnUpdate(float deltaTime)

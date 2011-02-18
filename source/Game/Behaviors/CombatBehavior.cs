@@ -18,6 +18,8 @@ namespace Game.Behaviors
             entity.AddAttribute(Key_IsFiring, new Attribute<bool>(false));
             entity.AddAttribute(Key_FiringSpeed, new Attribute<float>(0));
             entity.AddAttribute(Key_TimeSinceLastShot, new Attribute<float>(999));
+
+            initializeHandledEventTypes();
         }
 
         protected override void initializeHandledEventTypes()
