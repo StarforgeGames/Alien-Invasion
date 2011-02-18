@@ -24,6 +24,8 @@ namespace Game.Behaviors
             entity.AddAttribute(Key_Dimensions, new Attribute<Vector2D>(new Vector2D(0, 0)));
             entity.AddAttribute(Key_MoveDirection, new Attribute<Vector2D>(new Vector2D(0, 0)));
             entity.AddAttribute(Key_Speed, new Attribute<float>(0));
+
+            initializeHandledEventTypes();
         }
 
         protected override void initializeHandledEventTypes()

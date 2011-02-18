@@ -16,6 +16,8 @@ namespace Game.Behaviors
         {
             entity.AddAttribute(Key_IsPhysical, new Attribute<bool>(true));
             entity.AddAttribute(Key_CollisionDamage, new Attribute<int>(1));
+
+            initializeHandledEventTypes();
         }
 
         public override void OnUpdate(float deltaTime)

@@ -23,6 +23,8 @@ namespace Game.Behaviors
             entity.AddAttribute(Key_Lifes, new Attribute<int>(1));
             entity.AddAttribute(Key_IsRespawning, new Attribute<bool>(false));
             entity.AddAttribute(Key_RespawnTime, new Attribute<float>(2f));
+
+            initializeHandledEventTypes();
         }
 
         protected override void initializeHandledEventTypes()
