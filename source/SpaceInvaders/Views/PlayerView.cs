@@ -25,6 +25,7 @@ namespace SpaceInvaders.Views
 
         private GameMainMenu mainMenuControl;
         private PauseScreen pauseControl;
+        private VictoryScreen victoryControl;
         private GameOverScreen gameOverControl;
 
         public GameViewType Type { get { return GameViewType.PlayerView; } }
@@ -78,6 +79,12 @@ namespace SpaceInvaders.Views
                 (RenderForm.Width - pauseControl.Width) / 2,
                 (RenderForm.Height / 2) - pauseControl.Height);
             RenderForm.Controls.Add(pauseControl);
+
+            victoryControl = new VictoryScreen(EventManager);
+            victoryControl.Location = new Point(
+                (RenderForm.Width - victoryControl.Width) / 2,
+                (RenderForm.Height / 2) - victoryControl.Height);
+            RenderForm.Controls.Add(victoryControl);
 
             gameOverControl = new GameOverScreen(EventManager);
             gameOverControl.Location = new Point(
@@ -159,31 +166,43 @@ namespace SpaceInvaders.Views
                 case GameState.StartUp:
                     hideControl(mainMenuControl);
                     hideControl(pauseControl);
+                    hideControl(victoryControl);
                     hideControl(gameOverControl);
                     break;
                 case GameState.Menu:
                     showControl(mainMenuControl);
                     hideControl(pauseControl);
+                    hideControl(victoryControl);
                     hideControl(gameOverControl);
                     break;
                 case GameState.Loading:
                     OnDetach();
                     hideControl(mainMenuControl);
                     hideControl(pauseControl);
+                    hideControl(victoryControl);
                     hideControl(gameOverControl);
                     break;
                 case GameState.Running:
                     hideControl(mainMenuControl);
                     hideControl(pauseControl);
+                    hideControl(victoryControl);
                     hideControl(gameOverControl);
                     break;
                 case GameState.Paused:
                     showControl(pauseControl);
+                    hideControl(victoryControl);
+                    hideControl(gameOverControl);
+                    break;
+                case GameState.Victory:
+                    hideControl(mainMenuControl);
+                    hideControl(pauseControl);
+                    showControl(victoryControl);
                     hideControl(gameOverControl);
                     break;
                 case GameState.GameOver:
                     hideControl(mainMenuControl);
                     hideControl(pauseControl);
+                    hideControl(victoryControl);
                     showControl(gameOverControl);
                     break;
                 case GameState.Quit:
@@ -196,14 +215,16 @@ namespace SpaceInvaders.Views
 
         private void showControl(Control control)
         {
-            control.Enabled = true;
-            control.Visible = true;
+            /*control.Enabled = true;
+            control.Visible = true;*/
+            control.Show();
         }
 
         private void hideControl(Control control)
         {
-            control.Enabled = false;
-            control.Visible = false;
+           /* control.Enabled = false;
+            control.Visible = false;*/
+            control.Hide();
             RenderForm.Focus();
         }
 
@@ -211,7 +232,6 @@ namespace SpaceInvaders.Views
         {
             Renderer.StopRender();
             Renderer.WaitForStateChange();
-
 
             foreach (var rendererLoader in rendererLoaders)
             {
