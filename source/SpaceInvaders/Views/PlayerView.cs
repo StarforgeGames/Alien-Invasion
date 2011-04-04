@@ -164,46 +164,46 @@ namespace SpaceInvaders.Views
         {
             switch (newState) {
                 case GameState.StartUp:
-                    hideControl(mainMenuControl);
-                    hideControl(pauseControl);
-                    hideControl(victoryControl);
-                    hideControl(gameOverControl);
+                    mainMenuControl.Hide();
+                    pauseControl.Hide();
+                    victoryControl.Hide();
+                    gameOverControl.Hide();
                     break;
                 case GameState.Menu:
-                    showControl(mainMenuControl);
-                    hideControl(pauseControl);
-                    hideControl(victoryControl);
-                    hideControl(gameOverControl);
+                    mainMenuControl.Show();
+                    pauseControl.Hide();
+                    victoryControl.Hide();
+                    gameOverControl.Hide();
                     break;
                 case GameState.Loading:
                     OnDetach();
-                    hideControl(mainMenuControl);
-                    hideControl(pauseControl);
-                    hideControl(victoryControl);
-                    hideControl(gameOverControl);
+                    mainMenuControl.Hide();
+                    pauseControl.Hide();
+                    victoryControl.Hide();
+                    gameOverControl.Hide();;
                     break;
                 case GameState.Running:
-                    hideControl(mainMenuControl);
-                    hideControl(pauseControl);
-                    hideControl(victoryControl);
-                    hideControl(gameOverControl);
+                    mainMenuControl.Hide();
+                    pauseControl.Hide();
+                    victoryControl.Hide();
+                    gameOverControl.Hide();
                     break;
                 case GameState.Paused:
-                    showControl(pauseControl);
-                    hideControl(victoryControl);
-                    hideControl(gameOverControl);
+                    pauseControl.Show();
+                    victoryControl.Hide();
+                    gameOverControl.Hide();
                     break;
                 case GameState.Victory:
-                    hideControl(mainMenuControl);
-                    hideControl(pauseControl);
-                    showControl(victoryControl);
-                    hideControl(gameOverControl);
+                    mainMenuControl.Hide();
+                    pauseControl.Hide();
+                    victoryControl.Show();
+                    gameOverControl.Hide();
                     break;
                 case GameState.GameOver:
-                    hideControl(mainMenuControl);
-                    hideControl(pauseControl);
-                    hideControl(victoryControl);
-                    showControl(gameOverControl);
+                    mainMenuControl.Hide();
+                    pauseControl.Hide();
+                    victoryControl.Hide();
+                    gameOverControl.Show();
                     break;
                 case GameState.Quit:
                     RenderForm.Close();
@@ -211,21 +211,8 @@ namespace SpaceInvaders.Views
                 default:
                     break;
             }
-        }
 
-        private void showControl(Control control)
-        {
-            /*control.Enabled = true;
-            control.Visible = true;*/
-            control.Show();
-        }
-
-        private void hideControl(Control control)
-        {
-           /* control.Enabled = false;
-            control.Visible = false;*/
-            control.Hide();
-            RenderForm.Focus();
+            RenderForm.Focus(); // Always focus RenderForm, else Key input won't be captured
         }
 
         public void Dispose()
@@ -233,12 +220,10 @@ namespace SpaceInvaders.Views
             Renderer.StopRender();
             Renderer.WaitForStateChange();
 
-            foreach (var rendererLoader in rendererLoaders)
-            {
+            foreach (var rendererLoader in rendererLoaders) {
                 Game.ResourceManager.RemoveLoader(rendererLoader.Type);
 
-                if (rendererLoader is IDisposable)
-                {
+                if (rendererLoader is IDisposable) {
                     ((IDisposable)rendererLoader).Dispose();
                 }
 

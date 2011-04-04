@@ -157,12 +157,12 @@ namespace Game
         {
 			EventManager.Tick();
 
-			addNewEntities();
-			destroyEntities();
-        
             if (IsRunning) {
-                checkForVictoryConditions();
+                addNewEntities();
+                destroyEntities();
+
                 simulate(deltaTime);
+                checkForVictoryConditions();
             }
 		}
 
