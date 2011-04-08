@@ -114,6 +114,13 @@ namespace SpaceInvaders.Views
                     AiUpdateMovementEvent aiMovementUpdateEvent = evt as AiUpdateMovementEvent;
 
                     Vector2D borderData = aiMovementUpdateEvent.BorderData;
+
+                    if (borderData.Y < 0) {
+                        // Victory for the Invaders!
+                        EventManager.Trigger(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
+                            GameState.GameOver));
+                    }
+
                     currentDirection.X = -borderData.X;
                     currentDirection.Y = -1;
 
