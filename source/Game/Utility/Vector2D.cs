@@ -16,6 +16,12 @@ namespace Game.Utility
             this.Y = y;
         }
 
+        public Vector2D(Vector2D other)
+        {
+            this.X = other.X;
+            this.Y = other.Y;
+        }
+
         #region Object
 
         public override bool Equals(object obj)

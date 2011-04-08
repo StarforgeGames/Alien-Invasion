@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Game.Entities;
-using Game.EventManagement.Events;
-using Game.EventManagement;
 using Game;
+using Game.Entities;
+using Game.EventManagement;
+using Game.EventManagement.Events;
+using Game.Utility;
 
 namespace SpaceInvaders.Views
 {
@@ -21,6 +20,12 @@ namespace SpaceInvaders.Views
         }
 
         private List<Entity> invaders;
+        private Vector2D currentDirection;
+
+        private float moveDownTime = 0.0f;
+        private const float totalMoveDownTime = 0.5f;
+
+        private bool movementDirectionChanged = false;
 
 
         public AiView(GameLogic game)
@@ -35,15 +40,38 @@ namespace SpaceInvaders.Views
 
         private void registerGameEventListeners()
         {
+            EventManager.AddListener(this, typeof(NewEntityEvent));
             EventManager.AddListener(this, typeof(DestroyEntityEvent));
             EventManager.AddListener(this, typeof(GameStateChangedEvent));
+            EventManager.AddListener(this, typeof(AiUpdateMovementEvent));
         }
 
         public void OnUpdate(float deltaTime)
         {
-            foreach (Entity invader in invaders) {
-
+            if (Game.IsPaused) {
+                return;
             }
+
+            if (currentDirection.Y < 0) {
+                if (moveDownTime >= totalMoveDownTime) {
+                    currentDirection.Y = 0.0f;
+                    moveDownTime = 0.0f;
+                    movementDirectionChanged = true;
+                }
+
+                moveDownTime += deltaTime;
+            }
+
+            if (!movementDirectionChanged) {
+                return;
+            }
+
+            foreach (Entity invader in invaders) {
+                MoveEvent move = new MoveEvent(MoveEvent.START_MOVING, invader.ID, currentDirection);
+                EventManager.QueueEvent(move);
+            }
+
+            movementDirectionChanged = false;
         }
 
         public void OnAttach(Entity entity)
@@ -62,7 +90,7 @@ namespace SpaceInvaders.Views
         {
             switch (evt.Type) {
                 case NewEntityEvent.NEW_ENTITY: {
-                    NewEntityEvent newEntityEvent = (NewEntityEvent)evt;
+                    NewEntityEvent newEntityEvent = evt as NewEntityEvent;
                     Entity entity = Game.Entities[newEntityEvent.EntityID];
                     if (entity.Type.StartsWith("alien_")) {
                         OnAttach(entity);
@@ -70,13 +98,42 @@ namespace SpaceInvaders.Views
                     break;
                 }
                 case DestroyEntityEvent.DESTROY_ENTITY: {
-                    DestroyEntityEvent destroyEntityEvent = (DestroyEntityEvent)evt;
+                    DestroyEntityEvent destroyEntityEvent = evt as DestroyEntityEvent;
                     Entity entity = Game.Entities[destroyEntityEvent.EntityID];
                     if (entity.Type.StartsWith("alien_")) {
                         OnDetach(entity);
                     }
                     break;
                 }
+                case GameStateChangedEvent.GAME_STATE_CHANGED: {
+                    GameStateChangedEvent stateChangedEvent = evt as GameStateChangedEvent;
+                    onGameStateChanged(stateChangedEvent.NewState);
+                    break;
+                    }
+                case AiUpdateMovementEvent.AT_BORDER: {
+                    AiUpdateMovementEvent aiMovementUpdateEvent = evt as AiUpdateMovementEvent;
+
+                    Vector2D borderData = aiMovementUpdateEvent.BorderData;
+                    currentDirection.X = -borderData.X;
+                    currentDirection.Y = -1;
+
+                    movementDirectionChanged = true;
+                    break;
+                }
+            }
+        }
+
+
+        private void onGameStateChanged(GameState newState)
+        {
+            switch (newState) {               
+                case GameState.Loading:
+                    currentDirection = new Vector2D(1, 0);
+                    movementDirectionChanged = true;
+                    invaders.Clear();
+                    break;              
+                default:
+                    break;
             }
         }
 

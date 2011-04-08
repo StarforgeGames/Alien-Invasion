@@ -6,7 +6,7 @@ using ResourceManagement;
 namespace Game.Behaviors
 {
 
-    class RenderBehavior : AEntityBasedBehavior
+    public class RenderBehavior : AEntityBasedBehavior
     {
         // Attribute Keys
         public const string Key_Material = "Material";

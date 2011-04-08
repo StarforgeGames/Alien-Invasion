@@ -8,7 +8,7 @@ using Game.EventManagement.Events;
 namespace Game.Behaviors
 {
 
-    abstract class AEntityBasedBehavior : IBehavior
+    public abstract class AEntityBasedBehavior : IBehavior
     {
         protected Entity entity;
 

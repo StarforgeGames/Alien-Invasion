@@ -32,6 +32,8 @@ namespace SpaceInvaders
             Views = new List<IGameView>();
             PlayerView playerView = new PlayerView(Game);
             Views.Add(playerView);
+            AiView aiView = new AiView(Game);
+            Views.Add(aiView);
 
             resourceManager.AddLoader(new DummyLoader());
             resourceManager.AddWiper(new DebugWiper());
