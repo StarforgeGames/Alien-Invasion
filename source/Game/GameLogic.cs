@@ -127,10 +127,10 @@ namespace Game
 
 		private void createAndInitializeAliens()
 		{
-			createRowOfAliens("alien_ray", WorldHeight - 100, 15, 48);
-			createRowOfAliens("alien_pincher", WorldHeight - 175, 12, 60);
-			createRowOfAliens("alien_pincher", WorldHeight - 250, 12, 60);
-			createRowOfAliens("alien_hammerhead", WorldHeight - 330, 8, 90);
+			createRowOfAliens("alien_ray", WorldHeight - 80, 15, 48);
+			createRowOfAliens("alien_pincher", WorldHeight - 160, 12, 60);
+			createRowOfAliens("alien_pincher", WorldHeight - 240, 12, 60);
+			createRowOfAliens("alien_hammerhead", WorldHeight - 325, 8, 90);
 			createRowOfAliens("alien_hammerhead", WorldHeight - 410, 8, 90);
 		}
 

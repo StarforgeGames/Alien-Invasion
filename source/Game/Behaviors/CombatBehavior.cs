@@ -42,7 +42,7 @@ namespace Game.Behaviors
                 timeSinceLastShot.Value += deltaTime;
 
                 if (timeSinceLastShot >= firingSpeed) {
-                    timeSinceLastShot.Value = 0f;
+                    timeSinceLastShot.Value = 0.0f;
                     createProjectileAtCurrentPosition();
 
                     Console.WriteLine("[" + this.GetType().Name + "] Firing weapon of " + entity);
@@ -86,7 +86,7 @@ namespace Game.Behaviors
                     // Set to firing speed so that a shot is immediately fired when the fire button is hit again
                     Attribute<float> timeSinceLastShot = entity[Key_TimeSinceLastShot] as Attribute<float>;
                     Attribute<float> firingSpeed = entity[Key_FiringSpeed] as Attribute<float>;
-                    timeSinceLastShot.Value = firingSpeed;
+                    timeSinceLastShot.Value += firingSpeed / 2f;
                     break;
                 }
             }
