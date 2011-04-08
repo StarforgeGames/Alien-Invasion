@@ -5,7 +5,7 @@ using Game.Utility;
 
 namespace Game.Behaviors
 {
-    class CollisionBehavior : AEntityBasedBehavior
+    public class CollisionBehavior : AEntityBasedBehavior
     {
         // Attribute Keys
         public const string Key_IsPhysical = "IsPhysical";

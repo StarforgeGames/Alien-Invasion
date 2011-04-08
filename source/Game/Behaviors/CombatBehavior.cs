@@ -5,7 +5,7 @@ using Game.Utility;
 
 namespace Game.Behaviors
 {
-    class CombatBehavior : AEntityBasedBehavior
+    public class CombatBehavior : AEntityBasedBehavior
     {
         // Attribute Keys
         public const string Key_IsFiring = "IsFiring";

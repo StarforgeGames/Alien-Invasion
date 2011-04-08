@@ -195,6 +195,7 @@
     <Compile Include="Controls\PauseScreen.Designer.cs">
       <DependentUpon>PauseScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="Input\GameController.cs" />
     <Compile Include="Input\IKeyboardHandler.cs" />
     <Compile Include="Input\PlayerController.cs" />
     <Compile Include="Controls\GameMainMenu.cs">

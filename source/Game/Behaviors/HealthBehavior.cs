@@ -5,7 +5,7 @@ using Game.Utility;
 
 namespace Game.Behaviors
 {
-    class HealthBehavior : AEntityBasedBehavior
+    public class HealthBehavior : AEntityBasedBehavior
     {
         // Attribute Keys
         public const string Key_Health = "Health";

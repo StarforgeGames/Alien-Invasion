@@ -35,7 +35,9 @@ namespace SpaceInvaders.Views
         }
 
         private Entity playerEntity;
-        private PlayerController controller;
+
+        private GameController gameController;
+        private PlayerController playerController;
 
         private List<IResourceLoader> rendererLoaders = new List<IResourceLoader>();
 
@@ -49,12 +51,15 @@ namespace SpaceInvaders.Views
             RenderForm.Text = "Space Invaders";
             RenderForm.BackColor = Color.Empty;
             RenderForm.KeyPreview = true;
+
+            gameController = new GameController(EventManager);
+            RenderForm.KeyDown += new KeyEventHandler(gameController.OnKeyDown);
+            RenderForm.KeyUp += new KeyEventHandler(gameController.OnKeyUp);
             
 
             extractor = new Extractor(game);
             Renderer = new Graphics.Renderer(RenderForm, extractor);
             Renderer.StartRender();
-
 
             rendererLoaders.Add(new TextureLoader(Renderer));
             rendererLoaders.Add(new MeshLoader(Renderer));
@@ -111,9 +116,9 @@ namespace SpaceInvaders.Views
         {
             this.playerEntity = entity;
 
-            controller = new PlayerController(playerEntity);
-            RenderForm.KeyDown += new KeyEventHandler(controller.OnKeyDown);
-            RenderForm.KeyUp += new KeyEventHandler(controller.OnKeyUp);
+            playerController = new PlayerController(playerEntity);
+            RenderForm.KeyDown += new KeyEventHandler(playerController.OnKeyDown);
+            RenderForm.KeyUp += new KeyEventHandler(playerController.OnKeyUp);
 
             Console.WriteLine("[" + this.GetType().Name + "] New " + playerEntity + " found, attaching to controller");
         }
@@ -126,9 +131,9 @@ namespace SpaceInvaders.Views
 
             Console.WriteLine("[" + this.GetType().Name + "] Detaching " + playerEntity + " from controller");
 
-            RenderForm.KeyUp -= new KeyEventHandler(controller.OnKeyUp);
-            RenderForm.KeyDown -= new KeyEventHandler(controller.OnKeyDown);
-            controller = null;
+            RenderForm.KeyUp -= new KeyEventHandler(playerController.OnKeyUp);
+            RenderForm.KeyDown -= new KeyEventHandler(playerController.OnKeyDown);
+            playerController = null;
 
             this.playerEntity = null;
         }

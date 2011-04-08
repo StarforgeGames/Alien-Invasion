@@ -6,7 +6,7 @@ using Game.Utility;
 namespace Game.Behaviors
 {
 
-    class ProjectileBehavior : AEntityBasedBehavior
+    public class ProjectileBehavior : AEntityBasedBehavior
     {
         // Attribute Keys
         public const string Key_ProjectileOwner = "ProjectileOwner";
