@@ -22,7 +22,7 @@ namespace Game
             process.IsAttached = false;
         }
 
-        public void OnUpdate(float deltaTime)
+        public void Update(float deltaTime)
         {
             foreach (Process p in processes) {
                 if (p.IsDead) {
