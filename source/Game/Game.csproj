@@ -90,6 +90,7 @@
     <Compile Include="Behaviors\ProjectileBehavior.cs" />
     <Compile Include="Behaviors\RenderBehavior.cs" />
     <Compile Include="Behaviors\SpatialBehavior.cs" />
+    <Compile Include="CollisionDetector.cs" />
     <Compile Include="Entities\Attribute.cs" />
     <Compile Include="Entities\AttributeLoader\DefaultAttributeLoader.cs" />
     <Compile Include="Entities\AttributeLoader\IAttributeLoader.cs" />
@@ -140,6 +141,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Logging\Logging.csproj">
+      <Project>{B42D1477-891C-429B-8B68-47E47E1DCC8C}</Project>
+      <Name>Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ResourceManagement\ResourceManagement.csproj">
       <Project>{5B991C83-B0B6-4736-9DB7-7AFC2A6B81E6}</Project>
       <Name>ResourceManagement</Name>

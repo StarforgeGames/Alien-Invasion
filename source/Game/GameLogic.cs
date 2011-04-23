@@ -31,6 +31,7 @@ namespace Game
 		public IEventManager EventManager { get; private set; }
 		public ProcessManager ProcessManager { get; private set; }
 		public ResourceManager ResourceManager { get; private set; }
+        public CollisionDetector CollisionDetector { get; private set; }
 
 		public EntityFactory EntityFactory { get; private set; }
 		public Dictionary<int, Entity> Entities { get; private set; }
@@ -50,6 +51,7 @@ namespace Game
 			EventManager = new SwappingEventManager(this);
 			ProcessManager = new ProcessManager();
 			ResourceManager = resourceManager;
+            CollisionDetector = new CollisionDetector(this);
 
 			EntityFactory = new EntityFactory(this);
 			Entities = new Dictionary<int, Entity>();
@@ -173,6 +175,7 @@ namespace Game
 			}
 
 			ProcessManager.OnUpdate(deltaTime);
+            CollisionDetector.CheckForCollisionsInWorld();
 		}
 
 		private void checkForVictoryConditions()

@@ -74,18 +74,6 @@ namespace SpaceInvaders.Views
             movementDirectionChanged = false;
         }
 
-        public void OnAttach(Entity entity)
-        {
-            invaders.Add(entity);
-        }
-
-        public void OnDetach(Entity entity)
-        {
-            if (invaders.Contains(entity)) {
-                invaders.Remove(entity);
-            }
-        }
-
         public void OnEvent(Event evt)
         {
             switch (evt.Type) {
@@ -130,6 +118,17 @@ namespace SpaceInvaders.Views
             }
         }
 
+        public void OnAttach(Entity entity)
+        {
+            invaders.Add(entity);
+        }
+
+        public void OnDetach(Entity entity)
+        {
+            if (invaders.Contains(entity)) {
+                invaders.Remove(entity);
+            }
+        }
 
         private void onGameStateChanged(GameState newState)
         {
