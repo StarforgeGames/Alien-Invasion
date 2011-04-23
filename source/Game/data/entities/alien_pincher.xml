@@ -16,6 +16,8 @@
 		<Resource key="Material" type="material" name="alien_pincher"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
 		<float key="Speed">60</float>
-		<float key="FiringSpeed">0.75</float>
+		<float key="FiringSpeed">1.1</float>
+		<string key="ProjectileType">pewpew_alien</string>
+		<string key="Faction">ai</string>
 	</attributes>
 </Entity>

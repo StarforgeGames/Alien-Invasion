@@ -12,7 +12,7 @@ using Logging;
 
 namespace Game
 {
-    public class CollisionDetector : IEventListener
+    public class CollisionManager : IEventListener
     {
         public GameLogic Game { get; private set; }
         public IEventManager EventManager { get; private set; }
@@ -20,7 +20,7 @@ namespace Game
         private List<Entity> collidables;
 
 
-        public CollisionDetector(GameLogic game)
+        public CollisionManager(GameLogic game)
         {
             this.Game = game;
             this.EventManager = game.EventManager;
@@ -36,21 +36,23 @@ namespace Game
             EventManager.AddListener(this, typeof(DestroyEntityEvent));
         }
 
-        public void CheckForCollisionsInWorld()
+        public void DetectAndResolveCollisions()
         {
             foreach (Entity entity in Game.Entities.Values) {
                 if (entity.IsDead) {
                     continue;
                 }
 
+                // TODO: Use skippy, the kangaroo
                 foreach (Entity other in Game.Entities.Values) {
                     if (entity.ID == other.ID || other.IsDead) {
                         continue;
                     }
 
-                    Attribute<Entity> owner = entity[ProjectileBehavior.Key_ProjectileOwner] as Attribute<Entity>;
-                    Attribute<Entity> otherOwner = other[ProjectileBehavior.Key_ProjectileOwner] as Attribute<Entity>;
-                    if ((owner != null && owner.Value == other) || (otherOwner != null && otherOwner.Value == entity)) {
+                    var entityFaction = entity[CombatBehavior.Key_Faction] as Attribute<string>;
+                    var otherFaction = other[CombatBehavior.Key_Faction] as Attribute<string>;
+                    // No friendly fire... or collision
+                    if (entityFaction.Value == otherFaction.Value) {
                         continue;
                     }
 

@@ -21,10 +21,9 @@ namespace Game.Behaviors
 
         public override void OnUpdate(float deltaTime)
         {
-            Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
-            Attribute<Vector2D> dimensions = entity[SpatialBehavior.Key_Dimensions] as Attribute<Vector2D>;
+            Attribute<Vector2D> atBoundary = entity[SpatialBehavior.Key_AtBoundary] as Attribute<Vector2D>;
 
-            if (position.Value.Y >= entity.Game.WorldHeight - dimensions.Value.Y) {
+            if (atBoundary.Value.X != 0.0f || atBoundary.Value.Y != 0.0f) {
                 killEntity();
                 Console.WriteLine("[" + this.GetType().Name +"] " + entity.Type + " died in vain.");
             }

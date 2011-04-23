@@ -12,6 +12,8 @@
 		<Resource key="Mesh" type="mesh" name="quad"/>
 		<float key="Speed">300</float>
 		<float key="FiringSpeed">0.75</float>
+		<string key="ProjectileType">pewpew</string>
 		<int key="Lifes">3</int>
+		<string key="Faction">player</string>
 	</attributes>
 </Entity>

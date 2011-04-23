@@ -5,6 +5,7 @@ using Game.Entities;
 using Game.EventManagement;
 using Game.EventManagement.Events;
 using Game.Utility;
+using Game.Behaviors;
 
 namespace SpaceInvaders.Views
 {
@@ -27,6 +28,9 @@ namespace SpaceInvaders.Views
 
         private bool movementDirectionChanged = false;
 
+        private float timeSinceLastShot = 0.0f;
+        private Random rng = new Random();
+
 
         public AiView(GameLogic game)
         {
@@ -48,8 +52,18 @@ namespace SpaceInvaders.Views
 
         public void OnUpdate(float deltaTime)
         {
-            if (Game.IsPaused) {
+            if (Game.IsPaused || invaders.Count < 1) {
                 return;
+            }
+
+            // TODO: Shoot!
+            timeSinceLastShot += deltaTime;
+            Entity shooter = invaders[rng.Next(invaders.Count - 1)];
+            Attribute<float> firingSpeed = (Attribute<float>)shooter[CombatBehavior.Key_FiringSpeed];
+
+            if (timeSinceLastShot * rng.NextDouble() * firingSpeed >= 1.0f) {
+                timeSinceLastShot = 0.0f;                
+                EventManager.Trigger(new FireWeaponEvent(FireWeaponEvent.FIRE_SINGLE_SHOT, shooter.ID));
             }
 
             if (currentDirection.Y < 0) {
