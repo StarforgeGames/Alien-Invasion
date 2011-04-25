@@ -64,7 +64,7 @@ namespace Game.EventManagement
             sendEventToGeneralListeners(evt);
 
             if (evt.RecipientID != 0) {
-                Entity entity = game.Entities[evt.RecipientID];
+                Entity entity = game.World.Entities[evt.RecipientID];
                 entity.OnEvent(evt);
                 return;
             }

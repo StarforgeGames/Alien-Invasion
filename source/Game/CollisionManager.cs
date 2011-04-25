@@ -38,13 +38,13 @@ namespace Game
 
         public void DetectAndResolveCollisions()
         {
-            foreach (Entity entity in Game.Entities.Values) {
+            foreach (Entity entity in collidables) {
                 if (entity.IsDead) {
                     continue;
                 }
 
                 // TODO: Use skippy, the kangaroo
-                foreach (Entity other in Game.Entities.Values) {
+                foreach (Entity other in collidables) {
                     if (entity.ID == other.ID || other.IsDead) {
                         continue;
                     }
@@ -78,6 +78,10 @@ namespace Game
             
         }
         
+        public void Reset()
+        {
+            collidables.Clear();
+        }
 
         public bool AreColliding(Entity entity, Entity other)
         {
@@ -98,13 +102,13 @@ namespace Game
             switch (evt.Type) {
                 case NewEntityEvent.NEW_ENTITY: {
                         NewEntityEvent newEntityEvent = (NewEntityEvent)evt;
-                        Entity entity = Game.Entities[newEntityEvent.EntityID];
+                        Entity entity = Game.World.Entities[newEntityEvent.EntityID];
                         OnAttach(entity);
                         break;
                     }
                 case DestroyEntityEvent.DESTROY_ENTITY: {
                         DestroyEntityEvent destroyEntityEvent = (DestroyEntityEvent)evt;
-                        Entity entity = Game.Entities[destroyEntityEvent.EntityID];
+                        Entity entity = Game.World.Entities[destroyEntityEvent.EntityID];
                         OnDetach(entity);
                         break;
                     }

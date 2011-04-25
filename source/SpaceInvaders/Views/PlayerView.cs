@@ -47,7 +47,7 @@ namespace SpaceInvaders.Views
             this.EventManager = game.EventManager;
 
             RenderForm = new Form();
-            RenderForm.Size = new Size(Game.WorldWidth, Game.WorldHeight);
+            RenderForm.Size = new Size(Game.World.Width, Game.World.Height);
             RenderForm.Text = "Space Invaders";
             RenderForm.BackColor = Color.Empty;
             RenderForm.KeyPreview = true;
@@ -143,7 +143,7 @@ namespace SpaceInvaders.Views
             switch (evt.Type) {
                 case NewEntityEvent.NEW_ENTITY: {
                     NewEntityEvent newEntityEvent = (NewEntityEvent)evt;
-                    Entity entity = Game.Entities[newEntityEvent.EntityID];
+                    Entity entity = Game.World.Entities[newEntityEvent.EntityID];
                     if (entity.Type == "player") {
                         OnAttach(entity);
                     }
@@ -151,7 +151,7 @@ namespace SpaceInvaders.Views
                 }
                 case DestroyEntityEvent.DESTROY_ENTITY: {
                     DestroyEntityEvent destroyEntityEvent = (DestroyEntityEvent)evt;
-                    Entity entity = Game.Entities[destroyEntityEvent.EntityID];
+                    Entity entity = Game.World.Entities[destroyEntityEvent.EntityID];
                     if (entity.Type == "player") {
                         OnDetach();
                     }

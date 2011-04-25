@@ -64,10 +64,10 @@ namespace Graphics
             if (ExtractNext)
             {
                 frontObjects.Clear();
-                frontObjects.Camera = Matrix.OrthoOffCenterLH(0.0f, game.WorldWidth, 0.0f, game.WorldHeight, 0.0f,
+                frontObjects.Camera = Matrix.OrthoOffCenterLH(0.0f, game.World.Width, 0.0f, game.World.Height, 0.0f,
                     1.0f);
-                
-                foreach (var GameObject in game.Entities)
+
+                foreach (var GameObject in game.World.Entities)
                 {
                     if (GameObject.Value[RenderBehavior.Key_IsRenderable] != null) 
                     {

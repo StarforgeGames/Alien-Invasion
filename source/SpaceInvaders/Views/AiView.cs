@@ -20,7 +20,7 @@ namespace SpaceInvaders.Views
             get { throw new NotImplementedException(); }
         }
 
-        private List<Entity> invaders;
+        private List<Entity> invaders = new List<Entity>();
         private Vector2D currentDirection;
 
         private float moveDownTime = 0.0f;
@@ -29,6 +29,7 @@ namespace SpaceInvaders.Views
         private bool movementDirectionChanged = false;
 
         private float timeSinceLastShot = 0.0f;
+        private float firingThreshold;
         private Random rng = new Random();
 
 
@@ -37,7 +38,7 @@ namespace SpaceInvaders.Views
             this.Game = game;
             this.EventManager = game.EventManager;
 
-            this.invaders = new List<Entity>();
+            this.firingThreshold = 0.5f + ((float)rng.NextDouble() * 1.5f);
 
             registerGameEventListeners();
         }
@@ -56,13 +57,13 @@ namespace SpaceInvaders.Views
                 return;
             }
 
-            // TODO: Shoot!
             timeSinceLastShot += deltaTime;
             Entity shooter = invaders[rng.Next(invaders.Count - 1)];
-            Attribute<float> firingSpeed = (Attribute<float>)shooter[CombatBehavior.Key_FiringSpeed];
+            var firingSpeed = (Attribute<float>)shooter[CombatBehavior.Key_FiringSpeed];
 
-            if (timeSinceLastShot * rng.NextDouble() * firingSpeed >= 1.0f) {
-                timeSinceLastShot = 0.0f;                
+            if (timeSinceLastShot * rng.NextDouble() + (1 - firingSpeed) >= firingThreshold) {
+                timeSinceLastShot = 0.0f;
+                firingThreshold = 0.5f + ((float)rng.NextDouble() * 1f);
                 EventManager.Trigger(new FireWeaponEvent(FireWeaponEvent.FIRE_SINGLE_SHOT, shooter.ID));
             }
 
@@ -81,7 +82,7 @@ namespace SpaceInvaders.Views
             }
 
             foreach (Entity invader in invaders) {
-                MoveEvent move = new MoveEvent(MoveEvent.START_MOVING, invader.ID, currentDirection);
+                var move = new MoveEvent(MoveEvent.START_MOVING, invader.ID, currentDirection);
                 EventManager.QueueEvent(move);
             }
 
@@ -92,28 +93,28 @@ namespace SpaceInvaders.Views
         {
             switch (evt.Type) {
                 case NewEntityEvent.NEW_ENTITY: {
-                    NewEntityEvent newEntityEvent = evt as NewEntityEvent;
-                    Entity entity = Game.Entities[newEntityEvent.EntityID];
+                    var newEntityEvent = evt as NewEntityEvent;
+                    Entity entity = Game.World.Entities[newEntityEvent.EntityID];
                     if (entity.Type.StartsWith("alien_")) {
                         OnAttach(entity);
                     }
                     break;
                 }
                 case DestroyEntityEvent.DESTROY_ENTITY: {
-                    DestroyEntityEvent destroyEntityEvent = evt as DestroyEntityEvent;
-                    Entity entity = Game.Entities[destroyEntityEvent.EntityID];
+                    var destroyEntityEvent = evt as DestroyEntityEvent;
+                    Entity entity = Game.World.Entities[destroyEntityEvent.EntityID];
                     if (entity.Type.StartsWith("alien_")) {
                         OnDetach(entity);
                     }
                     break;
                 }
                 case GameStateChangedEvent.GAME_STATE_CHANGED: {
-                    GameStateChangedEvent stateChangedEvent = evt as GameStateChangedEvent;
+                    var stateChangedEvent = evt as GameStateChangedEvent;
                     onGameStateChanged(stateChangedEvent.NewState);
                     break;
                     }
                 case AiUpdateMovementEvent.AT_BORDER: {
-                    AiUpdateMovementEvent aiMovementUpdateEvent = evt as AiUpdateMovementEvent;
+                    var aiMovementUpdateEvent = evt as AiUpdateMovementEvent;
 
                     Vector2D borderData = aiMovementUpdateEvent.BorderData;
 
