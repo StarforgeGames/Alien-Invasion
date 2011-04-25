@@ -62,8 +62,8 @@ namespace Game.Behaviors
                 direction.Value.X = 0.0f;
                 atBoundary.Value.X = -1.0f;
             }
-            else if ((position.Value.X + dimensions.Value.X) > entity.Game.WorldWidth) {
-                position.Value.X = entity.Game.WorldWidth - dimensions.Value.X;
+            else if ((position.Value.X + dimensions.Value.X) > world.Width) {
+                position.Value.X = world.Width - dimensions.Value.X;
                 direction.Value.X = 0.0f;
                 atBoundary.Value.X = 1.0f;
             }
@@ -76,8 +76,8 @@ namespace Game.Behaviors
                 direction.Value.Y = 0.0f;
                 atBoundary.Value.Y = -1.0f;
             }
-            else if ((position.Value.Y + dimensions.Value.Y) >= entity.Game.WorldHeight) {
-                position.Value.Y = entity.Game.WorldHeight - dimensions.Value.Y;
+            else if ((position.Value.Y + dimensions.Value.Y) >= world.Height) {
+                position.Value.Y = world.Height - dimensions.Value.Y;
                 direction.Value.Y = 0.0f;
                 atBoundary.Value.Y = 1.0f;
             }

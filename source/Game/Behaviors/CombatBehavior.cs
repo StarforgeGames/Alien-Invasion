@@ -82,7 +82,7 @@ namespace Game.Behaviors
             var pewpewDimensions = new Attribute<Vector2D>(new Vector2D(5, 15));
             evt.AddAttribute(SpatialBehavior.Key_Dimensions, pewpewDimensions);
 
-            EventManager.QueueEvent(evt);
+            eventManager.QueueEvent(evt);
         }
 
         public override void OnEvent(Event evt)

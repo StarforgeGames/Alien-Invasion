@@ -67,14 +67,14 @@ namespace Game.Behaviors
                 entity.State = EntityState.Dead;
 
                 if (lifes <= 0) {
-                    EventManager.QueueEvent(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, entity.ID));
+                    eventManager.QueueEvent(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, entity.ID));
                     Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type
                         + " died a horrible death!");
                 }
                 else {
                     RespawnEntityEvent respawnEvent = new RespawnEntityEvent(RespawnEntityEvent.RESPAWN_ENTITY,
                         entity.ID);
-                    EventManager.QueueEvent(respawnEvent);
+                    eventManager.QueueEvent(respawnEvent);
                     Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type
                         + " lost a life. " + lifes + " lifes remaining. Respawning...");
                 }
@@ -91,7 +91,7 @@ namespace Game.Behaviors
             isRespawning.Value = false;
 
             Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
-            position.Value.X = entity.Game.WorldWidth / 2f - (75f / 2f);
+            position.Value.X = world.Width / 2f - (75f / 2f);
             position.Value.Y = 100 - (75f / 2f);
 
             entity.State = EntityState.Active;

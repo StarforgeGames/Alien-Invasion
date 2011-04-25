@@ -11,8 +11,9 @@ namespace Game.Behaviors
     public abstract class AEntityBasedBehavior : IBehavior
     {
         protected Entity entity;
-
-        public IEventManager EventManager { get; private set; }
+        protected GameLogic game;
+        protected GameWorld world;
+        protected IEventManager eventManager;
 
         protected List<Type> handledEventTypes = new List<Type>();
         public ReadOnlyCollection<Type> HandledEventTypes
@@ -23,7 +24,9 @@ namespace Game.Behaviors
         public AEntityBasedBehavior(Entity entity)
         {
             this.entity = entity;
-            this.EventManager = entity.EventManager;
+            this.game = entity.Game;
+            this.world = game.World;
+            this.eventManager = entity.EventManager;
         }
 
         protected virtual void initializeHandledEventTypes()

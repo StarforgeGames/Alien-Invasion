@@ -116,6 +116,7 @@
     <Compile Include="EventManagement\IEventListener.cs" />
     <Compile Include="EventManagement\IEventManager.cs" />
     <Compile Include="GameLogic.cs" />
+    <Compile Include="GameWorld.cs" />
     <Compile Include="Processes\Process.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
