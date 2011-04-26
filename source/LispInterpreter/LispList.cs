@@ -26,11 +26,13 @@ namespace LispInterpreter
         {
             dynamic elem = First;
 
-            if (First is LispSymbol)
+            return elem.Eval(null, env).Eval(Rest, env);
+
+            /*if (First is LispSymbol)
             {
                 elem = First.Eval(null, env);
             }
-
+            
             if (isFunction(elem))
             {
                 return elem.Eval(null, env).Eval(Rest, env);
@@ -38,7 +40,7 @@ namespace LispInterpreter
             else
             {
                 return elem.Eval(Rest, env);
-            }
+            }*/
         }
 
         private dynamic getParams(dynamic elem)

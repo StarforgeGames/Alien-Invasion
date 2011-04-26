@@ -33,6 +33,11 @@ namespace LispInterpreter.BuiltIns
             return new LispFunction(args[0], args[1], env);
         }
 
+        static public dynamic macro(LispList args, LispEnvironment env)
+        {
+            return new LispMacro(args[0], args[1], env);
+        }
+
         [Alias("+")]
         static public dynamic add(LispList args, LispEnvironment env)
         {

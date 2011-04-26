@@ -91,6 +91,7 @@
     <Compile Include="LispFunction.cs" />
     <Compile Include="LispList.cs" />
     <Compile Include="LispInteger.cs" />
+    <Compile Include="LispMacro.cs" />
     <Compile Include="LispNil.cs" />
     <Compile Include="LispObject.cs" />
     <Compile Include="LispQuote.cs" />
