@@ -6,7 +6,7 @@ using Game.Utility;
 namespace Game.Behaviors
 {
 
-    class ProjectileBehavior : AEntityBasedBehavior
+    public class ProjectileBehavior : AEntityBasedBehavior
     {
         // Attribute Keys
         public const string Key_ProjectileOwner = "ProjectileOwner";
@@ -15,14 +15,15 @@ namespace Game.Behaviors
             : base(entity)
         {
             entity.AddAttribute(Key_ProjectileOwner, new Attribute<Entity>(null));
+
+            initializeHandledEventTypes();
         }
 
         public override void OnUpdate(float deltaTime)
         {
-            Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
-            Attribute<Vector2D> dimensions = entity[SpatialBehavior.Key_Dimensions] as Attribute<Vector2D>;
+            Attribute<Vector2D> atBoundary = entity[SpatialBehavior.Key_AtBoundary] as Attribute<Vector2D>;
 
-            if (position.Value.Y >= entity.Game.WorldHeight - dimensions.Value.Y) {
+            if (atBoundary.Value.X != 0.0f || atBoundary.Value.Y != 0.0f) {
                 killEntity();
                 Console.WriteLine("[" + this.GetType().Name +"] " + entity.Type + " died in vain.");
             }
@@ -36,7 +37,7 @@ namespace Game.Behaviors
         private void killEntity()
         {
             entity.State = EntityState.Dead;
-            EventManager.QueueEvent(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, entity.ID));
+            eventManager.QueueEvent(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, entity.ID));
         }
 
         public override void OnEvent(Event evt)

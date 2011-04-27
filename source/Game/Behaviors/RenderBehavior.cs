@@ -6,7 +6,7 @@ using ResourceManagement;
 namespace Game.Behaviors
 {
 
-    class RenderBehavior : AEntityBasedBehavior
+    public class RenderBehavior : AEntityBasedBehavior
     {
         // Attribute Keys
         public const string Key_Material = "Material";
@@ -19,6 +19,8 @@ namespace Game.Behaviors
             entity.AddAttribute(Key_Material, new Attribute<ResourceHandle>(null));
             entity.AddAttribute(Key_Mesh, new Attribute<ResourceHandle>(null));
             entity.AddAttribute(Key_IsRenderable, new Attribute<bool>(true));
+
+            initializeHandledEventTypes();
         }
 
         public override void OnUpdate(float deltaTime)
