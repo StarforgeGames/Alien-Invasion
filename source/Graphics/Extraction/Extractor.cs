@@ -6,6 +6,7 @@ using ResourceManagement;
 using Game.Entities;
 using SlimDX;
 using Game.Utility;
+using Game.Behaviors;
 
 namespace Graphics
 {
@@ -15,10 +16,7 @@ namespace Graphics
 
         public RenderObjects Scene
         {
-            get
-            {
-                return backObjects;
-            }
+            get { return backObjects; }
         }
 
         private RenderObjects frontObjects = new RenderObjects(),
@@ -43,10 +41,10 @@ namespace Graphics
 
         public void ExtractSingle(Entity entity)
         {
-            var material = entity["Material"] as Attribute<ResourceHandle>;
-            var mesh = entity["Mesh"] as Attribute<ResourceHandle>;
-            var position = entity["Position"] as Attribute<Vector2D>;
-            var dimensions = entity["Dimensions"] as Attribute<Vector2D>;
+            var material = entity[RenderBehavior.Key_Material] as Attribute<ResourceHandle>;
+            var mesh = entity[RenderBehavior.Key_Mesh] as Attribute<ResourceHandle>;
+            var position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
+            var dimensions = entity[SpatialBehavior.Key_Dimensions] as Attribute<Vector2D>;
 
             Matrix mat = new Matrix();
             mat.M11 = dimensions.Value.X;
@@ -56,9 +54,8 @@ namespace Graphics
             mat.M14 = position.Value.X;
             mat.M24 = position.Value.Y;
 
-            frontObjects.Add(new RenderObject(
-                material.Value, mesh.Value, 
-                mat));
+            frontObjects.Add(
+                new RenderObject(material.Value, mesh.Value, mat));
         }
 
 
@@ -67,11 +64,12 @@ namespace Graphics
             if (ExtractNext)
             {
                 frontObjects.Clear();
-                frontObjects.Camera = Matrix.OrthoOffCenterLH(0.0f, game.WorldWidth, 0.0f, game.WorldHeight, 0.0f, 1.0f);
-                
-                foreach (var GameObject in game.Entities)
+                frontObjects.Camera = Matrix.OrthoOffCenterLH(0.0f, game.World.Width, 0.0f, game.World.Height, 0.0f,
+                    1.0f);
+
+                foreach (var GameObject in game.World.Entities)
                 {
-                    if (GameObject.Value["IsRenderable"] != null)
+                    if (GameObject.Value[RenderBehavior.Key_IsRenderable] != null) 
                     {
                         ExtractSingle(GameObject.Value);
                     }

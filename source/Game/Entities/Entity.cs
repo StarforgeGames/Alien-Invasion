@@ -28,6 +28,7 @@ namespace Game.Entities
         private readonly int id;
 
         public GameLogic Game { get; private set; }
+        public GameWorld World { get; private set; }
 
         public IEventManager EventManager { get; private set; }
         private Dictionary<Type, List<IEventListener>> listenerMap = new Dictionary<Type, List<IEventListener>>();

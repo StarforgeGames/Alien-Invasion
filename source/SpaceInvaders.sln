@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LispInterpreter", "LispInterpreter\LispInterpreter.csproj", "{00AFD410-E213-4E19-AC18-BE3F4FAABDB3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging", "Logging\Logging.csproj", "{B42D1477-891C-429B-8B68-47E47E1DCC8C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug - Software|Any CPU = Debug - Software|Any CPU
@@ -123,6 +125,22 @@ Global
 		{00AFD410-E213-4E19-AC18-BE3F4FAABDB3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{00AFD410-E213-4E19-AC18-BE3F4FAABDB3}.Release|x64.ActiveCfg = Release|Any CPU
 		{00AFD410-E213-4E19-AC18-BE3F4FAABDB3}.Release|x86.ActiveCfg = Release|Any CPU
+		{B42D1477-891C-429B-8B68-47E47E1DCC8C}.Debug - Software|Any CPU.ActiveCfg = Debug|Any CPU
+		{B42D1477-891C-429B-8B68-47E47E1DCC8C}.Debug - Software|Any CPU.Build.0 = Debug|Any CPU
+		{B42D1477-891C-429B-8B68-47E47E1DCC8C}.Debug - Software|x64.ActiveCfg = Debug|Any CPU
+		{B42D1477-891C-429B-8B68-47E47E1DCC8C}.Debug - Software|x86.ActiveCfg = Debug|Any CPU
+		{B42D1477-891C-429B-8B68-47E47E1DCC8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B42D1477-891C-429B-8B68-47E47E1DCC8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B42D1477-891C-429B-8B68-47E47E1DCC8C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B42D1477-891C-429B-8B68-47E47E1DCC8C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B42D1477-891C-429B-8B68-47E47E1DCC8C}.Release - Software|Any CPU.ActiveCfg = Release|Any CPU
+		{B42D1477-891C-429B-8B68-47E47E1DCC8C}.Release - Software|Any CPU.Build.0 = Release|Any CPU
+		{B42D1477-891C-429B-8B68-47E47E1DCC8C}.Release - Software|x64.ActiveCfg = Release|Any CPU
+		{B42D1477-891C-429B-8B68-47E47E1DCC8C}.Release - Software|x86.ActiveCfg = Release|Any CPU
+		{B42D1477-891C-429B-8B68-47E47E1DCC8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B42D1477-891C-429B-8B68-47E47E1DCC8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B42D1477-891C-429B-8B68-47E47E1DCC8C}.Release|x64.ActiveCfg = Release|Any CPU
+		{B42D1477-891C-429B-8B68-47E47E1DCC8C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

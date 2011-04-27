@@ -25,6 +25,7 @@ namespace SpaceInvaders.Views
 
         private GameMainMenu mainMenuControl;
         private PauseScreen pauseControl;
+        private VictoryScreen victoryControl;
         private GameOverScreen gameOverControl;
 
         public GameViewType Type { get { return GameViewType.PlayerView; } }
@@ -34,7 +35,9 @@ namespace SpaceInvaders.Views
         }
 
         private Entity playerEntity;
-        private PlayerController controller;
+
+        private GameController gameController;
+        private PlayerController playerController;
 
         private List<IResourceLoader> rendererLoaders = new List<IResourceLoader>();
 
@@ -44,16 +47,19 @@ namespace SpaceInvaders.Views
             this.EventManager = game.EventManager;
 
             RenderForm = new Form();
-            RenderForm.Size = new Size(Game.WorldWidth, Game.WorldHeight);
+            RenderForm.Size = new Size(Game.World.Width, Game.World.Height);
             RenderForm.Text = "Space Invaders";
             RenderForm.BackColor = Color.Empty;
             RenderForm.KeyPreview = true;
+
+            gameController = new GameController(EventManager);
+            RenderForm.KeyDown += new KeyEventHandler(gameController.OnKeyDown);
+            RenderForm.KeyUp += new KeyEventHandler(gameController.OnKeyUp);
             
 
             extractor = new Extractor(game);
             Renderer = new Graphics.Renderer(RenderForm, extractor);
             Renderer.StartRender();
-
 
             rendererLoaders.Add(new TextureLoader(Renderer));
             rendererLoaders.Add(new MeshLoader(Renderer));
@@ -78,6 +84,12 @@ namespace SpaceInvaders.Views
                 (RenderForm.Width - pauseControl.Width) / 2,
                 (RenderForm.Height / 2) - pauseControl.Height);
             RenderForm.Controls.Add(pauseControl);
+
+            victoryControl = new VictoryScreen(EventManager);
+            victoryControl.Location = new Point(
+                (RenderForm.Width - victoryControl.Width) / 2,
+                (RenderForm.Height / 2) - victoryControl.Height);
+            RenderForm.Controls.Add(victoryControl);
 
             gameOverControl = new GameOverScreen(EventManager);
             gameOverControl.Location = new Point(
@@ -104,9 +116,9 @@ namespace SpaceInvaders.Views
         {
             this.playerEntity = entity;
 
-            controller = new PlayerController(playerEntity);
-            RenderForm.KeyDown += new KeyEventHandler(controller.OnKeyDown);
-            RenderForm.KeyUp += new KeyEventHandler(controller.OnKeyUp);
+            playerController = new PlayerController(playerEntity);
+            RenderForm.KeyDown += new KeyEventHandler(playerController.OnKeyDown);
+            RenderForm.KeyUp += new KeyEventHandler(playerController.OnKeyUp);
 
             Console.WriteLine("[" + this.GetType().Name + "] New " + playerEntity + " found, attaching to controller");
         }
@@ -119,9 +131,9 @@ namespace SpaceInvaders.Views
 
             Console.WriteLine("[" + this.GetType().Name + "] Detaching " + playerEntity + " from controller");
 
-            RenderForm.KeyUp -= new KeyEventHandler(controller.OnKeyUp);
-            RenderForm.KeyDown -= new KeyEventHandler(controller.OnKeyDown);
-            controller = null;
+            RenderForm.KeyUp -= new KeyEventHandler(playerController.OnKeyUp);
+            RenderForm.KeyDown -= new KeyEventHandler(playerController.OnKeyDown);
+            playerController = null;
 
             this.playerEntity = null;
         }
@@ -131,7 +143,7 @@ namespace SpaceInvaders.Views
             switch (evt.Type) {
                 case NewEntityEvent.NEW_ENTITY: {
                     NewEntityEvent newEntityEvent = (NewEntityEvent)evt;
-                    Entity entity = Game.Entities[newEntityEvent.EntityID];
+                    Entity entity = Game.World.Entities[newEntityEvent.EntityID];
                     if (entity.Type == "player") {
                         OnAttach(entity);
                     }
@@ -139,7 +151,7 @@ namespace SpaceInvaders.Views
                 }
                 case DestroyEntityEvent.DESTROY_ENTITY: {
                     DestroyEntityEvent destroyEntityEvent = (DestroyEntityEvent)evt;
-                    Entity entity = Game.Entities[destroyEntityEvent.EntityID];
+                    Entity entity = Game.World.Entities[destroyEntityEvent.EntityID];
                     if (entity.Type == "player") {
                         OnDetach();
                     }
@@ -157,34 +169,46 @@ namespace SpaceInvaders.Views
         {
             switch (newState) {
                 case GameState.StartUp:
-                    hideControl(mainMenuControl);
-                    hideControl(pauseControl);
-                    hideControl(gameOverControl);
+                    mainMenuControl.Hide();
+                    pauseControl.Hide();
+                    victoryControl.Hide();
+                    gameOverControl.Hide();
                     break;
                 case GameState.Menu:
-                    showControl(mainMenuControl);
-                    hideControl(pauseControl);
-                    hideControl(gameOverControl);
+                    mainMenuControl.Show();
+                    pauseControl.Hide();
+                    victoryControl.Hide();
+                    gameOverControl.Hide();
                     break;
                 case GameState.Loading:
                     OnDetach();
-                    hideControl(mainMenuControl);
-                    hideControl(pauseControl);
-                    hideControl(gameOverControl);
+                    mainMenuControl.Hide();
+                    pauseControl.Hide();
+                    victoryControl.Hide();
+                    gameOverControl.Hide();;
                     break;
                 case GameState.Running:
-                    hideControl(mainMenuControl);
-                    hideControl(pauseControl);
-                    hideControl(gameOverControl);
+                    mainMenuControl.Hide();
+                    pauseControl.Hide();
+                    victoryControl.Hide();
+                    gameOverControl.Hide();
                     break;
                 case GameState.Paused:
-                    showControl(pauseControl);
-                    hideControl(gameOverControl);
+                    pauseControl.Show();
+                    victoryControl.Hide();
+                    gameOverControl.Hide();
+                    break;
+                case GameState.Victory:
+                    mainMenuControl.Hide();
+                    pauseControl.Hide();
+                    victoryControl.Show();
+                    gameOverControl.Hide();
                     break;
                 case GameState.GameOver:
-                    hideControl(mainMenuControl);
-                    hideControl(pauseControl);
-                    showControl(gameOverControl);
+                    mainMenuControl.Hide();
+                    pauseControl.Hide();
+                    victoryControl.Hide();
+                    gameOverControl.Show();
                     break;
                 case GameState.Quit:
                     RenderForm.Close();
@@ -192,19 +216,8 @@ namespace SpaceInvaders.Views
                 default:
                     break;
             }
-        }
 
-        private void showControl(Control control)
-        {
-            control.Enabled = true;
-            control.Visible = true;
-        }
-
-        private void hideControl(Control control)
-        {
-            control.Enabled = false;
-            control.Visible = false;
-            RenderForm.Focus();
+            RenderForm.Focus(); // Always focus RenderForm, else Key input won't be captured
         }
 
         public void Dispose()
@@ -212,13 +225,10 @@ namespace SpaceInvaders.Views
             Renderer.StopRender();
             Renderer.WaitForStateChange();
 
-
-            foreach (var rendererLoader in rendererLoaders)
-            {
+            foreach (var rendererLoader in rendererLoaders) {
                 Game.ResourceManager.RemoveLoader(rendererLoader.Type);
 
-                if (rendererLoader is IDisposable)
-                {
+                if (rendererLoader is IDisposable) {
                     ((IDisposable)rendererLoader).Dispose();
                 }
 

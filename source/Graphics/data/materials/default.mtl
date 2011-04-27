@@ -19,11 +19,11 @@
 		1.0 1.0 1.0
 		1.0 1.0 1.0
 	)
-	(perFrame 
+	(frame-data
 		(matrix "shaderbinding" "programvariable")
 		(float "shaderbinding" "programvariable")
 	)
-	(perInstance
+	(instance-instance
 		(integer "shaderbinding" "programvariable")
 	)
 )
