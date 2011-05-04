@@ -23,7 +23,7 @@
 		(matrix "shaderbinding" "programvariable")
 		(float "shaderbinding" "programvariable")
 	)
-	(instance-instance
+	(instance-data
 		(integer "shaderbinding" "programvariable")
 	)
 )

@@ -26,11 +26,11 @@ namespace LispInterpreter
             Load(typeof(Base));
         }
 
-        public void Eval(char[] code)
+        public dynamic Eval(char[] code)
         {
             dynamic elem = parser.parse(code.AsEnumerable().GetEnumerator());
             string str = elem.ToString();
-            var res = elem.Eval(null, Global);
+            return elem.Eval(null, Global);
         }
 
         
