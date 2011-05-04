@@ -154,6 +154,7 @@
     <Content Include="data\shaders\SimplePassThrough.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="data\animations\default.anim" />
     <None Include="data\materials\default.mtl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
