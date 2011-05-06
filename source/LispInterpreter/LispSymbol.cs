@@ -44,5 +44,10 @@ namespace LispInterpreter
         {
             return p;
         }
+
+        public string Value
+        {
+            get { return p; }
+        }
     }
 }

@@ -7,23 +7,35 @@ using System.Reflection;
 using System.Linq.Expressions;
 using System.Globalization;
 using LispInterpreter.BuiltIns;
+using System.IO;
 
 namespace LispInterpreter
 {
     public class Interpreter
     {
-        LispEnvironment global = new LispEnvironment(null);
+        LispEnvironment global;
+        LispEnvironment builtIn = new LispEnvironment(null);
         Parser parser = new Parser();
+
+        public LispEnvironment BuiltIn
+        {
+            get { return builtIn; }
+        }
 
         public LispEnvironment Global
         {
             get { return global; }
-            set { global = value; }
         }
 
         public Interpreter()
         {
             Load(typeof(Base));
+            global = new LispEnvironment(builtIn);
+        }
+
+        public dynamic Eval(Stream stream)
+        {
+            return Eval(new StreamReader(stream).ReadToEnd().ToCharArray());
         }
 
         public dynamic Eval(char[] code)
@@ -33,7 +45,10 @@ namespace LispInterpreter
             return elem.Eval(null, Global);
         }
 
-        
+        public void ResetGlobal()
+        {
+            global = new LispEnvironment(builtIn);
+        }
 
         public void Load(Type builtIns)
         {
@@ -57,12 +72,12 @@ namespace LispInterpreter
                         foreach (var attribute in methodInfo.GetCustomAttributes(typeof(AliasAttribute), false))
                         {
                             AliasAttribute attr = (AliasAttribute)attribute;
-                            global.Add(new LispSymbol(attr.Alias), cLambda, builtIns.Name + "." + methodInfo.Name);
+                            builtIn.Add(new LispSymbol(attr.Alias), cLambda, builtIns.Name + "." + methodInfo.Name);
                         }
                     }
                     else
                     {
-                        global.Add(new LispSymbol(methodInfo.Name), cLambda, builtIns.Name + "." + methodInfo.Name);
+                        builtIn.Add(new LispSymbol(methodInfo.Name), cLambda, builtIns.Name + "." + methodInfo.Name);
                     }
                 }
             }

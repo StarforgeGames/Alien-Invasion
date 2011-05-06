@@ -9,7 +9,14 @@ namespace LispInterpreter
     {
         public dynamic Eval(dynamic e, LispEnvironment env)
         {
-            return e.First;
+            if (e == null)
+            {
+                return this;
+            }
+            else
+            {
+                return e.First;
+            }
         }
 
         public override string ToString()

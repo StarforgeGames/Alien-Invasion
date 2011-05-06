@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LispInterpreter
 {
-    class LispInteger : LispElement
+    public class LispInteger : LispElement
     {
         private int value;
 

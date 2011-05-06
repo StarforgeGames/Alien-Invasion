@@ -58,9 +58,13 @@ namespace LispInterpreter
         private dynamic marshal(dynamic obj, Type objType)
         {
 
-            if (objType == typeof(double))
+            if (objType == typeof(float))
             {
                 return new LispFloat(obj);
+            }
+            else if (objType == typeof(double))
+            {
+                return new LispDouble(obj);
             }
             else if (objType == typeof(int))
             {
@@ -83,6 +87,7 @@ namespace LispInterpreter
         private bool isLispType(Type resultType)
         {
             return resultType == typeof(LispFloat)
+                || resultType == typeof(LispDouble)
                 || resultType == typeof(LispInteger)
                 || resultType == typeof(LispFunction)
                 || resultType == typeof(LispList)

@@ -9,7 +9,7 @@ namespace LispInterpreter
     public class LispEnvironment : ICloneable
     {
         Dictionary<LispSymbol, dynamic> env
-            = new Dictionary<LispSymbol,dynamic>();
+            = new Dictionary<LispSymbol, dynamic>();
         LispEnvironment parent;
 
         public LispEnvironment(LispEnvironment parent)
@@ -19,12 +19,12 @@ namespace LispInterpreter
 
         public void Add(LispSymbol symbol, LispElement element)
         {
-            env.Add(symbol, element);
+            env[symbol] = element;
         }
 
         public void Add(LispSymbol symbol, Func<LispList, LispEnvironment, dynamic> func, string alias)
         {
-            env.Add(symbol, new LispBuiltInFunction(func, alias));
+            env[symbol] = new LispBuiltInFunction(func, alias);
         }
 
         public void Add(LispSymbol symbol, Func<LispList, LispEnvironment, dynamic> func)

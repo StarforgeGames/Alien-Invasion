@@ -5,18 +5,17 @@ using System.Text;
 
 namespace LispInterpreter
 {
-    class LispFloat : LispElement
+    public class LispFloat : LispElement
     {
-        private double value;
+        private float value;
 
-        public double Value
+        public float Value
         {
             get { return value; }
         }
 
-        public LispFloat(double value)
+        public LispFloat(float value)
         {
-            // TODO: Complete member initialization
             this.value = value;
         }
 
