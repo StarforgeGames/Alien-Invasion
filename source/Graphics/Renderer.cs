@@ -327,7 +327,7 @@ namespace Graphics
                 {
                     device.InputAssembler.SetPrimitiveTopology(mesh.primitiveTopology);
                     
-                    device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(mesh.buffer, mesh.size / 4, 0));
+                    device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(mesh.buffer, mesh.elementSize, 0));
                     device.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(instanceBuffer, 16 * 4, 0));
 
                     foreach (var matRes in obj.Value)

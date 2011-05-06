@@ -2,11 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using System.Globalization;
 
 namespace LispInterpreter
 {
     class Parser
     {
+        public dynamic parse(Stream stream)
+        {
+
+            throw new NotImplementedException();
+            //return parse(new StreamReader(stream).ReadToEnd().ToCharArray().AsEnumerable().GetEnumerator());
+            //new StreamReader(stream).Read()
+            //throw new NotImplementedException();
+        }
+
         public dynamic parse(IEnumerator<char> e)
         {
             dynamic result = null;
@@ -118,7 +129,7 @@ namespace LispInterpreter
         {
             var list = new LispList();
 
-            list.Add(new LispQuote());
+            list.Add(new LispSymbol("quote"));
             list.Add(parse(e));
 
             return list;
@@ -145,12 +156,20 @@ namespace LispInterpreter
         {
             StringBuilder temp = new StringBuilder();
             bool isInteger = true;
+            bool isFloat = false;
 
             do
             {
                 if (char.IsNumber(e.Current))
                 {
                     temp.Append(e.Current);
+                }
+                else if (e.Current == 'f')
+                {
+                    temp.Append(e.Current);
+                    isInteger = false;
+                    isFloat = true;
+                    break;
                 }
                 else if (e.Current == '.')
                 {
@@ -169,6 +188,12 @@ namespace LispInterpreter
                 {
                     temp.Append(e.Current);
                 }
+                else if (e.Current == 'f')
+                {
+                    isFloat = true;
+                    e.MoveNext();
+                    break;
+                }
                 else
                 {
                     break;
@@ -181,10 +206,14 @@ namespace LispInterpreter
 
                 return new LispInteger(value);
             }
-            else
+            else if (isFloat)
             {
-                double value = double.Parse(temp.ToString());
+                float value = float.Parse(temp.ToString(), new NumberFormatInfo());
                 return new LispFloat(value);
+            } else
+            {
+                double value = double.Parse(temp.ToString(), new NumberFormatInfo());
+                return new LispDouble(value);
             }
         }
     }

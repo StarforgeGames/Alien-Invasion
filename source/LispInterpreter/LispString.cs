@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LispInterpreter
 {
-    class LispString : LispElement, IEquatable<LispString>
+    public class LispString : LispElement, IEquatable<LispString>
     {
         private string p;
 

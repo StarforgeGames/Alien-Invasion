@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LispInterpreter
 {
-    public class LispList : LispElement
+    public class LispList : LispElement, IEnumerable<object>
     {
         List<dynamic> list;
 
@@ -27,20 +27,6 @@ namespace LispInterpreter
             dynamic elem = First;
 
             return elem.Eval(null, env).Eval(Rest, env);
-
-            /*if (First is LispSymbol)
-            {
-                elem = First.Eval(null, env);
-            }
-            
-            if (isFunction(elem))
-            {
-                return elem.Eval(null, env).Eval(Rest, env);
-            }
-            else
-            {
-                return elem.Eval(Rest, env);
-            }*/
         }
 
         private dynamic getParams(dynamic elem)
@@ -92,14 +78,6 @@ namespace LispInterpreter
             list = new List<dynamic>();
         }
 
-        public IEnumerator<dynamic> Enumerator
-        {
-            get
-            {
-                return list.GetEnumerator();
-            }
-        }
-
         public override string ToString()
         {
             if (First is LispQuote)
@@ -107,7 +85,7 @@ namespace LispInterpreter
                 return "'" + Rest.First.ToString();
             }
             StringBuilder str = new StringBuilder("(");
-            var elem = Enumerator;
+            var elem = GetEnumerator();
 
             bool first = true;
             while (elem.MoveNext())
@@ -135,5 +113,24 @@ namespace LispInterpreter
                 return list[index];
             }
         }
+        /*
+        public List<object>.Enumerator GetEnumerator()
+        {
+            return list.GetEnumerator();
+        }*/
+
+        public IEnumerator<object> GetEnumerator()
+        {
+            return list.GetEnumerator();
+        }
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return list.GetEnumerator();
+        }
+
+        #endregion
     }
 }

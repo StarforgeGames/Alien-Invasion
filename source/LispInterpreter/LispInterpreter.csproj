@@ -85,6 +85,7 @@
     <Compile Include="BuiltIns\Base.cs" />
     <Compile Include="LispBuiltInFunction.cs" />
     <Compile Include="Interpreter.cs" />
+    <Compile Include="LispDouble.cs" />
     <Compile Include="LispElement.cs" />
     <Compile Include="LispEnvironment.cs" />
     <Compile Include="LispFloat.cs" />
