@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using LispInterpreter;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace Graphics.Loaders.Mesh
 {
@@ -50,14 +51,11 @@ namespace Graphics.Loaders.Mesh
         private static byte[] parse32Float(LispList args, LispEnvironment env, int count)
         {
             byte[] result = new byte[count * 4];
+            var writer = new BinaryWriter(new MemoryStream(result));
 
-            int i = 0;
             foreach (LispElement arg in args)
             {
-                byte[] data = BitConverter.GetBytes((float)arg.Eval(null, env).Value);
-
-                Array.Copy(data, 0, result, i * 4, 4);
-                i++;
+                writer.Write((float)arg.Eval(null, env).Value);
             }
             
             return result;

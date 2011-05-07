@@ -11,6 +11,8 @@ using Graphics.Loaders;
 using ResourceManagement.Loaders;
 using SpaceInvaders.Controls;
 using SpaceInvaders.Input;
+using Graphics.Loaders.Mesh;
+using Graphics.Loaders.Material;
 
 namespace SpaceInvaders.Views
 {

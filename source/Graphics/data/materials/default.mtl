@@ -1,16 +1,4 @@
-﻿(label g (lambda (a) (+ a 1)) 2)
-((lambda (a) (+ a 1)) 2)
-
-(+ 1 2 3 4 5)
-
-
-
-((objTest) Get 2)
-
-(label g (lambda (a) (+ a 1)) 2)
-((lambda (a) (+ a 1)) 2)
-
-(material
+﻿(material
 	(effect "SimplePassThrough")
 	(texture "tex2d" "name")
 	(animation "binding" "name")

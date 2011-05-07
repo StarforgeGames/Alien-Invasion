@@ -11,9 +11,8 @@ using ResourceManagement.Resources;
 using Graphics.Resources;
 using SlimDX.DXGI;
 using LispInterpreter;
-using Graphics.Loaders.Mesh;
 
-namespace Graphics.Loaders
+namespace Graphics.Loaders.Mesh
 {
     public class MeshLoader : ARendererLoader<MeshResource, bool>, IFileLoader
     {

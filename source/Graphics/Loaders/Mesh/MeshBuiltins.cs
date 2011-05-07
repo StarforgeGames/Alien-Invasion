@@ -6,6 +6,7 @@ using LispInterpreter;
 using SlimDX.Direct3D10;
 using Graphics.Resources;
 using SlimDX;
+using System.IO;
 
 namespace Graphics.Loaders.Mesh
 {
@@ -63,23 +64,31 @@ namespace Graphics.Loaders.Mesh
 
             env.Add(new LispSymbol("vertexSize"), new LispInteger(resource.elementSize));
 
-            resource.stream = new SlimDX.DataStream(resource.elementSize * resource.elementCount, false, true);
-            
-            foreach (LispElement arg in args.Skip(2))
+            using (var stream = new MemoryStream())
             {
-                dynamic vertices = arg.Eval(null, env);
-                if (vertices is LispList)
+                int elementCount = 0;
+                foreach (LispElement arg in args.Skip(2))
                 {
-                    foreach (var vertex in vertices)
+                    dynamic vertices = arg.Eval(null, env);
+                    if (vertices is LispList)
                     {
-                        writeVertexToStream(vertex, resource.stream);
+                        foreach (var vertex in vertices)
+                        {
+                            writeVertexToStream(vertex, stream);
+                            elementCount++;
+                        }
                     }
+                    else
+                    {
+                        writeVertexToStream(vertices, stream);
+                        elementCount++;
+                    }
+
                 }
-                else
-                {
-                    writeVertexToStream(vertices, resource.stream);
-                }
-                
+                resource.elementCount = elementCount;
+
+                resource.stream = new SlimDX.DataStream(resource.elementSize * resource.elementCount, false, true);
+                stream.WriteTo(resource.stream);
             }
 
             resource.stream.Position = 0;
@@ -87,7 +96,7 @@ namespace Graphics.Loaders.Mesh
             return resource;
         }
 
-        static private void writeVertexToStream(dynamic vertex, DataStream stream)
+        static private void writeVertexToStream(dynamic vertex, Stream stream)
         {
             foreach (byte[] element in vertex)
             {
