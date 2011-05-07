@@ -9,211 +9,222 @@ namespace LispInterpreter
 {
     class Parser
     {
-        public dynamic parse(Stream stream)
+        public List<LispElement> parse(Stream stream)
         {
-
-            throw new NotImplementedException();
-            //return parse(new StreamReader(stream).ReadToEnd().ToCharArray().AsEnumerable().GetEnumerator());
-            //new StreamReader(stream).Read()
-            //throw new NotImplementedException();
+            var reader = new StreamReader(stream);
+            var expressions = new List<LispElement>();
+            
+            while (!reader.EndOfStream)
+            {
+                LispElement expression = parseExpression(reader);
+                expressions.Add(expression);
+            }
+            return expressions;
         }
 
-        public dynamic parse(IEnumerator<char> e)
+        private LispElement parseExpression(StreamReader reader)
         {
-            dynamic result = null;
-            bool preventShift = false;
+            skipWhitespaces(reader);
 
-            while (true)
+            if (reader.EndOfStream)
             {
-                if (!preventShift)
-                {
-                    if (!e.MoveNext())
-                    {
-                        break;
-                    }
-                }
-                preventShift = false;
+                throw new NotSupportedException("Tried to parse Expression at the end of the stream");
+            }
+            char c = (char)reader.Peek();
 
-                char c = e.Current;
-                if (char.IsNumber(c))
+            switch (c)
+            {
+                case '"':
+                    return parseString(reader);
+                case '\'':
+                    return parseQuote(reader);
+                case '(':
+                    return parseList(reader);
+                default:
+                    if (char.IsNumber(c))
+                    {
+                        return parseNumber(reader);
+                    }
+                    else
+                    {
+                        return parseSymbol(reader);
+                    }
+            }
+        }
+
+        private LispList parseList(StreamReader reader)
+        {
+            reader.Read();
+
+            skipWhitespaces(reader);
+            var list = new LispList();
+
+            while (!reader.EndOfStream)
+            {
+                char c = (char)reader.Peek();
+
+                if (c == ')')
                 {
-                    result = parseNumber(e);
-                    preventShift = true;
+                    reader.Read();
+                    return list;
                 }
-                else if (c == '"')
-                    result = parseText(e);
-                else if (c == '\'')
-                    result = parseQuote(e);
-                else if (c == '(')
-                    result = parseList(e);
-                else if (char.IsWhiteSpace(c))
-                    continue;
                 else
                 {
-                    result = parseSymbol(e);
-                    preventShift = true;
+                    dynamic expression = parseExpression(reader);
+                    list.Add(expression);
                 }
-                break;
+
+                skipWhitespaces(reader);
             }
-            return result;
+
+            throw new NotImplementedException("Missing closing brace!");
         }
 
-        private LispSymbol parseSymbol(IEnumerator<char> e)
+        private LispSymbol parseSymbol(StreamReader reader)
         {
             StringBuilder temp = new StringBuilder();
-            do
+            while(!reader.EndOfStream)
             {
-                char c = e.Current;
-                if (!char.IsWhiteSpace(c) && (c != '(') && (c != '.') && (c != '\'') && (c != ')'))
+                char c = (char)reader.Peek();
+                if (!char.IsWhiteSpace(c) && (c != '"')  && (c != '(') && (c != '.') && (c != '\'') && (c != ')'))
                 {
+                    reader.Read();
                     temp.Append(c);
                 }
                 else
                 {
                     break;
                 }
-            } while (e.MoveNext());
+            }
 
             return new LispSymbol(temp.ToString());
         }
 
-        private LispList parseList(IEnumerator<char> e)
+        private LispElement parseNumber(StreamReader reader)
         {
-            LispList l = new LispList();
-            bool preventShift = false;
+            StringBuilder temp = new StringBuilder();
 
-            while (true)
+            do
             {
-                if (!preventShift)
+                if (reader.EndOfStream)
                 {
-                    if (!e.MoveNext())
+                    if (temp.Length == 0)
                     {
-                        break;
+                        throw new NotSupportedException("Tried to parse a number without any digits!");
+                    }
+                    else
+                    {
+                        int value = int.Parse(temp.ToString());
+                        return new LispInteger(value);
                     }
                 }
-                preventShift = false;
 
-                dynamic elem;
+                char c = (char)reader.Peek();
 
-                char c = e.Current;
                 if (char.IsNumber(c))
                 {
-                    elem = parseNumber(e);
-                    preventShift = true;
+                    temp.Append(c);
+                    reader.Read();
                 }
-                else if (c == '"')
-                    elem = parseText(e);
-                else if (c == '\'')
-                    elem = parseQuote(e);
-                else if (c == '(')
-                    elem = parseList(e);
-                else if (char.IsWhiteSpace(c))
-                    continue;
-                else if (c == ')')
+                else if (c == 'f')
                 {
-                    elem = null;
+                    reader.Read();
+                                
+                    float value = float.Parse(temp.ToString(), NumberFormatInfo.InvariantInfo);
+                    return new LispFloat(value);
+                }
+                else if (c == '.')
+                {
+                    temp.Append('.');
+                    reader.Read();
                     break;
                 }
                 else
                 {
-                    elem = parseSymbol(e);
-                    preventShift = true;
+                    int value = int.Parse(temp.ToString());
+                    return new LispInteger(value);
                 }
-                l.Add(elem);
-            }
+                
+            } while (true);
 
-            return l;
+            do
+            {
+                if (reader.EndOfStream)
+                {
+                    double value = double.Parse(temp.ToString(), NumberFormatInfo.InvariantInfo);
+                    return new LispDouble(value);
+                }
+                char c = (char)reader.Peek();
+
+                if (char.IsNumber(c))
+                {
+                    temp.Append(c);
+                    reader.Read();
+                }
+                else if (c == 'f')
+                {
+                    reader.Read();
+
+                    float value = float.Parse(temp.ToString(), NumberFormatInfo.InvariantInfo);
+                    return new LispFloat(value);
+                }
+                else
+                {
+                    break;
+                }
+            } while (true);
+
+            throw new NotImplementedException("There is something seriously wrong with number parsing!");
         }
 
-        private LispList parseQuote(IEnumerator<char> e)
+        private LispList parseQuote(StreamReader reader)
         {
+            reader.Read();
+
             var list = new LispList();
 
             list.Add(new LispSymbol("quote"));
-            list.Add(parse(e));
+            list.Add(parseExpression(reader));
 
             return list;
         }
 
-        private LispString parseText(IEnumerator<char> e)
+        private LispString parseString(StreamReader reader)
         {
-            StringBuilder temp = new StringBuilder();
-            while (e.MoveNext())
+            reader.Read();
+
+            var text = new StringBuilder();
+            
+            while (!reader.EndOfStream)
             {
-                if (e.Current == '"')
+                char c = (char)reader.Peek();
+                if (c == '"')
                 {
-                    break;
+                    reader.Read();
+                    return new LispString(text.ToString());
                 }
                 else
                 {
-                    temp.Append(e.Current);
+                    reader.Read();
+                    text.Append(c);
                 }
             }
-            return new LispString(temp.ToString());
+            throw new NotSupportedException("File ended while trying to parse string. Closing doublequotes might be missing!");
         }
 
-        private dynamic parseNumber(IEnumerator<char> e)
+        private void skipWhitespaces(StreamReader reader)
         {
-            StringBuilder temp = new StringBuilder();
-            bool isInteger = true;
-            bool isFloat = false;
-
-            do
+            while (!reader.EndOfStream)
             {
-                if (char.IsNumber(e.Current))
+                char c = (char)reader.Peek();
+                if (char.IsWhiteSpace(c))
                 {
-                    temp.Append(e.Current);
-                }
-                else if (e.Current == 'f')
-                {
-                    temp.Append(e.Current);
-                    isInteger = false;
-                    isFloat = true;
-                    break;
-                }
-                else if (e.Current == '.')
-                {
-                    temp.Append('.');
-                    isInteger = false;
+                    reader.Read();
                 }
                 else
                 {
-                    break;
+                    return;
                 }
-            } while (e.MoveNext() && isInteger);
-
-            do
-            {
-                if (char.IsNumber(e.Current))
-                {
-                    temp.Append(e.Current);
-                }
-                else if (e.Current == 'f')
-                {
-                    isFloat = true;
-                    e.MoveNext();
-                    break;
-                }
-                else
-                {
-                    break;
-                }
-            } while (e.MoveNext());
-
-            if (isInteger)
-            {
-                int value = int.Parse(temp.ToString());
-
-                return new LispInteger(value);
-            }
-            else if (isFloat)
-            {
-                float value = float.Parse(temp.ToString(), new NumberFormatInfo());
-                return new LispFloat(value);
-            } else
-            {
-                double value = double.Parse(temp.ToString(), new NumberFormatInfo());
-                return new LispDouble(value);
             }
         }
     }

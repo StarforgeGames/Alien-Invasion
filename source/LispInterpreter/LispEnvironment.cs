@@ -10,11 +10,16 @@ namespace LispInterpreter
     {
         Dictionary<LispSymbol, dynamic> env
             = new Dictionary<LispSymbol, dynamic>();
-        LispEnvironment parent;
 
-        public LispEnvironment(LispEnvironment parent)
+        internal LispEnvironment Parent
         {
-            this.parent = parent;
+            get;
+            set;
+        }
+
+        internal LispEnvironment(LispEnvironment parent)
+        {
+            Parent = parent;
         }
 
         public void Add(LispSymbol symbol, LispElement element)
@@ -38,9 +43,9 @@ namespace LispInterpreter
             {
                 return env[symbol];
             }
-            else if (parent != null)
+            else if (Parent != null)
             {
-                return parent.Lookup(symbol);
+                return Parent.Lookup(symbol);
             }
             else
             {

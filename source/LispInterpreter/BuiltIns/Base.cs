@@ -95,5 +95,15 @@ namespace LispInterpreter.BuiltIns
         {
             return new LispObject("hallo welt".ToCharArray());
         }
+
+        static public dynamic seq(LispList args, LispEnvironment env)
+        {
+            dynamic result = null;
+            foreach (dynamic arg in args)
+            {
+                result = arg.Eval(null, env);
+            }
+            return result;
+        }
     }
 }

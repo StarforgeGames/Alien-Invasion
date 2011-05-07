@@ -36,9 +36,8 @@ namespace Graphics.Loaders
         {
             using (var file = File.Open(converter.getFilenameFrom(name), FileMode.Open))
             {
-                interpreter.ResetGlobal();
-
-                MeshResource resource = interpreter.Eval(file);
+                var globalEnvironment = interpreter.createEnvironment();
+                MeshResource resource = interpreter.Eval(file, globalEnvironment);
                 data = false;
                 return resource;
             }
