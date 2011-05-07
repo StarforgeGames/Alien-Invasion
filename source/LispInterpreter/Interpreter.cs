@@ -13,41 +13,30 @@ namespace LispInterpreter
 {
     public class Interpreter
     {
-        LispEnvironment global;
         LispEnvironment builtIn = new LispEnvironment(null);
         Parser parser = new Parser();
-
-        public LispEnvironment BuiltIn
-        {
-            get { return builtIn; }
-        }
-
-        public LispEnvironment Global
-        {
-            get { return global; }
-        }
-
+        
         public Interpreter()
         {
             Load(typeof(Base));
-            global = new LispEnvironment(builtIn);
         }
 
-        public dynamic Eval(Stream stream)
+        public dynamic Eval(Stream stream, LispEnvironment global)
         {
-            return Eval(new StreamReader(stream).ReadToEnd().ToCharArray());
+            global.Parent = builtIn;
+            var expressions = parser.parse(stream);
+            dynamic result = null;
+            foreach (LispElement expression in expressions)
+            {
+                result = expression.Eval(null, global);
+            }
+            global.Parent = null;
+            return result;
         }
 
-        public dynamic Eval(char[] code)
+        public LispEnvironment createEnvironment()
         {
-            dynamic elem = parser.parse(code.AsEnumerable().GetEnumerator());
-            string str = elem.ToString();
-            return elem.Eval(null, Global);
-        }
-
-        public void ResetGlobal()
-        {
-            global = new LispEnvironment(builtIn);
+            return new LispEnvironment(builtIn);
         }
 
         public void Load(Type builtIns)

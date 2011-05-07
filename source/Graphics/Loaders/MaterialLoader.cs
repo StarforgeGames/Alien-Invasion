@@ -33,9 +33,9 @@ namespace Graphics.Loaders
         protected override AResource doLoad(string name)
         {
             // not implemented yet:
-            string text = File.ReadAllText(converter.getFilenameFrom("default"));
+            //string text = File.ReadAllText(converter.getFilenameFrom("default"));
             
-            dynamic result = inter.Eval(text.ToCharArray());
+            //dynamic result = inter.Eval(text.ToCharArray());
             // currently dummy code since true loading is not implemented yet.
             MaterialResource res = new MaterialResource(
                 effectHandle: manager.GetResource("default", "effect"),
