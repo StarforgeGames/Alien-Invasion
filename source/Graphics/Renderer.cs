@@ -367,7 +367,7 @@ namespace Graphics
                                         }
 
                                         pass.Apply();
-                                        device.DrawInstanced(4, curInstanceCount, 0, 0);
+                                        device.DrawInstanced(mesh.elementCount, curInstanceCount, 0, 0);
                                     }
 
                                 }

@@ -9,7 +9,7 @@ using System.IO;
 using Graphics.Resources;
 using LispInterpreter;
 
-namespace Graphics.Loaders
+namespace Graphics.Loaders.Material
 {
     public class MaterialLoader : ABasicLoader, IFileLoader
     {
@@ -27,15 +27,17 @@ namespace Graphics.Loaders
         public MaterialLoader(ResourceManager manager)
         {
             this.manager = manager;
-            
+            inter.Load(typeof(MaterialBuiltins));
         }
 
         protected override AResource doLoad(string name)
         {
-            // not implemented yet:
-            //string text = File.ReadAllText(converter.getFilenameFrom("default"));
-            
-            //dynamic result = inter.Eval(text.ToCharArray());
+            /*using (var file = File.Open(converter.getFilenameFrom(name), FileMode.Open))
+            {
+                var globalEnvironment = inter.createEnvironment();
+                dynamic result = inter.Eval(file, globalEnvironment);
+            }*/
+
             // currently dummy code since true loading is not implemented yet.
             MaterialResource res = new MaterialResource(
                 effectHandle: manager.GetResource("default", "effect"),
