@@ -7,6 +7,6 @@ namespace LispInterpreter
 {
     public interface LispElement
     {
-        dynamic Eval(dynamic e, LispEnvironment env);
+        dynamic Eval(LispEnvironment env, dynamic e = null);
     }
 }

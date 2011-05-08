@@ -14,7 +14,7 @@ namespace Graphics.Loaders.Mesh
     {
         static public dynamic topology(LispList args, LispEnvironment env)
         {
-            return Enum.Parse(typeof(PrimitiveTopology), args.First.Eval(null, env).Value, true);
+            return Enum.Parse(typeof(PrimitiveTopology), args.First.Eval(env).Value, true);
         }
 
         static public dynamic layout(LispList args, LispEnvironment env)
@@ -26,7 +26,7 @@ namespace Graphics.Loaders.Mesh
             int i = 0;
             foreach (LispElement arg in args)
             {
-                InputElement current = arg.Eval(null, env);
+                InputElement current = arg.Eval(env);
 
                 current.AlignedByteOffset = accum;
 
@@ -41,8 +41,8 @@ namespace Graphics.Loaders.Mesh
 
         static public dynamic element(LispList args, LispEnvironment env)
         {
-            LispSymbol name = args[0].Eval(null, env);
-            LispString format = args[1].Eval(null, env);
+            LispSymbol name = args[0].Eval(env);
+            LispString format = args[1].Eval(env);
             
             env.Add(name, VertexFormats.getParserFor(format.Value));
 
@@ -51,8 +51,8 @@ namespace Graphics.Loaders.Mesh
 
         static public dynamic mesh(LispList args, LispEnvironment env)
         {
-            var topology = args[0].Eval(null, env);
-            var layout = args[1].Eval(null, env);
+            var topology = args[0].Eval(env);
+            var layout = args[1].Eval(env);
 
             var resource = new MeshResource();
 
@@ -69,7 +69,7 @@ namespace Graphics.Loaders.Mesh
                 int elementCount = 0;
                 foreach (LispElement arg in args.Skip(2))
                 {
-                    dynamic vertices = arg.Eval(null, env);
+                    dynamic vertices = arg.Eval(env);
                     if (vertices is LispList)
                     {
                         foreach (var vertex in vertices)
@@ -109,7 +109,7 @@ namespace Graphics.Loaders.Mesh
             LinkedList<byte[]> bytes = new LinkedList<byte[]>();
             foreach (LispElement arg in args)
             {
-                bytes.AddLast(arg.Eval(null, env));
+                bytes.AddLast(arg.Eval(env));
             }
             return bytes;
         }

@@ -22,14 +22,14 @@ namespace LispInterpreter
             this.objType = obj.GetType();
         }
 
-        public dynamic Eval(dynamic e, LispEnvironment env)
+        public dynamic Eval(LispEnvironment env, dynamic e = null)
         {
             dynamic[] args = (dynamic[])e.Elems;
 
             if (args.Any())
             {
                 var par = (from p in args.Skip(1)
-                           select p.Eval(null, env));
+                           select p.Eval(env));
 
                 object[] methParams = unmarshal(par);
                 Type[] paramTypes = (from mParam in methParams
