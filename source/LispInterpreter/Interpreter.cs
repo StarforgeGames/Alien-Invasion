@@ -41,38 +41,7 @@ namespace LispInterpreter
 
         public void Load(params Type[] builtIns)
         {
-            ParameterExpression localEnv = Expression.Parameter(typeof(LispEnvironment), "env");
-            ParameterExpression args = Expression.Parameter(typeof(LispList), "args");
-
-            foreach (var builtIn in builtIns)
-            {
-                var methodInfos = builtIn.GetMethods();
-                foreach (var methodInfo in methodInfos)
-                {
-                    if (methodInfo.IsStatic)
-                    {
-
-                        var method = Expression.Call(methodInfo, args, localEnv);
-
-                        var lambda = Expression.Lambda<Func<LispList, LispEnvironment, dynamic>>(method, args, localEnv);
-
-                        var cLambda = lambda.Compile();
-
-                        if (methodInfo.GetCustomAttributes(typeof(AliasAttribute), false).Any())
-                        {
-                            foreach (var attribute in methodInfo.GetCustomAttributes(typeof(AliasAttribute), false))
-                            {
-                                AliasAttribute attr = (AliasAttribute)attribute;
-                                builtInFunctions.Add(new LispSymbol(attr.Alias), cLambda, builtIn.Name + "." + methodInfo.Name);
-                            }
-                        }
-                        else
-                        {
-                            builtInFunctions.Add(new LispSymbol(methodInfo.Name), cLambda, builtIn.Name + "." + methodInfo.Name);
-                        }
-                    }
-                }   
-            }
+            builtInFunctions.Load(builtIns);
         }
     }
 }

@@ -1,20 +1,22 @@
 ﻿(material
 	(technique "tech1"
-		(pass
+		(pass "p1"
 			(effect "SimplePassThrough")
-			(texture "tex2d" "name")
-			(animation "binding" "name")
-			(matrix "blub" 
-				1.0 1.0 1.0
-				1.0 1.0 1.0
-				1.0 1.0 1.0
+			(constants
+				(texture "tex2d" "name")
+				(animation "binding" "name")
+				(matrix3x3 "blub" 
+					1.0 1.0 1.0
+					1.0 1.0 1.0
+					1.0 1.0 1.0
+				)
 			)
 			(frame-data
-				(matrix "shaderbinding" "programvariable")
-				(float "shaderbinding" "programvariable")
+				(bind "shaderbinding" "programvariable" "matrix")
+				(bind "shaderbinding" "float" "programvariable")
 			)
 			(instance-data
-				(integer "shaderbinding" "programvariable")
+				(bind "int" "shaderbinding" "programvariable")
 			)
 		)
 	)
