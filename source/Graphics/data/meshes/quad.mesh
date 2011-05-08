@@ -6,19 +6,19 @@
 	)
 
 	(vertex
-		(POSITION 0.0f 1.0f 0.5f 1.0f)
-		(TEXCOORD  0.0f 0.0f)
+		(POSITION 0.0f 1.0f 0.5f 1.0f) ; test
+		(TEXCOORD 0.0f 0.0f)
 	)
 	(vertex
 		(POSITION 1.0f 1.0f 0.5f 1.0f)
-		(TEXCOORD  1.0f 0.0f)
+		(TEXCOORD 1.0f 0.0f)
 	)
 	(vertex
 		(POSITION 0.0f 0.0f 0.5f 1.0f)
-		(TEXCOORD  0.0f 1.0f)
+		(TEXCOORD 0.0f 1.0f)
 	)
 	(vertex
 		(POSITION 1.0f 0.0f 0.5f 1.0f)
-		(TEXCOORD  1.0f 1.0f)
+		(TEXCOORD 1.0f 1.0f)
 	)
 )
