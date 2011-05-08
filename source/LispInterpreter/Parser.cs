@@ -221,6 +221,10 @@ namespace LispInterpreter
                 {
                     reader.Read();
                 }
+                else if (c == ';')
+                {
+                    reader.ReadLine();
+                }
                 else
                 {
                     return;
