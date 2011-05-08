@@ -7,7 +7,7 @@ namespace LispInterpreter
 {
     struct LispQuote : LispElement
     {
-        public dynamic Eval(dynamic e, LispEnvironment env)
+        public dynamic Eval(LispEnvironment env, dynamic e = null)
         {
             if (e == null)
             {

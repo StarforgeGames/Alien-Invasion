@@ -19,7 +19,7 @@ namespace LispInterpreter
             this.p = p;
         }
 
-        public dynamic Eval(dynamic e, LispEnvironment env)
+        public dynamic Eval(LispEnvironment env, dynamic e = null)
         {
             return this;
         }

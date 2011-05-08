@@ -7,7 +7,7 @@ namespace LispInterpreter
 {
     class LispNil : LispElement
     {
-        public dynamic Eval(dynamic e, LispEnvironment env)
+        public dynamic Eval(LispEnvironment env, dynamic e = null)
         {
             return this;
         }

@@ -55,7 +55,7 @@ namespace Graphics.Loaders.Mesh
 
             foreach (LispElement arg in args)
             {
-                writer.Write((float)arg.Eval(null, env).Value);
+                writer.Write((float)arg.Eval(env).Value);
             }
             
             return result;

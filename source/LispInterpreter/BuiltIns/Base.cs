@@ -9,12 +9,12 @@ namespace LispInterpreter.BuiltIns
     {
         static public dynamic first(LispList args, LispEnvironment env)
         {
-            return args[0].Eval(null, env).First;
+            return args[0].Eval(env).First;
         }
 
         static public dynamic rest(LispList args, LispEnvironment env)
         {
-            return args[0].Eval(null, env).Rest;
+            return args[0].Eval(env).Rest;
         }
 
         static public dynamic quote(LispList args, LispEnvironment env)
@@ -41,11 +41,11 @@ namespace LispInterpreter.BuiltIns
         [Alias("+")]
         static public dynamic add(LispList args, LispEnvironment env)
         {
-            var accum = args.First.Eval(null, env);
+            var accum = args.First.Eval(env);
 
             foreach (var elem in args.Elems.Skip(1))
             {
-                accum += elem.Eval(null, env);
+                accum += elem.Eval(env);
             }
             return accum;
         }
@@ -53,11 +53,11 @@ namespace LispInterpreter.BuiltIns
         [Alias("-")]
         static public dynamic sub(LispList args, LispEnvironment env)
         {
-            var accum = args.First.Eval(null, env);
+            var accum = args.First.Eval(env);
 
             foreach (var elem in args.Elems.Skip(1))
             {
-                accum -= elem.Eval(null, env);
+                accum -= elem.Eval(env);
             }
             return accum;
         }
@@ -65,11 +65,11 @@ namespace LispInterpreter.BuiltIns
         [Alias("*")]
         static public dynamic mul(LispList args, LispEnvironment env)
         {
-            var accum = args.First.Eval(null, env);
+            var accum = args.First.Eval(env);
 
             foreach (var elem in args.Elems.Skip(1))
             {
-                accum *= elem.Eval(null, env);
+                accum *= elem.Eval(env);
             }
             return accum;
         }
@@ -77,18 +77,18 @@ namespace LispInterpreter.BuiltIns
         [Alias("/")]
         static public dynamic div(LispList args, LispEnvironment env)
         {
-            var accum = args.First.Eval(null, env);
+            var accum = args.First.Eval(env);
 
             foreach (var elem in args.Elems.Skip(1))
             {
-                accum /= elem.Eval(null, env);
+                accum /= elem.Eval(env);
             }
             return accum;
         }
 
         static public dynamic eval(LispList args, LispEnvironment env)
         {
-            return args[0].Eval(null, env).Eval(null, env);
+            return args[0].Eval(env).Eval(env);
         }
 
         static public dynamic objTest(LispList args, LispEnvironment env)
@@ -101,7 +101,7 @@ namespace LispInterpreter.BuiltIns
             dynamic result = null;
             foreach (dynamic arg in args)
             {
-                result = arg.Eval(null, env);
+                result = arg.Eval(env);
             }
             return result;
         }

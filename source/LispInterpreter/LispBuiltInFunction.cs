@@ -16,7 +16,7 @@ namespace LispInterpreter
             this.func = func;
         }
 
-        public dynamic Eval(dynamic args, LispEnvironment env)
+        public dynamic Eval(LispEnvironment env, dynamic args = null)
         {
             return func(args, env);
         }

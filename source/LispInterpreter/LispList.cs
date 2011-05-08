@@ -22,11 +22,11 @@ namespace LispInterpreter
             }
         }
 
-        public dynamic Eval(dynamic e, LispEnvironment env)
+        public dynamic Eval(LispEnvironment env, dynamic e = null)
         {
             dynamic elem = First;
 
-            return elem.Eval(null, env).Eval(Rest, env);
+            return elem.Eval(env).Eval(env, Rest);
         }
 
         private dynamic getParams(dynamic elem)

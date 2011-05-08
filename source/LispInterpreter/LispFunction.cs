@@ -26,7 +26,7 @@ namespace LispInterpreter
             this.funcEnv = (LispEnvironment)funcEnv.Clone();
         }
 
-        public dynamic Eval(dynamic e, LispEnvironment env)
+        public dynamic Eval(LispEnvironment env, dynamic e = null)
         {
             var val = e.Enumerator;
 
@@ -39,7 +39,7 @@ namespace LispInterpreter
             foreach (var parameter in parameters.Elems)
             {
                 val.MoveNext();
-                childEnv.Add(parameter, val.Current.Eval(null, env));
+                childEnv.Add(parameter, val.Current.Eval(env));
             }
 
             return body.Eval(null, childEnv);

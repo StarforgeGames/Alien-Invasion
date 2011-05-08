@@ -13,7 +13,7 @@ namespace LispInterpreter
 {
     public class Interpreter
     {
-        LispEnvironment builtIn = new LispEnvironment(null);
+        LispEnvironment builtInFunctions = new LispEnvironment(null);
         Parser parser = new Parser();
         
         public Interpreter()
@@ -23,12 +23,12 @@ namespace LispInterpreter
 
         public dynamic Eval(Stream stream, LispEnvironment global)
         {
-            global.Parent = builtIn;
+            global.Parent = builtInFunctions;
             var expressions = parser.parse(stream);
             dynamic result = null;
             foreach (LispElement expression in expressions)
             {
-                result = expression.Eval(null, global);
+                result = expression.Eval(global);
             }
             global.Parent = null;
             return result;
@@ -36,41 +36,43 @@ namespace LispInterpreter
 
         public LispEnvironment createEnvironment()
         {
-            return new LispEnvironment(builtIn);
+            return new LispEnvironment(builtInFunctions);
         }
 
-        public void Load(Type builtIns)
+        public void Load(params Type[] builtIns)
         {
             ParameterExpression localEnv = Expression.Parameter(typeof(LispEnvironment), "env");
             ParameterExpression args = Expression.Parameter(typeof(LispList), "args");
 
-            var methodInfos = builtIns.GetMethods();//BindingFlags.Static);
-            foreach (var methodInfo in methodInfos)
+            foreach (var builtIn in builtIns)
             {
-                if (methodInfo.IsStatic)
+                var methodInfos = builtIn.GetMethods();
+                foreach (var methodInfo in methodInfos)
                 {
-                    
-                    var method = Expression.Call(methodInfo, args, localEnv);
-
-                    var lambda = Expression.Lambda<Func<LispList, LispEnvironment, dynamic>>(method, args, localEnv);
-
-                    var cLambda = lambda.Compile();
-
-                    if (methodInfo.GetCustomAttributes(typeof(AliasAttribute), false).Any())
+                    if (methodInfo.IsStatic)
                     {
-                        foreach (var attribute in methodInfo.GetCustomAttributes(typeof(AliasAttribute), false))
+
+                        var method = Expression.Call(methodInfo, args, localEnv);
+
+                        var lambda = Expression.Lambda<Func<LispList, LispEnvironment, dynamic>>(method, args, localEnv);
+
+                        var cLambda = lambda.Compile();
+
+                        if (methodInfo.GetCustomAttributes(typeof(AliasAttribute), false).Any())
                         {
-                            AliasAttribute attr = (AliasAttribute)attribute;
-                            builtIn.Add(new LispSymbol(attr.Alias), cLambda, builtIns.Name + "." + methodInfo.Name);
+                            foreach (var attribute in methodInfo.GetCustomAttributes(typeof(AliasAttribute), false))
+                            {
+                                AliasAttribute attr = (AliasAttribute)attribute;
+                                builtInFunctions.Add(new LispSymbol(attr.Alias), cLambda, builtIn.Name + "." + methodInfo.Name);
+                            }
+                        }
+                        else
+                        {
+                            builtInFunctions.Add(new LispSymbol(methodInfo.Name), cLambda, builtIn.Name + "." + methodInfo.Name);
                         }
                     }
-                    else
-                    {
-                        builtIn.Add(new LispSymbol(methodInfo.Name), cLambda, builtIns.Name + "." + methodInfo.Name);
-                    }
-                }
+                }   
             }
-
         }
     }
 }

@@ -12,13 +12,10 @@ namespace LispInterpreter
         {
             throw new NotImplementedException();
         }
-        #region LispElement Members
 
-        public dynamic Eval(dynamic e, LispEnvironment env)
+        public dynamic Eval(LispEnvironment env, dynamic e = null)
         {
             throw new NotImplementedException();
         }
-
-        #endregion
     }
 }
