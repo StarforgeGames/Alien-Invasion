@@ -40,10 +40,10 @@ namespace Graphics
         SlimDX.Direct3D10.Buffer instanceBuffer;
         private const int InstanceCount = 20;
         private static InputElement[] elem = new InputElement[] {
-            new InputElement("model", 0, Format.R32G32B32A32_Float, 0, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("model", 1, Format.R32G32B32A32_Float, 16, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("model", 2, Format.R32G32B32A32_Float, 32, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("model", 3, Format.R32G32B32A32_Float, 48, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("MODELVIEW", 0, Format.R32G32B32A32_Float, 0, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("MODELVIEW", 1, Format.R32G32B32A32_Float, 16, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("MODELVIEW", 2, Format.R32G32B32A32_Float, 32, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("MODELVIEW", 3, Format.R32G32B32A32_Float, 48, 1, InputClassification.PerInstanceData, 1),
 
         };
 
@@ -329,7 +329,7 @@ namespace Graphics
                     
                     device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(mesh.buffer, mesh.elementSize, 0));
                     device.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(instanceBuffer, 16 * 4, 0));
-
+                    
                     foreach (var matRes in obj.Value)
                     {
                         using (MaterialResource material = (MaterialResource)matRes.Key.Acquire())
@@ -338,8 +338,12 @@ namespace Graphics
                                             select mat.model;
                             Matrix[] posArray = positions.ToArray();
 
+                            for(int i = 0; i < posArray.Length; ++i)
+                            {
+                                posArray[i] = posArray[i] * objs.Camera;
+                            }
+
                             material.Apply();
-                            material.Set("viewProj", objs.Camera);
 
                             Effect effect = material.Effect;
 
@@ -367,6 +371,7 @@ namespace Graphics
                                         }
 
                                         pass.Apply();
+                                        
                                         device.DrawInstanced(mesh.elementCount, curInstanceCount, 0, 0);
                                     }
 

@@ -1,10 +1,5 @@
 Texture2D tex2D;
 
-cbuffer perFrame
-{
-	float4x4 viewProj;
-};
-
 SamplerState linearSampler
 {
     Filter = ANISOTROPIC;
@@ -12,13 +7,11 @@ SamplerState linearSampler
     AddressV = Clamp;
 };
 
-
-
 struct VS_IN
 {
 	float4 pos : POSITION;
 	float2 tex : TEXCOORD;
-	float4x4 model : model;
+	float4x4 modelView : MODELVIEW;
 };
 
 
@@ -32,7 +25,8 @@ PS_IN VS(VS_IN input)
 {
 	PS_IN output = (PS_IN)0;
 
-	output.pos = mul(mul(input.pos, input.model), viewProj);
+	output.pos = mul(input.modelView, input.pos);
+
 	output.tex = input.tex;
 	
 	return output;

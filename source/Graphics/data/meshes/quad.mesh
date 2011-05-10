@@ -1,24 +1,28 @@
 (mesh
-	(topology "TriangleStrip")
-	(layout
+	(vertextopology "TriangleStrip")
+	(vertexlayout
 		(element 'POSITION "R32G32B32A32Float")
 		(element 'TEXCOORD "R32G32Float")
 	)
-
-	(vertex
-		(POSITION 0.0f 1.0f 0.5f 1.0f) ; test
-		(TEXCOORD 0.0f 0.0f)
+	(vertexdata
+		(vertex
+			(POSITION 0.0f 1.0f 0.0f 1.0f)
+			(TEXCOORD 0.0f 0.0f)
+		)
+		(vertex
+			(POSITION 1.0f 1.0f 0.0f 1.0f)
+			(TEXCOORD 1.0f 0.0f)
+		)
+		(vertex
+			(POSITION 0.0f 0.0f 0.0f 1.0f)
+			(TEXCOORD 0.0f 1.0f)
+		)
+		(vertex
+			(POSITION 1.0f 0.0f 0.0f 1.0f)
+			(TEXCOORD 1.0f 1.0f)
+		)
 	)
-	(vertex
-		(POSITION 1.0f 1.0f 0.5f 1.0f)
-		(TEXCOORD 1.0f 0.0f)
-	)
-	(vertex
-		(POSITION 0.0f 0.0f 0.5f 1.0f)
-		(TEXCOORD 0.0f 1.0f)
-	)
-	(vertex
-		(POSITION 1.0f 0.0f 0.5f 1.0f)
-		(TEXCOORD 1.0f 1.0f)
+	(indexdata
+		(indexes 1 2 3 4)
 	)
 )

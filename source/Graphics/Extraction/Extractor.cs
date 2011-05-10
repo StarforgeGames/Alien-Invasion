@@ -51,8 +51,8 @@ namespace Graphics
             mat.M22 = dimensions.Value.Y;
             mat.M33 = 1.0f;
             mat.M44 = 1.0f;
-            mat.M14 = position.Value.X;
-            mat.M24 = position.Value.Y;
+            mat.M41 = position.Value.X;
+            mat.M42 = position.Value.Y;
 
             frontObjects.Add(
                 new RenderObject(material.Value, mesh.Value, mat));
@@ -64,8 +64,14 @@ namespace Graphics
             if (ExtractNext)
             {
                 frontObjects.Clear();
-                frontObjects.Camera = Matrix.OrthoOffCenterLH(0.0f, game.World.Width, 0.0f, game.World.Height, 0.0f,
-                    1.0f);
+                var view = Matrix.LookAtLH(
+                    new Vector3(game.World.Width/2.0f,game.World.Height/2.0f, -1.0f),
+                    new Vector3(game.World.Width / 2.0f, game.World.Height / 2.0f, 0.0f), 
+                    Vector3.UnitY);
+                
+                var projection = Matrix.OrthoLH(game.World.Width, game.World.Height, 0.0f, 1000.0f);
+
+                frontObjects.Camera = view * projection;
 
                 foreach (var GameObject in game.World.Entities)
                 {

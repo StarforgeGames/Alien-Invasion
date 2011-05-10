@@ -44,17 +44,32 @@ namespace Graphics.Loaders.Mesh
 
         protected override AResource doLoad(MeshResource res, bool data)
         {
-            res.buffer = new SlimDX.Direct3D10.Buffer(renderer.device, res.stream, new BufferDescription()
+            using (res.indexstream)
             {
-                BindFlags = BindFlags.VertexBuffer,
-                CpuAccessFlags = CpuAccessFlags.None,
-                OptionFlags = ResourceOptionFlags.None,
-                SizeInBytes = res.elementSize * res.elementCount,
-                Usage = ResourceUsage.Default
-            });
+                using (res.vertexstream)
+                {
+                    res.buffer = new SlimDX.Direct3D10.Buffer(renderer.device, res.vertexstream, new BufferDescription()
+                    {
+                        BindFlags = BindFlags.VertexBuffer,
+                        CpuAccessFlags = CpuAccessFlags.None,
+                        OptionFlags = ResourceOptionFlags.None,
+                        SizeInBytes = (int)res.vertexstream.Length,
+                        Usage = ResourceUsage.Default
+                    });
+                }
 
-            res.stream.Dispose();
-            res.stream = null;
+                if (res.indexed)
+                {
+                    res.buffer = new SlimDX.Direct3D10.Buffer(renderer.device, res.indexstream, new BufferDescription()
+                    {
+                        BindFlags = BindFlags.IndexBuffer,
+                        CpuAccessFlags = CpuAccessFlags.None,
+                        OptionFlags = ResourceOptionFlags.None,
+                        SizeInBytes = (int)res.indexstream.Length,
+                        Usage = ResourceUsage.Default
+                    });
+                }
+            }
          
             return res;
         }

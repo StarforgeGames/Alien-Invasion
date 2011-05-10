@@ -14,7 +14,12 @@ namespace Graphics.Resources
         public int elementSize;
         public int elementCount;
 
-        internal DataStream stream;
+        public bool indexed;
+
+        internal DataStream vertexstream;
+        internal DataStream indexstream;
+
+        public SlimDX.DXGI.Format indexFormat;
 
         public PrimitiveTopology primitiveTopology;
         
