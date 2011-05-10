@@ -28,17 +28,37 @@ namespace Graphics.Loaders.Material
             throw new NotImplementedException();
         }
 
+        static public dynamic textures(LispList args, LispEnvironment env)
+        {
+            throw new NotImplementedException();
+        }
+
+        static public dynamic texture(LispList args, LispEnvironment env)
+        {
+            throw new NotImplementedException();
+        }
+
         static public dynamic constants(LispList args, LispEnvironment env)
         {
             throw new NotImplementedException();
         }
 
-        static public dynamic frame(LispList args, LispEnvironment env)
+        static public dynamic framelayout(LispList args, LispEnvironment env)
         {
             throw new NotImplementedException();
         }
 
-        static public dynamic instance(LispList args, LispEnvironment env)
+        static public dynamic instancelayout(LispList args, LispEnvironment env)
+        {
+            throw new NotImplementedException();
+        }
+
+        static public dynamic framedata(LispList args, LispEnvironment env)
+        {
+            throw new NotImplementedException();
+        }
+
+        static public dynamic instancedata(LispList args, LispEnvironment env)
         {
             throw new NotImplementedException();
         }
