@@ -12,12 +12,12 @@ namespace Graphics.Loaders.Mesh
 {
     static class MeshBuiltins
     {
-        static public dynamic topology(LispList args, LispEnvironment env)
+        static public dynamic vertextopology(LispList args, LispEnvironment env)
         {
             return Enum.Parse(typeof(PrimitiveTopology), args.First.Eval(env).Value, true);
         }
 
-        static public dynamic layout(LispList args, LispEnvironment env)
+        static public dynamic vertexlayout(LispList args, LispEnvironment env)
         {
             int accum = 0;
 
@@ -49,25 +49,12 @@ namespace Graphics.Loaders.Mesh
             return new InputElement(name.Value, 0, VertexFormats.getDXFormatOf(format.Value), 0, 0);
         }
 
-        static public dynamic mesh(LispList args, LispEnvironment env)
+        static public dynamic vertexdata(LispList args, LispEnvironment env)
         {
-            var topology = args[0].Eval(env);
-            var layout = args[1].Eval(env);
-
-            var resource = new MeshResource();
-
-            resource.elementSize = layout.elementSize;
-            resource.elementCount = args.Count() - 2;
-
-            resource.inputLayout = layout.elements;
-            resource.primitiveTopology = topology;
-
-            env.Add(new LispSymbol("vertexSize"), new LispInteger(resource.elementSize));
-
             using (var stream = new MemoryStream())
             {
                 int elementCount = 0;
-                foreach (LispElement arg in args.Skip(2))
+                foreach (LispElement arg in args)
                 {
                     dynamic vertices = arg.Eval(env);
                     if (vertices is LispList)
@@ -85,16 +72,90 @@ namespace Graphics.Loaders.Mesh
                     }
 
                 }
-                resource.elementCount = elementCount;
 
-                resource.stream = new SlimDX.DataStream(resource.elementSize * resource.elementCount, false, true);
-                stream.WriteTo(resource.stream);
+                var dataStream = new SlimDX.DataStream(stream.Length, false, true);
+                stream.WriteTo(dataStream);
+                dataStream.Position = 0;
+
+                return dataStream;
             }
+        }
 
-            resource.stream.Position = 0;
+        static public dynamic indexdata(LispList args, LispEnvironment env)
+        {
+            using (var stream = new MemoryStream())
+            {
+                foreach (LispElement arg in args)
+                {
+                    dynamic indexes = arg.Eval(env);
+                    if (indexes is LispList)
+                    {
+                        foreach (var curIndexes in indexes)
+                        {
+                            stream.Write(curIndexes, 0, curIndexes.Length);
+                        }
+                    }
+                    else
+                    {
+                        stream.Write(indexes, 0, indexes.Length);
+                    }
+
+                }
+
+                var dataStream = new SlimDX.DataStream(stream.Length, false, true);
+                stream.WriteTo(dataStream);
+                dataStream.Position = 0;
+
+                return dataStream;
+            }
+        }
+
+        static public dynamic mesh(LispList args, LispEnvironment env)
+        {
+            IEnumerator<dynamic> arg = args.GetEnumerator();
+            arg.MoveNext();
+            var topology = arg.Current.Eval(env);
+            arg.MoveNext();
+            var layout = arg.Current.Eval(env);
+
+            var resource = new MeshResource();
+
+            resource.elementSize = layout.elementSize;
+
+            resource.inputLayout = layout.elements;
+            resource.primitiveTopology = topology;
+
+            env.Add(new LispSymbol("vertexSize"), new LispInteger(resource.elementSize));
+
+            arg.MoveNext();
+            resource.vertexstream = arg.Current.Eval(env);
+            resource.elementCount = (int)resource.vertexstream.Length / resource.elementSize;
+
+            if (arg.MoveNext())
+            {
+                resource.indexed = true;
+                if (resource.elementCount <= ushort.MaxValue)
+                {
+                    env.Add(new LispSymbol("indexes"), VertexFormats.R16UIntIndexes);
+                    resource.indexFormat = SlimDX.DXGI.Format.R16_UInt;
+                }
+                else
+                {
+                    env.Add(new LispSymbol("indexes"), VertexFormats.R32UIntIndexes);
+                    resource.indexFormat = SlimDX.DXGI.Format.R32_UInt;
+                }
+                resource.indexstream = arg.Current.Eval(env);
+            }
+            else
+            {
+                resource.indexed = false;
+                resource.indexFormat = SlimDX.DXGI.Format.Unknown;
+            }
 
             return resource;
         }
+
+
 
         static private void writeVertexToStream(dynamic vertex, Stream stream)
         {

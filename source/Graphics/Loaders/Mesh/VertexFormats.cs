@@ -18,6 +18,10 @@ namespace Graphics.Loaders.Mesh
                     return R32G32B32A32Float;
                 case "R32G32Float":
                     return R32G32Float;
+                case "R16UInt":
+                    return R16UInt;
+                case "R32UInt":
+                    return R32UInt;
                 default:
                     break;
             }
@@ -32,6 +36,10 @@ namespace Graphics.Loaders.Mesh
                     return SlimDX.DXGI.Format.R32G32B32A32_Float;
                 case "R32G32Float":
                     return SlimDX.DXGI.Format.R32G32_Float;
+                case "R16UInt":
+                    return SlimDX.DXGI.Format.R16_UInt;
+                case "R32UInt":
+                    return SlimDX.DXGI.Format.R32_UInt;
                 default:
                     break;
             }
@@ -51,14 +59,80 @@ namespace Graphics.Loaders.Mesh
         private static byte[] parse32Float(LispList args, LispEnvironment env, int count)
         {
             byte[] result = new byte[count * 4];
-            var writer = new BinaryWriter(new MemoryStream(result));
-
-            foreach (LispElement arg in args)
+            using (var stream = new MemoryStream(result))
+            using (var writer = new BinaryWriter(stream))
             {
-                writer.Write((float)arg.Eval(env).Value);
+                foreach (LispElement arg in args)
+                {
+                    writer.Write((float)arg.Eval(env).Value);
+                }
             }
-            
             return result;
+        }
+
+        private static byte[] parse32UInt(LispList args, LispEnvironment env, int count)
+        {
+            byte[] result = new byte[count * sizeof(uint)];
+            using (var stream = new MemoryStream(result))
+            using (var writer = new BinaryWriter(stream))
+            {
+                foreach (LispElement arg in args)
+                {
+                    writer.Write((uint)arg.Eval(env).Value);
+                }
+            }
+            return result;
+        }
+
+        private static byte[] parse16UInt(LispList args, LispEnvironment env, int count)
+        {
+            byte[] result = new byte[count * sizeof(ushort)];
+            using (var stream = new MemoryStream(result))
+            using (var writer = new BinaryWriter(stream))
+            {
+                foreach (LispElement arg in args)
+                {
+                    writer.Write((ushort)arg.Eval(env).Value);
+                }
+            }
+            return result;
+        }
+
+        public static dynamic R32UInt(LispList args, LispEnvironment env)
+        {
+
+            return parse32UInt(args, env, 1);
+        }
+
+        public static dynamic R16UInt(LispList args, LispEnvironment env)
+        {
+            return parse16UInt(args, env, 1);
+        }
+
+        public static dynamic R32UIntIndexes(LispList args, LispEnvironment env)
+        {
+            using (var stream = new MemoryStream())
+            using (var writer = new BinaryWriter(stream))
+            {
+                foreach (LispElement arg in args)
+                {
+                    writer.Write((uint)arg.Eval(env).Value);
+                }
+                return stream.ToArray();
+            }
+        }
+
+        public static dynamic R16UIntIndexes(LispList args, LispEnvironment env)
+        {
+            using (var stream = new MemoryStream())
+            using (var writer = new BinaryWriter(stream))
+            {
+                foreach (LispElement arg in args)
+                {
+                    writer.Write((ushort)arg.Eval(env).Value);
+                }
+                return stream.ToArray();
+            }
         }
 
         public static int getByteCountOf(SlimDX.DXGI.Format format)

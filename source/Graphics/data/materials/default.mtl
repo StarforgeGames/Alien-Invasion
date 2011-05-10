@@ -2,23 +2,29 @@
 	(technique "tech1"
 		(pass "p1"
 			(effect "SimplePassThrough")
-			(constants
+			(textures
 				(texture "tex2d" "name")
-				(animation "binding" "name")
+			)
+			(constants
 				(matrix3x3 "blub" 
 					1.0 1.0 1.0
 					1.0 1.0 1.0
 					1.0 1.0 1.0
 				)
 			)
-			(frame-data
-				(bind "shaderbinding" "programvariable" "matrix")
-				(bind "shaderbinding" "float" "programvariable")
+			(framelayout
+				(element 'shaderbinding "matrix")
 			)
-			(instance-data
-				(bind "int" "shaderbinding" "programvariable")
+			(framedata
+				(shaderbinding "programvariable" 'function)
+			)
+			(instancelayout
+				(element 'shaderbinding "matrix")
+				(element 'shaderbinding "R32G32B32A32Float")
+			)
+			(instancedata
+				(shaderbinding "programvariable")
 			)
 		)
 	)
 )
-(first '(3.0 2 1.0))
