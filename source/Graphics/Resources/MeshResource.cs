@@ -10,11 +10,14 @@ namespace Graphics.Resources
 {
     public class MeshResource : AResource
     {
-        public SlimDX.Direct3D10.Buffer buffer;
+        public SlimDX.Direct3D10.Buffer vertexBuffer;
+        public SlimDX.Direct3D10.Buffer indexBuffer;
+
         public int elementSize;
         public int elementCount;
 
         public bool indexed;
+        public int indexCount;
 
         internal DataStream vertexstream;
         internal DataStream indexstream;

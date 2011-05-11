@@ -145,6 +145,14 @@ namespace Graphics.Loaders.Mesh
                     resource.indexFormat = SlimDX.DXGI.Format.R32_UInt;
                 }
                 resource.indexstream = arg.Current.Eval(env);
+                if (resource.indexFormat == SlimDX.DXGI.Format.R16_UInt)
+                {
+                    resource.indexCount = (int)resource.indexstream.Length / 2;
+                }
+                else
+                {
+                    resource.indexCount = (int)resource.indexstream.Length / 4;
+                }
             }
             else
             {

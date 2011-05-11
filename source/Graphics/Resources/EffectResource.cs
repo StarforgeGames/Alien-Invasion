@@ -10,6 +10,6 @@ namespace Graphics.Resources
     public class EffectResource : AResource
     {
         public string errors;
-        public Effect effect;
+        public Effect Value;
     }
 }

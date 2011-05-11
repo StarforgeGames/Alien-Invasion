@@ -35,7 +35,7 @@ namespace Graphics.Loaders
         protected override AResource doLoad(EffectResource res, byte[] data)
         {
 
-            res.effect = Effect.FromMemory(
+            res.Value = Effect.FromMemory(
                 device: renderer.device,
                 memory: data, 
                 profile: "fx_4_0", 
@@ -50,7 +50,7 @@ namespace Graphics.Loaders
 
         protected override void doUnload(AResource resource)
         {
-            ((EffectResource)resource).effect.Dispose();
+            ((EffectResource)resource).Value.Dispose();
         }
 
         public override string Type

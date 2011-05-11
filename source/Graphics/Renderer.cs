@@ -327,8 +327,12 @@ namespace Graphics
                 {
                     device.InputAssembler.SetPrimitiveTopology(mesh.primitiveTopology);
                     
-                    device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(mesh.buffer, mesh.elementSize, 0));
+                    device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(mesh.vertexBuffer, mesh.elementSize, 0));
                     device.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(instanceBuffer, 16 * 4, 0));
+                    if (mesh.indexed)
+                    {
+                        device.InputAssembler.SetIndexBuffer(mesh.indexBuffer, mesh.indexFormat, 0);
+                    }
                     
                     foreach (var matRes in obj.Value)
                     {
@@ -343,38 +347,51 @@ namespace Graphics
                                 posArray[i] = posArray[i] * objs.Camera;
                             }
 
-                            material.Apply();
-
-                            Effect effect = material.Effect;
-
-                            EffectTechnique tech = effect.GetTechniqueByName("Full");
-                            for (int i = 0; i < tech.Description.PassCount; ++i)
+                            using (var effect = material.AcquireEffect())
+                            using (var textures = material.AcquireTextures())
                             {
-                                EffectPass pass = tech.GetPassByIndex(i);
-                                
-                                List<InputElement> elems = new List<InputElement>(mesh.inputLayout);
-                                elems.AddRange(elem);
-
-                                using (InputLayout layout = new InputLayout(device, pass.Description.Signature, elems.ToArray()))
+                                foreach (var texture in textures)
                                 {
-                                    device.InputAssembler.SetInputLayout(layout);
+                                    effect.Value.GetVariableByName(texture.Key).AsResource().SetResource(texture.Value.texture);
+                                }
+                                
 
-                                    for (int j = 0; j < posArray.Length; j += InstanceCount)
+                                EffectTechnique tech = effect.Value.GetTechniqueByName("Full");
+                                for (int i = 0; i < tech.Description.PassCount; ++i)
+                                {
+                                    EffectPass pass = tech.GetPassByIndex(i);
+                                
+                                    List<InputElement> elems = new List<InputElement>(mesh.inputLayout);
+                                    elems.AddRange(elem);
+
+                                    using (InputLayout layout = new InputLayout(device, pass.Description.Signature, elems.ToArray()))
                                     {
-                                        int curInstanceCount;
-                                        using (DataStream stream = instanceBuffer.Map(MapMode.WriteDiscard, SlimDX.Direct3D10.MapFlags.None))
-                                        {
-                                            curInstanceCount = Math.Min(InstanceCount, posArray.Length - j);
+                                        device.InputAssembler.SetInputLayout(layout);
 
-                                            stream.WriteRange<Matrix>(posArray, j, curInstanceCount);
-                                            instanceBuffer.Unmap();
+                                        for (int j = 0; j < posArray.Length; j += InstanceCount)
+                                        {
+                                            int curInstanceCount;
+                                            using (DataStream stream = instanceBuffer.Map(MapMode.WriteDiscard, SlimDX.Direct3D10.MapFlags.None))
+                                            {
+                                                curInstanceCount = Math.Min(InstanceCount, posArray.Length - j);
+
+                                                stream.WriteRange<Matrix>(posArray, j, curInstanceCount);
+                                                instanceBuffer.Unmap();
+                                            }
+
+                                            pass.Apply();
+
+                                            if (mesh.indexed)
+                                            {
+                                                device.DrawIndexedInstanced(mesh.indexCount, curInstanceCount, 0, 0, 0);
+                                            }
+                                            else
+                                            {
+                                                device.DrawInstanced(mesh.elementCount, curInstanceCount, 0, 0);
+                                            }
                                         }
 
-                                        pass.Apply();
-                                        
-                                        device.DrawInstanced(mesh.elementCount, curInstanceCount, 0, 0);
                                     }
-
                                 }
                             }
                         }
