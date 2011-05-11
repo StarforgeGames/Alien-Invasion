@@ -124,13 +124,9 @@ namespace LispInterpreter
             return list.GetEnumerator();
         }
 
-        #region IEnumerable Members
-
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return list.GetEnumerator();
         }
-
-        #endregion
     }
 }

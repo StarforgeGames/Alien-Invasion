@@ -6,49 +6,36 @@ using ResourceManagement;
 using ResourceManagement.Resources;
 using SlimDX.Direct3D10;
 using SlimDX;
+using System.Collections.ObjectModel;
 
 namespace Graphics.Resources
 {
     public class MaterialResource : AResource
     {
-        private EffectResource effect;
+        private List<KeyValuePair<string, ResourceHandle>> textures = new List<KeyValuePair<string, ResourceHandle>>();
 
-        public Effect Effect { get { return effect.effect; } }
-
-        public TextureResource texture;
+        public void AddTexture(string binding, ResourceHandle texture)
+        {
+            textures.Add(new KeyValuePair<string, ResourceHandle>(binding, texture));
+        }
         
         private ResourceHandle effectHandle;
-        
-        private ResourceHandle textureHandle;
 
-        //List<KeyValuePair<string, ResourceHandle>> shaderResourceHandles;
-        //public List<TextureResource> shaderResources;
-
-        public MaterialResource(ResourceHandle effectHandle, ResourceHandle textureHandle)
+        public MaterialResource(ResourceHandle effectHandle)
         {
             this.effectHandle = effectHandle;
-            this.textureHandle = textureHandle;
         }
 
-        public override void Acquire()
+        public EffectResource AcquireEffect()
         {
-            base.Acquire();
-            effect = (EffectResource)effectHandle.Acquire();
-            texture = (TextureResource)textureHandle.Acquire();
+            return (EffectResource)effectHandle.Acquire();
         }
 
-        public override void Dispose()
+        public ResourceList<TextureResource> AcquireTextures()
         {
-            effect.Dispose();
-            texture.Dispose();
-            base.Dispose();
+            return new ResourceList<TextureResource>(textures);
         }
-
-        public void Apply()
-        {
-            effect.effect.GetVariableByName("tex2D").AsResource().SetResource(texture.texture);
-        }
-
+        /*
         public void Set(string name, bool value)
         {
             effect.effect.GetVariableByName(name).AsScalar().Set(value);
@@ -113,5 +100,6 @@ namespace Graphics.Resources
         {
             effect.effect.GetVariableByName(name).AsVector().Set(value);
         }
+         * */
     }
 }

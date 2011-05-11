@@ -48,7 +48,7 @@ namespace Graphics.Loaders.Mesh
             {
                 using (res.vertexstream)
                 {
-                    res.buffer = new SlimDX.Direct3D10.Buffer(renderer.device, res.vertexstream, new BufferDescription()
+                    res.vertexBuffer = new SlimDX.Direct3D10.Buffer(renderer.device, res.vertexstream, new BufferDescription()
                     {
                         BindFlags = BindFlags.VertexBuffer,
                         CpuAccessFlags = CpuAccessFlags.None,
@@ -60,7 +60,7 @@ namespace Graphics.Loaders.Mesh
 
                 if (res.indexed)
                 {
-                    res.buffer = new SlimDX.Direct3D10.Buffer(renderer.device, res.indexstream, new BufferDescription()
+                    res.indexBuffer = new SlimDX.Direct3D10.Buffer(renderer.device, res.indexstream, new BufferDescription()
                     {
                         BindFlags = BindFlags.IndexBuffer,
                         CpuAccessFlags = CpuAccessFlags.None,
@@ -76,7 +76,8 @@ namespace Graphics.Loaders.Mesh
 
         protected override void doUnload(AResource resource)
         {
-            ((MeshResource)resource).buffer.Dispose();
+            ((MeshResource)resource).vertexBuffer.Dispose();
+            ((MeshResource)resource).indexBuffer.Dispose();
         }
 
         public override string Type

@@ -40,8 +40,8 @@ namespace Graphics.Loaders.Material
 
             // currently dummy code since true loading is not implemented yet.
             MaterialResource res = new MaterialResource(
-                effectHandle: manager.GetResource("default", "effect"),
-                textureHandle: manager.GetResource(name, "texture"));
+                effectHandle: manager.GetResource("default", "effect"));
+            res.AddTexture("tex2D", manager.GetResource(name, "texture"));
             return res;
         }
 
