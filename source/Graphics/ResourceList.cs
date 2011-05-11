@@ -19,7 +19,7 @@ namespace Graphics
 
         private KeyValuePair<string, T> convert(KeyValuePair<string, ResourceHandle> handle)
         {
-            return new KeyValuePair<string, T>(handle.Key, (dynamic)handle.Value.Acquire());
+            return new KeyValuePair<string, T>(handle.Key, (T)handle.Value.Acquire());
         }
 
 
