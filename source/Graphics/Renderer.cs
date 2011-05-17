@@ -38,7 +38,7 @@ namespace Graphics
         private bool stateChanged;
 
         SlimDX.Direct3D10.Buffer instanceBuffer;
-        private const int InstanceCount = 20;
+        private const int InstanceCount = 200;
         private static InputElement[] elem = new InputElement[] {
             new InputElement("MODELVIEW", 0, Format.R32G32B32A32_Float, 0, 1, InputClassification.PerInstanceData, 1),
             new InputElement("MODELVIEW", 1, Format.R32G32B32A32_Float, 16, 1, InputClassification.PerInstanceData, 1),
@@ -340,6 +340,7 @@ namespace Graphics
                         {
                             var positions = from RenderObject mat in matRes.Value
                                             select mat.model;
+                            
                             Matrix[] posArray = positions.ToArray();
 
                             for(int i = 0; i < posArray.Length; ++i)
@@ -347,6 +348,7 @@ namespace Graphics
                                 posArray[i] = posArray[i] * objs.Camera;
                             }
 
+                            
                             using (var effect = material.AcquireEffect())
                             using (var textures = material.AcquireTextures())
                             {
