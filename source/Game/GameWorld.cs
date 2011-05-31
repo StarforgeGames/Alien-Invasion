@@ -48,6 +48,10 @@ namespace Game
         {
             addNewEntities();
             destroyEntities();
+
+            foreach (Entity entity in Entities.Values) {
+                entity.Update(deltaTime);
+            }
         }
 
         private void addNewEntities()

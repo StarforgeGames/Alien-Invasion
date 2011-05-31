@@ -108,19 +108,12 @@ namespace Game
 
             if (IsRunning) {
                 World.Update(deltaTime);
-                runGame(deltaTime);
+
+                ProcessManager.Update(deltaTime);
+                CollisionManager.DetectAndResolveCollisions();
+
                 checkForVictoryConditions();
             }
-		}
-
-		private void runGame(float deltaTime)
-		{
-			foreach (Entity entity in World.Entities.Values) {
-				entity.Update(deltaTime);
-			}
-
-			ProcessManager.Update(deltaTime);
-            CollisionManager.DetectAndResolveCollisions();
 		}
 
 		private void checkForVictoryConditions()
