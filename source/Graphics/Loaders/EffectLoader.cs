@@ -34,7 +34,6 @@ namespace Graphics.Loaders
 
         protected override AResource doLoad(EffectResource res, byte[] data)
         {
-
             res.Value = Effect.FromMemory(
                 device: renderer.device,
                 memory: data, 
@@ -43,7 +42,7 @@ namespace Graphics.Loaders
                 effectFlags: EffectFlags.SingleThreaded,
                 pool: null,
                 include: null,
-                compilationErrors: out res.errors);
+                macros: null);
 
             return res;
         }
