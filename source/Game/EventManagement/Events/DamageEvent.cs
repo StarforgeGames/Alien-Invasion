@@ -12,7 +12,7 @@
         public DamageEvent(string type, int recipientID, int damage, int sourceEntityID)
             : base(type, recipientID)
         {
-            this.Damage = damage > 0 ? damage : 0;
+            this.Damage = damage > 0 ? damage : 0;  // Only positive amounts are valid
             this.SourceEntityID = sourceEntityID;
         }
 

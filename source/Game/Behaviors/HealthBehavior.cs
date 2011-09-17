@@ -2,6 +2,7 @@
 using Game.Entities;
 using Game.EventManagement.Events;
 using Game.Utility;
+using System.Collections.Generic;
 
 namespace Game.Behaviors
 {
@@ -14,7 +15,7 @@ namespace Game.Behaviors
         public const string Key_RespawnTime = "RespawnTime";
 
         private float elapsedTime;
-        private int damageTaken;
+        private List<DamageEvent> damageReceivedSinceLastUpdate = new List<DamageEvent>();
 
         public HealthBehavior(Entity entity)
             : base(entity)
@@ -35,10 +36,10 @@ namespace Game.Behaviors
 
         public override void OnUpdate(float deltaTime)
         {
-            if (damageTaken > 0) {
-                applyDamage(damageTaken);
-                damageTaken = 0;
+            foreach(DamageEvent evt in damageReceivedSinceLastUpdate) {            
+                handleDamage(evt);
             }
+            damageReceivedSinceLastUpdate.Clear();
 
             Attribute<bool> isRespawning = entity[Key_IsRespawning] as Attribute<bool>;
             if (isRespawning) {
@@ -52,14 +53,14 @@ namespace Game.Behaviors
 
         }
 
-        private void applyDamage(int damage)
+        private void handleDamage(DamageEvent evt)
         {
             if (entity.IsDead) {
                 return;
             }
 
             Attribute<int> health = entity[Key_Health] as Attribute<int>;
-            health.Value -= damage;
+            health.Value -= evt.Damage;
 
             if (health <= 0) {
                 Attribute<int> lifes = entity[Key_Lifes] as Attribute<int>;
@@ -67,16 +68,21 @@ namespace Game.Behaviors
                 entity.State = EntityState.Dead;
 
                 if (lifes <= 0) {
-                    eventManager.QueueEvent(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, entity.ID));
-                    Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type
-                        + " died a horrible death!");
+                    Entity projectile = entity.Game.World.Entities[evt.SourceEntityID];
+                    Attribute<Entity> projectileOwner = projectile[ProjectileBehavior.Key_ProjectileOwner]
+                        as Attribute<Entity>;
+
+                    eventManager.QueueEvent(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, entity.ID,
+                        projectileOwner.Value.ID));
+                    Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type + " died a horrible "
+                        + "death!");
                 }
                 else {
                     RespawnEntityEvent respawnEvent = new RespawnEntityEvent(RespawnEntityEvent.RESPAWN_ENTITY,
                         entity.ID);
                     eventManager.QueueEvent(respawnEvent);
-                    Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type
-                        + " lost a life. " + lifes + " lifes remaining. Respawning...");
+                    Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type + " lost a life. " 
+                        + lifes + " lifes remaining. Respawning...");
                 }
             }
         }
@@ -103,8 +109,9 @@ namespace Game.Behaviors
         {
             switch (evt.Type) {
                 case DamageEvent.RECEIVE_DAMAGE: {
-                    DamageEvent dmgMsg = (DamageEvent) evt;
-                    damageTaken += dmgMsg.Damage;
+                    DamageEvent msg = (DamageEvent)evt;
+                    damageReceivedSinceLastUpdate.Add(msg);
+
                     break;
                 }
                 case RespawnEntityEvent.RESPAWN_ENTITY: {

@@ -6,6 +6,7 @@
 		<CombatBehavior />
 		<CollisionBehavior />
 		<HealthBehavior />
+		<CollectsPointsBehavior />
 	</behaviors>
 	<attributes>
 		<Resource key="Material" type="material" name="player"/>

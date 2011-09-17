@@ -7,11 +7,13 @@
         public const string DESTROY_ENTITY = "destroy_entity";
 
         public int EntityID { get; private set; }
+        public int? DestroyedByEntityID { get; private set; }
 
-        public DestroyEntityEvent(string type, int entityID)
+        public DestroyEntityEvent(string type, int entityID, int? destroyedByEntityID = null)
             : base(type)
         {
             this.EntityID = entityID;
+            this.DestroyedByEntityID = destroyedByEntityID;
         }
     }
 

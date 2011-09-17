@@ -57,8 +57,8 @@ namespace Game
                     }
 
                     if (AreColliding(entity, other)) {
-                        Console.WriteLine("[" + this.GetType().Name + "] " + entity.Type + " collided with " + other.Type
-                            + "!");
+                        Console.WriteLine("[" + this.GetType().Name + "] " + entity.Type + " collided with " 
+                            + other.Type + "!");
 
                         CollisionEvent collisionMsg = new CollisionEvent(
                             CollisionEvent.ACTOR_COLLIDES,
