@@ -7,6 +7,7 @@
 		<CombatBehavior />
 		<CollisionBehavior />
 		<HealthBehavior />
+		<AwardsPointsBehavior />
 	</behaviors>
 	<attributes>
 		<Vector2D key="Dimensions">			
@@ -19,5 +20,6 @@
 		<float key="FiringSpeed">1.0</float>
 		<string key="ProjectileType">pewpew_alien</string>
 		<string key="Faction">ai</string>
+		<int key="PointsAwarded">50</int>
 	</attributes>
 </Entity>

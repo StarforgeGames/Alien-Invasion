@@ -14,7 +14,7 @@ namespace Game.Behaviors
         public ProjectileBehavior(Entity entity)
             : base(entity)
         {
-            entity.AddAttribute(Key_ProjectileOwner, new Attribute<Entity>(null));
+            entity.AddAttribute(Key_ProjectileOwner, new Attribute<int>(-1));
 
             initializeHandledEventTypes();
         }

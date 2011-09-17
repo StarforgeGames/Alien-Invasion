@@ -16,8 +16,8 @@ namespace Game
 		Loading,
 		Running,
 		Paused,
-        GameOver,
-        Victory,
+		GameOver,
+		Victory,
 		Quit
 
 	}
@@ -25,12 +25,12 @@ namespace Game
 	public class GameLogic : IEventListener
 	{
 		public GameState State { get; private set; }
-        public GameWorld World { get; private set; }
+		public GameWorld World { get; private set; }
 
 		public IEventManager EventManager { get; private set; }
 		public ProcessManager ProcessManager { get; private set; }
 		public ResourceManager ResourceManager { get; private set; }
-        public CollisionManager CollisionManager { get; private set; }
+		public CollisionManager CollisionManager { get; private set; }
 
 		public bool IsRunning { get { return State == GameState.Running; } }
 		public bool IsPaused { get { return State != GameState.Running; } }
@@ -42,9 +42,9 @@ namespace Game
 			EventManager = new SwappingEventManager(this);
 			ProcessManager = new ProcessManager();
 			ResourceManager = resourceManager;
-            CollisionManager = new CollisionManager(this);
+			CollisionManager = new CollisionManager(this);
 
-            World = new GameWorld(this, worldWidth, worldHeight);
+			World = new GameWorld(this, worldWidth, worldHeight);
 
 			registerGameEventListeners();
 		}
@@ -69,8 +69,8 @@ namespace Game
 					}
 					break;
 				case GameState.Loading:
-                    reset();
-                    initialize();
+					reset();
+					initialize();
 
 					EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
 						GameState.Running));
@@ -90,55 +90,55 @@ namespace Game
 		}
 
 		private void reset()
-        {
-            World.Reset();
-            CollisionManager.Reset();
+		{
+			World.Reset();
+			CollisionManager.Reset();
 			EventManager.Reset();
-            ProcessManager.Reset();
+			ProcessManager.Reset();
 		}
 
-        private void initialize()
-        {
-            World.Initialize();
-        }
+		private void initialize()
+		{
+			World.Initialize();
+		}
 		
 		public void Update(float deltaTime)
-        {
+		{
 			EventManager.Tick();
 
-            if (IsRunning) {
-                World.Update(deltaTime);
+			if (IsRunning) {
+				World.Update(deltaTime);
 
-                ProcessManager.Update(deltaTime);
-                CollisionManager.DetectAndResolveCollisions();
+				ProcessManager.Update(deltaTime);
+				CollisionManager.DetectAndResolveCollisions();
 
-                checkForVictoryConditions();
-            }
+				checkForVictoryConditions();
+			}
 		}
 
 		private void checkForVictoryConditions()
 		{
-            bool playerIsDead = true;
-            bool allAliensAreDead = true;
-            foreach (Entity entity in World.Entities.Values) {
-                if (allAliensAreDead && entity.Type.StartsWith("alien_")) {
-                    allAliensAreDead = false;
+			bool playerIsDead = true;
+			bool allAliensAreDead = true;
+			foreach (Entity entity in World.Entities.Values) {
+				if (allAliensAreDead && entity.Type.StartsWith("alien_")) {
+					allAliensAreDead = false;
 				}
-                else if (entity.Type == "player") {
-                    playerIsDead = false;
-                }
-            }
+				else if (entity.Type == "player") {
+					playerIsDead = false;
+				}
+			}
 
-            if (playerIsDead) {
-                GameStateChangedEvent changeState = new GameStateChangedEvent(
-                    GameStateChangedEvent.GAME_STATE_CHANGED, GameState.GameOver);
-                EventManager.QueueEvent(changeState);
-            }
-            else if(allAliensAreDead) {
-                GameStateChangedEvent changeState = new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
-                    GameState.Victory);
-                EventManager.QueueEvent(changeState);
-            }
+			if (playerIsDead) {
+				GameStateChangedEvent changeState = new GameStateChangedEvent(
+					GameStateChangedEvent.GAME_STATE_CHANGED, GameState.GameOver);
+				EventManager.QueueEvent(changeState);
+			}
+			else if(allAliensAreDead) {
+				GameStateChangedEvent changeState = new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
+					GameState.Victory);
+				EventManager.QueueEvent(changeState);
+			}
 		}		
 
 		public void OnEvent(Event evt)

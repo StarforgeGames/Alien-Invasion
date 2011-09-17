@@ -24,12 +24,10 @@ namespace Game.Behaviors
         }
 
         public override void OnUpdate(float deltaTime)
-        {
-        }
+        { }
 
         public override void OnEvent(Event evt)
-        {
-        }
+        { }
     }
 
 }

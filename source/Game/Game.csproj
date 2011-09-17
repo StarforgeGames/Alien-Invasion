@@ -83,6 +83,8 @@
   <ItemGroup>
     <Compile Include="Behaviors\AEntityBasedBehavior.cs" />
     <Compile Include="Behaviors\AiBehavior.cs" />
+    <Compile Include="Behaviors\AwardsPointsBehavior.cs" />
+    <Compile Include="Behaviors\CollectsPointsBehavior.cs" />
     <Compile Include="Behaviors\CollisionBehavior.cs" />
     <Compile Include="Behaviors\CombatBehavior.cs" />
     <Compile Include="Behaviors\HealthBehavior.cs" />
@@ -102,6 +104,7 @@
     <Compile Include="EventManagement\Debug\DebugEvent.cs" />
     <Compile Include="EventManagement\Debug\EventLogger.cs" />
     <Compile Include="EventManagement\Events\AiUpdateMovementEvent.cs" />
+    <Compile Include="EventManagement\Events\AwardPointsEvent.cs" />
     <Compile Include="EventManagement\Events\CollisionEvent.cs" />
     <Compile Include="EventManagement\Events\CreateEntityEvent.cs" />
     <Compile Include="EventManagement\Events\DamageEvent.cs" />

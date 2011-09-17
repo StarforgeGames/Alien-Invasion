@@ -17,7 +17,7 @@ namespace SpaceInvaders
     /// <summary>
     /// Concrete class for the game.
     /// </summary>
-    class Application :IEventListener
+    class Application : IEventListener
     {
         public GameLogic Game { get; private set; }
         public List<IGameView> Views { get; private set; }
@@ -30,10 +30,8 @@ namespace SpaceInvaders
             Game = new GameLogic(1024, 768, resourceManager);
 
             Views = new List<IGameView>();
-            PlayerView playerView = new PlayerView(Game);
-            Views.Add(playerView);
-            AiView aiView = new AiView(Game);
-            Views.Add(aiView);
+            Views.Add(new PlayerView(Game));
+            Views.Add(new AiView(Game));
 
             resourceManager.AddLoader(new DummyLoader());
             resourceManager.AddWiper(new DebugWiper());
@@ -93,13 +91,13 @@ namespace SpaceInvaders
                         clock.Start();
                     }
                     break;
-                }
+                    }
+                case DebugEvent.SINGLE_STEP: {
+                        clock.SingleStep();
+                        break;
+                    }
                 case DebugEvent.DECREASE_SPEED: {
                     clock.TimeScale -= 0.1f;
-                    break;
-                }
-                case DebugEvent.SINGLE_STEP: {
-                    clock.SingleStep();
                     break;
                 }
                 case DebugEvent.INCREASE_SPEED: {
