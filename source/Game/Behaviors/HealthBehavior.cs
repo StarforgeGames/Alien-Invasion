@@ -72,8 +72,13 @@ namespace Game.Behaviors
                     Attribute<Entity> projectileOwner = projectile[ProjectileBehavior.Key_ProjectileOwner]
                         as Attribute<Entity>;
 
+                    int destroyedByEntityID = projectile.ID;
+                    if (projectileOwner != null) {
+                        destroyedByEntityID = projectileOwner.Value.ID;
+                    }
+
                     eventManager.QueueEvent(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, entity.ID,
-                        projectileOwner.Value.ID));
+                        destroyedByEntityID));
                     Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type + " died a horrible "
                         + "death!");
                 }
