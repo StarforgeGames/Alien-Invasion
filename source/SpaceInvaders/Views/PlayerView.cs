@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Audio;
 using Game;
 using Game.Entities;
 using Game.EventManagement;
 using Game.EventManagement.Events;
 using Graphics;
 using Graphics.Loaders;
+using Graphics.Loaders.Material;
+using Graphics.Loaders.Mesh;
 using ResourceManagement.Loaders;
 using SpaceInvaders.Controls;
 using SpaceInvaders.Input;
-using Graphics.Loaders.Mesh;
-using Graphics.Loaders.Material;
 
 namespace SpaceInvaders.Views
 {
@@ -21,9 +22,12 @@ namespace SpaceInvaders.Views
     {
         public GameLogic Game { get; private set; }
         public IEventManager EventManager { get; private set; }
+
         public Renderer Renderer { get; private set; }
         private Extractor extractor;
         public Form RenderForm { get; private set; }
+
+        private IAudioPlayer audioPlayer;
 
         private GameMainMenu mainMenuControl;
         private PauseScreen pauseControl;
@@ -48,6 +52,9 @@ namespace SpaceInvaders.Views
             this.Game = game;
             this.EventManager = game.EventManager;
 
+            /**
+             * Initialize Graphics Subsystem 
+             **/
             RenderForm = new Form();
             RenderForm.Size = new Size(Game.World.Width, Game.World.Height);
             RenderForm.Text = "Space Invaders";
@@ -71,10 +78,18 @@ namespace SpaceInvaders.Views
             {
                 game.ResourceManager.AddLoader(rendererLoader);
             }
-
+            
 
             game.ResourceManager.AddLoader(new MaterialLoader(game.ResourceManager));
+            
+            /**
+            * Initialize Audio Subsystem 
+            **/
+            audioPlayer = new DefaultAudioPlayer();
 
+            /**
+            * Initialize GUI 
+            **/
             mainMenuControl = new GameMainMenu(EventManager);
             mainMenuControl.Location = new Point(
                 (RenderForm.Width - mainMenuControl.Width) / 2,
@@ -99,11 +114,13 @@ namespace SpaceInvaders.Views
                 (RenderForm.Height / 2) - gameOverControl.Height);
             RenderForm.Controls.Add(gameOverControl);
 
+
             registerGameEventListeners();
         }
 
         private void registerGameEventListeners()
         {
+            EventManager.AddListener(this, typeof(AudioEvent));
             EventManager.AddListener(this, typeof(NewEntityEvent));
             EventManager.AddListener(this, typeof(DestroyEntityEvent));
             EventManager.AddListener(this, typeof(GameStateChangedEvent));
@@ -143,27 +160,32 @@ namespace SpaceInvaders.Views
         public void OnEvent(Event evt)
         {
             switch (evt.Type) {
+                case AudioEvent.PLAY_SOUND: {
+                    AudioEvent audioEvent = (AudioEvent)evt;
+                    audioPlayer.PlaySound(audioEvent.SoundResource);
+                    break;
+                }
                 case NewEntityEvent.NEW_ENTITY: {
-                    NewEntityEvent newEntityEvent = (NewEntityEvent)evt;
-                    Entity entity = Game.World.Entities[newEntityEvent.EntityID];
-                    if (entity.Type == "player") {
-                        OnAttach(entity);
+                        NewEntityEvent newEntityEvent = (NewEntityEvent)evt;
+                        Entity entity = Game.World.Entities[newEntityEvent.EntityID];
+                        if (entity.Type == "player") {
+                            OnAttach(entity);
+                        }
+                        break;
                     }
-                    break;
-                }
                 case DestroyEntityEvent.DESTROY_ENTITY: {
-                    DestroyEntityEvent destroyEntityEvent = (DestroyEntityEvent)evt;
-                    Entity entity = Game.World.Entities[destroyEntityEvent.EntityID];
-                    if (entity.Type == "player") {
-                        OnDetach();
+                        DestroyEntityEvent destroyEntityEvent = (DestroyEntityEvent)evt;
+                        Entity entity = Game.World.Entities[destroyEntityEvent.EntityID];
+                        if (entity.Type == "player") {
+                            OnDetach();
+                        }
+                        break;
                     }
-                    break;
-                }
                 case GameStateChangedEvent.GAME_STATE_CHANGED: {
-                    GameStateChangedEvent stateChangedEvent = (GameStateChangedEvent)evt;
-                    onGameStateChanged(stateChangedEvent.NewState);
-                    break;
-                }
+                        GameStateChangedEvent stateChangedEvent = (GameStateChangedEvent)evt;
+                        onGameStateChanged(stateChangedEvent.NewState);
+                        break;
+                    }
             }
         }
 

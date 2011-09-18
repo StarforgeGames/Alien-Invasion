@@ -247,6 +247,12 @@
     <Content Include="data\images\menu_title.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="fmodex.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fmodex64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -266,6 +272,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Audio\Audio.csproj">
+      <Project>{0AECEF08-A15D-46AE-AC07-540BAF489490}</Project>
+      <Name>Audio</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Game\Game.csproj">
       <Project>{EB0EE324-D5BA-456A-84ED-BFDE30680E01}</Project>
       <Name>Game</Name>

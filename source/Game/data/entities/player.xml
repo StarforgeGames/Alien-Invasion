@@ -7,6 +7,7 @@
 		<CollisionBehavior />
 		<HealthBehavior />
 		<CollectsPointsBehavior />
+		<AudioEmitterBehavior />
 	</behaviors>
 	<attributes>
 		<Resource key="Material" type="material" name="player"/>
@@ -16,5 +17,6 @@
 		<string key="ProjectileType">pewpew</string>
 		<int key="Lifes">3</int>
 		<string key="Faction">player</string>
+		<string key="DestroyEntitySound">data\audio\explosion.mp3</string>
 	</attributes>
 </Entity>

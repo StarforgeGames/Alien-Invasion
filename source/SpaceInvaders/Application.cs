@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Game;
+using Game.EventManagement;
+using Game.EventManagement.Debug;
 using Game.EventManagement.Events;
 using ResourceManagement;
 using ResourceManagement.Debug;
@@ -8,8 +9,6 @@ using ResourceManagement.Loaders;
 using ResourceManagement.Wipers;
 using SlimDX.Windows;
 using SpaceInvaders.Views;
-using Game.EventManagement;
-using Game.EventManagement.Debug;
 
 namespace SpaceInvaders
 {

@@ -77,7 +77,9 @@ namespace Game.Behaviors
                         destroyedByEntityID = projectileOwner.Value.ID;
                     }
 
-                    eventManager.QueueEvent(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, entity.ID,
+                    // Needs to be triggered instantly, else Entity won't have a chance to react to its own death,
+                    // issuing death animation, sounds, etc. ...
+                    eventManager.Trigger(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, entity.ID,
                         destroyedByEntityID));
                     Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type + " died a horrible "
                         + "death!");

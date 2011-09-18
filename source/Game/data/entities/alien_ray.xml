@@ -8,6 +8,7 @@
 		<CollisionBehavior />
 		<HealthBehavior />
 		<AwardsPointsBehavior />
+		<AudioEmitterBehavior />
 	</behaviors>
 	<attributes>
 		<Vector2D key="Dimensions">			
@@ -21,5 +22,6 @@
 		<string key="ProjectileType">pewpew_alien</string>
 		<string key="Faction">ai</string>
 		<int key="PointsAwarded">100</int>
+		<string key="DestroyEntitySound">data\audio\explosion.mp3</string>
 	</attributes>
 </Entity>
