@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="Behaviors\AEntityBasedBehavior.cs" />
     <Compile Include="Behaviors\AiBehavior.cs" />
+    <Compile Include="Behaviors\AudioEmitterBehavior.cs" />
     <Compile Include="Behaviors\AwardsPointsBehavior.cs" />
     <Compile Include="Behaviors\CollectsPointsBehavior.cs" />
     <Compile Include="Behaviors\CollisionBehavior.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="EventManagement\Events\GameStateChangedEvent.cs" />
     <Compile Include="EventManagement\Events\MoveEvent.cs" />
     <Compile Include="EventManagement\Events\NewEntityEvent.cs" />
+    <Compile Include="EventManagement\Events\AudioEvent.cs" />
     <Compile Include="EventManagement\Events\RespawnEntityEvent.cs" />
     <Compile Include="EventManagement\SwappingEventManager.cs" />
     <Compile Include="EventManagement\IEventListener.cs" />

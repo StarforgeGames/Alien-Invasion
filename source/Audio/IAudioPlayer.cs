@@ -7,5 +7,6 @@ namespace Audio
 {
     public interface IAudioPlayer
     {
+        void PlaySound(string resourceID);
     }
 }

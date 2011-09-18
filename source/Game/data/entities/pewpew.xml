@@ -5,6 +5,7 @@
 		<RenderBehavior />
 		<ProjectileBehavior />
 		<CollisionBehavior />
+		<AudioEmitterBehavior />
 	</behaviors>
 	<attributes>
 		<Resource key="Material" type="material" name="pewpew"/>
@@ -14,5 +15,6 @@
 			<x>0</x>
 			<y>1</y>
 		</Vector2D>
+		<string key="CreateEntitySound">data\audio\player_shot.mp3</string>
 	</attributes>
 </Entity>

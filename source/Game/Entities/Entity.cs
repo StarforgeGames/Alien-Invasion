@@ -78,6 +78,9 @@ namespace Game.Entities
                 if (node.Attributes != null) // used to handle comment nodes
                 {
                     object attribute = this[node.Attributes["key"].Value];
+                    if (attribute == null) {
+                        continue;
+                    }
                     PropertyInfo valueProp = attribute.GetType().GetProperty("Value");
                     object value = extractValue(attributeLoader, node);
 
