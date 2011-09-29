@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Entity>
 	<behaviors>
-		<AiInvaderBehavior />
+		<AiMysteryShipBehavior />
 		<SpatialBehavior />
 		<RenderBehavior />
-		<CombatBehavior />
 		<CollisionBehavior />
 		<HealthBehavior />
 		<AwardsPointsBehavior />
@@ -12,16 +11,16 @@
 	</behaviors>
 	<attributes>
 		<Vector2D key="Dimensions">			
-			<x>50</x>
-			<y>70</y>
+			<x>64</x>
+			<y>64</y>
 		</Vector2D>
-		<Resource key="Material" type="material" name="alien_pincher"/>
+		
+		<Resource key="Material" type="material" name="mystery_ship"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
-		<float key="Speed">50</float>
-		<float key="FiringSpeed">1.1</float>
-		<string key="ProjectileType">pewpew_alien</string>
+		<float key="Speed">200</float>
+		<bool key="RespectsBoundary">false</bool>
 		<string key="Faction">ai</string>
-		<int key="PointsAwarded">75</int>
+		<int key="PointsAwarded">500</int>
 		<string key="DestroyEntitySound">data\audio\explosion.mp3</string>
 	</attributes>
 </Entity>

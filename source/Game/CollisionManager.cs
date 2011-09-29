@@ -49,8 +49,8 @@ namespace Game
                         continue;
                     }
 
-                    var entityFaction = entity[CombatBehavior.Key_Faction] as Attribute<string>;
-                    var otherFaction = other[CombatBehavior.Key_Faction] as Attribute<string>;
+                    var entityFaction = entity[CollisionBehavior.Key_Faction] as Attribute<string>;
+                    var otherFaction = other[CollisionBehavior.Key_Faction] as Attribute<string>;
                     // No friendly fire... or collision
                     if (entityFaction.Value == otherFaction.Value) {
                         continue;

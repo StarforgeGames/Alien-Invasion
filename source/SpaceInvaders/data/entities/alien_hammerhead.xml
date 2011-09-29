@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Entity>
 	<behaviors>
-		<AiBehavior />
+		<AiInvaderBehavior />
 		<SpatialBehavior />
 		<RenderBehavior />
 		<CombatBehavior />
@@ -17,7 +17,7 @@
 		</Vector2D>
 		<Resource key="Material" type="material" name="alien_hammerhead"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
-		<float key="Speed">70</float>
+		<float key="Speed">60</float>
 		<float key="FiringSpeed">1.0</float>
 		<string key="ProjectileType">pewpew_alien</string>
 		<string key="Faction">ai</string>

@@ -13,7 +13,6 @@ namespace Game.Behaviors
         public const string Key_FiringSpeed = "FiringSpeed";
         public const string Key_TimeSinceLastShot = "TimeSinceLastShot";
         public const string Key_ProjectileType = "ProjectileType";
-        public const string Key_Faction = "Faction";
 
         public CombatBehavior(Entity entity)
             : base(entity)
@@ -23,7 +22,6 @@ namespace Game.Behaviors
             entity.AddAttribute(Key_FiringSpeed, new Attribute<float>(0));
             entity.AddAttribute(Key_TimeSinceLastShot, new Attribute<float>(999));
             entity.AddAttribute(Key_ProjectileType, new Attribute<string>(string.Empty));
-            entity.AddAttribute(Key_Faction, new Attribute<string>(string.Empty));
 
             initializeHandledEventTypes();
         }
@@ -68,8 +66,8 @@ namespace Game.Behaviors
 
             var owner = new Attribute<Entity>(entity);
             evt.AddAttribute(ProjectileBehavior.Key_ProjectileOwner, owner);
-            var faction = entity[Key_Faction] as Attribute<string>;
-            evt.AddAttribute(Key_Faction, faction);
+            var faction = entity[CollisionBehavior.Key_Faction] as Attribute<string>;
+            evt.AddAttribute(CollisionBehavior.Key_Faction, faction);
 
             var position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
             var dimensions = entity[SpatialBehavior.Key_Dimensions] as Attribute<Vector2D>;
