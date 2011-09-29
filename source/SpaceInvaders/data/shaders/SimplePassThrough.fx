@@ -1,16 +1,20 @@
 Texture2D tex2D;
+
 SamplerState linearSampler
 {
-    Filter = MIN_MAG_MIP_LINEAR;
-    AddressU = Wrap;
-    AddressV = Wrap;
+    Filter = ANISOTROPIC;
+    AddressU = Clamp;
+    AddressV = Clamp;
 };
+
+int2 frameDimensions;
 
 struct VS_IN
 {
 	float4 pos : POSITION;
-	float4 col : COLOR;
 	float2 tex : TEXCOORD;
+	float4x4 modelView : MODELVIEW;
+	int frame : FRAME;
 };
 
 struct PS_IN

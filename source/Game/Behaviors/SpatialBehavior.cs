@@ -18,6 +18,7 @@ namespace Game.Behaviors
         public const string Key_Speed = "Speed";
         public const string Key_AtBoundary = "AtBoundary";
         public const string Key_RespectsBoundary = "RespectsBoundary";
+        public const string Key_Frame = "Frame";
 
         public SpatialBehavior(Entity entity)
             : base (entity)
