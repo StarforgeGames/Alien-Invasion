@@ -17,7 +17,7 @@ namespace Game.Behaviors
         public const string Key_MoveDirection = "MoveDirection";
         public const string Key_Speed = "Speed";
         public const string Key_AtBoundary = "AtBoundary";
-        public const string Key_RespectsBoundary = "AtBoundary";
+        public const string Key_RespectsBoundary = "RespectsBoundary";
         public const string Key_Frame = "Frame";
 
         public SpatialBehavior(Entity entity)
@@ -28,6 +28,7 @@ namespace Game.Behaviors
             entity.AddAttribute(Key_MoveDirection, new Attribute<Vector2D>(new Vector2D(0, 0)));
             entity.AddAttribute(Key_Speed, new Attribute<float>(0));
             entity.AddAttribute(Key_AtBoundary, new Attribute<Vector2D>(new Vector2D(0, 0)));
+            entity.AddAttribute(Key_RespectsBoundary, new Attribute<bool>(true));
 
             initializeHandledEventTypes();
         }
@@ -49,7 +50,11 @@ namespace Game.Behaviors
 
             position.Value.X += direction.Value.X * speed * deltaTime;
             position.Value.Y += direction.Value.Y * speed * deltaTime;
-            checkAndEnforceBounds(position);
+
+            Attribute<bool> respectBoundary = entity[Key_RespectsBoundary] as Attribute<bool>;
+            if (respectBoundary) {
+                checkAndEnforceBounds(position);
+            }
         }
 
         private void checkAndEnforceBounds(Attribute<Vector2D> position)

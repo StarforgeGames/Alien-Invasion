@@ -4,9 +4,9 @@ using Game.Utility;
 
 namespace Game.Behaviors
 {
-    public class AiBehavior : AEntityBasedBehavior
+    public class AiInvaderBehavior : AEntityBasedBehavior
     {
-        public AiBehavior(Entity entity)
+        public AiInvaderBehavior(Entity entity)
             : base(entity)
         { 
             initializeHandledEventTypes();
