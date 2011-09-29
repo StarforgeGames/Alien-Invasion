@@ -82,12 +82,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\AEntityBasedBehavior.cs" />
-    <Compile Include="Behaviors\AiBehavior.cs" />
+    <Compile Include="Behaviors\AiInvaderBehavior.cs" />
     <Compile Include="Behaviors\AudioEmitterBehavior.cs" />
     <Compile Include="Behaviors\AwardsPointsBehavior.cs" />
     <Compile Include="Behaviors\CollectsPointsBehavior.cs" />
     <Compile Include="Behaviors\CollisionBehavior.cs" />
     <Compile Include="Behaviors\CombatBehavior.cs" />
+    <Compile Include="Behaviors\AiMysteryShipBehavior.cs" />
     <Compile Include="Behaviors\HealthBehavior.cs" />
     <Compile Include="Behaviors\IBehavior.cs" />
     <Compile Include="Behaviors\ProjectileBehavior.cs" />
