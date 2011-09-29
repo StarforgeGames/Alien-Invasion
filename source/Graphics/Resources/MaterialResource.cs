@@ -35,6 +35,9 @@ namespace Graphics.Resources
         {
             return new ResourceList<TextureResource>(textures);
         }
+
+        public Vector2 frameDimensions;
+
         /*
         public void Set(string name, bool value)
         {

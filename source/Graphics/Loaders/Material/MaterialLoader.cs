@@ -42,6 +42,7 @@ namespace Graphics.Loaders.Material
             MaterialResource res = new MaterialResource(
                 effectHandle: manager.GetResource("default", "effect"));
             res.AddTexture("tex2D", manager.GetResource(name, "texture"));
+            res.frameDimensions = new Vector2(1, 1); // currently does not support animation, so there will only be one single frame
             return res;
         }
 

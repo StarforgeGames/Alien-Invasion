@@ -44,7 +44,7 @@ namespace Graphics
             new InputElement("MODELVIEW", 1, Format.R32G32B32A32_Float, 16, 1, InputClassification.PerInstanceData, 1),
             new InputElement("MODELVIEW", 2, Format.R32G32B32A32_Float, 32, 1, InputClassification.PerInstanceData, 1),
             new InputElement("MODELVIEW", 3, Format.R32G32B32A32_Float, 48, 1, InputClassification.PerInstanceData, 1),
-
+            new InputElement("FRAME", 0, Format.R32_UInt, 64, 1, InputClassification.PerInstanceData, 1)
         };
 
         public Renderer(Control control, Extractor extractor)
@@ -265,7 +265,7 @@ namespace Graphics
                 BindFlags = BindFlags.VertexBuffer,
                 CpuAccessFlags = CpuAccessFlags.Write,
                 OptionFlags = ResourceOptionFlags.None,
-                SizeInBytes = sizeof(float) * 4 * 4 * InstanceCount,
+                SizeInBytes = (sizeof(float) * 4 * 4 + sizeof(int)) * InstanceCount,
                 Usage = ResourceUsage.Dynamic
             });
 
@@ -328,7 +328,7 @@ namespace Graphics
                     device.InputAssembler.SetPrimitiveTopology(mesh.primitiveTopology);
                     
                     device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(mesh.vertexBuffer, mesh.elementSize, 0));
-                    device.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(instanceBuffer, 16 * 4, 0));
+                    device.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(instanceBuffer, 16 * 4 + sizeof(int), 0));
                     if (mesh.indexed)
                     {
                         device.InputAssembler.SetIndexBuffer(mesh.indexBuffer, mesh.indexFormat, 0);
@@ -339,60 +339,68 @@ namespace Graphics
                         using (MaterialResource material = (MaterialResource)matRes.Key.Acquire())
                         {
                             var positions = from RenderObject mat in matRes.Value
-                                            select mat.model;
+                                            select new {mat.model, mat.frame};
                             
-                            Matrix[] posArray = positions.ToArray();
+                            var posArray = positions.ToArray();
 
                             for(int i = 0; i < posArray.Length; ++i)
                             {
                                 posArray[i] = posArray[i] * objs.Camera;
                             }
 
-                            
+
                             using (var effect = material.AcquireEffect())
-                            using (var textures = material.AcquireTextures())
                             {
-                                foreach (var texture in textures)
-                                {
-                                    effect.Value.GetVariableByName(texture.Key).AsResource().SetResource(texture.Value.texture);
-                                }
-                                
+                                effect.Value.GetVariableByName("frameDimensions").AsVector().Set(material.frameDimensions);
 
-                                EffectTechnique tech = effect.Value.GetTechniqueByName("Full");
-                                for (int i = 0; i < tech.Description.PassCount; ++i)
+                                using (var textures = material.AcquireTextures())
                                 {
-                                    EffectPass pass = tech.GetPassByIndex(i);
-                                
-                                    List<InputElement> elems = new List<InputElement>(mesh.inputLayout);
-                                    elems.AddRange(elem);
-
-                                    using (InputLayout layout = new InputLayout(device, pass.Description.Signature, elems.ToArray()))
+                                    foreach (var texture in textures)
                                     {
-                                        device.InputAssembler.SetInputLayout(layout);
+                                        effect.Value.GetVariableByName(texture.Key).AsResource().SetResource(texture.Value.texture);
+                                    }
 
-                                        for (int j = 0; j < posArray.Length; j += InstanceCount)
+                                    EffectTechnique tech = effect.Value.GetTechniqueByName("Full");
+                                    for (int i = 0; i < tech.Description.PassCount; ++i)
+                                    {
+                                        EffectPass pass = tech.GetPassByIndex(i);
+
+                                        List<InputElement> elems = new List<InputElement>(mesh.inputLayout);
+                                        elems.AddRange(elem);
+
+                                        using (InputLayout layout = new InputLayout(device, pass.Description.Signature, elems.ToArray()))
                                         {
-                                            int curInstanceCount;
-                                            using (DataStream stream = instanceBuffer.Map(MapMode.WriteDiscard, SlimDX.Direct3D10.MapFlags.None))
-                                            {
-                                                curInstanceCount = Math.Min(InstanceCount, posArray.Length - j);
+                                            device.InputAssembler.SetInputLayout(layout);
 
-                                                stream.WriteRange<Matrix>(posArray, j, curInstanceCount);
-                                                instanceBuffer.Unmap();
+                                            for (int j = 0; j < posArray.Length; j += InstanceCount)
+                                            {
+                                                int curInstanceCount;
+                                                using (DataStream stream = instanceBuffer.Map(MapMode.WriteDiscard, SlimDX.Direct3D10.MapFlags.None))
+                                                {
+                                                    curInstanceCount = Math.Min(InstanceCount, posArray.Length - j);
+
+                                                    for (int i = 0; i < curInstanceCount; ++i)
+                                                    {
+                                                        stream.Write<Matrix>(posArray[j + i].model);
+                                                        stream.Write<int>(posArray[j + i].frame);
+                                                    }
+                                                    //    stream.WriteRange<Matrix>(posArray, j, curInstanceCount);
+                                                    instanceBuffer.Unmap();
+                                                }
+
+                                                pass.Apply();
+
+                                                if (mesh.indexed)
+                                                {
+                                                    device.DrawIndexedInstanced(mesh.indexCount, curInstanceCount, 0, 0, 0);
+                                                }
+                                                else
+                                                {
+                                                    device.DrawInstanced(mesh.elementCount, curInstanceCount, 0, 0);
+                                                }
                                             }
 
-                                            pass.Apply();
-
-                                            if (mesh.indexed)
-                                            {
-                                                device.DrawIndexedInstanced(mesh.indexCount, curInstanceCount, 0, 0, 0);
-                                            }
-                                            else
-                                            {
-                                                device.DrawInstanced(mesh.elementCount, curInstanceCount, 0, 0);
-                                            }
                                         }
-
                                     }
                                 }
                             }

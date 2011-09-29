@@ -11,13 +11,14 @@ namespace Graphics
     {
         public readonly ResourceHandle material, mesh;
         public readonly Matrix model;
+        public readonly int frame;
 
-        public RenderObject(ResourceHandle material, ResourceHandle mesh, Matrix model)
+        public RenderObject(ResourceHandle material, ResourceHandle mesh, Matrix model, int frame)
         {
             this.material = material;
             this.mesh = mesh;
             this.model = model;
-            
+            this.frame = frame;
         }
     }
 }

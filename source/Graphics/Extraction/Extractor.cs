@@ -45,6 +45,7 @@ namespace Graphics
             var mesh = entity[RenderBehavior.Key_Mesh] as Attribute<ResourceHandle>;
             var position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
             var dimensions = entity[SpatialBehavior.Key_Dimensions] as Attribute<Vector2D>;
+            var frame = entity[SpatialBehavior.Key_Frame] as Attribute<int>;
 
             Matrix mat = new Matrix();
             mat.M11 = dimensions.Value.X;
@@ -55,7 +56,7 @@ namespace Graphics
             mat.M42 = position.Value.Y;
 
             frontObjects.Add(
-                new RenderObject(material.Value, mesh.Value, mat));
+                new RenderObject(material.Value, mesh.Value, mat, frame.Value));
         }
 
 

@@ -11,6 +11,9 @@
 					1.0 1.0 1.0
 					1.0 1.0 1.0
 				)
+				(vector2 "frameDimensions"
+					2 1
+				)
 			)
 			(framelayout
 				(element 'shaderbinding "matrix")
