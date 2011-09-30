@@ -216,6 +216,15 @@
     <Content Include="..\..\libs\fmodex64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\optionsOver.png" />
+    <None Include="Resources\options.png" />
+    <None Include="Resources\newgameOver.png" />
+    <None Include="Resources\newgame.png" />
+    <None Include="Resources\highscoreOver.png" />
+    <None Include="Resources\highscore.png" />
+    <None Include="Resources\gap.png" />
+    <None Include="Resources\exitOver.png" />
+    <None Include="Resources\exit.png" />
     <EmbeddedResource Include="Controls\VictoryScreen.resx">
       <DependentUpon>VictoryScreen.cs</DependentUpon>
     </EmbeddedResource>
@@ -267,6 +276,9 @@
     <Content Include="data\entities\player.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="data\images\background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="data\meshes\default.mesh">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -297,9 +309,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="data\audio\player_shot.mp3">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="data\images\menu_title.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="data\sprites\alien_hammerhead.png">
