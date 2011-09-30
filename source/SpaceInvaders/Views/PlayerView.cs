@@ -92,26 +92,26 @@ namespace SpaceInvaders.Views
             **/
             mainMenuControl = new GameMainMenu(EventManager);
             mainMenuControl.Location = new Point(
-                (RenderForm.Width - mainMenuControl.Width) / 2,
-                (RenderForm.Height - mainMenuControl.Height) / 2 - 50); ;
+                (RenderForm.ClientSize.Width - mainMenuControl.Width) / 2,
+                (RenderForm.ClientSize.Height - mainMenuControl.Height) / 2);
             RenderForm.Controls.Add(mainMenuControl);
 
             pauseControl = new PauseScreen();
             pauseControl.Location = new Point(
-                (RenderForm.Width - pauseControl.Width) / 2,
-                (RenderForm.Height / 2) - pauseControl.Height);
+                (RenderForm.ClientSize.Width - pauseControl.Width) / 2,
+                (RenderForm.ClientSize.Height / 2) - pauseControl.Height);
             RenderForm.Controls.Add(pauseControl);
 
             victoryControl = new VictoryScreen(EventManager);
             victoryControl.Location = new Point(
-                (RenderForm.Width - victoryControl.Width) / 2,
-                (RenderForm.Height / 2) - victoryControl.Height);
+                (RenderForm.ClientSize.Width - victoryControl.Width) / 2,
+                (RenderForm.ClientSize.Height / 2) - victoryControl.Height);
             RenderForm.Controls.Add(victoryControl);
 
             gameOverControl = new GameOverScreen(EventManager);
             gameOverControl.Location = new Point(
-                (RenderForm.Width - gameOverControl.Width) / 2,
-                (RenderForm.Height / 2) - gameOverControl.Height);
+                (RenderForm.ClientSize.Width - gameOverControl.Width) / 2,
+                (RenderForm.ClientSize.Height / 2) - gameOverControl.Height);
             RenderForm.Controls.Add(gameOverControl);
 
 
