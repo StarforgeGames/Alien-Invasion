@@ -56,7 +56,7 @@ namespace SpaceInvaders.Views
              * Initialize Graphics Subsystem 
              **/
             RenderForm = new Form();
-            RenderForm.Size = new Size(Game.World.Width, Game.World.Height);
+            RenderForm.ClientSize = new Size(Game.World.Width, Game.World.Height);
             RenderForm.Text = "Space Invaders";
             RenderForm.BackColor = Color.Empty;
             RenderForm.KeyPreview = true;

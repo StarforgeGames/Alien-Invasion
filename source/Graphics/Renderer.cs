@@ -338,17 +338,17 @@ namespace Graphics
                     {
                         using (MaterialResource material = (MaterialResource)matRes.Key.Acquire())
                         {
-                            var positions = from RenderObject mat in matRes.Value
-                                            select new {mat.model, mat.frame};
-                            
-                            var posArray = positions.ToArray();
+                            var vertData = from RenderObject mat in matRes.Value
+                                            select new {model = mat.model * objs.Camera, mat.frame};
 
+                            var matArray = vertData.ToArray();
+                            /*
                             for(int i = 0; i < posArray.Length; ++i)
                             {
-                                posArray[i] = posArray[i] * objs.Camera;
+                                posArray[i].model = posArray[i].model * objs.Camera;
                             }
 
-
+                            */
                             using (var effect = material.AcquireEffect())
                             {
                                 effect.Value.GetVariableByName("frameDimensions").AsVector().Set(material.frameDimensions);
@@ -372,17 +372,17 @@ namespace Graphics
                                         {
                                             device.InputAssembler.SetInputLayout(layout);
 
-                                            for (int j = 0; j < posArray.Length; j += InstanceCount)
+                                            for (int j = 0; j < matArray.Length; j += InstanceCount)
                                             {
                                                 int curInstanceCount;
                                                 using (DataStream stream = instanceBuffer.Map(MapMode.WriteDiscard, SlimDX.Direct3D10.MapFlags.None))
                                                 {
-                                                    curInstanceCount = Math.Min(InstanceCount, posArray.Length - j);
+                                                    curInstanceCount = Math.Min(InstanceCount, matArray.Length - j);
 
-                                                    for (int i = 0; i < curInstanceCount; ++i)
+                                                    for (int k = 0; k < curInstanceCount; ++k)
                                                     {
-                                                        stream.Write<Matrix>(posArray[j + i].model);
-                                                        stream.Write<int>(posArray[j + i].frame);
+                                                        stream.Write<Matrix>(matArray[j + k].model);
+                                                        stream.Write<int>(matArray[j + k].frame);
                                                     }
                                                     //    stream.WriteRange<Matrix>(posArray, j, curInstanceCount);
                                                     instanceBuffer.Unmap();

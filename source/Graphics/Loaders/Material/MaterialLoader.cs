@@ -8,6 +8,7 @@ using ResourceManagement.Resources;
 using System.IO;
 using Graphics.Resources;
 using LispInterpreter;
+using SlimDX;
 
 namespace Graphics.Loaders.Material
 {
