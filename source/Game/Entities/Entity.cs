@@ -36,13 +36,12 @@ namespace Game.Entities
         private Dictionary<string, object> attributes = new Dictionary<string, object>();
         private List<IBehavior> behaviors = new List<IBehavior>();
 
-        public object this[string key]
+        public dynamic this[string key]
         { 
-            get { 
-                if(attributes.ContainsKey(key)) {
-                    return attributes[key]; 
-                }
-                return null;
+            get {
+                dynamic result = null;
+                attributes.TryGetValue(key, out result);
+                return result;
             }
             set { attributes[key] = value;  } 
         }
