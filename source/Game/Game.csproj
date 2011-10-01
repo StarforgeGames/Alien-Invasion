@@ -73,6 +73,7 @@
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -83,6 +84,7 @@
   <ItemGroup>
     <Compile Include="Behaviors\AEntityBasedBehavior.cs" />
     <Compile Include="Behaviors\AiInvaderBehavior.cs" />
+    <Compile Include="Behaviors\AnimationBehaviour.cs" />
     <Compile Include="Behaviors\AudioEmitterBehavior.cs" />
     <Compile Include="Behaviors\AwardsPointsBehavior.cs" />
     <Compile Include="Behaviors\CollectsPointsBehavior.cs" />
@@ -106,6 +108,7 @@
     <Compile Include="EventManagement\Debug\DebugEvent.cs" />
     <Compile Include="EventManagement\Debug\EventLogger.cs" />
     <Compile Include="EventManagement\Events\AiUpdateMovementEvent.cs" />
+    <Compile Include="EventManagement\Events\AnimationEvent.cs" />
     <Compile Include="EventManagement\Events\AwardPointsEvent.cs" />
     <Compile Include="EventManagement\Events\CollisionEvent.cs" />
     <Compile Include="EventManagement\Events\CreateEntityEvent.cs" />
