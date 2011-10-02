@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EB0EE324-D5BA-456A-84ED-BFDE30680E01}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Game</RootNamespace>
+    <AssemblyName>Game</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\test\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug - Software|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\test-software\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>..\..\test\Game.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release - Software|AnyCPU'">
+    <OutputPath>..\..\release-software\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>..\..\release\Game.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Behaviors\AEntityBasedBehavior.cs" />
+    <Compile Include="Behaviors\AiInvaderBehavior.cs" />
+    <Compile Include="Behaviors\AnimationBehaviour.cs" />
+    <Compile Include="Behaviors\AudioEmitterBehavior.cs" />
+    <Compile Include="Behaviors\AwardsPointsBehavior.cs" />
+    <Compile Include="Behaviors\CollectsPointsBehavior.cs" />
+    <Compile Include="Behaviors\CollisionBehavior.cs" />
+    <Compile Include="Behaviors\CombatBehavior.cs" />
+    <Compile Include="Behaviors\AiMysteryShipBehavior.cs" />
+    <Compile Include="Behaviors\HealthBehavior.cs" />
+    <Compile Include="Behaviors\IBehavior.cs" />
+    <Compile Include="Behaviors\ProjectileBehavior.cs" />
+    <Compile Include="Behaviors\RenderBehavior.cs" />
+    <Compile Include="Behaviors\SpatialBehavior.cs" />
+    <Compile Include="CollisionManager.cs" />
+    <Compile Include="Entities\Attribute.cs" />
+    <Compile Include="Entities\AttributeLoader\DefaultAttributeLoader.cs" />
+    <Compile Include="Entities\AttributeLoader\IAttributeLoader.cs" />
+    <Compile Include="Entities\AttributeParser\IAttributeParser.cs" />
+    <Compile Include="Entities\AttributeParser\ResourceParser.cs" />
+    <Compile Include="Entities\AttributeParser\Vector2DParser.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\EntityFactory.cs" />
+    <Compile Include="EventManagement\Debug\DebugEvent.cs" />
+    <Compile Include="EventManagement\Debug\EventLogger.cs" />
+    <Compile Include="EventManagement\Events\AiUpdateMovementEvent.cs" />
+    <Compile Include="EventManagement\Events\AnimationEvent.cs" />
+    <Compile Include="EventManagement\Events\AwardPointsEvent.cs" />
+    <Compile Include="EventManagement\Events\CollisionEvent.cs" />
+    <Compile Include="EventManagement\Events\CreateEntityEvent.cs" />
+    <Compile Include="EventManagement\Events\DamageEvent.cs" />
+    <Compile Include="EventManagement\Events\DestroyEntityEvent.cs" />
+    <Compile Include="EventManagement\Events\Event.cs" />
+    <Compile Include="EventManagement\Events\FireWeaponEvent.cs" />
+    <Compile Include="EventManagement\Events\GameStateChangedEvent.cs" />
+    <Compile Include="EventManagement\Events\MoveEvent.cs" />
+    <Compile Include="EventManagement\Events\NewEntityEvent.cs" />
+    <Compile Include="EventManagement\Events\AudioEvent.cs" />
+    <Compile Include="EventManagement\Events\RespawnEntityEvent.cs" />
+    <Compile Include="EventManagement\SwappingEventManager.cs" />
+    <Compile Include="EventManagement\IEventListener.cs" />
+    <Compile Include="EventManagement\IEventManager.cs" />
+    <Compile Include="GameLogic.cs" />
+    <Compile Include="GameWorld.cs" />
+    <Compile Include="Processes\Process.cs" />
+    <Compile Include="ProcessManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\Vector2D.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ResourceManagement\ResourceManagement.csproj">
+      <Project>{5B991C83-B0B6-4736-9DB7-7AFC2A6B81E6}</Project>
+      <Name>ResourceManagement</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
