@@ -17,11 +17,10 @@ namespace Game.Behaviors
 
         public override void OnUpdate(float deltaTime)
         {
-            Attribute<Vector2D> atBoundary = entity[SpatialBehavior.Key_AtBoundary] as Attribute<Vector2D>;
+            Attribute<Vector2D> atBoundary = entity[SpatialBehavior.Key_AtBoundary];
 
             if (atBoundary.Value.X < 0 || atBoundary.Value.X > 0 || atBoundary.Value.Y < 0 || atBoundary.Value.Y > 0) {
-                eventManager.QueueEvent(new AiUpdateMovementEvent(AiUpdateMovementEvent.AT_BORDER, entity.ID,
-                    new Vector2D(atBoundary.Value)));
+                eventManager.QueueEvent(AiUpdateMovementEvent.AtBorder(entity.ID, new Vector2D(atBoundary.Value)));
             }
         }
 

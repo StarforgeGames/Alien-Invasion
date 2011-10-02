@@ -37,12 +37,12 @@ namespace Game.Behaviors
                 return;
             }
 
-            Attribute<bool> isFiring = (Attribute<bool>)entity[Key_IsFiring];
-            Attribute<bool> isSingleShot = (Attribute<bool>)entity[Key_IsSingleShot];
+            Attribute<bool> isFiring = entity[Key_IsFiring];
+            Attribute<bool> isSingleShot = entity[Key_IsSingleShot];
 
             if (isFiring || isSingleShot) {
-                Attribute<float> firingSpeed = (Attribute<float>)entity[Key_FiringSpeed];
-                Attribute<float> timeSinceLastShot = (Attribute<float>)entity[Key_TimeSinceLastShot];
+                Attribute<float> firingSpeed = entity[Key_FiringSpeed];
+                Attribute<float> timeSinceLastShot = entity[Key_TimeSinceLastShot];
 
                 timeSinceLastShot.Value += deltaTime;
 
@@ -61,16 +61,16 @@ namespace Game.Behaviors
 
         private void createProjectileAtCurrentPosition()
         {
-            var projectileType = entity[Key_ProjectileType] as Attribute<string>;
+            var projectileType = entity[Key_ProjectileType];
             var evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, projectileType);
 
             var owner = new Attribute<Entity>(entity);
             evt.AddAttribute(ProjectileBehavior.Key_ProjectileOwner, owner);
-            var faction = entity[CollisionBehavior.Key_Faction] as Attribute<string>;
+            var faction = entity[CollisionBehavior.Key_Faction];
             evt.AddAttribute(CollisionBehavior.Key_Faction, faction);
 
-            var position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
-            var dimensions = entity[SpatialBehavior.Key_Dimensions] as Attribute<Vector2D>;
+            var position = entity[SpatialBehavior.Key_Position];
+            var dimensions = entity[SpatialBehavior.Key_Dimensions];
 
             float startX = position.Value.X + (dimensions.Value.X / 2f) - 2.5f;
             float startY = position.Value.Y + (dimensions.Value.Y / 2f);
@@ -87,23 +87,23 @@ namespace Game.Behaviors
         {
             switch (evt.Type) {
                 case FireWeaponEvent.FIRE_SINGLE_SHOT: {
-                        Attribute<bool> isSingleShot = (Attribute<bool>)entity[Key_IsSingleShot];
+                        Attribute<bool> isSingleShot = entity[Key_IsSingleShot];
                         isSingleShot.Value = true;
 
                         break;
                     }
                 case FireWeaponEvent.START_FIRING: {
-                        Attribute<bool> isFiring = entity[Key_IsFiring] as Attribute<bool>;
+                        Attribute<bool> isFiring = entity[Key_IsFiring];
                         isFiring.Value = true;
                         break;
                     }
                 case FireWeaponEvent.STOP_FIRING: {
-                        Attribute<bool> isFiring = entity[Key_IsFiring] as Attribute<bool>;
+                        Attribute<bool> isFiring = entity[Key_IsFiring];
                         isFiring.Value = false;
 
                         // Set to firing speed so that a shot is immediately fired when the fire button is hit again
-                        Attribute<float> timeSinceLastShot = entity[Key_TimeSinceLastShot] as Attribute<float>;
-                        Attribute<float> firingSpeed = entity[Key_FiringSpeed] as Attribute<float>;
+                        Attribute<float> timeSinceLastShot = entity[Key_TimeSinceLastShot];
+                        Attribute<float> firingSpeed = entity[Key_FiringSpeed];
                         timeSinceLastShot.Value += firingSpeed / 2;
                         break;
                     }

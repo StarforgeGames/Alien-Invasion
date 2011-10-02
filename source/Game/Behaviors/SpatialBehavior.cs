@@ -43,14 +43,14 @@ namespace Game.Behaviors
                 return;
             }
 
-            Attribute<float> speed = entity[Key_Speed] as Attribute<float>;
-            Attribute<Vector2D> position = entity[Key_Position] as Attribute<Vector2D>;
-            Attribute<Vector2D> direction = entity[Key_MoveDirection] as Attribute<Vector2D>;
+            Attribute<float> speed = entity[Key_Speed];
+            Attribute<Vector2D> position = entity[Key_Position];
+            Attribute<Vector2D> direction = entity[Key_MoveDirection];
 
             position.Value.X += direction.Value.X * speed * deltaTime;
             position.Value.Y += direction.Value.Y * speed * deltaTime;
 
-            Attribute<bool> respectBoundary = entity[Key_RespectsBoundary] as Attribute<bool>;
+            Attribute<bool> respectBoundary = entity[Key_RespectsBoundary];
             if (respectBoundary) {
                 checkAndEnforceBounds(position);
             }
@@ -58,9 +58,9 @@ namespace Game.Behaviors
 
         private void checkAndEnforceBounds(Attribute<Vector2D> position)
         {
-            Attribute<Vector2D> dimensions = entity[Key_Dimensions] as Attribute<Vector2D>;
-            Attribute<Vector2D> direction = entity[Key_MoveDirection] as Attribute<Vector2D>;
-            Attribute<Vector2D> atBoundary = entity[Key_AtBoundary] as Attribute<Vector2D>;
+            Attribute<Vector2D> dimensions = entity[Key_Dimensions];
+            Attribute<Vector2D> direction = entity[Key_MoveDirection];
+            Attribute<Vector2D> atBoundary = entity[Key_AtBoundary];
 
             if (position.Value.X <= 0.0f) {
                 position.Value.X = 0.0f;
@@ -109,7 +109,7 @@ namespace Game.Behaviors
 
         private void setDirection(Vector2D newDirection)
         {
-            Attribute<Vector2D> entityDirection = entity[Key_MoveDirection] as Attribute<Vector2D>;
+            Attribute<Vector2D> entityDirection = entity[Key_MoveDirection];
             entityDirection.Value.X = newDirection.X;
             entityDirection.Value.Y = newDirection.Y;
         }

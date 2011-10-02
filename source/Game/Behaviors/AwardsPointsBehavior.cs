@@ -30,7 +30,7 @@ namespace Game.Behaviors
                 case DestroyEntityEvent.DESTROY_ENTITY: {
                     DestroyEntityEvent msg = (DestroyEntityEvent)evt;
                     if (this.entity.ID == msg.EntityID && msg.DestroyedByEntityID != null) {
-                        Attribute<int> points = entity[Key_PointsAwarded] as Attribute<int>;
+                        Attribute<int> points = entity[Key_PointsAwarded];
                         if (points.Value <= 0) {
                             break;
                         }

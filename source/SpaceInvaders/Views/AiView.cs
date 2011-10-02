@@ -75,7 +75,7 @@ namespace SpaceInvaders.Views
         {
             timeSinceLastShot += deltaTime;
             Entity shooter = invaders[rng.Next(invaders.Count - 1)];
-            var firingSpeed = (Attribute<float>)shooter[CombatBehavior.Key_FiringSpeed];
+            Attribute<float> firingSpeed = shooter[CombatBehavior.Key_FiringSpeed];
 
             if (timeSinceLastShot * rng.NextDouble() + (1 - firingSpeed) >= firingThreshold) {
                 timeSinceLastShot = 0.0f;
@@ -142,7 +142,7 @@ namespace SpaceInvaders.Views
         {
             switch (evt.Type) {
                 case NewEntityEvent.NEW_ENTITY: {
-                    var newEntityEvent = evt as NewEntityEvent;
+                    var newEntityEvent = (NewEntityEvent)evt;
                     Entity entity = Game.World.Entities[newEntityEvent.EntityID];
                     if (entity.Type.StartsWith("alien_")) {
                         OnAttach(entity);
@@ -153,7 +153,7 @@ namespace SpaceInvaders.Views
                     break;
                 }
                 case DestroyEntityEvent.DESTROY_ENTITY: {
-                    var destroyEntityEvent = evt as DestroyEntityEvent;
+                    var destroyEntityEvent = (DestroyEntityEvent)evt;
                     Entity entity = Game.World.Entities[destroyEntityEvent.EntityID];
                     if (entity.Type.StartsWith("alien_")) {
                         OnDetach(entity);
@@ -164,12 +164,12 @@ namespace SpaceInvaders.Views
                     break;
                 }
                 case GameStateChangedEvent.GAME_STATE_CHANGED: {
-                    var stateChangedEvent = evt as GameStateChangedEvent;
+                    var stateChangedEvent = (GameStateChangedEvent)evt;
                     onGameStateChanged(stateChangedEvent.NewState);
                     break;
                     }
                 case AiUpdateMovementEvent.AT_BORDER: {
-                    var aiMovementUpdateEvent = evt as AiUpdateMovementEvent;
+                    var aiMovementUpdateEvent = (AiUpdateMovementEvent)evt;
 
                     Vector2D borderData = aiMovementUpdateEvent.BorderData;
 

@@ -12,19 +12,29 @@ namespace Game.EventManagement.Events
         public const string STOP_SOUND = "stop_sound";
 
         public string SoundResource { get; set; }
-        public int SourceEntityID { get; set; }
+        public int EntityID { get; set; }
 
-        public AudioEvent(string type, string soundResource, int sourceEntityID)
+        public AudioEvent(string type, int entityID, string soundResource)
             : base(type)
         {
+            this.EntityID = entityID;
             this.SoundResource = soundResource;
-            this.SourceEntityID = sourceEntityID;
         }
 
         public override string ToString()
         {
             return base.ToString() + " [" + SoundResource + " is being issued to " + Type + " by SourceEntityID " 
-                + SourceEntityID + "]";
+                + EntityID + "]";
+        }
+
+        public static AudioEvent PlaySound(int entityID, string soundResource)
+        {
+            return new AudioEvent(PLAY_SOUND, entityID, soundResource);
+        }
+
+        public static AudioEvent StopSound(int entityID, string soundResource)
+        {
+            return new AudioEvent(STOP_SOUND, entityID, soundResource);
         }
     }
 }

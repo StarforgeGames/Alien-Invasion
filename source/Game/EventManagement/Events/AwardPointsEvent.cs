@@ -7,6 +7,8 @@ namespace Game.EventManagement.Events
 {
     public class AwardPointsEvent : Event
     {
+        // TODO: Add Factory Methods to simplify construction
+
         // Event Message Types
         public const string AWARD_POINTS = "actor_awarded_points";
 

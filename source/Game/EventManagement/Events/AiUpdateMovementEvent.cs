@@ -20,5 +20,9 @@ namespace Game.EventManagement.Events
             this.EntityID = entityID;
             this.BorderData = borderData;
         }
+
+        public static AiUpdateMovementEvent AtBorder(int entityID, Vector2D borderData) {
+            return new AiUpdateMovementEvent(AT_BORDER, entityID, borderData);
+        }
     }
 }

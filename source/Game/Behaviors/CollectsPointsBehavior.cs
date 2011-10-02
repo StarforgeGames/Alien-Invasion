@@ -33,7 +33,7 @@ namespace Game.Behaviors
             switch (evt.Type) {
                 case AwardPointsEvent.AWARD_POINTS: {
                     AwardPointsEvent msg = (AwardPointsEvent)evt;
-                    Attribute<int> points = entity[Key_PointsCollected] as Attribute<int>;
+                    Attribute<int> points = entity[Key_PointsCollected];
 
                     points.Value += msg.Points;
                     Console.WriteLine("[" + this.GetType().Name + "] " + entity + " collected " + msg.Points

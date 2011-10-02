@@ -42,32 +42,32 @@ namespace Game.Behaviors
 			AudioEvent audioEvent = null;
 
 			switch (evt.Type) {
-                case NewEntityEvent.NEW_ENTITY: {
-                    NewEntityEvent newEntityEvent = (NewEntityEvent)evt;
-                    if (entity.ID != newEntityEvent.EntityID) {
-                        break;
-                    }
+				case NewEntityEvent.NEW_ENTITY: {
+					NewEntityEvent newEntityEvent = (NewEntityEvent)evt;
+					if (entity.ID != newEntityEvent.EntityID) {
+						break;
+					}
 
-					Attribute<string> sound = entity[Key_CreateEntitySound] as Attribute<string>;
+					Attribute<string> sound = entity[Key_CreateEntitySound];
 					if (String.IsNullOrEmpty(sound.Value)) {
 						break;
 					}
 
-					audioEvent = new AudioEvent(AudioEvent.PLAY_SOUND, sound.Value, entity.ID);
+					audioEvent =  AudioEvent.PlaySound(entity.ID, sound.Value);
 					break;
 				}
-                case DestroyEntityEvent.DESTROY_ENTITY: {
-                    DestroyEntityEvent destroyEntityEvent = (DestroyEntityEvent)evt;
-                    if (entity.ID != destroyEntityEvent.EntityID) {
-                        break;
-                    }
+				case DestroyEntityEvent.DESTROY_ENTITY: {
+					DestroyEntityEvent destroyEntityEvent = (DestroyEntityEvent)evt;
+					if (entity.ID != destroyEntityEvent.EntityID) {
+						break;
+					}
 
-					Attribute<string> sound = entity[Key_DestroyEntitySound] as Attribute<string>;
+					Attribute<string> sound = entity[Key_DestroyEntitySound];
 					if (String.IsNullOrEmpty(sound.Value)) {
 						break;
 					}
 
-					audioEvent = new AudioEvent(AudioEvent.PLAY_SOUND, sound.Value, entity.ID);
+					audioEvent = AudioEvent.PlaySound(entity.ID, sound.Value);
 					break;
 				}
 			}

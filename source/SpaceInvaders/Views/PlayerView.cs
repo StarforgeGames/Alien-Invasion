@@ -57,7 +57,7 @@ namespace SpaceInvaders.Views
              **/
             RenderForm = new Form();
             RenderForm.ClientSize = new Size(Game.World.Width, Game.World.Height);
-            RenderForm.Text = "Space Invaders";
+            RenderForm.Text = "Alien Invasion v0.9";
             RenderForm.BackColor = Color.Empty;
             RenderForm.KeyPreview = true;
 

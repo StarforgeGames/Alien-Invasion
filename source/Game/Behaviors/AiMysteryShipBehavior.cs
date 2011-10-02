@@ -21,8 +21,9 @@ namespace Game.Behaviors
 
         public override void OnUpdate(float deltaTime)
         {
-            Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
+            Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position];
             if (oldXPosition == 0) {
+                oldXPosition = position.Value.X;
             }
 
             float diff = Math.Abs(oldXPosition - position.Value.X);

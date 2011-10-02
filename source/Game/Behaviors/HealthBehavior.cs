@@ -41,10 +41,10 @@ namespace Game.Behaviors
             }
             damageReceivedSinceLastUpdate.Clear();
 
-            Attribute<bool> isRespawning = entity[Key_IsRespawning] as Attribute<bool>;
+            Attribute<bool> isRespawning = entity[Key_IsRespawning];
             if (isRespawning) {
                 elapsedTime += deltaTime;
-                Attribute<float> respawnTime = entity[Key_RespawnTime] as Attribute<float>;
+                Attribute<float> respawnTime = entity[Key_RespawnTime];
 
                 if (elapsedTime >= respawnTime) {
                     respawn(ref isRespawning);
@@ -59,11 +59,11 @@ namespace Game.Behaviors
                 return;
             }
 
-            Attribute<int> health = entity[Key_Health] as Attribute<int>;
+            Attribute<int> health = entity[Key_Health];
             health.Value -= evt.Damage;
 
             if (health <= 0) {
-                Attribute<int> lifes = entity[Key_Lifes] as Attribute<int>;
+                Attribute<int> lifes = entity[Key_Lifes];
                 lifes.Value -= 1;
                 entity.State = EntityState.Dead;
 
@@ -96,14 +96,14 @@ namespace Game.Behaviors
 
         private void respawn(ref Attribute<bool> isRespawning)
         {
-            Attribute<int> health = entity[Key_Health] as Attribute<int>;
+            Attribute<int> health = entity[Key_Health];
             health.Value = 1;
             entity.State = EntityState.Active;
 
             elapsedTime = 0f;
             isRespawning.Value = false;
 
-            Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
+            Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position];
             position.Value.X = world.Width / 2f - (75f / 2f);
             position.Value.Y = 100 - (75f / 2f);
 
@@ -122,7 +122,7 @@ namespace Game.Behaviors
                     break;
                 }
                 case RespawnEntityEvent.RESPAWN_ENTITY: {
-                    Attribute<bool> isRespawning = entity[Key_IsRespawning] as Attribute<bool>;
+                    Attribute<bool> isRespawning = entity[Key_IsRespawning];
                     isRespawning.Value = true;
                     break;
                 }
