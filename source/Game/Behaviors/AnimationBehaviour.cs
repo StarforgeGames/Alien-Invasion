@@ -18,8 +18,8 @@ namespace Game.Behaviors
         AnimationBehaviour(Entity entity)
             : base(entity)
         {
-            entity.AddAttribute(Key_Frame, new Attribute<int>(0));
-            entity.AddAttribute(Key_FrameCount, new Attribute<int>(0));
+            entity.AddAttribute(Key_Frame, new Attribute<float>(0.0f));
+            entity.AddAttribute(Key_FrameCount, new Attribute<float>(1.0f));
 
             initializeHandledEventTypes();
         }
@@ -31,12 +31,12 @@ namespace Game.Behaviors
                 elapsedTime += deltaTime;
                 if (elapsedTime > 40.0f)
                 {
-                    elapsedTime = 0;
-                    int frame = entity[Key_Frame];
+                    elapsedTime = 0.0f;
+                    float frame = entity[Key_Frame];
                     // we check for frameCount since the last frame should also be visible for some time
                     if (frame < entity[Key_FrameCount])
                     {
-                        entity[Key_Frame] = frame + 1;
+                        entity[Key_Frame] = frame + 1.0f;
                     }
                     else
                     {
@@ -56,12 +56,12 @@ namespace Game.Behaviors
                     break;
                 case AnimationEvent.STOP_ANIMATION:
                     isPlaying = false;
-                    entity[Key_Frame] = 0;
+                    entity[Key_Frame] = 0.0f;
                     eventManager.QueueEvent(AnimationEvent.Stopped(entity.ID));
                     break;
                 case AnimationEvent.PAUSE_ANIMATION:
                     isPlaying = false;
-                    entity[Key_Frame] = 0;
+                    entity[Key_Frame] = 0.0f;
                     eventManager.QueueEvent(AnimationEvent.Stopped(entity.ID));
                     break;
                 default:

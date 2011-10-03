@@ -11,9 +11,9 @@ namespace Graphics
     {
         public readonly ResourceHandle material, mesh;
         public readonly Matrix model;
-        public readonly int frame;
+        public readonly float frame;
 
-        public RenderObject(ResourceHandle material, ResourceHandle mesh, Matrix model, int frame)
+        public RenderObject(ResourceHandle material, ResourceHandle mesh, Matrix model, float frame)
         {
             this.material = material;
             this.mesh = mesh;

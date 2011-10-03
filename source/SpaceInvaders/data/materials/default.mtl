@@ -6,11 +6,6 @@
 				(texture "tex2d" "name")
 			)
 			(constants
-				(matrix3x3 "blub" 
-					1.0 1.0 1.0
-					1.0 1.0 1.0
-					1.0 1.0 1.0
-				)
 				(vector2 "frameDimensions"
 					2 1
 				)
