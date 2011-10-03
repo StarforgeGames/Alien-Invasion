@@ -7,14 +7,14 @@ SamplerState linearSampler
     AddressV = Clamp;
 };
 
-int2 frameDimensions;
+float2 frameDimensions;
 
 struct VS_IN
 {
 	float4 pos : POSITION;
 	float2 tex : TEXCOORD;
 	float4x4 modelView : MODELVIEW;
-	int frame : FRAME;
+	float frame : FRAME;
 };
 
 
@@ -33,7 +33,13 @@ PS_IN VS(VS_IN input)
 	/*
 		perform texture coordinate transformation here
 	*/
-	output.tex = (input.tex);// / frameDimensions);
+
+	float2 framePosition;
+	framePosition.x = (int)input.frame % (int)frameDimensions.x;
+	framePosition.y = (int)input.frame / (int)frameDimensions.x;
+	
+
+	output.tex = (input.tex + framePosition) / frameDimensions;
 	
 	return output;
 }
