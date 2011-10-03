@@ -96,6 +96,7 @@
     <Compile Include="LispNil.cs" />
     <Compile Include="LispObject.cs" />
     <Compile Include="LispQuote.cs" />
+    <Compile Include="LispResourceManager.cs" />
     <Compile Include="LispString.cs" />
     <Compile Include="LispSymbol.cs" />
     <Compile Include="LispTypeExtensions.cs" />

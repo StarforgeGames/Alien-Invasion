@@ -2,11 +2,11 @@
 	(technique "Full")
 	(effect "SimplePassThrough")
 	(textures
-		(texture "tex2D" "default")
+		(texture "tex2D" "player")
 	)
 	(constants
 		(vector2 "frameDimensions"
-			1.0f 1.0f
+			3.0f 1.0f
 		)
 	)
 	(framelayout

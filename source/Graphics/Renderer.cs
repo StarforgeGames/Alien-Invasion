@@ -162,7 +162,7 @@ namespace Graphics
         {
             DeviceCreationFlags flags = DeviceCreationFlags.None;
 #if DEBUG
-            flags |= DeviceCreationFlags.Debug;
+//            flags |= DeviceCreationFlags.Debug;
 #endif
             flags |= DeviceCreationFlags.SingleThreaded;
 
@@ -351,7 +351,28 @@ namespace Graphics
                             */
                             using (var effect = material.AcquireEffect())
                             {
-                                effect.Value.GetVariableByName("frameDimensions").AsVector().Set(material.frameDimensions);
+                                foreach (var constant in material.Constants)
+                                {
+                                    dynamic value = constant.Value;
+                                    var variable = effect.Value.GetVariableByName(constant.Key);
+                                    if(value is float)
+                                    {
+                                        variable.AsScalar().Set(value);
+                                    }
+                                    else if(value is Vector2 || value is Vector3 || value is Vector4)
+                                    {
+                                        variable.AsVector().Set(value);
+                                    }
+                                    /*
+                                    switch ((string)constant.Value.GetType().Name)
+	                                {
+		                                default:
+                                            throw new NotSupportedException("Constant type: " + constant.Value.GetType() + )
+                                        break;
+	                                }
+                                    .*/
+                                }
+                                //effect.Value.GetVariableByName("frameDimensions").AsVector().Set(material.frameDimensions);
 
                                 using (var textures = material.AcquireTextures())
                                 {
