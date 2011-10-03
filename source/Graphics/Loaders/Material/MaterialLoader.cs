@@ -33,18 +33,24 @@ namespace Graphics.Loaders.Material
 
         protected override AResource doLoad(string name)
         {
-            /*using (var file = File.Open(converter.getFilenameFrom(name), FileMode.Open))
+            using (var file = File.Open(converter.getFilenameFrom(name), FileMode.Open))
             {
                 var globalEnvironment = inter.createEnvironment();
+                globalEnvironment.Add(new LispSymbol("manager"), new LispObject(manager));
                 dynamic result = inter.Eval(file, globalEnvironment);
-            }*/
+
+                return result;
+            }
+
+            
 
             // currently dummy code since true loading is not implemented yet.
+            /*
             MaterialResource res = new MaterialResource(
                 effectHandle: manager.GetResource("default", "effect"));
             res.AddTexture("tex2D", manager.GetResource(name, "texture"));
-            res.frameDimensions = new Vector2(1.0f, 1.0f); // currently does not support animation, so there will only be one single frame
-            return res;
+            res.frameDimensions = new Vector2(2.0f, 2.0f); // currently does not support animation, so there will only be one single frame*/
+            //return res;
         }
 
         protected override void doUnload(AResource resource)

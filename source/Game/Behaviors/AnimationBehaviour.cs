@@ -7,21 +7,27 @@ using Game.EventManagement.Events;
 
 namespace Game.Behaviors
 {
-    class AnimationBehaviour : AEntityBasedBehavior
+    public class AnimationBehaviour : AEntityBasedBehavior
     {
         public const string Key_Frame = "Frame";
         public const string Key_FrameCount = "FrameCount"; // this has to be removed in a future version!
 
-        private bool isPlaying;
+        private bool isPlaying = false;
         private float elapsedTime;
+        private bool resetOnStopped = true;
 
-        AnimationBehaviour(Entity entity)
+        public AnimationBehaviour(Entity entity)
             : base(entity)
         {
-            entity.AddAttribute(Key_Frame, new Attribute<float>(0.0f));
+            //entity.AddAttribute(Key_Frame, new Attribute<float>(0.0f)); // this variable is owned by render behaviour
             entity.AddAttribute(Key_FrameCount, new Attribute<float>(1.0f));
 
             initializeHandledEventTypes();
+        }
+
+        protected override void initializeHandledEventTypes()
+        {
+            handledEventTypes.Add(typeof(AnimationEvent));
         }
 
         public override void OnUpdate(float deltaTime)
@@ -29,18 +35,22 @@ namespace Game.Behaviors
             if (isPlaying)
             {
                 elapsedTime += deltaTime;
-                if (elapsedTime > 40.0f)
+                if (elapsedTime > 0.040f)
                 {
                     elapsedTime = 0.0f;
                     float frame = entity[Key_Frame];
-                    // we check for frameCount since the last frame should also be visible for some time
-                    if (frame < entity[Key_FrameCount])
+
+                    if (frame < entity[Key_FrameCount] - 1.0f)
                     {
-                        entity[Key_Frame] = frame + 1.0f;
+                        entity[Key_Frame] = new Attribute<float>(frame + 1.0f);
                     }
                     else
                     {
                         isPlaying = false;
+                        if (resetOnStopped)
+                        {
+                            entity[Key_Frame] = new Attribute<float>(0.0f);
+                        }
                         eventManager.QueueEvent(AnimationEvent.Stopped(entity.ID));
                     }
                 }
@@ -56,12 +66,12 @@ namespace Game.Behaviors
                     break;
                 case AnimationEvent.STOP_ANIMATION:
                     isPlaying = false;
-                    entity[Key_Frame] = 0.0f;
+                    entity[Key_Frame] = new Attribute<float>(0.0f);
                     eventManager.QueueEvent(AnimationEvent.Stopped(entity.ID));
                     break;
                 case AnimationEvent.PAUSE_ANIMATION:
                     isPlaying = false;
-                    entity[Key_Frame] = 0.0f;
+                    entity[Key_Frame] = new Attribute<float>(0.0f);
                     eventManager.QueueEvent(AnimationEvent.Stopped(entity.ID));
                     break;
                 default:

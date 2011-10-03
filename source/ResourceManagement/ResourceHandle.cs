@@ -86,10 +86,10 @@ namespace ResourceManagement
                         throw new NotSupportedException("Tried to acquire resource that is unloading.");
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 Interlocked.Decrement(ref pendingSlot);
-                throw;
+                throw e;
             }
         }
 

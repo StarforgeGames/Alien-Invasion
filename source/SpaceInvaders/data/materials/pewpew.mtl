@@ -2,7 +2,7 @@
 	(technique "Full")
 	(effect "SimplePassThrough")
 	(textures
-		(texture "tex2D" "default")
+		(texture "tex2D" "pewpew")
 	)
 	(constants
 		(vector2 "frameDimensions"

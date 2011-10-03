@@ -49,6 +49,7 @@ namespace Game.Behaviors
                 if (timeSinceLastShot >= firingSpeed || isSingleShot) {
                     timeSinceLastShot.Value = 0.0f;
                     createProjectileAtCurrentPosition();
+                    startAnimation();
 
                     if (isSingleShot) {
                         isSingleShot.Value = false;
@@ -57,6 +58,11 @@ namespace Game.Behaviors
                     Console.WriteLine("[" + this.GetType().Name + "] Firing weapon of " + entity);
                 }
             }
+        }
+
+        private void startAnimation()
+        {
+            eventManager.QueueEvent(AnimationEvent.Play(entity.ID));
         }
 
         private void createProjectileAtCurrentPosition()

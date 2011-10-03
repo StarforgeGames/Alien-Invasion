@@ -14,6 +14,13 @@ namespace Graphics.Resources
     {
         private List<KeyValuePair<string, ResourceHandle>> textures = new List<KeyValuePair<string, ResourceHandle>>();
 
+        private List<KeyValuePair<string, dynamic>> constants = new List<KeyValuePair<string, dynamic>>();
+
+        public List<KeyValuePair<string, dynamic>> Constants
+        {
+            get { return constants; }
+        }
+
         public void AddTexture(string binding, ResourceHandle texture)
         {
             textures.Add(new KeyValuePair<string, ResourceHandle>(binding, texture));
@@ -21,10 +28,13 @@ namespace Graphics.Resources
         
         private ResourceHandle effectHandle;
 
-        public MaterialResource(ResourceHandle effectHandle)
+        public MaterialResource(ResourceHandle effectHandle, string technique)
         {
             this.effectHandle = effectHandle;
+            this.Technique = technique;
         }
+
+        public string Technique { get; private set; }
 
         public EffectResource AcquireEffect()
         {
@@ -34,6 +44,11 @@ namespace Graphics.Resources
         public ResourceList<TextureResource> AcquireTextures()
         {
             return new ResourceList<TextureResource>(textures);
+        }
+
+        public void AddConstant(string name, dynamic value)
+        {
+            constants.Add(new KeyValuePair<string, dynamic>(name, value));
         }
 
         public Vector2 frameDimensions;

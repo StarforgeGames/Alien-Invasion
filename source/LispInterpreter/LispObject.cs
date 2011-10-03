@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace LispInterpreter
 {
-    class LispObject : LispElement
+    public class LispObject : LispElement
     {
         dynamic obj;
         Type objType;

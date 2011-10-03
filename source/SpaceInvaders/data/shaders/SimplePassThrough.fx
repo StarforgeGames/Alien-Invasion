@@ -7,47 +7,46 @@ SamplerState linearSampler
     AddressV = Clamp;
 };
 
-int2 frameDimensions;
+float2 frameDimensions;
 
 struct VS_IN
 {
 	float4 pos : POSITION;
 	float2 tex : TEXCOORD;
 	float4x4 modelView : MODELVIEW;
-	int frame : FRAME;
+	float frame : FRAME;
 };
+
 
 struct PS_IN
 {
 	float4 pos : SV_POSITION;
-	float4 col : COLOR;
 	float2 tex : TEXCOORD;
 };
 
 PS_IN VS(VS_IN input)
 {
 	PS_IN output = (PS_IN)0;
+
+	output.pos = mul(input.modelView, input.pos);
+
+	/*
+		perform texture coordinate transformation here
+	*/
+
+	float2 framePosition;
+	framePosition.x = (int)input.frame % (int)frameDimensions.x;
+	framePosition.y = (int)input.frame / (int)frameDimensions.x;
 	
-	output.pos = input.pos;
-	output.col = input.col;
-	output.tex = input.tex;
+
+	output.tex = (input.tex + framePosition) / frameDimensions;
 	
 	return output;
 }
 
 float4 PS(PS_IN input) : SV_Target
 {
-	return input.col;
-}
-
-float4 textured(PS_IN input) : SV_Target
-{
 	return tex2D.Sample(linearSampler, input.tex);
-}
-
-float4 noTexture(PS_IN input) : SV_Target
-{
-	return input.col;
 }
 
 
@@ -57,16 +56,6 @@ technique10 Full
     {
         SetVertexShader( CompileShader( vs_4_0, VS() ) );
         SetGeometryShader( NULL );
-        SetPixelShader( CompileShader( ps_4_0, textured() ) );
+        SetPixelShader( CompileShader( ps_4_0, PS() ) );
     }
-}
-
-technique10 TexturesDisabled
-{
-	pass P0
-	{
-		SetGeometryShader( 0 );
-		SetVertexShader( CompileShader( vs_4_0, VS() ) );
-		SetPixelShader( CompileShader( ps_4_0, PS() ) );
-	}
 }
