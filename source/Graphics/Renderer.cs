@@ -328,7 +328,7 @@ namespace Graphics
                     device.InputAssembler.SetPrimitiveTopology(mesh.primitiveTopology);
                     
                     device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(mesh.vertexBuffer, mesh.elementSize, 0));
-                    device.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(instanceBuffer, 16 * 4 + sizeof(int), 0));
+                    device.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(instanceBuffer, 16 * 4 + sizeof(float), 0));
                     if (mesh.indexed)
                     {
                         device.InputAssembler.SetIndexBuffer(mesh.indexBuffer, mesh.indexFormat, 0);
@@ -382,7 +382,7 @@ namespace Graphics
                                                     for (int k = 0; k < curInstanceCount; ++k)
                                                     {
                                                         stream.Write<Matrix>(matArray[j + k].model);
-                                                        stream.Write<int>(matArray[j + k].frame);
+                                                        stream.Write<float>(matArray[j + k].frame);
                                                     }
                                                     //    stream.WriteRange<Matrix>(posArray, j, curInstanceCount);
                                                     instanceBuffer.Unmap();
