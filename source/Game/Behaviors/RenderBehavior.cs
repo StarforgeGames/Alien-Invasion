@@ -20,7 +20,7 @@ namespace Game.Behaviors
             entity.AddAttribute(Key_Material, new Attribute<ResourceHandle>(null));
             entity.AddAttribute(Key_Mesh, new Attribute<ResourceHandle>(null));
             entity.AddAttribute(Key_IsRenderable, new Attribute<bool>(true));
-            entity.AddAttribute(Key_Frame, new Attribute<int>(0));
+            entity.AddAttribute(Key_Frame, new Attribute<float>(0.0f));
 
             initializeHandledEventTypes();
         }
