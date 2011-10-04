@@ -34,7 +34,7 @@ namespace ResourceManagement.Loaders
                 throw new NotSupportedException("Default Resource was not loaded properly");
         }
 
-        private void RendererLoad(ResourceHandle handle, ResType res, Intermediate data)
+        private void ThreadLoad(ResourceHandle handle, ResType res, Intermediate data)
         {
             handle.inactive.resource = doLoad(res, data);
             handle.inactive.state = ResourceState.Ready;
@@ -42,7 +42,7 @@ namespace ResourceManagement.Loaders
             handle.Swap();
         }
 
-        private void RendererUnload(ResourceHandle handle)
+        private void ThreadUnload(ResourceHandle handle)
         {
             doUnload(handle.inactive.resource);
 
@@ -81,7 +81,7 @@ namespace ResourceManagement.Loaders
                 {
                     try
                     {
-                        RendererLoad(handle, res, data);
+                        ThreadLoad(handle, res, data);
                     }
                     catch (Exception)
                     {
@@ -113,7 +113,7 @@ namespace ResourceManagement.Loaders
                     {
                         try
                         {
-                            RendererLoad(handle, res, data);
+                            ThreadLoad(handle, res, data);
                         }
                         finally
                         {
@@ -143,7 +143,7 @@ namespace ResourceManagement.Loaders
                 {
                     try
                     {
-                        RendererUnload(handle);
+                        ThreadUnload(handle);
                     }
                     catch (Exception)
                     {
@@ -168,7 +168,7 @@ namespace ResourceManagement.Loaders
                 {
                     try
                     {
-                        RendererUnload(handle);
+                        ThreadUnload(handle);
                     }
                     catch (Exception)
                     {
@@ -194,7 +194,7 @@ namespace ResourceManagement.Loaders
                 {
                     try
                     {
-                        RendererUnload(handle);
+                        ThreadUnload(handle);
                     }
                     catch (Exception)
                     {
@@ -221,7 +221,7 @@ namespace ResourceManagement.Loaders
                 {
                     try
                     {
-                        RendererUnload(handle);
+                        ThreadUnload(handle);
                         evt.Finish();
                     }
                     catch (Exception)
