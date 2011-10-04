@@ -14,8 +14,10 @@ using LispInterpreter;
 
 namespace Graphics.Loaders.Mesh
 {
-    public class MeshLoader : ARendererLoader<MeshResource, bool>, IFileLoader
+    public class MeshLoader : ASingleThreadedLoader<MeshResource, bool>, IFileLoader
     {
+        Renderer renderer;
+
         Interpreter interpreter = new Interpreter();
                 
         public ResourceNameConverter Converter
@@ -26,8 +28,9 @@ namespace Graphics.Loaders.Mesh
         private readonly ResourceNameConverter converter =
             new ResourceNameConverter(@"data\meshes\", @".mesh");
 
-        public MeshLoader(Renderer renderer) : base(renderer)
+        public MeshLoader(Renderer renderer) : base(renderer.commandQueue)
         {
+            this.renderer = renderer;
             interpreter.Load(typeof(MeshBuiltins));
         }
 

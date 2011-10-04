@@ -7,6 +7,6 @@ namespace ResourceManagement
 {
     public interface IAsyncExecutor
     {
-        void Execute(Action command);
+        void Add(Action command);
     }
 }

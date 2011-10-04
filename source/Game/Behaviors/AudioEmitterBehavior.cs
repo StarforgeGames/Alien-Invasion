@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Game.EventManagement.Events;
 using Game.Entities;
+using ResourceManagement;
 
 namespace Game.Behaviors
 {
@@ -17,8 +18,8 @@ namespace Game.Behaviors
 		public AudioEmitterBehavior(Entity entity)
 			: base(entity)
 		{
-			entity.AddAttribute(Key_CreateEntitySound, new Attribute<string>(String.Empty));
-			entity.AddAttribute(Key_DestroyEntitySound, new Attribute<string>(String.Empty));
+			entity.AddAttribute(Key_CreateEntitySound, new Attribute<ResourceHandle>(null));
+			entity.AddAttribute(Key_DestroyEntitySound, new Attribute<ResourceHandle>(null));
 
 			initializeHandledEventTypes();
 		}
@@ -48,8 +49,8 @@ namespace Game.Behaviors
 						break;
 					}
 
-					Attribute<string> sound = entity[Key_CreateEntitySound];
-					if (String.IsNullOrEmpty(sound.Value)) {
+					Attribute<ResourceHandle> sound = entity[Key_CreateEntitySound];
+					if (sound.Value == null) {
 						break;
 					}
 
@@ -62,8 +63,8 @@ namespace Game.Behaviors
 						break;
 					}
 
-					Attribute<string> sound = entity[Key_DestroyEntitySound];
-					if (String.IsNullOrEmpty(sound.Value)) {
+                    Attribute<ResourceHandle> sound = entity[Key_DestroyEntitySound];
+                    if (sound.Value == null) {
 						break;
 					}
 

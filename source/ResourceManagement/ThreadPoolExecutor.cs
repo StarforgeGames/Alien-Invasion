@@ -9,7 +9,7 @@ namespace ResourceManagement
     {
         #region IAsyncExecutor Members
 
-        public void Execute(Action command)
+        public void Add(Action command)
         {
             System.Threading.ThreadPool.QueueUserWorkItem((object a) =>
             {

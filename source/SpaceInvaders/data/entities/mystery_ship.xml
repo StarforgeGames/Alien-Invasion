@@ -17,10 +17,10 @@
 		
 		<Resource key="Material" type="material" name="mystery_ship"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
+    <Resource key="DestroyEntitySound" type="audio" name="explosion"/>
 		<float key="Speed">200</float>
 		<bool key="RespectsBoundary">false</bool>
 		<string key="Faction">ai</string>
 		<int key="PointsAwarded">500</int>
-		<string key="DestroyEntitySound">data\audio\explosion.mp3</string>
 	</attributes>
 </Entity>

@@ -14,6 +14,7 @@ using Graphics.Loaders.Mesh;
 using ResourceManagement.Loaders;
 using SpaceInvaders.Controls;
 using SpaceInvaders.Input;
+using Audio.Loaders;
 
 namespace SpaceInvaders.Views
 {
@@ -27,7 +28,7 @@ namespace SpaceInvaders.Views
         private Extractor extractor;
         public Form RenderForm { get; private set; }
 
-        private IAudioPlayer audioPlayer;
+        private DefaultAudioPlayer audioPlayer;
 
         private GameMainMenu mainMenuControl;
         private PauseScreen pauseControl;
@@ -46,6 +47,7 @@ namespace SpaceInvaders.Views
         private PlayerController playerController;
 
         private List<IResourceLoader> rendererLoaders = new List<IResourceLoader>();
+        private SoundLoader soundLoader;
 
         public PlayerView(GameLogic game)
         {
@@ -69,11 +71,11 @@ namespace SpaceInvaders.Views
             extractor = new Extractor(game);
             Renderer = new Graphics.Renderer(RenderForm, extractor);
             Renderer.StartRender();
-
+            
             rendererLoaders.Add(new TextureLoader(Renderer));
             rendererLoaders.Add(new MeshLoader(Renderer));
             rendererLoaders.Add(new EffectLoader(Renderer));
-
+            
             foreach (var rendererLoader in rendererLoaders)
             {
                 game.ResourceManager.AddLoader(rendererLoader);
@@ -86,6 +88,12 @@ namespace SpaceInvaders.Views
             * Initialize Audio Subsystem 
             **/
             audioPlayer = new DefaultAudioPlayer();
+            audioPlayer.Start();
+            soundLoader = new SoundLoader(audioPlayer);
+            game.ResourceManager.AddLoader(soundLoader);
+            
+            
+            
 
             /**
             * Initialize GUI 
@@ -263,6 +271,12 @@ namespace SpaceInvaders.Views
             Renderer.WaitForCompletion();
             
             Renderer.Dispose();
+
+            Game.ResourceManager.RemoveLoader(soundLoader.Type);
+            soundLoader.Dispose();
+
+            audioPlayer.Stop();
+            audioPlayer.Dispose();
         }
     }
 

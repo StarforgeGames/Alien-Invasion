@@ -36,7 +36,7 @@ namespace ResourceManagement.Loaders
 
         public void Load(ResourceHandle resourceHandle)
         {
-            executor.Execute(() =>
+            executor.Add(() =>
             {
                 loader.Load(resourceHandle);
             });
@@ -44,7 +44,7 @@ namespace ResourceManagement.Loaders
 
         public void Load(ResourceHandle resourceHandle, IEvent evt)
         {
-            executor.Execute(() =>
+            executor.Add(() =>
             {
                 loader.Load(resourceHandle, evt);
             });
@@ -52,7 +52,7 @@ namespace ResourceManagement.Loaders
 
         public void Reload(ResourceHandle resourceHandle)
         {
-            executor.Execute(() =>
+            executor.Add(() =>
             {
                 loader.Reload(resourceHandle);
             });
@@ -60,7 +60,7 @@ namespace ResourceManagement.Loaders
 
         public void Reload(ResourceHandle resourceHandle, IEvent evt)
         {
-            executor.Execute(() =>
+            executor.Add(() =>
             {
                 loader.Reload(resourceHandle, evt);
             });
@@ -68,7 +68,7 @@ namespace ResourceManagement.Loaders
 
         public void Unload(ResourceHandle resourceHandle)
         {
-            executor.Execute(() =>
+            executor.Add(() =>
             {
                 loader.Unload(resourceHandle);
             });
@@ -76,7 +76,7 @@ namespace ResourceManagement.Loaders
 
         public void Unload(ResourceHandle resourceHandle, IEvent evt)
         {
-            executor.Execute(() =>
+            executor.Add(() =>
             {
                 loader.Unload(resourceHandle, evt);
             });

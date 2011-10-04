@@ -88,6 +88,7 @@
     <Compile Include="IEvent.cs" />
     <Compile Include="ILoader.cs" />
     <Compile Include="Loaders\ABasicLoader.cs" />
+    <Compile Include="Loaders\ASingleThreadedLoader.cs" />
     <Compile Include="Loaders\AsyncLoader.cs" />
     <Compile Include="Loaders\DummyLoader.cs" />
     <Compile Include="Loaders\IFileLoader.cs" />
