@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ResourceManagement;
 
 namespace Audio
 {
     public interface IAudioPlayer
     {
-        void PlaySound(string resourceID);
+        void PlaySound(ResourceHandle handle);
     }
 }

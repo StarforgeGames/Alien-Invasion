@@ -2,10 +2,11 @@
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
+using ResourceManagement;
 
 namespace Graphics
 {
-    public class CommandQueue
+    public class CommandQueue : IAsyncExecutor
     {
         ConcurrentQueue<Action> queue = new ConcurrentQueue<Action>();
         

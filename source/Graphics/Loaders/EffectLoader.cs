@@ -12,8 +12,10 @@ using Graphics.Resources;
 
 namespace Graphics.Loaders
 {
-    public class EffectLoader : ARendererLoader<EffectResource, byte[]>, IFileLoader
+    public class EffectLoader : ASingleThreadedLoader<EffectResource, byte[]>, IFileLoader
     {
+        Renderer renderer;
+
         public ResourceNameConverter Converter
         {
             get { return converter; }
@@ -22,8 +24,9 @@ namespace Graphics.Loaders
         private readonly ResourceNameConverter converter =
             new ResourceNameConverter(@"data\shaders\", @".fx");
 
-        public EffectLoader(Renderer renderer) : base(renderer)
+        public EffectLoader(Renderer renderer) : base(renderer.commandQueue)
         {
+            this.renderer = renderer;
         }
 
         protected override EffectResource ReadResourceWithName(string name, out byte[] data)

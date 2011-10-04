@@ -3,74 +3,99 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FMOD;
+using ResourceManagement;
+using Audio.Resources;
+using System.Threading;
+using System.Runtime.InteropServices;
 
 namespace Audio
 {
     public class DefaultAudioPlayer : IAudioPlayer, IDisposable
     {
         private FMOD.System system;
-        private FMOD.Channel channel1;
-        private FMOD.Channel channel2;
-        private FMOD.Channel channel3;
+        private FMOD.Channel[] channels;
+        private int currentChannel = 0;
 
-        // TO-DO: Use ResourceManager for Sounds
-        private FMOD.Sound alienShot;
-        private FMOD.Sound playerShot;
-        private FMOD.Sound explosion;
-        
-        private bool isPlaying = false;
+        private Thread audioThread;
+
+        private BlockingCommandQueue queue = new BlockingCommandQueue();
+
+        private const int ChannelCount = 32;
+        private bool isRunning = false;
 
         public DefaultAudioPlayer()
         {
-            initialize();
-        }
-
-        private void initialize() 
-        {
             RESULT result = FMOD.Factory.System_Create(ref system);
-            system.init(32, FMOD.INITFLAGS.NORMAL, (IntPtr)null);
+            system.init(ChannelCount, FMOD.INITFLAGS.NORMAL, (IntPtr)null);
+            channels = new Channel[ChannelCount];
 
-            // TO-DO: Use ResourceManager for Sounds
-            system.createSound(@"data\audio\alien_shot.mp3", FMOD.MODE.HARDWARE, ref alienShot);
-            system.createSound(@"data\audio\player_shot.mp3", FMOD.MODE.HARDWARE, ref playerShot);
-            system.createSound(@"data\audio\explosion.mp3", FMOD.MODE.HARDWARE, ref explosion);
+            audioThread = new Thread(audioLoop);
+            audioThread.Name = "Audio";
         }
 
-        public void PlaySound(string resourceID)
-        {                    
-            switch (resourceID) {
-                case @"data\audio\alien_shot.mp3": {
-                    system.playSound(FMOD.CHANNELINDEX.REUSE, alienShot, false, ref channel1);
-                        break;
-                    }
-                case @"data\audio\player_shot.mp3": {
-                    system.playSound(FMOD.CHANNELINDEX.REUSE, playerShot, false, ref channel2);
-                        break;
-                    }
-                case @"data\audio\explosion.mp3": {
-                    system.playSound(FMOD.CHANNELINDEX.REUSE, explosion, false, ref channel3);
-                    break;
-                }
+        public void Start()
+        {
+            isRunning = true;
+            audioThread.Start();
+        }
+
+        public void Stop()
+        {
+            isRunning = false;
+            queue.Cancel();
+
+        }
+
+        private void audioLoop()
+        {
+            while (isRunning)
+            {
+                queue.Execute();
             }
+        }
+
+
+        public void PlaySound(ResourceHandle handle)
+        {
+            Queue.Add(() =>
+                {
+                    using (var resource = (SoundResource)handle.Acquire())
+                    {
+                        system.playSound(FMOD.CHANNELINDEX.REUSE, resource.Sound, false, ref channels[currentChannel]);
+                    }
+                    currentChannel = (currentChannel + 1) % ChannelCount;
+                });
+        }
+
+        internal Sound CreateSoundFrom(byte[] data)
+        {
+            Sound sound = null;
+            CREATESOUNDEXINFO info = new CREATESOUNDEXINFO();
+            info.cbsize = Marshal.SizeOf(info);
+            info.length = (uint)data.Length;
+            //info.format = SOUND_FORMAT.MPEG;
+
+            RESULT res = system.createSound(data, MODE.HARDWARE | MODE.OPENMEMORY, ref info, ref sound); // hier läufts schief, muss ich mal schaun
+            return sound;
         }
 
         public void Dispose()
         {
+            Stop();
+            audioThread.Join();
             FMOD.RESULT result;
-
-            if (alienShot != null) {
-                result = alienShot.release();
-            }
-            if (playerShot != null) {
-                result = playerShot.release();
-            }
-            if (explosion != null) {
-                result = explosion.release();
-            }
 
             if (system != null) {
                 result = system.close();
                 result = system.release();
+            }
+        }
+
+        public IAsyncExecutor Queue 
+        {
+            get
+            {
+                return queue;
             }
         }
     }

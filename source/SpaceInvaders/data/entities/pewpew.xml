@@ -10,11 +10,13 @@
 	<attributes>
 		<Resource key="Material" type="material" name="pewpew"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
+    <Resource key="CreateEntitySound" type="audio" name="player_shot"/>
 		<float key="Speed">400</float>
 		<Vector2D key="MoveDirection">
 			<x>0</x>
 			<y>1</y>
 		</Vector2D>
-		<string key="CreateEntitySound">data\audio\player_shot.mp3</string>
+    <!--
+		<string key="CreateEntitySound">data\audio\player_shot.mp3</string>-->
 	</attributes>
 </Entity>

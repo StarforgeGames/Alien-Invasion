@@ -93,7 +93,6 @@
     <Compile Include="CommandQueue.cs" />
     <Compile Include="Counter.cs" />
     <Compile Include="Loaders\AnimationLoader.cs" />
-    <Compile Include="Loaders\ARendererLoader.cs" />
     <Compile Include="Loaders\EffectLoader.cs" />
     <Compile Include="Loaders\Material\MaterialBuiltins.cs" />
     <Compile Include="Loaders\Material\MaterialLoader.cs" />

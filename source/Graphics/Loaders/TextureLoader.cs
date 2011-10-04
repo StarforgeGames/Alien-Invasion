@@ -11,8 +11,10 @@ using Graphics.Resources;
 
 namespace Graphics.Loaders
 {
-    public class TextureLoader : ARendererLoader<TextureResource, byte[]>, IFileLoader
+    public class TextureLoader : ASingleThreadedLoader<TextureResource, byte[]>, IFileLoader
     {
+        Renderer renderer;
+
         public ResourceNameConverter Converter
         {
             get { return converter; }
@@ -38,8 +40,9 @@ namespace Graphics.Loaders
             ((TextureResource)resource).texture.Dispose();
         }
 
-        public TextureLoader(Renderer renderer) : base(renderer)
+        public TextureLoader(Renderer renderer) : base(renderer.commandQueue)
         {
+            this.renderer = renderer;
         }
 
         public override string Type

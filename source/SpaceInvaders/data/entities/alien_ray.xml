@@ -17,11 +17,11 @@
 		</Vector2D>
 		<Resource key="Material" type="material" name="alien_ray"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
+    <Resource key="DestroyEntitySound" type="audio" name="explosion"/>
 		<float key="Speed">40</float>
 		<float key="FiringSpeed">1.15</float>
 		<string key="ProjectileType">pewpew_alien</string>
 		<string key="Faction">ai</string>
 		<int key="PointsAwarded">100</int>
-		<string key="DestroyEntitySound">data\audio\explosion.mp3</string>
 	</attributes>
 </Entity>

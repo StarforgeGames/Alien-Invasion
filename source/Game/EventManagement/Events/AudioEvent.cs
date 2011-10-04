@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ResourceManagement;
 
 namespace Game.EventManagement.Events
 {
@@ -11,10 +12,10 @@ namespace Game.EventManagement.Events
         public const string PLAY_SOUND = "play_sound";
         public const string STOP_SOUND = "stop_sound";
 
-        public string SoundResource { get; set; }
+        public ResourceHandle SoundResource { get; private set; }
         public int EntityID { get; set; }
 
-        public AudioEvent(string type, int entityID, string soundResource)
+        private AudioEvent(string type, int entityID, ResourceHandle soundResource)
             : base(type)
         {
             this.EntityID = entityID;
@@ -27,12 +28,12 @@ namespace Game.EventManagement.Events
                 + EntityID + "]";
         }
 
-        public static AudioEvent PlaySound(int entityID, string soundResource)
+        public static AudioEvent PlaySound(int entityID, ResourceHandle soundResource)
         {
             return new AudioEvent(PLAY_SOUND, entityID, soundResource);
         }
 
-        public static AudioEvent StopSound(int entityID, string soundResource)
+        public static AudioEvent StopSound(int entityID, ResourceHandle soundResource)
         {
             return new AudioEvent(STOP_SOUND, entityID, soundResource);
         }

@@ -3,22 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using SlimDX.Direct3D10;
 using ResourceManagement;
-using ResourceManagement.Loaders;
 using ResourceManagement.Resources;
-using Graphics;
 
-namespace Graphics.Loaders
+namespace ResourceManagement.Loaders
 {
-    public abstract class ARendererLoader<ResType, Intermediate> : IResourceLoader, IDisposable
+    public abstract class ASingleThreadedLoader<ResType, Intermediate> : IResourceLoader, IDisposable
     {
-        protected Renderer renderer;
+        protected IAsyncExecutor queue;
         ResourceHandle defaultResource;
 
-        public ARendererLoader(Renderer renderer)
+        public ASingleThreadedLoader(IAsyncExecutor queue)
         {
-            this.renderer = renderer;
+            this.queue = queue;
         }
 
         abstract protected ResType ReadResourceWithName(string name, out Intermediate data);
@@ -80,7 +77,7 @@ namespace Graphics.Loaders
             {
                 Intermediate data;
                 ResType res = ReadResourceWithName(handle.Name, out data);
-                renderer.commandQueue.Add(() =>
+                queue.Add(() =>
                 {
                     try
                     {
@@ -110,7 +107,7 @@ namespace Graphics.Loaders
             {
                 Intermediate data;
                 ResType res = ReadResourceWithName(handle.Name, out data);
-                renderer.commandQueue.Add(() =>
+                queue.Add(() =>
                 {
                     try
                     {
@@ -142,7 +139,7 @@ namespace Graphics.Loaders
         {
             try
             {
-                renderer.commandQueue.Add(() =>
+                queue.Add(() =>
                 {
                     try
                     {
@@ -167,7 +164,7 @@ namespace Graphics.Loaders
         {
             try
             {
-                renderer.commandQueue.Add(() =>
+                queue.Add(() =>
                 {
                     try
                     {
@@ -193,7 +190,7 @@ namespace Graphics.Loaders
         {
             try
             {
-                renderer.commandQueue.Add(() =>
+                queue.Add(() =>
                 {
                     try
                     {
@@ -220,7 +217,7 @@ namespace Graphics.Loaders
         {
             try
             {
-                renderer.commandQueue.Add(() =>
+                queue.Add(() =>
                 {
                     try
                     {
@@ -256,7 +253,7 @@ namespace Graphics.Loaders
             {
                 IEvent evt = new BasicEvent();
 
-                renderer.commandQueue.Add(() =>
+                queue.Add(() =>
                 {
                     defaultResource.Unload(evt);
                     defaultResource = null;
