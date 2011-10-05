@@ -35,8 +35,13 @@ namespace Game.Behaviors
                 return;
             }
 
-            // TODO: Start Death Animation explicitly, not just any animation
-            eventManager.QueueEvent(AnimationEvent.Play(entity.ID));
+            Attribute<bool> hasDeathAnimation = entity[Key_HasDeathAnimation];
+            if (hasDeathAnimation)
+            {
+                Attribute<ResourceHandle> deathAnimation = entity[Key_DeathAnimation];
+                // TODO: Start Death Animation explicitly, not just any animation
+                eventManager.QueueEvent(AnimationEvent.Play(entity.ID));
+            }
         }
 
         public override void OnEvent(Event evt)

@@ -62,6 +62,7 @@ namespace SpaceInvaders.Views
             RenderForm.Text = "Alien Invasion v0.9";
             RenderForm.BackColor = Color.Empty;
             RenderForm.KeyPreview = true;
+            RenderForm.FormBorderStyle = FormBorderStyle.FixedSingle;   // Disable resizing of window
 
             gameController = new GameController(EventManager);
             RenderForm.KeyDown += new KeyEventHandler(gameController.OnKeyDown);
@@ -170,7 +171,15 @@ namespace SpaceInvaders.Views
             switch (evt.Type) {
                 case AudioEvent.PLAY_SOUND: {
                     AudioEvent audioEvent = (AudioEvent)evt;
-                    audioPlayer.PlaySound(audioEvent.SoundResource);
+                    //audioEvent.SoundResource.Acquire(); // Workaround, else sound will not be played the first time
+                    if (audioEvent.Loop)
+                    {
+                        audioPlayer.StartLoopingSound(audioEvent.SoundResource);
+                    }
+                    else
+                    {
+                        audioPlayer.PlaySound(audioEvent.SoundResource);
+                    }
                     break;
                 }
                 case NewEntityEvent.NEW_ENTITY: {
@@ -186,6 +195,10 @@ namespace SpaceInvaders.Views
                         Entity entity = Game.World.Entities[destroyEntityEvent.EntityID];
                         if (entity.Type == "player") {
                             OnDetach();
+                        }
+                        else if (entity.Type == "mystery_ship")
+                        {
+                            audioPlayer.StopLoopingSound();
                         }
                         break;
                     }
@@ -260,10 +273,10 @@ namespace SpaceInvaders.Views
             foreach (var rendererLoader in rendererLoaders) {
                 Game.ResourceManager.RemoveLoader(rendererLoader.Type);
 
-                if (rendererLoader is IDisposable) {
+                if (rendererLoader is IDisposable) 
+                {
                     ((IDisposable)rendererLoader).Dispose();
                 }
-
             }
 
             Renderer.StopHandleCommands();

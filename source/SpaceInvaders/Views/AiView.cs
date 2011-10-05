@@ -160,6 +160,7 @@ namespace SpaceInvaders.Views
                     }
                     else if (entity.Type.Equals("mystery_ship")) {
                         mysteryShip = null;
+
                     }
                     break;
                 }

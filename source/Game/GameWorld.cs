@@ -21,9 +21,12 @@ namespace Game
         public EntityFactory EntityFactory { get; private set; }
         public Dictionary<int, Entity> Entities { get; private set; }
 
-        private List<Entity> entitiesToRemove = new List<Entity>();
-        private List<Entity> entitiesCurrentlyDying = new List<Entity>();
-        private List<Entity> entitiesToAdd = new List<Entity>();
+        private readonly int NumOfRemoveQueues = 2;
+        private List<Entity>[] entityRemoveQueues;
+        private List<Entity> entityDyingQueue = new List<Entity>();
+        private List<Entity> entityAddQueue = new List<Entity>();
+
+        private int activeRemoveQueue;
 
         public GameWorld(GameLogic gameLogic, int worldWidth, int worldHeight)
         {
@@ -36,6 +39,12 @@ namespace Game
             EntityFactory = new EntityFactory(gameLogic);
             Entities = new Dictionary<int, Entity>();
 
+            entityRemoveQueues = new List<Entity>[NumOfRemoveQueues];
+            for (int i = 0; i < NumOfRemoveQueues; i++)
+            {
+                entityRemoveQueues[i] = new List<Entity>();
+            }
+
             registerGameEventListeners();
         }
 
@@ -47,6 +56,9 @@ namespace Game
 
         public void Update(float deltaTime)
         {
+            activeRemoveQueue = (activeRemoveQueue + 1) % NumOfRemoveQueues;
+
+            // Remove entities before updating the game logic, else dead entities can mess collision detection up.
             addNewEntities();
             checkDyingEntities();
             destroyEntities();
@@ -58,7 +70,7 @@ namespace Game
 
         private void addNewEntities()
         {
-            foreach (Entity entity in entitiesToAdd) {
+            foreach (Entity entity in entityAddQueue) {
                 Entities.Add(entity.ID, entity);
 
                 NewEntityEvent newEntityEvent = new NewEntityEvent(NewEntityEvent.NEW_ENTITY, entity.ID);
@@ -67,25 +79,25 @@ namespace Game
                 System.Console.WriteLine("[" + this.GetType().Name + "] Added entity " + entity);
             }
 
-            entitiesToAdd.Clear();
+            entityAddQueue.Clear();
         }
 
         private void destroyEntities()
         {
-            foreach (Entity entity in entitiesToRemove) {
+            foreach (Entity entity in entityRemoveQueues[activeRemoveQueue]) {
                 Entities.Remove(entity.ID);
                 System.Console.WriteLine("[" + this.GetType().Name + "] Destroyed entity #" + entity.ID);
             }
 
-            entitiesToRemove.Clear();
+            entityRemoveQueues[activeRemoveQueue].Clear();
         }
 
         private void checkDyingEntities()
         {
-            List<Entity> deadEntites = entitiesCurrentlyDying.FindAll(e => e.State == EntityState.Dead);
-            entitiesToRemove.AddRange(deadEntites);
+            List<Entity> deadEntites = entityDyingQueue.FindAll(e => e.State == EntityState.Dead);
+            entityRemoveQueues[activeRemoveQueue].AddRange(deadEntites);
 
-            entitiesCurrentlyDying.RemoveAll(e => e.State == EntityState.Dead);
+            entityDyingQueue.RemoveAll(e => e.State == EntityState.Dead);
         }
 
         public void Initialize()
@@ -96,8 +108,11 @@ namespace Game
 
         public void Reset()
         {
-            entitiesToAdd.Clear();
-            entitiesToRemove.Clear();
+            entityAddQueue.Clear();
+            foreach (List<Entity> queue in entityRemoveQueues)
+            {
+                queue.Clear();
+            }            
 
             Entities.Clear();
         }
@@ -166,7 +181,7 @@ namespace Game
         private void addEntity(string id, Dictionary<string, object> attributes = null)
         {
             Entity entity = EntityFactory.New(id, attributes);
-            entitiesToAdd.Add(entity);
+            entityAddQueue.Add(entity);
         }
 
         private void removeEntity(int entityID)
@@ -179,12 +194,12 @@ namespace Game
             Attribute<bool> hasDeathAnimation = entity[DyingBehavior.Key_HasDeathAnimation];
             if (hasDeathAnimation != null && hasDeathAnimation)
             {
-                entitiesCurrentlyDying.Add(entity);
+                entityDyingQueue.Add(entity);
             }
             else
             {
                 entity.State = EntityState.Dead;
-                entitiesToRemove.Add(entity);
+                entityRemoveQueues[activeRemoveQueue].Add(entity);
             }
         }
 

@@ -43,7 +43,6 @@ namespace Game
                     continue;
                 }
 
-                // TODO: Use skippy, the kangaroo
                 foreach (Entity other in collidables) {
                     if (entity.ID == other.ID || other.IsDead) {
                         continue;
