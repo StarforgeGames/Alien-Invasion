@@ -12,6 +12,8 @@ using Graphics.Resources;
 using System.Collections.Generic;
 using ResourceManagement;
 using System.Runtime.InteropServices;
+using System.Collections.Concurrent;
+using Utility.Threading;
 
 namespace Graphics
 {
@@ -255,7 +257,8 @@ namespace Graphics
 
         long lastTick;
         long tickFrequency;
-        private Rectangle debugRect = new Rectangle(10, 10, 100, 20);
+        private Rectangle debugFPSRect = new Rectangle(10, 10, 100, 20);
+        private Rectangle debugRenderTimeRect = new Rectangle(10, 30, 150, 20);
         private Color4 debugColor = new Color4(255.0f, 1.0f, 1.0f, 255.0f);
 
         private void renderLoop()
@@ -276,7 +279,7 @@ namespace Graphics
                 {
                     if (HandleCommands)
                     {
-                        executeCommands();
+                        commandQueue.TryExecute(CommandsPerFrame);
                     }
 
                     if (IsRendering)
@@ -306,14 +309,6 @@ namespace Graphics
             
         }
 
-        private void executeCommands()
-        {
-            if (!commandQueue.Empty)
-            {
-                commandQueue.Execute(CommandsPerFrame);
-            }
-        }
-
         private void render()
         {
             clearRenderTargets();
@@ -326,7 +321,7 @@ namespace Graphics
                 using (MeshResource mesh = (MeshResource)obj.Key.Acquire())
                 {
                     device.InputAssembler.SetPrimitiveTopology(mesh.primitiveTopology);
-                    
+
                     device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(mesh.vertexBuffer, mesh.elementSize, 0));
                     device.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(instanceBuffer, 16 * 4 + sizeof(float), 0));
                     if (mesh.indexed)
@@ -429,22 +424,13 @@ namespace Graphics
                     }
                 }
             }
+            calcPerformanceMetrics();
             renderDebugOutput();
 
-
-            
             swapChain.Present(0, PresentFlags.None);         
         }
 
-        private void clearRenderTargets()
-        {
-            foreach (var view in views)
-            {
-                device.ClearRenderTargetView(view, Color.Black);    
-            }
-        }
-
-        private void renderDebugOutput()
+        private void calcPerformanceMetrics()
         {
             long tick;
             QueryPerformanceCounter(out tick);
@@ -456,12 +442,37 @@ namespace Graphics
                 diff = 1;
             }
 
-            debugFont.Draw(
-                null, 
-                "fps: " + (tickFrequency / diff).ToString(),
-                debugRect,
-                FontDrawFlags.Left, 
-                debugColor);
+            DebugOutput["fps"] = (tickFrequency / diff).ToString();
+            DebugOutput["render time"] = (diff * 1000000 / tickFrequency).ToString() + " µs";
+        }
+
+        private void clearRenderTargets()
+        {
+            foreach (var view in views)
+            {
+                device.ClearRenderTargetView(view, Color.Black);    
+            }
+        }
+
+        public readonly ConcurrentDictionary<string, string> DebugOutput = new ConcurrentDictionary<string, string>();
+
+        private void renderDebugOutput()
+        {
+            int i = 0;
+            foreach (var item in DebugOutput)
+            {
+                int y = (i * 20 + 30) % renderFrame.ClientSize.Height - 20;
+                int x = (i * 20 + 30) / renderFrame.ClientSize.Height;
+
+                var rect = new Rectangle(10 + x * 200, y , 200, 20);
+                debugFont.Draw(
+                    null,
+                    item.Key + ": " + item.Value,
+                    rect,
+                    FontDrawFlags.Left,
+                    debugColor);
+                ++i;
+            }
         }
 
         public void WaitForCompletion()

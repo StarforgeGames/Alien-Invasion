@@ -136,6 +136,7 @@ namespace SpaceInvaders.Views
 
         public void OnUpdate(float deltaTime)
         {
+            Renderer.DebugOutput["cycle time"] = string.Format("{0:0} µs", deltaTime * 1000000.0f);
             extractor.OnUpdate(deltaTime);
         }
 

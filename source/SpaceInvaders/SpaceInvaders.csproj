@@ -395,6 +395,10 @@
       <Project>{5B991C83-B0B6-4736-9DB7-7AFC2A6B81E6}</Project>
       <Name>ResourceManagement</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{05683535-F9B9-4050-8C7F-8AE57A761022}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
