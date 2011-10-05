@@ -5,6 +5,7 @@ using System.Text;
 using FMOD;
 using ResourceManagement;
 using Audio.Resources;
+using Utility.Threading;
 using System.Threading;
 using System.Runtime.InteropServices;
 
@@ -18,7 +19,7 @@ namespace Audio
 
         private Thread audioThread;
 
-        private BlockingCommandQueue queue = new BlockingCommandQueue();
+        private CommandQueue queue = new CommandQueue();
 
         private const int ChannelCount = 32;
         private bool isRunning = false;
