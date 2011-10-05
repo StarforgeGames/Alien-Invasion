@@ -82,13 +82,8 @@ namespace Game
 
         private void checkDyingEntities()
         {
-            foreach (Entity entity in entitiesCurrentlyDying)
-            {
-                if (entity.State == EntityState.Dead)
-                {
-                    entitiesToRemove.Add(entity);
-                }
-            }
+            List<Entity> deadEntites = entitiesCurrentlyDying.FindAll(e => e.State == EntityState.Dead);
+            entitiesToRemove.AddRange(deadEntites);
 
             entitiesCurrentlyDying.RemoveAll(e => e.State == EntityState.Dead);
         }
