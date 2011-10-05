@@ -42,11 +42,13 @@ namespace Game.Behaviors
             damageReceivedSinceLastUpdate.Clear();
 
             Attribute<bool> isRespawning = entity[Key_IsRespawning];
-            if (isRespawning) {
+            if (isRespawning) 
+            {
                 elapsedTime += deltaTime;
                 Attribute<float> respawnTime = entity[Key_RespawnTime];
 
-                if (elapsedTime >= respawnTime) {
+                if (elapsedTime >= respawnTime) 
+                {
                     respawn(ref isRespawning);
                 }
             }
@@ -55,31 +57,33 @@ namespace Game.Behaviors
 
         private void handleDamage(DamageEvent evt)
         {
-            if (entity.IsDead) {
+            if (entity.IsDead) 
+            {
                 return;
             }
 
             Attribute<int> health = entity[Key_Health];
             health.Value -= evt.Damage;
 
-            if (health <= 0) {
+            if (health <= 0) 
+            {
                 Attribute<int> lifes = entity[Key_Lifes];
                 lifes.Value -= 1;
-                entity.State = EntityState.Dead;
+                entity.State = EntityState.Dying;
 
-                if (lifes <= 0) {
+                if (lifes <= 0) 
+                {
                     Entity projectile = entity.Game.World.Entities[evt.SourceEntityID];
                     Attribute<Entity> projectileOwner = projectile[ProjectileBehavior.Key_ProjectileOwner]
                         as Attribute<Entity>;
 
                     int destroyedByEntityID = projectile.ID;
-                    if (projectileOwner != null) {
+                    if (projectileOwner != null) 
+                    {
                         destroyedByEntityID = projectileOwner.Value.ID;
                     }
 
-                    // Needs to be triggered instantly, else Entity won't have a chance to react to its own death,
-                    // issuing death animation, sounds, etc. ...
-                    eventManager.Trigger(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, entity.ID,
+                    eventManager.QueueEvent(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, entity.ID,
                         destroyedByEntityID));
                     Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type + " died a horrible "
                         + "death!");
@@ -114,8 +118,14 @@ namespace Game.Behaviors
 
         public override void OnEvent(Event evt)
         {
-            switch (evt.Type) {
-                case DamageEvent.RECEIVE_DAMAGE: {
+            switch (evt.Type) 
+            {
+                case DamageEvent.RECEIVE_DAMAGE:
+                {
+                    if (entity.IsDead) 
+                    {
+                        break;
+                    }
                     DamageEvent msg = (DamageEvent)evt;
                     damageReceivedSinceLastUpdate.Add(msg);
 

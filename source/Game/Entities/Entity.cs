@@ -13,6 +13,7 @@ namespace Game.Entities
     public enum EntityState
     {
         Active,
+        Dying,
         Dead
     }
 
@@ -21,7 +22,7 @@ namespace Game.Entities
         public EntityState State { get; set; }
         public string Type { get; private set; }
 
-        public bool IsDead { get { return State == EntityState.Dead; } }
+        public bool IsDead { get { return State == EntityState.Dead || State == EntityState.Dying; } }
 
         public int ID { get { return id; } }
         private static int nextEntityID;

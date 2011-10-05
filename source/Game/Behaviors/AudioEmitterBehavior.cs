@@ -54,7 +54,7 @@ namespace Game.Behaviors
 						break;
 					}
 
-					audioEvent =  AudioEvent.PlaySound(entity.ID, sound.Value);
+					audioEvent = AudioEvent.PlaySound(entity.ID, sound.Value);
 					break;
 				}
 				case DestroyEntityEvent.DESTROY_ENTITY: {

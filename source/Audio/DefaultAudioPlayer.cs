@@ -12,13 +12,17 @@ namespace Audio
 {
     public class DefaultAudioPlayer : IAudioPlayer, IDisposable
     {
+        public IAsyncExecutor Queue
+        {
+            get { return queue; }
+        }
+        private BlockingCommandQueue queue = new BlockingCommandQueue();
+
         private FMOD.System system;
         private FMOD.Channel[] channels;
         private int currentChannel = 0;
 
         private Thread audioThread;
-
-        private BlockingCommandQueue queue = new BlockingCommandQueue();
 
         private const int ChannelCount = 32;
         private bool isRunning = false;
@@ -67,6 +71,16 @@ namespace Audio
                 });
         }
 
+        public void StartLoopingSound(ResourceHandle handle)
+        {
+
+        }
+
+        public void StopLoopingSound(ResourceHandle handle)
+        {
+
+        }
+
         internal Sound CreateSoundFrom(byte[] data)
         {
             Sound sound = null;
@@ -88,14 +102,6 @@ namespace Audio
             if (system != null) {
                 result = system.close();
                 result = system.release();
-            }
-        }
-
-        public IAsyncExecutor Queue 
-        {
-            get
-            {
-                return queue;
             }
         }
     }

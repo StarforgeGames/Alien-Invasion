@@ -9,5 +9,7 @@ namespace Audio
     public interface IAudioPlayer
     {
         void PlaySound(ResourceHandle handle);
+        void StartLoopingSound(ResourceHandle handle);
+        void StopLoopingSound(ResourceHandle handle);
     }
 }

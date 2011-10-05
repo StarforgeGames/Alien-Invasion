@@ -10,159 +10,188 @@ using Game.Behaviors;
 
 namespace Game
 {
-	public class GameWorld : IEventListener
-	{
-		public GameLogic Game { get; private set; }
-		public IEventManager EventManager { get; private set; }
+    public class GameWorld : IEventListener
+    {
+        public GameLogic Game { get; private set; }
+        public IEventManager EventManager { get; private set; }
 
-		public int Width { get; private set; }
-		public int Height { get; private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
 
-		public EntityFactory EntityFactory { get; private set; }
-		public Dictionary<int, Entity> Entities { get; private set; }
+        public EntityFactory EntityFactory { get; private set; }
+        public Dictionary<int, Entity> Entities { get; private set; }
 
-		private List<Entity> entitiesToRemove = new List<Entity>();
-		private List<Entity> entitiesToAdd = new List<Entity>();
+        private List<Entity> entitiesToRemove = new List<Entity>();
+        private List<Entity> entitiesCurrentlyDying = new List<Entity>();
+        private List<Entity> entitiesToAdd = new List<Entity>();
 
-		public GameWorld(GameLogic gameLogic, int worldWidth, int worldHeight)
-		{
-			this.Game = gameLogic;
-			this.EventManager = gameLogic.EventManager;
+        public GameWorld(GameLogic gameLogic, int worldWidth, int worldHeight)
+        {
+            this.Game = gameLogic;
+            this.EventManager = gameLogic.EventManager;
 
-			this.Width = worldWidth;
-			this.Height = worldHeight;
+            this.Width = worldWidth;
+            this.Height = worldHeight;
 
-			EntityFactory = new EntityFactory(gameLogic);
-			Entities = new Dictionary<int, Entity>();
+            EntityFactory = new EntityFactory(gameLogic);
+            Entities = new Dictionary<int, Entity>();
 
-			registerGameEventListeners();
-		}
+            registerGameEventListeners();
+        }
 
-		private void registerGameEventListeners()
-		{
-			EventManager.AddListener(this, typeof(CreateEntityEvent));
-			EventManager.AddListener(this, typeof(DestroyEntityEvent));
-		}
+        private void registerGameEventListeners()
+        {
+            EventManager.AddListener(this, typeof(CreateEntityEvent));
+            EventManager.AddListener(this, typeof(DestroyEntityEvent));
+        }
 
-		public void Update(float deltaTime)
-		{
-			addNewEntities();
-			destroyEntities();
+        public void Update(float deltaTime)
+        {
+            addNewEntities();
+            checkDyingEntities();
+            destroyEntities();
 
-			foreach (Entity entity in Entities.Values) {
-				entity.Update(deltaTime);
-			}
-		}
+            foreach (Entity entity in Entities.Values) {
+                entity.Update(deltaTime);
+            }
+        }
 
-		private void addNewEntities()
-		{
-			foreach (Entity entity in entitiesToAdd) {
-				Entities.Add(entity.ID, entity);
+        private void addNewEntities()
+        {
+            foreach (Entity entity in entitiesToAdd) {
+                Entities.Add(entity.ID, entity);
 
-				NewEntityEvent newEntityEvent = new NewEntityEvent(NewEntityEvent.NEW_ENTITY, entity.ID);
-				EventManager.QueueEvent(newEntityEvent);
+                NewEntityEvent newEntityEvent = new NewEntityEvent(NewEntityEvent.NEW_ENTITY, entity.ID);
+                EventManager.QueueEvent(newEntityEvent);
 
-				System.Console.WriteLine("[" + this.GetType().Name + "] Added entity " + entity);
-			}
+                System.Console.WriteLine("[" + this.GetType().Name + "] Added entity " + entity);
+            }
 
-			entitiesToAdd.Clear();
-		}
+            entitiesToAdd.Clear();
+        }
 
-		private void destroyEntities()
-		{
-			foreach (Entity entity in entitiesToRemove) {
-				Entities.Remove(entity.ID);
-				System.Console.WriteLine("[" + this.GetType().Name + "] Destroyed entity #" + entity.ID);
-			}
+        private void destroyEntities()
+        {
+            foreach (Entity entity in entitiesToRemove) {
+                Entities.Remove(entity.ID);
+                System.Console.WriteLine("[" + this.GetType().Name + "] Destroyed entity #" + entity.ID);
+            }
 
-			entitiesToRemove.Clear();
-		}
+            entitiesToRemove.Clear();
+        }
 
-		public void Initialize()
-		{
-			createAndInitializePlayer();
-			createAndInitializeAliens();
-		}
+        private void checkDyingEntities()
+        {
+            foreach (Entity entity in entitiesCurrentlyDying)
+            {
+                if (entity.State == EntityState.Dead)
+                {
+                    entitiesToRemove.Add(entity);
+                }
+            }
 
-		public void Reset()
-		{
-			entitiesToAdd.Clear();
-			entitiesToRemove.Clear();
+            entitiesCurrentlyDying.RemoveAll(e => e.State == EntityState.Dead);
+        }
 
-			Entities.Clear();
-		}
+        public void Initialize()
+        {
+            createAndInitializePlayer();
+            createAndInitializeAliens();
+        }
 
-		private void createAndInitializePlayer()
-		{
-			CreateEntityEvent evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, "player");
+        public void Reset()
+        {
+            entitiesToAdd.Clear();
+            entitiesToRemove.Clear();
 
-			float startX = Width / 2f - (75f / 2f);
-			float startY = 50;
-			Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(startX, startY));
-			evt.AddAttribute(SpatialBehavior.Key_Position, position);
-			Attribute<Vector2D> dimensions = new Attribute<Vector2D>(new Vector2D(75, 75));
-			evt.AddAttribute(SpatialBehavior.Key_Dimensions, dimensions);
+            Entities.Clear();
+        }
 
-			EventManager.QueueEvent(evt);
-		}
+        private void createAndInitializePlayer()
+        {
+            CreateEntityEvent evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, "player");
 
-		private void createAndInitializeAliens()
-		{
-			createRowOfAliens("alien_ray", Height - 80, 15, 48);
-			createRowOfAliens("alien_pincher", Height - 160, 12, 60);
-			createRowOfAliens("alien_pincher", Height - 240, 12, 60);
-			createRowOfAliens("alien_hammerhead", Height - 325, 8, 90);
-			createRowOfAliens("alien_hammerhead", Height - 410, 8, 90);
-		}
+            float startX = Width / 2f - (75f / 2f);
+            float startY = 50;
+            Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(startX, startY));
+            evt.AddAttribute(SpatialBehavior.Key_Position, position);
+            Attribute<Vector2D> dimensions = new Attribute<Vector2D>(new Vector2D(75, 75));
+            evt.AddAttribute(SpatialBehavior.Key_Dimensions, dimensions);
 
-		private void createRowOfAliens(string alienType, int posY, int number, int margin)
-		{
-			int posX = 160;
-			for (int i = 0; i < number; ++i) {
-				createAndInitializeAlien(alienType, posX, posY);
-				posX += margin;
-			}
-		}
+            EventManager.QueueEvent(evt);
+        }
 
-		private void createAndInitializeAlien(string type, float x, float y)
-		{
-			CreateEntityEvent evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, type);
+        private void createAndInitializeAliens()
+        {
+            createRowOfAliens("alien_ray", Height - 80, 15, 48);
+            createRowOfAliens("alien_pincher", Height - 160, 12, 60);
+            createRowOfAliens("alien_pincher", Height - 240, 12, 60);
+            createRowOfAliens("alien_hammerhead", Height - 325, 8, 90);
+            createRowOfAliens("alien_hammerhead", Height - 410, 8, 90);
+        }
 
-			Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(x, y));
-			evt.AddAttribute(SpatialBehavior.Key_Position, position);
+        private void createRowOfAliens(string alienType, int posY, int number, int margin)
+        {
+            int posX = 160;
+            for (int i = 0; i < number; ++i) {
+                createAndInitializeAlien(alienType, posX, posY);
+                posX += margin;
+            }
+        }
 
-			EventManager.QueueEvent(evt);
-		}
-		
-		public void OnEvent(Event evt)
-		{
-			switch (evt.Type) {
-				case CreateEntityEvent.CREATE_ENTITY:
-					CreateEntityEvent createEvent = evt as CreateEntityEvent;
-					addEntity(createEvent.EntityType, createEvent.Attributes);
-					break;
-				case DestroyEntityEvent.DESTROY_ENTITY:
-					DestroyEntityEvent destroyEvent = evt as DestroyEntityEvent;
-					removeEntity(destroyEvent.EntityID);
-					break;
-			}
-		}
+        private void createAndInitializeAlien(string type, float x, float y)
+        {
+            CreateEntityEvent evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, type);
 
-		private void addEntity(string id, Dictionary<string, object> attributes = null)
-		{
-			Entity entity = EntityFactory.New(id, attributes);
-			entitiesToAdd.Add(entity);
-		}
+            Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(x, y));
+            evt.AddAttribute(SpatialBehavior.Key_Position, position);
 
-		private void removeEntity(int entityID)
-		{
-			entitiesToRemove.Add(Entities[entityID]);
-		}
+            EventManager.QueueEvent(evt);
+        }
+        
+        public void OnEvent(Event evt)
+        {
+            switch (evt.Type)
+            {
+                case CreateEntityEvent.CREATE_ENTITY:
+                {
+                    CreateEntityEvent createEvent = evt as CreateEntityEvent;
+                    addEntity(createEvent.EntityType, createEvent.Attributes);
+                    break;
+                }
+                case DestroyEntityEvent.DESTROY_ENTITY:
+                {
+                    DestroyEntityEvent destroyEvent = evt as DestroyEntityEvent;
+                    removeEntity(destroyEvent.EntityID);
+                    break;
+                }
+            }
+        }
 
-		private void removeEntity(Entity entity)
-		{
-			entitiesToRemove.Add(entity);
-		}
+        private void addEntity(string id, Dictionary<string, object> attributes = null)
+        {
+            Entity entity = EntityFactory.New(id, attributes);
+            entitiesToAdd.Add(entity);
+        }
 
-	}
+        private void removeEntity(int entityID)
+        {
+            removeEntity(Entities[entityID]);
+        }
+
+        private void removeEntity(Entity entity)
+        {
+            Attribute<bool> hasDeathAnimation = entity[DyingBehavior.Key_HasDeathAnimation];
+            if (hasDeathAnimation != null && hasDeathAnimation)
+            {
+                entitiesCurrentlyDying.Add(entity);
+            }
+            else
+            {
+                entity.State = EntityState.Dead;
+                entitiesToRemove.Add(entity);
+            }
+        }
+
+    }
 }

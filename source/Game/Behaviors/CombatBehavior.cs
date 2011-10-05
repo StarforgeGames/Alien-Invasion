@@ -33,25 +33,32 @@ namespace Game.Behaviors
 
         public override void OnUpdate(float deltaTime)
         {
-            if (entity.IsDead) {
+            if (entity.IsDead) 
+            {
                 return;
             }
 
             Attribute<bool> isFiring = entity[Key_IsFiring];
             Attribute<bool> isSingleShot = entity[Key_IsSingleShot];
 
-            if (isFiring || isSingleShot) {
+            if (isFiring || isSingleShot) 
+            {
                 Attribute<float> firingSpeed = entity[Key_FiringSpeed];
                 Attribute<float> timeSinceLastShot = entity[Key_TimeSinceLastShot];
 
                 timeSinceLastShot.Value += deltaTime;
 
-                if (timeSinceLastShot >= firingSpeed || isSingleShot) {
+                if (timeSinceLastShot >= firingSpeed || isSingleShot) 
+                {
                     timeSinceLastShot.Value = 0.0f;
                     createProjectileAtCurrentPosition();
-                    startAnimation();
+                    if (entity.Type == "player")
+                    {
+                        startAnimation();
+                    }
 
-                    if (isSingleShot) {
+                    if (isSingleShot) 
+                    {
                         isSingleShot.Value = false;
                     }
 
@@ -91,28 +98,32 @@ namespace Game.Behaviors
 
         public override void OnEvent(Event evt)
         {
-            switch (evt.Type) {
-                case FireWeaponEvent.FIRE_SINGLE_SHOT: {
-                        Attribute<bool> isSingleShot = entity[Key_IsSingleShot];
-                        isSingleShot.Value = true;
+            switch (evt.Type) 
+            {
+                case FireWeaponEvent.FIRE_SINGLE_SHOT: 
+                {
+                    Attribute<bool> isSingleShot = entity[Key_IsSingleShot];
+                    isSingleShot.Value = true;
 
-                        break;
-                    }
-                case FireWeaponEvent.START_FIRING: {
-                        Attribute<bool> isFiring = entity[Key_IsFiring];
-                        isFiring.Value = true;
-                        break;
-                    }
-                case FireWeaponEvent.STOP_FIRING: {
-                        Attribute<bool> isFiring = entity[Key_IsFiring];
-                        isFiring.Value = false;
-
-                        // Set to firing speed so that a shot is immediately fired when the fire button is hit again
-                        Attribute<float> timeSinceLastShot = entity[Key_TimeSinceLastShot];
-                        Attribute<float> firingSpeed = entity[Key_FiringSpeed];
-                        timeSinceLastShot.Value += firingSpeed / 2;
-                        break;
-                    }
+                    break;
+                }
+                case FireWeaponEvent.START_FIRING: 
+                {
+                    Attribute<bool> isFiring = entity[Key_IsFiring];
+                    isFiring.Value = true;
+                    break;
+                }
+                case FireWeaponEvent.STOP_FIRING: 
+                {
+                    Attribute<bool> isFiring = entity[Key_IsFiring];
+                    isFiring.Value = false;
+                        
+                    // Allow that a shot can be fired faster when the fire button is hit again in rapid succession
+                    Attribute<float> timeSinceLastShot = entity[Key_TimeSinceLastShot];
+                    Attribute<float> firingSpeed = entity[Key_FiringSpeed];
+                    timeSinceLastShot.Value += firingSpeed / 2;
+                    break;
+                }
             }
         }
     }
