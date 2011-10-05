@@ -87,7 +87,7 @@ namespace Game.Behaviors
             }
 
             if (audioEvent != null) {
-                audioEvent.SoundResource.Acquire(); // Workaround: Acquire right away so sound is played first time
+                using (audioEvent.SoundResource.Acquire()) { }// Workaround: Acquire right away so sound is played first time
                 audioQueue.Add(audioEvent);
             }
         }
