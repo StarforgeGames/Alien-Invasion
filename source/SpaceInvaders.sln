@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging", "Logging\Logging.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Audio", "Audio\Audio.csproj", "{0AECEF08-A15D-46AE-AC07-540BAF489490}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{05683535-F9B9-4050-8C7F-8AE57A761022}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug - Software|Any CPU = Debug - Software|Any CPU
@@ -159,6 +161,22 @@ Global
 		{0AECEF08-A15D-46AE-AC07-540BAF489490}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0AECEF08-A15D-46AE-AC07-540BAF489490}.Release|x64.ActiveCfg = Release|Any CPU
 		{0AECEF08-A15D-46AE-AC07-540BAF489490}.Release|x86.ActiveCfg = Release|Any CPU
+		{05683535-F9B9-4050-8C7F-8AE57A761022}.Debug - Software|Any CPU.ActiveCfg = Debug|Any CPU
+		{05683535-F9B9-4050-8C7F-8AE57A761022}.Debug - Software|Any CPU.Build.0 = Debug|Any CPU
+		{05683535-F9B9-4050-8C7F-8AE57A761022}.Debug - Software|x64.ActiveCfg = Debug|Any CPU
+		{05683535-F9B9-4050-8C7F-8AE57A761022}.Debug - Software|x86.ActiveCfg = Debug|Any CPU
+		{05683535-F9B9-4050-8C7F-8AE57A761022}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05683535-F9B9-4050-8C7F-8AE57A761022}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05683535-F9B9-4050-8C7F-8AE57A761022}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{05683535-F9B9-4050-8C7F-8AE57A761022}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{05683535-F9B9-4050-8C7F-8AE57A761022}.Release - Software|Any CPU.ActiveCfg = Release|Any CPU
+		{05683535-F9B9-4050-8C7F-8AE57A761022}.Release - Software|Any CPU.Build.0 = Release|Any CPU
+		{05683535-F9B9-4050-8C7F-8AE57A761022}.Release - Software|x64.ActiveCfg = Release|Any CPU
+		{05683535-F9B9-4050-8C7F-8AE57A761022}.Release - Software|x86.ActiveCfg = Release|Any CPU
+		{05683535-F9B9-4050-8C7F-8AE57A761022}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05683535-F9B9-4050-8C7F-8AE57A761022}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05683535-F9B9-4050-8C7F-8AE57A761022}.Release|x64.ActiveCfg = Release|Any CPU
+		{05683535-F9B9-4050-8C7F-8AE57A761022}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

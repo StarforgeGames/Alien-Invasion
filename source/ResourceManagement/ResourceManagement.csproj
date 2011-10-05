@@ -84,7 +84,6 @@
     <Compile Include="Debug\ResourceManagementMonitor.Designer.cs">
       <DependentUpon>ResourceManagementMonitor.cs</DependentUpon>
     </Compile>
-    <Compile Include="IAsyncExecutor.cs" />
     <Compile Include="IEvent.cs" />
     <Compile Include="ILoader.cs" />
     <Compile Include="Loaders\ABasicLoader.cs" />
@@ -117,6 +116,10 @@
     <ProjectReference Include="..\LispInterpreter\LispInterpreter.csproj">
       <Project>{00AFD410-E213-4E19-AC18-BE3F4FAABDB3}</Project>
       <Name>LispInterpreter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{05683535-F9B9-4050-8C7F-8AE57A761022}</Project>
+      <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
