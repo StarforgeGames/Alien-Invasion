@@ -30,6 +30,7 @@ namespace Audio
         public DefaultAudioPlayer()
         {
             RESULT result = FMOD.Factory.System_Create(ref system);
+            // TODO: Check result, error handling
             system.init(ChannelCount, FMOD.INITFLAGS.NORMAL, (IntPtr)null);
             channels = new Channel[ChannelCount];
 
