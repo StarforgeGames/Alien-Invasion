@@ -10,6 +10,6 @@ namespace Audio
     {
         void PlaySound(ResourceHandle handle);
         void StartLoopingSound(ResourceHandle handle);
-        void StopLoopingSound(ResourceHandle handle);
+        void StopLoopingSound();
     }
 }

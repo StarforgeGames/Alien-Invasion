@@ -30,7 +30,7 @@ namespace Audio.Loaders
         }
 
         private readonly ResourceNameConverter converter =
-            new ResourceNameConverter(@"data\audio\", @".mp3");
+            new ResourceNameConverter(@"data\audio\", @".wav");
 
         public override string Type
         {

@@ -14,12 +14,14 @@ namespace Game.EventManagement.Events
 
         public ResourceHandle SoundResource { get; private set; }
         public int EntityID { get; set; }
+        public bool Loop { get; set; }
 
-        private AudioEvent(string type, int entityID, ResourceHandle soundResource)
+        private AudioEvent(string type, int entityID, ResourceHandle soundResource, bool loop = false)
             : base(type)
         {
             this.EntityID = entityID;
             this.SoundResource = soundResource;
+            this.Loop = loop;
         }
 
         public override string ToString()
@@ -31,6 +33,11 @@ namespace Game.EventManagement.Events
         public static AudioEvent PlaySound(int entityID, ResourceHandle soundResource)
         {
             return new AudioEvent(PLAY_SOUND, entityID, soundResource);
+        }
+
+        public static AudioEvent LoopSound(int entityID, ResourceHandle soundResource)
+        {
+            return new AudioEvent(PLAY_SOUND, entityID, soundResource, true);
         }
 
         public static AudioEvent StopSound(int entityID, ResourceHandle soundResource)

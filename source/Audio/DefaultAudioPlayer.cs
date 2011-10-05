@@ -19,20 +19,26 @@ namespace Audio
         private BlockingCommandQueue queue = new BlockingCommandQueue();
 
         private FMOD.System system;
-        private FMOD.Channel[] channels;
-        private int currentChannel = 0;
-
-        private Thread audioThread;
 
         private const int ChannelCount = 32;
+        private Channel[] channels;
+        private Channel loopChannel;
+        private int currentChannel;
+
+        private Thread audioThread;
         private bool isRunning = false;
 
         public DefaultAudioPlayer()
         {
-            RESULT result = FMOD.Factory.System_Create(ref system);
-            // TODO: Check result, error handling
-            system.init(ChannelCount, FMOD.INITFLAGS.NORMAL, (IntPtr)null);
+            RESULT result = Factory.System_Create(ref system);
+            if (result != RESULT.OK)
+            {
+                // TODO: Check result, error handling. Show Popup message or something the like
+            }
+            system.init(ChannelCount, INITFLAGS.NORMAL, (IntPtr)null);
+
             channels = new Channel[ChannelCount];
+            loopChannel = channels[ChannelCount - 1];
 
             audioThread = new Thread(audioLoop);
             audioThread.Name = "Audio";
@@ -66,20 +72,26 @@ namespace Audio
                 {
                     using (var resource = (SoundResource)handle.Acquire())
                     {
-                        system.playSound(FMOD.CHANNELINDEX.REUSE, resource.Sound, false, ref channels[currentChannel]);
+                        system.playSound(CHANNELINDEX.REUSE, resource.Sound, false, ref channels[currentChannel]);
                     }
-                    currentChannel = (currentChannel + 1) % ChannelCount;
+                    currentChannel = (currentChannel + 1) % (ChannelCount - 1);
                 });
         }
 
         public void StartLoopingSound(ResourceHandle handle)
         {
-
+            Queue.Add(() => {
+                   using (var resource = (SoundResource)handle.Acquire())
+                   {
+                       resource.Sound.setMode(MODE.LOOP_NORMAL);
+                       system.playSound(FMOD.CHANNELINDEX.REUSE, resource.Sound, false, ref loopChannel);
+                   }
+               });
         }
 
-        public void StopLoopingSound(ResourceHandle handle)
+        public void StopLoopingSound()
         {
-
+            loopChannel.stop();
         }
 
         internal Sound CreateSoundFrom(byte[] data)

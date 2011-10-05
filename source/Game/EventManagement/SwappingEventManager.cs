@@ -8,7 +8,7 @@ namespace Game.EventManagement
 
     public class SwappingEventManager : IEventManager
     {
-        private readonly int numOfQueues = 2;
+        private readonly int NumOfQueues = 2;
 
         private int activeQueueId = 0;
         public List<Event> ActiveQueue {
@@ -24,8 +24,8 @@ namespace Game.EventManagement
         {
             this.game = game;
 
-            queues = new List<Event>[numOfQueues];
-            for (int i = 0; i < numOfQueues; i++) {
+            queues = new List<Event>[NumOfQueues];
+            for (int i = 0; i < NumOfQueues; i++) {
                 queues[i] = new List<Event>();
             }
         }
@@ -116,7 +116,7 @@ namespace Game.EventManagement
 
         private void swapActiveQueue()
         {
-            activeQueueId = ++activeQueueId % numOfQueues;
+            activeQueueId = ++activeQueueId % NumOfQueues;
         }
 
         public void Reset()
