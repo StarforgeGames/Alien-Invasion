@@ -53,7 +53,7 @@ namespace Game.Behaviors
                     if (sound.Value == null) {
                         break;
                     }
-
+                    
                     if (entity.Type == "mystery_ship")
                     {
                         audioEvent = AudioEvent.LoopSound(entity.ID, sound.Value);

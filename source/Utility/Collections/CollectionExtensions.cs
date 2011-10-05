@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ResourceManagement
+namespace Utility.Collections
 {
-    public interface IAsyncExecutor
+    public static class CollectionExtensions
     {
-        void Add(Action command);
+
     }
 }
