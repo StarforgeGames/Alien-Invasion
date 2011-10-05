@@ -25,7 +25,7 @@ namespace ResourceManagement
         private int pendingSlot;
         private int pendingOperation;
 
-        public ResourceHandle(string name, IResourceLoader resourceLoader)
+        internal ResourceHandle(string name, IResourceLoader resourceLoader)
         {
             this.Name = name;
             this.resourceLoader = resourceLoader;
@@ -93,6 +93,66 @@ namespace ResourceManagement
             }
         }
 
+        public void Preload()
+        {
+            if ((Interlocked.CompareExchange(ref pendingOperation, 1, 0) == 0))
+            {
+                if (active.state == ResourceState.Ready)
+                    return;
+
+                switch (inactive.state)
+                {
+                    case ResourceState.Empty:
+                        inactive.state = ResourceState.Loading;
+                        resourceLoader.Load(this);
+                        return;
+
+                    case ResourceState.Ready:
+                        throw new NotSupportedException("active slot is not ready so inactive slot cannot be ready");
+
+                    case ResourceState.Loading:
+                        throw new NotSupportedException("tried to load resource while loading");
+
+                    case ResourceState.Unloading:
+                        throw new NotSupportedException("tried to load resource while unloading");
+
+                    default:
+                        throw new NotSupportedException("this should never occur!");
+                }
+            }
+        }
+
+        public void Preload(IEvent evt)
+        {
+            while ((Interlocked.CompareExchange(ref pendingOperation, 1, 0) == 1)) ;
+
+            if (active.state == ResourceState.Ready)
+            {
+                evt.Finish();
+                return;
+            }
+
+            switch (inactive.state)
+            {
+                case ResourceState.Empty:
+                    inactive.state = ResourceState.Loading;
+                    resourceLoader.Load(this, evt);
+                    return;
+
+                case ResourceState.Ready:
+                    throw new NotSupportedException("active slot is not ready so inactive slot cannot be ready");
+
+                case ResourceState.Loading:
+                    throw new NotSupportedException("tried to load resource while loading");
+
+                case ResourceState.Unloading:
+                    throw new NotSupportedException("tried to load resource while unloading");
+
+                default:
+                    throw new NotSupportedException("this should never occur!");
+            }
+        }
+
         public void Load()
         {
             if ((Interlocked.CompareExchange(ref pendingOperation, 1, 0) == 0)) {
@@ -132,11 +192,13 @@ namespace ResourceManagement
             switch (inactive.state)
             {
                 case ResourceState.Empty:
+                    inactive.state = ResourceState.Loading;
                     resourceLoader.Load(this, evt);
                     return;
 
                 case ResourceState.Ready:
                     while (inactive.resource.IsAcquired) ;
+                    inactive.state = ResourceState.Unloading;
                     resourceLoader.Reload(this, evt);
                     return;
 
@@ -263,7 +325,7 @@ namespace ResourceManagement
             }
         }
 
-        public void Swap()
+        internal void Swap()
         {
             while (Interlocked.CompareExchange(ref pendingSlot, 1, 0) != 0);
             //inactive = Interlocked.Exchange(ref active, inactive);
@@ -273,7 +335,7 @@ namespace ResourceManagement
             Interlocked.Decrement(ref pendingSlot);
         }
 
-        public void Finished()
+        internal void Finished()
         {
             Interlocked.Decrement(ref pendingOperation);
         }
