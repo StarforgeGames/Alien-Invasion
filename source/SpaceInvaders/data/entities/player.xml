@@ -14,7 +14,7 @@
 		<Resource key="Material" type="material" name="player"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
 		<Resource key="DestroyEntitySound" type="audio" name="explosion"/>
-		<float key="Speed">300</float>
+		<float key="MovementSpeed">300</float>
 		<float key="FiringSpeed">1.0</float>
 		<string key="ProjectileType">pewpew</string>
 		<int key="Lifes">3</int>

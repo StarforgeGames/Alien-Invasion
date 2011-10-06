@@ -13,9 +13,9 @@ namespace Audio.Loaders
 {
     public class SoundLoader : ASingleThreadedLoader<byte[], bool>, IFileLoader
     {
-        private DefaultAudioPlayer player;
+        private IAudioPlayer player;
 
-        public SoundLoader(DefaultAudioPlayer player) : base(player.Queue)
+        public SoundLoader(IAudioPlayer player) : base(player.Queue)
         {
             this.player = player;
         }
