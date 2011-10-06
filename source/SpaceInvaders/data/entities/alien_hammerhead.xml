@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Entity>
+	<behaviors>
+		<AiInvaderBehavior />
+		<SpatialBehavior />
+		<RenderBehavior />
+		<CombatBehavior />
+		<CollisionBehavior />
+		<HealthBehavior />
+		<AwardsPointsBehavior />
+		<AudioEmitterBehavior />
+		<AnimationBehavior />
+		<DyingBehavior />
+	</behaviors>
+	<attributes>
+		<Vector2D key="Dimensions">			
+			<x>80</x>
+			<y>75</y>
+		</Vector2D>
+		<Resource key="Material" type="material" name="alien_hammerhead"/>
+		<Resource key="Mesh" type="mesh" name="quad"/>
+		<Resource key="DestroyEntitySound" type="audio" name="explosion"/>
+		<float key="MovementSpeed">50</float>
+		<float key="FiringSpeed">1.0</float>
+		<string key="ProjectileType">pewpew_alien</string>
+		<string key="Faction">ai</string>
+		<int key="PointsAwarded">50</int>
+		<float key="FrameCount">4.0</float>
+		<bool key="HasDeathAnimation">true</bool>
+	</attributes>
+</Entity>
