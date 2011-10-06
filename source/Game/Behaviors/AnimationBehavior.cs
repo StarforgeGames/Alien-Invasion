@@ -15,6 +15,7 @@ namespace Game.Behaviors
         private bool isPlaying = false;
         private float elapsedTime;
         private bool resetOnStopped = true;
+        private bool loop = false;
 
         public AnimationBehavior(Entity entity)
             : base(entity)
@@ -49,12 +50,15 @@ namespace Game.Behaviors
                 }
                 else
                 {
-                    isPlaying = false;
-                    if (resetOnStopped)
+                    if (!loop)
+                    {
+                        isPlaying = false;
+                        eventManager.QueueEvent(AnimationEvent.Stopped(entity.ID));
+                    }
+                    if (resetOnStopped || loop)
                     {
                         entity[Key_Frame] = new Attribute<float>(0.0f);
                     }
-                    eventManager.QueueEvent(AnimationEvent.Stopped(entity.ID));
                 }
             }
         }
@@ -64,6 +68,9 @@ namespace Game.Behaviors
             switch (evt.Type)
             {
                 case AnimationEvent.PLAY_ANIMATION:
+                    var animationEvent = (AnimationEvent)evt;
+                    resetOnStopped = animationEvent.ResetOnStop;
+                    loop = animationEvent.Loops;
                     isPlaying = true;
                     break;
                 case AnimationEvent.STOP_ANIMATION:

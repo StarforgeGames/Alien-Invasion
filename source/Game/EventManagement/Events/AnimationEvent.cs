@@ -9,16 +9,20 @@ namespace Game.EventManagement.Events
     {
         public bool Loops { get; private set; }
 
+        public bool ResetOnStop { get; set; }
+
         private AnimationEvent(int recipientId, string type, bool loop)
             : base(type, recipientId)
         {
             Loops = loop;
+            ResetOnStop = true;
         }
 
         private AnimationEvent(string type, bool loop)
             : base(type)
         {
             Loops = loop;
+            ResetOnStop = true;
         }
 
         public const string PLAY_ANIMATION = "play_animation";
