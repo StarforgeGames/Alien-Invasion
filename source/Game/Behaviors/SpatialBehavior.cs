@@ -15,7 +15,7 @@ namespace Game.Behaviors
         public const string Key_Position = "Position";
         public const string Key_Dimensions = "Dimensions";
         public const string Key_MoveDirection = "MoveDirection";
-        public const string Key_Speed = "Speed";
+        public const string Key_MovementSpeed = "MovementSpeed";
         public const string Key_AtBoundary = "AtBoundary";
         public const string Key_RespectsBoundary = "RespectsBoundary";
 
@@ -25,7 +25,7 @@ namespace Game.Behaviors
             entity.AddAttribute(Key_Position, new Attribute<Vector2D>(new Vector2D(0, 0)));
             entity.AddAttribute(Key_Dimensions, new Attribute<Vector2D>(new Vector2D(0, 0)));
             entity.AddAttribute(Key_MoveDirection, new Attribute<Vector2D>(new Vector2D(0, 0)));
-            entity.AddAttribute(Key_Speed, new Attribute<float>(0));
+            entity.AddAttribute(Key_MovementSpeed, new Attribute<float>(0));
             entity.AddAttribute(Key_AtBoundary, new Attribute<Vector2D>(new Vector2D(0, 0)));
             entity.AddAttribute(Key_RespectsBoundary, new Attribute<bool>(true));
 
@@ -43,7 +43,7 @@ namespace Game.Behaviors
                 return;
             }
 
-            Attribute<float> speed = entity[Key_Speed];
+            Attribute<float> speed = entity[Key_MovementSpeed];
             Attribute<Vector2D> position = entity[Key_Position];
             Attribute<Vector2D> direction = entity[Key_MoveDirection];
 

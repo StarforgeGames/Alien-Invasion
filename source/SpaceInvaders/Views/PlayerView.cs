@@ -65,6 +65,9 @@ namespace SpaceInvaders.Views
             RenderForm.BackColor = Color.Empty;
             RenderForm.KeyPreview = true;
             RenderForm.FormBorderStyle = FormBorderStyle.FixedSingle;   // Disable resizing of window
+            RenderForm.Leave += (s, e) => {
+                this.RenderForm.Focus();
+            };
 
             gameController = new GameController(EventManager);
             RenderForm.KeyDown += new KeyEventHandler(gameController.OnKeyDown);
@@ -289,7 +292,7 @@ namespace SpaceInvaders.Views
                     break;
             }
 
-            RenderForm.Focus(); // Always focus RenderForm, else Key input won't be captured
+            //RenderForm.Focus(); // Always focus RenderForm, else Key input won't be captured
         }
 
         public void Dispose()
