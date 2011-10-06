@@ -40,7 +40,9 @@ namespace Game.Behaviors
             {
                 Attribute<ResourceHandle> deathAnimation = entity[Key_DeathAnimation];
                 // TODO: Start Death Animation explicitly, not just any animation
-                eventManager.QueueEvent(AnimationEvent.Play(entity.ID));
+                var evt = AnimationEvent.Play(entity.ID);
+                evt.ResetOnStop = false;
+                eventManager.QueueEvent(evt);
             }
         }
 
