@@ -1,0 +1,25 @@
+﻿(material
+	(technique "Full")
+	(effect "SimplePassThrough")
+	(textures
+		(texture "tex2D" "alien_pincher")
+	)
+	(constants
+		(vector2 "frameDimensions"
+			1.0f 1.0f
+		)
+	)
+	(framelayout
+		(element 'shaderbinding "matrix")
+	)
+	(framedata
+		(shaderbinding "programvariable" 'function)
+	)
+	(instancelayout
+		(element 'shaderbinding "matrix")
+		(element 'shaderbinding "R32G32B32A32Float")
+	)
+	(instancedata
+		(shaderbinding "programvariable")
+	)
+)

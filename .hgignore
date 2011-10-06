@@ -1,0 +1,10 @@
+syntax:glob
+obj/
+release/
+release-software/
+test/
+test-software/
+*.pdb
+*.orig
+*.user
+*.suo
