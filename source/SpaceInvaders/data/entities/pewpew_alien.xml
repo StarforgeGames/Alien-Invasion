@@ -11,7 +11,7 @@
 		<Resource key="Material" type="material" name="pewpew_alien"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
 		<Resource key="CreateEntitySound" type="audio" name="alien_shot"/>
-		<float key="Speed">400</float>
+		<float key="MovementSpeed">600</float>
 		<Vector2D key="MoveDirection">
 			<x>0</x>
 			<y>-1</y>

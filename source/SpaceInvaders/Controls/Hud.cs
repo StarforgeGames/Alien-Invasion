@@ -19,7 +19,8 @@ namespace SpaceInvaders.Controls
         {
             InitializeComponent();
 
-            eventManager.AddListener(this, typeof(HudEvent));
+            this.eventManager = eventManager;
+            this.eventManager.AddListener(this, typeof(HudEvent));
         }
 
         public void Reset(int initialLifes)
