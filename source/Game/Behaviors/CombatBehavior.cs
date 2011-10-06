@@ -121,7 +121,7 @@ namespace Game.Behaviors
                     // Allow that a shot can be fired faster when the fire button is hit again in rapid succession
                     Attribute<float> timeSinceLastShot = entity[Key_TimeSinceLastShot];
                     Attribute<float> firingSpeed = entity[Key_FiringSpeed];
-                    timeSinceLastShot.Value += firingSpeed / 2;
+                    timeSinceLastShot.Value += 0.3f;
                     break;
                 }
             }

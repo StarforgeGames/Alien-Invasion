@@ -71,6 +71,12 @@ namespace Game.Behaviors
                 lifes.Value -= 1;
                 entity.State = EntityState.Dying;
 
+                if (entity.Type == "player")
+                {
+                    HudEvent hudEvent = HudEvent.UpdateLifes(lifes);
+                    eventManager.QueueEvent(hudEvent);
+                }
+
                 if (lifes <= 0) 
                 {
                     Entity projectile = entity.Game.World.Entities[evt.SourceEntityID];

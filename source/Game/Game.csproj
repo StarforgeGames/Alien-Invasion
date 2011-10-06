@@ -118,6 +118,7 @@
     <Compile Include="EventManagement\Events\Event.cs" />
     <Compile Include="EventManagement\Events\FireWeaponEvent.cs" />
     <Compile Include="EventManagement\Events\GameStateChangedEvent.cs" />
+    <Compile Include="EventManagement\Events\HudEvent.cs" />
     <Compile Include="EventManagement\Events\MoveEvent.cs" />
     <Compile Include="EventManagement\Events\NewEntityEvent.cs" />
     <Compile Include="EventManagement\Events\AudioEvent.cs" />

@@ -18,7 +18,7 @@
 		<Resource key="Mesh" type="mesh" name="quad"/>
 		<Resource key="CreateEntitySound" type="audio" name="mystery_ship_loop"/>
 		<Resource key="DestroyEntitySound" type="audio" name="explosion"/>
-		<float key="Speed">200</float>
+		<float key="MovementSpeed">200</float>
 		<bool key="RespectsBoundary">false</bool>
 		<string key="Faction">ai</string>
 		<int key="PointsAwarded">500</int>

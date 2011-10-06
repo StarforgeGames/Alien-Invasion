@@ -92,10 +92,35 @@ namespace Audio
 
         public void StopLoopingSound()
         {
+            if (loopChannel == null)
+            {
+                return;
+            }
+
             loopChannel.stop();
         }
 
-        internal Sound CreateSoundFrom(byte[] data)
+        public void PauseLoopingSounds()
+        {
+            if (loopChannel == null)
+            {
+                return;
+            }
+
+            loopChannel.setPaused(true);
+        }
+
+        public void UnpauseLoopingSounds()
+        {
+            if (loopChannel == null)
+            {
+                return;
+            }
+
+            loopChannel.setPaused(false);
+        }
+
+        public Sound CreateSoundFrom(byte[] data)
         {
             Sound sound = null;
             CREATESOUNDEXINFO info = new CREATESOUNDEXINFO();
