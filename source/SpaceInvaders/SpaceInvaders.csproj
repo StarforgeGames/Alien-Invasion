@@ -180,6 +180,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application.cs" />
+    <Compile Include="Controls\Hud.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Hud.Designer.cs">
+      <DependentUpon>Hud.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\VictoryScreen.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -249,6 +255,9 @@
     <None Include="Resources\gap.png" />
     <None Include="Resources\exitOver.png" />
     <None Include="Resources\exit.png" />
+    <EmbeddedResource Include="Controls\Hud.resx">
+      <DependentUpon>Hud.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\VictoryScreen.resx">
       <DependentUpon>VictoryScreen.cs</DependentUpon>
     </EmbeddedResource>

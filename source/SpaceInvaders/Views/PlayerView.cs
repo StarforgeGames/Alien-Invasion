@@ -15,6 +15,7 @@ using ResourceManagement.Loaders;
 using SpaceInvaders.Controls;
 using SpaceInvaders.Input;
 using Audio.Loaders;
+using Game.Behaviors;
 
 namespace SpaceInvaders.Views
 {
@@ -28,12 +29,13 @@ namespace SpaceInvaders.Views
         private Extractor extractor;
         public Form RenderForm { get; private set; }
 
-        private DefaultAudioPlayer audioPlayer;
+        private IAudioPlayer audioPlayer;
 
         private GameMainMenu mainMenuControl;
         private PauseScreen pauseControl;
         private VictoryScreen victoryControl;
         private GameOverScreen gameOverControl;
+        private Hud hud;
 
         public GameViewType Type { get { return GameViewType.PlayerView; } }
         public int ID
@@ -85,6 +87,7 @@ namespace SpaceInvaders.Views
 
             game.ResourceManager.AddLoader(new MaterialLoader(game.ResourceManager));
             
+
             /**
             * Initialize Audio Subsystem 
             **/
@@ -92,9 +95,7 @@ namespace SpaceInvaders.Views
             audioPlayer.Start();
             soundLoader = new SoundLoader(audioPlayer);
             game.ResourceManager.AddLoader(soundLoader);
-            
-            
-            
+                                  
 
             /**
             * Initialize GUI 
@@ -122,6 +123,10 @@ namespace SpaceInvaders.Views
                 (RenderForm.ClientSize.Width - gameOverControl.Width) / 2,
                 (RenderForm.ClientSize.Height / 2) - gameOverControl.Height);
             RenderForm.Controls.Add(gameOverControl);
+
+            hud = new Hud(EventManager);
+            hud.Location = new Point(RenderForm.ClientSize.Width - hud.Width, 0);
+            RenderForm.Controls.Add(hud);
 
 
             registerGameEventListeners();
@@ -172,7 +177,6 @@ namespace SpaceInvaders.Views
             switch (evt.Type) {
                 case AudioEvent.PLAY_SOUND: {
                     AudioEvent audioEvent = (AudioEvent)evt;
-                    //audioEvent.SoundResource.Acquire(); // Workaround, else sound will not be played the first time
                     if (audioEvent.Loop)
                     {
                         audioPlayer.StartLoopingSound(audioEvent.SoundResource);
@@ -188,6 +192,9 @@ namespace SpaceInvaders.Views
                         Entity entity = Game.World.Entities[newEntityEvent.EntityID];
                         if (entity.Type == "player") {
                             OnAttach(entity);
+
+                            Attribute<int> lifes = playerEntity[HealthBehavior.Key_Lifes];
+                            hud.Reset(lifes);
                         }
                         break;
                     }
@@ -219,42 +226,61 @@ namespace SpaceInvaders.Views
                     pauseControl.Hide();
                     victoryControl.Hide();
                     gameOverControl.Hide();
+                    hud.Hide();
                     break;
                 case GameState.Menu:
                     mainMenuControl.Show();
                     pauseControl.Hide();
                     victoryControl.Hide();
                     gameOverControl.Hide();
+                    hud.Hide();
+
+                    audioPlayer.PauseLoopingSounds();
                     break;
                 case GameState.Loading:
-                    OnDetach();
                     mainMenuControl.Hide();
                     pauseControl.Hide();
                     victoryControl.Hide();
                     gameOverControl.Hide();;
+                    hud.Hide();
+
+                    OnDetach();
+                    audioPlayer.StopLoopingSound();
                     break;
                 case GameState.Running:
                     mainMenuControl.Hide();
                     pauseControl.Hide();
                     victoryControl.Hide();
                     gameOverControl.Hide();
+                    hud.Show();
+
+                    audioPlayer.UnpauseLoopingSounds();
                     break;
                 case GameState.Paused:
                     pauseControl.Show();
                     victoryControl.Hide();
                     gameOverControl.Hide();
+                    hud.Hide();
+
+                    audioPlayer.PauseLoopingSounds();
                     break;
                 case GameState.Victory:
                     mainMenuControl.Hide();
                     pauseControl.Hide();
                     victoryControl.Show();
                     gameOverControl.Hide();
+                    hud.Hide();
+
+                    audioPlayer.StopLoopingSound();
                     break;
                 case GameState.GameOver:
                     mainMenuControl.Hide();
                     pauseControl.Hide();
                     victoryControl.Hide();
                     gameOverControl.Show();
+                    hud.Hide();
+
+                    audioPlayer.StopLoopingSound();
                     break;
                 case GameState.Quit:
                     RenderForm.Close();
