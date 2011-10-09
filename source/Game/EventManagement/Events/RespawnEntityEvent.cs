@@ -8,7 +8,11 @@
 
         public RespawnEntityEvent(string type, int recipientID)
             : base(type, recipientID)
+        { }
+
+        public static RespawnEntityEvent Respawn(int recipientID)
         {
+            return new RespawnEntityEvent(RESPAWN_ENTITY, recipientID);
         }
     }
 

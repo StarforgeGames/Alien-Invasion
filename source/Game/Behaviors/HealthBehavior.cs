@@ -11,10 +11,11 @@ namespace Game.Behaviors
         // Attribute Keys
         public const string Key_Health = "Health";
         public const string Key_Lifes = "Lifes";
-        public const string Key_IsRespawning = "IsRespawning";
         public const string Key_RespawnTime = "RespawnTime";
 
         private float elapsedTime;
+        private bool isRespawning;
+
         private List<DamageEvent> damageReceivedSinceLastUpdate = new List<DamageEvent>();
 
         public HealthBehavior(Entity entity)
@@ -22,7 +23,6 @@ namespace Game.Behaviors
         {
             entity.AddAttribute(Key_Health, 1);
             entity.AddAttribute(Key_Lifes, 1);
-            entity.AddAttribute(Key_IsRespawning, false);
             entity.AddAttribute(Key_RespawnTime, 2.0f);
 
             initializeHandledEventTypes();
@@ -41,7 +41,6 @@ namespace Game.Behaviors
             }
             damageReceivedSinceLastUpdate.Clear();
 
-            bool isRespawning = entity[Key_IsRespawning];
             if (isRespawning) 
             {
                 elapsedTime += deltaTime;
@@ -90,14 +89,12 @@ namespace Game.Behaviors
                         destroyedByEntityID = projectileOwner.ID;
                     }
 
-                    eventManager.QueueEvent(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, entity.ID,
-                        destroyedByEntityID));
+                    eventManager.QueueEvent(DestroyEntityEvent.Destroy(entity.ID, destroyedByEntityID));
                     Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type + " died a horrible "
                         + "death!");
                 }
                 else {
-                    RespawnEntityEvent respawnEvent = new RespawnEntityEvent(RespawnEntityEvent.RESPAWN_ENTITY,
-                        entity.ID);
+                    RespawnEntityEvent respawnEvent = RespawnEntityEvent.Respawn(entity.ID);
                     eventManager.QueueEvent(respawnEvent);
                     Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type + " lost a life. " 
                         + lifes + " lifes remaining. Respawning...");
@@ -111,7 +108,7 @@ namespace Game.Behaviors
             entity.State = EntityState.Active;
 
             elapsedTime = 0f;
-            entity[Key_IsRespawning] = false;
+            isRespawning = false;
 
             Vector2D position = entity[SpatialBehavior.Key_Position];
             position.X = world.Width / 2f - (75f / 2f);
@@ -139,7 +136,7 @@ namespace Game.Behaviors
                     break;
                 }
                 case RespawnEntityEvent.RESPAWN_ENTITY: {
-                    entity[Key_IsRespawning] = true;
+                    isRespawning = true;
                     break;
                 }
             }

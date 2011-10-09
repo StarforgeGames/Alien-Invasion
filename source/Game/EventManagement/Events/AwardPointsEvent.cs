@@ -22,9 +22,14 @@ namespace Game.EventManagement.Events
             this.SourceEntityID = sourceEntityID;
         }
 
+        public static AwardPointsEvent Award(int recipientID, int points, int sourceEntityID)
+        {
+            return new AwardPointsEvent(AWARD_POINTS, recipientID, points, sourceEntityID);
+        }
+
         public override string ToString()
         {
-            return base.ToString() + " [" + Points + " awarded to EntityID " + RecipientID + " by SourceEntityID " 
+            return base.ToString() + " [" + Points + " awarded to EntityID " + RecipientID + " by SourceEntityID "
                 + SourceEntityID + "]";
         }
     }

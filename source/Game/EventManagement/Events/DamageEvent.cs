@@ -9,11 +9,16 @@
         public int Damage { get; set; }
         public int SourceEntityID { get; set; }
 
-        public DamageEvent(string type, int recipientID, int damage, int sourceEntityID)
+        public DamageEvent(string type, int damage, int recipientID, int sourceEntityID)
             : base(type, recipientID)
         {
             this.Damage = damage > 0 ? damage : 0;  // Only positive amounts are valid
             this.SourceEntityID = sourceEntityID;
+        }
+
+        public static DamageEvent Receive(int damage, int recipientID, int sourceEntityID)
+        {
+            return new DamageEvent(RECEIVE_DAMAGE, damage, recipientID, sourceEntityID);
         }
 
         public override string ToString()

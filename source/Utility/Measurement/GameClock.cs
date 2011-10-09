@@ -95,7 +95,8 @@ namespace Utility
             long startTime;
             QueryPerformanceCounter(out startTime);
 
-            if (isStopped) {
+            if (isStopped) 
+            {
                 pausedTime += (startTime - stopTime);
 
                 previousTime = startTime;
@@ -109,7 +110,8 @@ namespace Utility
         /// </summary>
         public void Stop()
         {
-            if (!isStopped) {
+            if (!isStopped) 
+            {
                 long currTime;
                 QueryPerformanceCounter(out currTime);
 
@@ -123,8 +125,10 @@ namespace Utility
         /// </summary>
         public void Tick()
         {
-            if (isStopped || timeScale <= 0.0f) {
-                if (doSingleStep) {
+            if (isStopped || timeScale <= 0.0f) 
+            {
+                if (doSingleStep) 
+                {
                     DeltaTime = singleStep;
                     doSingleStep = false;
                     return;
@@ -144,13 +148,16 @@ namespace Utility
 
             // Force non-negative.  The DXSDK's CDXUTTimer mentions that if the processor goes into a power save mode 
             // or we get shuffled to another processor, then DeltaTime can be negative.
-            if (currentDelta < 0.0f) {
+            if (currentDelta < 0.0f) 
+            {
                 DeltaTime = 0.0f;
             }
-            else if(currentDelta > debugBreakpointThreshold) {
+            else if(currentDelta > debugBreakpointThreshold) 
+            {
                 DeltaTime = singleStep;
             }
-            else {
+            else
+            {
                 DeltaTime = currentDelta;
             }
         }

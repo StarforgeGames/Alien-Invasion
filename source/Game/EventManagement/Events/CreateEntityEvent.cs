@@ -19,6 +19,11 @@ namespace Game.EventManagement.Events
             Attributes = new Dictionary<string, object>();
         }
 
+        public static CreateEntityEvent New(string entityType)
+        {
+            return new CreateEntityEvent(CREATE_ENTITY, entityType);
+        }
+
         /// <summary>
         /// Adds a new attribute to this entity.
         /// </summary>
@@ -33,9 +38,9 @@ namespace Game.EventManagement.Events
         {
             StringBuilder builder = new StringBuilder();
             foreach (KeyValuePair<string, object> pair in Attributes)
-	        {
+            {
                 builder.Append("{" + pair.Key + ", " + pair.Value + "}, ");
-	        }
+            }
 
             builder.Remove(builder.Length - 2, 2);
 

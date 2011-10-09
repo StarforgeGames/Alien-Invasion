@@ -11,7 +11,26 @@
 
         public FireWeaponEvent(string type, int recipientID)
             : base(type, recipientID)
+        { }
+
+        public static FireWeaponEvent Start(int recipientID)
         {
+            return new FireWeaponEvent(START_FIRING, recipientID);
+        }
+
+        public static FireWeaponEvent Stop(int recipientID)
+        {
+            return new FireWeaponEvent(STOP_FIRING, recipientID);
+        }
+
+        public static FireWeaponEvent IsFiring(int recipientID)
+        {
+            return new FireWeaponEvent(FIRING_WEAPON, recipientID);
+        }
+
+        public static FireWeaponEvent SingleShot(int recipientID)
+        {
+            return new FireWeaponEvent(FIRE_SINGLE_SHOT, recipientID);
         }
     }
 

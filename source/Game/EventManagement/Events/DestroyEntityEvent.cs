@@ -15,6 +15,11 @@
             this.EntityID = entityID;
             this.DestroyedByEntityID = destroyedByEntityID;
         }
+
+        public static DestroyEntityEvent Destroy(int entityID, int destroyedByEntityID = 0)
+        {
+            return new DestroyEntityEvent(DESTROY_ENTITY, entityID, destroyedByEntityID);
+        }
     }
 
 }

@@ -14,6 +14,11 @@
             this.OtherEntityID = otherEntityID;
         }
 
+        public static CollisionEvent Collides(int recipientID, int otherEntityID)
+        {
+            return new CollisionEvent(ACTOR_COLLIDES, recipientID, otherEntityID);
+        }
+
         public override string ToString()
         {
             return base.ToString() + " [OtherEntityID: " + OtherEntityID + "]";
