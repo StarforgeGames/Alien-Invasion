@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Entity>
+	<behaviors>
+		<SpatialBehavior />
+		<RenderBehavior />
+		<CombatBehavior />
+		<CollisionBehavior />
+		<HealthBehavior />
+		<CollectsPointsBehavior />
+		<AudioEmitterBehavior />
+		<AnimationBehavior />
+	</behaviors>
+	<attributes>
+		<Resource key="Material" type="material" name="player"/>
+		<Resource key="Mesh" type="mesh" name="quad"/>
+		<Resource key="DestroyEntitySound" type="audio" name="explosion"/>
+		<float key="MovementSpeed">300</float>
+		<float key="FiringSpeed">1.0</float>
+		<string key="ProjectileType">pewpew</string>
+		<int key="Lifes">3</int>
+		<string key="Faction">player</string>
+		<float key="FrameCount">3.0</float>
+	</attributes>
+</Entity>
