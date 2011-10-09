@@ -14,6 +14,11 @@
             this.NewState = newState;
         }
 
+        public static GameStateChangedEvent To(GameState state)
+        {
+            return new GameStateChangedEvent(GAME_STATE_CHANGED, state);
+        }
+
         public override string ToString()
         {
             return base.ToString() + " [NewState: " + NewState + "]";

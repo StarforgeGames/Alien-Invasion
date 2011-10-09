@@ -34,7 +34,7 @@ namespace Game.Behaviors
             entity[SpatialBehavior.Key_Position] = position;
 
             if (position.X < -100 || position.X > game.World.Width + 100) {
-                var destroyEntity = new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, entity.ID);
+                var destroyEntity = DestroyEntityEvent.Destroy(entity.ID);
                 eventManager.QueueEvent(destroyEntity);
             }
         }

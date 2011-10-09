@@ -24,6 +24,16 @@ namespace Game.EventManagement.Events
             this.Direction = direction;
         }
 
+        public static MoveEvent Start(int recipientID, Vector2D direction)
+        {
+            return new MoveEvent(START_MOVING, recipientID, direction);
+        }
+
+        public static MoveEvent Stop(int recipientID, Vector2D direction)
+        {
+            return new MoveEvent(STOP_MOVING, recipientID, direction);
+        }
+
         public override string ToString()
         {
             return base.ToString() + " [Direction: " + Direction + "]";

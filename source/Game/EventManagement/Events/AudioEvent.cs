@@ -24,12 +24,6 @@ namespace Game.EventManagement.Events
             this.Loop = loop;
         }
 
-        public override string ToString()
-        {
-            return base.ToString() + " [" + SoundResource + " is being issued to " + Type + " by SourceEntityID " 
-                + EntityID + "]";
-        }
-
         public static AudioEvent PlaySound(int entityID, ResourceHandle soundResource)
         {
             return new AudioEvent(PLAY_SOUND, entityID, soundResource);
@@ -43,6 +37,12 @@ namespace Game.EventManagement.Events
         public static AudioEvent StopSound(int entityID, ResourceHandle soundResource)
         {
             return new AudioEvent(STOP_SOUND, entityID, soundResource);
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + " [" + SoundResource + " is being issued to " + Type + " by SourceEntityID "
+                + EntityID + "]";
         }
     }
 }

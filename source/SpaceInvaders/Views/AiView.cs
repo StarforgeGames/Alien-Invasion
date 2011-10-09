@@ -82,7 +82,7 @@ namespace SpaceInvaders.Views
             {
                 timeSinceLastShot = 0.0f;
                 firingThreshold = 0.5f + ((float)rng.NextDouble() * 1f);
-                EventManager.Trigger(new FireWeaponEvent(FireWeaponEvent.FIRE_SINGLE_SHOT, shooter.ID));
+                EventManager.Trigger(FireWeaponEvent.SingleShot(shooter.ID));
             }
         }
 
@@ -106,7 +106,7 @@ namespace SpaceInvaders.Views
             }
 
             foreach (Entity invader in invaders) {
-                var move = new MoveEvent(MoveEvent.START_MOVING, invader.ID, currentDirection);
+                var move = MoveEvent.Start(invader.ID, currentDirection);
                 EventManager.QueueEvent(move);
             }
 
@@ -123,7 +123,7 @@ namespace SpaceInvaders.Views
             timeSinceLastMysteryShipSpawn += deltaTime;
             if (timeSinceLastMysteryShipSpawn >= timeToNextMysteryShipSpawn) 
             {
-                var createEntity = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, "mystery_ship");
+                var createEntity = CreateEntityEvent.New("mystery_ship");
 
                 bool isSpawningOnTheRight = rng.Next(2) == 1;
 
@@ -193,8 +193,7 @@ namespace SpaceInvaders.Views
                     if (borderData.Y < 0) 
                     {
                         // Victory for the Invaders!
-                        EventManager.Trigger(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
-                            GameState.GameOver));
+                        EventManager.Trigger(GameStateChangedEvent.To(GameState.GameOver));
                     }
 
                     currentDirection.X = -borderData.X;

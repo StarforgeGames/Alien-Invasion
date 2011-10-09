@@ -7,6 +7,11 @@ namespace Game.EventManagement.Events
 {
     class AnimationEvent : Event
     {
+        public const string PLAY_ANIMATION = "play_animation";
+        public const string PAUSE_ANIMATION = "pause_animation";
+        public const string STOP_ANIMATION = "stop_animation";
+        public const string ANIMATION_STOPPED = "animation_stopped";
+
         public bool Loops { get; private set; }
 
         public bool ResetOnStop { get; set; }
@@ -24,11 +29,6 @@ namespace Game.EventManagement.Events
             Loops = loop;
             ResetOnStop = true;
         }
-
-        public const string PLAY_ANIMATION = "play_animation";
-        public const string PAUSE_ANIMATION = "pause_animation";
-        public const string STOP_ANIMATION = "stop_animation";
-        public const string ANIMATION_STOPPED = "animation_stopped";
 
         public static AnimationEvent Play(int recipientId)
         {

@@ -37,7 +37,7 @@ namespace Game.Behaviors
         private void killEntity()
         {
             entity.State = EntityState.Dead;
-            eventManager.QueueEvent(new DestroyEntityEvent(DestroyEntityEvent.DESTROY_ENTITY, entity.ID));
+            eventManager.QueueEvent(DestroyEntityEvent.Destroy(entity.ID));
         }
 
         public override void OnEvent(Event evt)

@@ -59,17 +59,11 @@ namespace Game
                         Console.WriteLine("[" + this.GetType().Name + "] " + entity.Type + " collided with " 
                             + other.Type + "!");
 
-                        CollisionEvent collisionMsg = new CollisionEvent(
-                            CollisionEvent.ACTOR_COLLIDES,
-                            other.ID,
-                            entity.ID);
+                        CollisionEvent collisionMsg = CollisionEvent.Collides(other.ID, entity.ID);
                         EventManager.QueueEvent(collisionMsg);
 
                         int collisionDmg = entity[CollisionBehavior.Key_CollisionDamage];
-                        DamageEvent dmgMsg = new DamageEvent(DamageEvent.RECEIVE_DAMAGE,
-                            entity.ID,
-                            collisionDmg,
-                            other.ID);
+                        DamageEvent dmgMsg = DamageEvent.Receive(collisionDmg, entity.ID, other.ID);
                         EventManager.QueueEvent(dmgMsg);
                     }
                 }

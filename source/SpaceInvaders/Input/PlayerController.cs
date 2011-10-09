@@ -58,7 +58,7 @@ namespace SpaceInvaders.Input
                     determineDirectionAndIssueMove(Direction.West, true);
                     break;
                 case Keys.Space:
-                    eventManager.QueueEvent(new FireWeaponEvent(FireWeaponEvent.START_FIRING, playerEntity.ID));
+                    eventManager.QueueEvent(FireWeaponEvent.Start(playerEntity.ID));
                     break;
                 default:
                     e.Handled = false;
@@ -140,7 +140,7 @@ namespace SpaceInvaders.Input
                     determineDirectionAndIssueMove(Direction.West, false);
                     break;
                 case Keys.Space:
-                    eventManager.QueueEvent(new FireWeaponEvent(FireWeaponEvent.STOP_FIRING, playerEntity.ID));
+                    eventManager.QueueEvent(FireWeaponEvent.Stop(playerEntity.ID));
                     break;
 
                 default:

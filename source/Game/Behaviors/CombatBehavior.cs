@@ -8,19 +8,17 @@ namespace Game.Behaviors
     public class CombatBehavior : AEntityBasedBehavior
     {
         // Attribute Keys
-        public const string Key_IsFiring = "IsFiring";
-        public const string Key_IsSingleShot = "IsSingleShot";
         public const string Key_FiringSpeed = "FiringSpeed";
-        public const string Key_TimeSinceLastShot = "TimeSinceLastShot";
         public const string Key_ProjectileType = "ProjectileType";
+
+        private float timeSinceLastShot;
+        private bool isFiring;
+        private bool isSingleShot;
 
         public CombatBehavior(Entity entity)
             : base(entity)
         {
-            entity.AddAttribute(Key_IsFiring, false);
-            entity.AddAttribute(Key_IsSingleShot, false);
             entity.AddAttribute(Key_FiringSpeed, 0);
-            entity.AddAttribute(Key_TimeSinceLastShot, 999);
             entity.AddAttribute(Key_ProjectileType, string.Empty);
 
             initializeHandledEventTypes();
@@ -38,14 +36,9 @@ namespace Game.Behaviors
                 return;
             }
 
-            bool isFiring = entity[Key_IsFiring];
-            bool isSingleShot = entity[Key_IsSingleShot];
-
             if (isFiring || isSingleShot) 
             {
                 float firingSpeed = entity[Key_FiringSpeed];
-                float timeSinceLastShot = entity[Key_TimeSinceLastShot];
-
                 timeSinceLastShot += deltaTime;
 
                 if (timeSinceLastShot >= firingSpeed || isSingleShot) 
@@ -60,13 +53,10 @@ namespace Game.Behaviors
                     if (isSingleShot) 
                     {
                         isSingleShot = false;
-                        entity[Key_IsSingleShot] = isSingleShot;
                     }
 
                     Console.WriteLine("[" + this.GetType().Name + "] Firing weapon of " + entity);
                 }
-
-                entity[Key_TimeSinceLastShot] = timeSinceLastShot;
             }
         }
 
@@ -78,7 +68,7 @@ namespace Game.Behaviors
         private void createProjectileAtCurrentPosition()
         {
             string projectileType = entity[Key_ProjectileType];
-            var evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, projectileType);
+            var evt = CreateEntityEvent.New(projectileType);
 
             Entity owner = entity;
             evt.AddAttribute(ProjectileBehavior.Key_ProjectileOwner, owner);
@@ -105,22 +95,20 @@ namespace Game.Behaviors
             {
                 case FireWeaponEvent.FIRE_SINGLE_SHOT: 
                 {
-                    entity[Key_IsSingleShot] = true;
+                    isSingleShot = true;
                     break;
                 }
                 case FireWeaponEvent.START_FIRING: 
                 {
-                    entity[Key_IsFiring] = true;
+                    isFiring = true;
                     break;
                 }
                 case FireWeaponEvent.STOP_FIRING: 
                 {
-                    entity[Key_IsFiring] = false;
+                    isFiring = false;
                         
                     // Allow that a shot can be fired faster when the fire button is hit again in rapid succession
-                    float timeSinceLastShot = entity[Key_TimeSinceLastShot];
                     timeSinceLastShot += 0.3f;
-                    entity[Key_TimeSinceLastShot] = timeSinceLastShot;
                     break;
                 }
             }

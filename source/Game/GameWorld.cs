@@ -73,7 +73,7 @@ namespace Game
             foreach (Entity entity in entityAddQueue) {
                 Entities.Add(entity.ID, entity);
 
-                NewEntityEvent newEntityEvent = new NewEntityEvent(NewEntityEvent.NEW_ENTITY, entity.ID);
+                NewEntityEvent newEntityEvent = NewEntityEvent.Announce(entity.ID);
                 EventManager.QueueEvent(newEntityEvent);
 
                 System.Console.WriteLine("[" + this.GetType().Name + "] Added entity " + entity);
@@ -119,7 +119,7 @@ namespace Game
 
         private void createAndInitializePlayer()
         {
-            CreateEntityEvent evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, "player");
+            CreateEntityEvent evt = CreateEntityEvent.New("player");
 
             float startX = Width / 2f - (75f / 2f);
             float startY = 50;
@@ -151,7 +151,7 @@ namespace Game
 
         private void createAndInitializeAlien(string type, float x, float y)
         {
-            CreateEntityEvent evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, type);
+            CreateEntityEvent evt = CreateEntityEvent.New(type);
 
             Vector2D position = new Vector2D(x, y);
             evt.AddAttribute(SpatialBehavior.Key_Position, position);

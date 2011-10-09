@@ -11,13 +11,11 @@ namespace Game.Behaviors
     public class DyingBehavior : AEntityBasedBehavior
     {
         // Attribute Keys
-        public const string Key_HasDeathAnimation = "HasDeathAnimation";
         public const string Key_DeathAnimation = "DeathAnimation";
 
         public DyingBehavior(Entity entity)
             : base(entity)
         {
-            entity.AddAttribute(Key_HasDeathAnimation, true);
             entity.AddAttribute(Key_DeathAnimation, (ResourceHandle)null);
 
             initializeHandledEventTypes();
@@ -35,15 +33,9 @@ namespace Game.Behaviors
                 return;
             }
 
-            bool hasDeathAnimation = entity[Key_HasDeathAnimation];
-            if (hasDeathAnimation)
-            {
-                ResourceHandle deathAnimation = entity[Key_DeathAnimation];
-                // TODO: Start Death Animation explicitly, not just any animation
-                var evt = AnimationEvent.Play(entity.ID);
-                evt.ResetOnStop = false;
-                eventManager.QueueEvent(evt);
-            }
+            var evt = AnimationEvent.Play(entity.ID); // TODO: Start Death Animation explicitly, not just any animation
+            evt.ResetOnStop = false;
+            eventManager.QueueEvent(evt);
         }
 
         public override void OnEvent(Event evt)

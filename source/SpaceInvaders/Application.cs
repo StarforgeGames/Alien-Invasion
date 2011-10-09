@@ -37,8 +37,7 @@ namespace SpaceInvaders
             resourceManager.AddWiper(new DebugWiper());
             resourceManager.AddWiper(new FileUpdater());
 
-            Game.EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
-                        GameState.Menu));
+            Game.EventManager.QueueEvent(GameStateChangedEvent.To(GameState.Menu));
 
             registerGameEventListeners();
         }

@@ -64,24 +64,21 @@ namespace Game
 				case GameState.Menu:
 					if (oldState == GameState.Menu) {
 						State = GameState.Running;
-						EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
-							GameState.Running));
+						EventManager.QueueEvent(GameStateChangedEvent.To(GameState.Running));
 					}
 					break;
 				case GameState.Loading:
 					reset();
 					initialize();
 
-					EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
-						GameState.Running));
+					EventManager.QueueEvent(GameStateChangedEvent.To(GameState.Running));
 					break;
 				case GameState.Running:
 					break;
 				case GameState.Paused:
 					if (oldState == GameState.Paused) {
 						State = GameState.Running;
-						EventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
-							GameState.Running));
+						EventManager.QueueEvent(GameStateChangedEvent.To(GameState.Running));
 					}
 					break;
 				case GameState.GameOver:
@@ -130,13 +127,11 @@ namespace Game
 			}
 
 			if (playerIsDead) {
-				GameStateChangedEvent changeState = new GameStateChangedEvent(
-					GameStateChangedEvent.GAME_STATE_CHANGED, GameState.GameOver);
+				GameStateChangedEvent changeState = GameStateChangedEvent.To(GameState.GameOver);
 				EventManager.QueueEvent(changeState);
 			}
 			else if(allAliensAreDead) {
-				GameStateChangedEvent changeState = new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
-					GameState.Victory);
+				GameStateChangedEvent changeState = GameStateChangedEvent.To(GameState.Victory);
 				EventManager.QueueEvent(changeState);
 			}
 		}		

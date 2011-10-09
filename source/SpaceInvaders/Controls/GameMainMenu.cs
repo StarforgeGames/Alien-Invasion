@@ -19,14 +19,12 @@ namespace SpaceInvaders.Controls
 
         private void NewGameButton_Click(object sender, EventArgs e)
         {
-            eventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED, 
-                GameState.Loading));
+            eventManager.QueueEvent(GameStateChangedEvent.To(GameState.Loading));
         }
 
         private void QuitButton_Click(object sender, EventArgs e)
         {
-            eventManager.QueueEvent(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED, 
-                GameState.Quit));
+            eventManager.QueueEvent(GameStateChangedEvent.To(GameState.Quit));
         }
 
 

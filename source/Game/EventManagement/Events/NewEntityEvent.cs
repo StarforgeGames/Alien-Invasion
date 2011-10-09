@@ -14,6 +14,11 @@
             this.EntityID = entityID;
         }
 
+        public static NewEntityEvent Announce(int entityID)
+        {
+            return new NewEntityEvent(NEW_ENTITY, entityID);
+        }
+
         public override string ToString()
         {
             return base.ToString() + " [EntityID: " + EntityID + "]";

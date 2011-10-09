@@ -29,14 +29,16 @@ namespace Game.Behaviors
             switch (evt.Type) {
                 case DestroyEntityEvent.DESTROY_ENTITY: {
                     DestroyEntityEvent msg = (DestroyEntityEvent)evt;
-                    if (this.entity.ID == msg.EntityID && msg.DestroyedByEntityID > 0) {
+                    if (this.entity.ID == msg.EntityID && msg.DestroyedByEntityID > 0) 
+                    {
                         int points = entity[Key_PointsAwarded];
-                        if (points <= 0) {
+                        if (points <= 0) 
+                        {
                             break;
                         }
 
-                        AwardPointsEvent awardPointsEvent = new AwardPointsEvent(AwardPointsEvent.AWARD_POINTS,
-                            (int)msg.DestroyedByEntityID, points, this.entity.ID);
+                        AwardPointsEvent awardPointsEvent = AwardPointsEvent.Award(msg.DestroyedByEntityID, points,
+                            this.entity.ID);
                         eventManager.QueueEvent(awardPointsEvent);
                     }
 
