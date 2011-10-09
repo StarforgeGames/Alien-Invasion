@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace SpaceInvaders
+namespace Utility
 {
     /// <summary>
     /// Class that keeps track of in-game time, taking pausing and stopping the game into account.
@@ -14,10 +14,12 @@ namespace SpaceInvaders
         public float Time {
             get 
             {
-                if (isStopped) {
+                if (isStopped) 
+                {
                     return (float)((stopTime - baseTime) * secondsPerCount);
                 }
-                else {
+                else 
+                {
                     return (float)((currentTime - pausedTime - baseTime) * secondsPerCount);
                 }
             }
@@ -36,7 +38,8 @@ namespace SpaceInvaders
             set
             {
                 timeScale = value;
-                if (value < 0.0f) {
+                if (value < 0.0f) 
+                {
                     timeScale = 0.0f;
                 }
             }

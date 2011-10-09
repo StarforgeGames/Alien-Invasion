@@ -14,16 +14,16 @@ namespace Game.Behaviors
         public ProjectileBehavior(Entity entity)
             : base(entity)
         {
-            entity.AddAttribute(Key_ProjectileOwner, new Attribute<int>(-1));
+            entity.AddAttribute(Key_ProjectileOwner, -1);
 
             initializeHandledEventTypes();
         }
 
         public override void OnUpdate(float deltaTime)
         {
-            Attribute<Vector2D> atBoundary = entity[SpatialBehavior.Key_AtBoundary];
+            Vector2D atBoundary = entity[SpatialBehavior.Key_AtBoundary];
 
-            if (atBoundary.Value.X != 0.0f || atBoundary.Value.Y != 0.0f) {
+            if (atBoundary.X != 0.0f || atBoundary.Y != 0.0f) {
                 killEntity();
                 Console.WriteLine("[" + this.GetType().Name +"] " + entity.Type + " died in vain.");
             }

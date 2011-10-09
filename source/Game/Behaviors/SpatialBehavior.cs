@@ -22,12 +22,12 @@ namespace Game.Behaviors
         public SpatialBehavior(Entity entity)
             : base (entity)
         {
-            entity.AddAttribute(Key_Position, new Attribute<Vector2D>(new Vector2D(0, 0)));
-            entity.AddAttribute(Key_Dimensions, new Attribute<Vector2D>(new Vector2D(0, 0)));
-            entity.AddAttribute(Key_MoveDirection, new Attribute<Vector2D>(new Vector2D(0, 0)));
-            entity.AddAttribute(Key_MovementSpeed, new Attribute<float>(0));
-            entity.AddAttribute(Key_AtBoundary, new Attribute<Vector2D>(new Vector2D(0, 0)));
-            entity.AddAttribute(Key_RespectsBoundary, new Attribute<bool>(true));
+            entity.AddAttribute(Key_Position, new Vector2D(0, 0));
+            entity.AddAttribute(Key_Dimensions, new Vector2D(0, 0));
+            entity.AddAttribute(Key_MoveDirection, new Vector2D(0, 0));
+            entity.AddAttribute(Key_MovementSpeed, 0);
+            entity.AddAttribute(Key_AtBoundary, new Vector2D(0, 0));
+            entity.AddAttribute(Key_RespectsBoundary, true);
 
             initializeHandledEventTypes();
         }
@@ -43,52 +43,57 @@ namespace Game.Behaviors
                 return;
             }
 
-            Attribute<float> speed = entity[Key_MovementSpeed];
-            Attribute<Vector2D> position = entity[Key_Position];
-            Attribute<Vector2D> direction = entity[Key_MoveDirection];
+            float speed = entity[Key_MovementSpeed];
+            Vector2D position = entity[Key_Position];
+            Vector2D direction = entity[Key_MoveDirection];
 
-            position.Value.X += direction.Value.X * speed * deltaTime;
-            position.Value.Y += direction.Value.Y * speed * deltaTime;
+            position.X += direction.X * speed * deltaTime;
+            position.Y += direction.Y * speed * deltaTime;
+            entity[Key_Position] = position;
 
-            Attribute<bool> respectBoundary = entity[Key_RespectsBoundary];
-            if (respectBoundary) {
+            bool respectsBoundary = entity[Key_RespectsBoundary];
+            if (respectsBoundary) {
                 checkAndEnforceBounds(position);
             }
         }
 
-        private void checkAndEnforceBounds(Attribute<Vector2D> position)
+        private void checkAndEnforceBounds(Vector2D position)
         {
-            Attribute<Vector2D> dimensions = entity[Key_Dimensions];
-            Attribute<Vector2D> direction = entity[Key_MoveDirection];
-            Attribute<Vector2D> atBoundary = entity[Key_AtBoundary];
+            Vector2D dimensions = entity[Key_Dimensions];
+            Vector2D direction = entity[Key_MoveDirection];
+            Vector2D atBoundary = entity[Key_AtBoundary];
 
-            if (position.Value.X <= 0.0f) {
-                position.Value.X = 0.0f;
-                direction.Value.X = 0.0f;
-                atBoundary.Value.X = -1.0f;
+            if (position.X <= 0.0f) {
+                position.X = 0.0f;
+                direction.X = 0.0f;
+                atBoundary.X = -1.0f;
             }
-            else if ((position.Value.X + dimensions.Value.X) > world.Width) {
-                position.Value.X = world.Width - dimensions.Value.X;
-                direction.Value.X = 0.0f;
-                atBoundary.Value.X = 1.0f;
+            else if ((position.X + dimensions.X) > world.Width) {
+                position.X = world.Width - dimensions.X;
+                direction.X = 0.0f;
+                atBoundary.X = 1.0f;
             }
             else {
-                atBoundary.Value.X = 0.0f;
+                atBoundary.X = 0.0f;
             }
 
-            if (position.Value.Y <= 0.0f) {
-                position.Value.Y = 0.0f;
-                direction.Value.Y = 0.0f;
-                atBoundary.Value.Y = -1.0f;
+            if (position.Y <= 0.0f) {
+                position.Y = 0.0f;
+                direction.Y = 0.0f;
+                atBoundary.Y = -1.0f;
             }
-            else if ((position.Value.Y + dimensions.Value.Y) >= world.Height) {
-                position.Value.Y = world.Height - dimensions.Value.Y;
-                direction.Value.Y = 0.0f;
-                atBoundary.Value.Y = 1.0f;
+            else if ((position.Y + dimensions.Y) >= world.Height) {
+                position.Y = world.Height - dimensions.Y;
+                direction.Y = 0.0f;
+                atBoundary.Y = 1.0f;
             }
             else {
-                atBoundary.Value.Y = 0.0f;
+                atBoundary.Y = 0.0f;
             }
+
+            entity[Key_Position] = position;
+            entity[Key_MoveDirection] = direction;
+            entity[Key_AtBoundary] = atBoundary;
         }
 
         public override void OnEvent(Event evt)
@@ -109,9 +114,10 @@ namespace Game.Behaviors
 
         private void setDirection(Vector2D newDirection)
         {
-            Attribute<Vector2D> entityDirection = entity[Key_MoveDirection];
-            entityDirection.Value.X = newDirection.X;
-            entityDirection.Value.Y = newDirection.Y;
+            Vector2D entityDirection = entity[Key_MoveDirection];
+            entityDirection.X = newDirection.X;
+            entityDirection.Y = newDirection.Y;
+            entity[Key_MoveDirection] = entityDirection;
         }
     }
 

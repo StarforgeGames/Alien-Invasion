@@ -123,9 +123,9 @@ namespace Game
 
             float startX = Width / 2f - (75f / 2f);
             float startY = 50;
-            Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(startX, startY));
+            Vector2D position = new Vector2D(startX, startY);
             evt.AddAttribute(SpatialBehavior.Key_Position, position);
-            Attribute<Vector2D> dimensions = new Attribute<Vector2D>(new Vector2D(75, 75));
+            Vector2D dimensions = new Vector2D(75, 75);
             evt.AddAttribute(SpatialBehavior.Key_Dimensions, dimensions);
 
             EventManager.QueueEvent(evt);
@@ -153,7 +153,7 @@ namespace Game
         {
             CreateEntityEvent evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, type);
 
-            Attribute<Vector2D> position = new Attribute<Vector2D>(new Vector2D(x, y));
+            Vector2D position = new Vector2D(x, y);
             evt.AddAttribute(SpatialBehavior.Key_Position, position);
 
             EventManager.QueueEvent(evt);
@@ -191,12 +191,11 @@ namespace Game
 
         private void removeEntity(Entity entity)
         {
-            Attribute<bool> hasDeathAnimation = entity[DyingBehavior.Key_HasDeathAnimation];
-            if (hasDeathAnimation != null && hasDeathAnimation)
+            if (entity.HasBehavior(typeof(DyingBehavior)))
             {
                 entityDyingQueue.Add(entity);
             }
-            else
+            else 
             {
                 entity.State = EntityState.Dead;
                 entityRemoveQueues[activeRemoveQueue].Add(entity);

@@ -9,6 +9,7 @@ using ResourceManagement.Loaders;
 using ResourceManagement.Wipers;
 using SlimDX.Windows;
 using SpaceInvaders.Views;
+using Utility;
 
 namespace SpaceInvaders
 {

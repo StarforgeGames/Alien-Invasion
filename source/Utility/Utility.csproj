@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\IntegerExtensions.cs" />
+    <Compile Include="Measurement\GameClock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Threading\CommandQueue.cs" />
     <Compile Include="Threading\IAsyncExecutor.cs" />

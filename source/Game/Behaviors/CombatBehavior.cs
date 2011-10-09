@@ -17,11 +17,11 @@ namespace Game.Behaviors
         public CombatBehavior(Entity entity)
             : base(entity)
         {
-            entity.AddAttribute(Key_IsFiring, new Attribute<bool>(false));
-            entity.AddAttribute(Key_IsSingleShot, new Attribute<bool>(false));
-            entity.AddAttribute(Key_FiringSpeed, new Attribute<float>(0));
-            entity.AddAttribute(Key_TimeSinceLastShot, new Attribute<float>(999));
-            entity.AddAttribute(Key_ProjectileType, new Attribute<string>(string.Empty));
+            entity.AddAttribute(Key_IsFiring, false);
+            entity.AddAttribute(Key_IsSingleShot, false);
+            entity.AddAttribute(Key_FiringSpeed, 0);
+            entity.AddAttribute(Key_TimeSinceLastShot, 999);
+            entity.AddAttribute(Key_ProjectileType, string.Empty);
 
             initializeHandledEventTypes();
         }
@@ -38,19 +38,19 @@ namespace Game.Behaviors
                 return;
             }
 
-            Attribute<bool> isFiring = entity[Key_IsFiring];
-            Attribute<bool> isSingleShot = entity[Key_IsSingleShot];
+            bool isFiring = entity[Key_IsFiring];
+            bool isSingleShot = entity[Key_IsSingleShot];
 
             if (isFiring || isSingleShot) 
             {
-                Attribute<float> firingSpeed = entity[Key_FiringSpeed];
-                Attribute<float> timeSinceLastShot = entity[Key_TimeSinceLastShot];
+                float firingSpeed = entity[Key_FiringSpeed];
+                float timeSinceLastShot = entity[Key_TimeSinceLastShot];
 
-                timeSinceLastShot.Value += deltaTime;
+                timeSinceLastShot += deltaTime;
 
                 if (timeSinceLastShot >= firingSpeed || isSingleShot) 
                 {
-                    timeSinceLastShot.Value = 0.0f;
+                    timeSinceLastShot = 0.0f;
                     createProjectileAtCurrentPosition();
                     if (entity.Type == "player")
                     {
@@ -59,11 +59,14 @@ namespace Game.Behaviors
 
                     if (isSingleShot) 
                     {
-                        isSingleShot.Value = false;
+                        isSingleShot = false;
+                        entity[Key_IsSingleShot] = isSingleShot;
                     }
 
                     Console.WriteLine("[" + this.GetType().Name + "] Firing weapon of " + entity);
                 }
+
+                entity[Key_TimeSinceLastShot] = timeSinceLastShot;
             }
         }
 
@@ -74,23 +77,23 @@ namespace Game.Behaviors
 
         private void createProjectileAtCurrentPosition()
         {
-            var projectileType = entity[Key_ProjectileType];
+            string projectileType = entity[Key_ProjectileType];
             var evt = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, projectileType);
 
-            var owner = new Attribute<Entity>(entity);
+            Entity owner = entity;
             evt.AddAttribute(ProjectileBehavior.Key_ProjectileOwner, owner);
-            var faction = entity[CollisionBehavior.Key_Faction];
+            string faction = entity[CollisionBehavior.Key_Faction];
             evt.AddAttribute(CollisionBehavior.Key_Faction, faction);
 
-            var position = entity[SpatialBehavior.Key_Position];
-            var dimensions = entity[SpatialBehavior.Key_Dimensions];
+            Vector2D position = entity[SpatialBehavior.Key_Position];
+            Vector2D dimensions = entity[SpatialBehavior.Key_Dimensions];
 
-            float startX = position.Value.X + (dimensions.Value.X / 2f) - 2.5f;
-            float startY = position.Value.Y + (dimensions.Value.Y / 2f);
-            var pewpewPosition = new Attribute<Vector2D>(new Vector2D(startX, startY));
+            float startX = position.X + (dimensions.X / 2f) - 2.5f;
+            float startY = position.Y + (dimensions.Y / 2f);
+            Vector2D pewpewPosition = new Vector2D(startX, startY);
             evt.AddAttribute(SpatialBehavior.Key_Position, pewpewPosition);
 
-            var pewpewDimensions = new Attribute<Vector2D>(new Vector2D(5, 15));
+            Vector2D pewpewDimensions = new Vector2D(5, 15);
             evt.AddAttribute(SpatialBehavior.Key_Dimensions, pewpewDimensions);
 
             eventManager.QueueEvent(evt);
@@ -102,26 +105,22 @@ namespace Game.Behaviors
             {
                 case FireWeaponEvent.FIRE_SINGLE_SHOT: 
                 {
-                    Attribute<bool> isSingleShot = entity[Key_IsSingleShot];
-                    isSingleShot.Value = true;
-
+                    entity[Key_IsSingleShot] = true;
                     break;
                 }
                 case FireWeaponEvent.START_FIRING: 
                 {
-                    Attribute<bool> isFiring = entity[Key_IsFiring];
-                    isFiring.Value = true;
+                    entity[Key_IsFiring] = true;
                     break;
                 }
                 case FireWeaponEvent.STOP_FIRING: 
                 {
-                    Attribute<bool> isFiring = entity[Key_IsFiring];
-                    isFiring.Value = false;
+                    entity[Key_IsFiring] = false;
                         
                     // Allow that a shot can be fired faster when the fire button is hit again in rapid succession
-                    Attribute<float> timeSinceLastShot = entity[Key_TimeSinceLastShot];
-                    Attribute<float> firingSpeed = entity[Key_FiringSpeed];
-                    timeSinceLastShot.Value += 0.3f;
+                    float timeSinceLastShot = entity[Key_TimeSinceLastShot];
+                    timeSinceLastShot += 0.3f;
+                    entity[Key_TimeSinceLastShot] = timeSinceLastShot;
                     break;
                 }
             }

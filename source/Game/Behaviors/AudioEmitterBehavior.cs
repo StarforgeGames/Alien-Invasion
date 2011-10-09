@@ -18,8 +18,8 @@ namespace Game.Behaviors
         public AudioEmitterBehavior(Entity entity)
             : base(entity)
         {
-            entity.AddAttribute(Key_CreateEntitySound, new Attribute<ResourceHandle>(null));
-            entity.AddAttribute(Key_DestroyEntitySound, new Attribute<ResourceHandle>(null));
+            entity.AddAttribute(Key_CreateEntitySound, (ResourceHandle)null);
+            entity.AddAttribute(Key_DestroyEntitySound, (ResourceHandle)null);
 
             initializeHandledEventTypes();
         }
@@ -49,18 +49,18 @@ namespace Game.Behaviors
                         break;
                     }
 
-                    Attribute<ResourceHandle> sound = entity[Key_CreateEntitySound];
-                    if (sound.Value == null) {
+                    ResourceHandle sound = entity[Key_CreateEntitySound];
+                    if (sound == null) {
                         break;
                     }
                     
                     if (entity.Type == "mystery_ship")
                     {
-                        audioEvent = AudioEvent.LoopSound(entity.ID, sound.Value);
+                        audioEvent = AudioEvent.LoopSound(entity.ID, sound);
                     }
                     else
                     {
-                        audioEvent = AudioEvent.PlaySound(entity.ID, sound.Value);
+                        audioEvent = AudioEvent.PlaySound(entity.ID, sound);
                     }
                     break;
                 }
@@ -76,12 +76,12 @@ namespace Game.Behaviors
                         break;
                     }
 
-                    Attribute<ResourceHandle> sound = entity[Key_DestroyEntitySound];
-                    if (sound.Value == null) {
+                    ResourceHandle sound = entity[Key_DestroyEntitySound];
+                    if (sound == null) {
                         break;
                     }
 
-                    audioEvent = AudioEvent.PlaySound(entity.ID, sound.Value);
+                    audioEvent = AudioEvent.PlaySound(entity.ID, sound);
                     break;
                 }
             }

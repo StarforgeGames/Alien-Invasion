@@ -48,10 +48,10 @@ namespace Game
                         continue;
                     }
 
-                    var entityFaction = entity[CollisionBehavior.Key_Faction] as Attribute<string>;
-                    var otherFaction = other[CollisionBehavior.Key_Faction] as Attribute<string>;
+                    var entityFaction = entity[CollisionBehavior.Key_Faction];
+                    var otherFaction = other[CollisionBehavior.Key_Faction];
                     // No friendly fire... or collision
-                    if (entityFaction.Value == otherFaction.Value) {
+                    if (entityFaction == otherFaction) {
                         continue;
                     }
 
@@ -65,7 +65,7 @@ namespace Game
                             entity.ID);
                         EventManager.QueueEvent(collisionMsg);
 
-                        Attribute<int> collisionDmg = entity[CollisionBehavior.Key_CollisionDamage] as Attribute<int>;
+                        int collisionDmg = entity[CollisionBehavior.Key_CollisionDamage];
                         DamageEvent dmgMsg = new DamageEvent(DamageEvent.RECEIVE_DAMAGE,
                             entity.ID,
                             collisionDmg,
@@ -84,16 +84,16 @@ namespace Game
 
         public bool AreColliding(Entity entity, Entity other)
         {
-            Attribute<Vector2D> position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
-            Attribute<Vector2D> dimensions = entity[SpatialBehavior.Key_Dimensions] as Attribute<Vector2D>;
+            Vector2D position = entity[SpatialBehavior.Key_Position];
+            Vector2D dimensions = entity[SpatialBehavior.Key_Dimensions];
 
-            Attribute<Vector2D> otherPosition = other[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
-            Attribute<Vector2D> otherDimensions = other[SpatialBehavior.Key_Dimensions] as Attribute<Vector2D>;
+            Vector2D otherPosition = other[SpatialBehavior.Key_Position];
+            Vector2D otherDimensions = other[SpatialBehavior.Key_Dimensions];
 
-            return position.Value.X <= otherPosition.Value.X + otherDimensions.Value.X
-                && position.Value.Y <= otherPosition.Value.Y + otherDimensions.Value.Y
-                && position.Value.X + dimensions.Value.X >= otherPosition.Value.X
-                && position.Value.Y + dimensions.Value.Y >= otherPosition.Value.Y;
+            return position.X <= otherPosition.X + otherDimensions.X
+                && position.Y <= otherPosition.Y + otherDimensions.Y
+                && position.X + dimensions.X >= otherPosition.X
+                && position.Y + dimensions.Y >= otherPosition.Y;
         }
 
         public void OnEvent(Event evt)
@@ -116,13 +116,11 @@ namespace Game
 
         public void OnAttach(Entity entity)
         {
-            Attribute<bool> isPhysical = entity[CollisionBehavior.Key_IsPhysical] as Attribute<bool>;
-            if (isPhysical == null || !isPhysical) {
-                return;
+            if (entity.HasBehavior(typeof(CollisionBehavior)))
+            {
+                // Log.Error("Adding " + entity.ToString() + "to collidables.", this.GetType().Name);
+                collidables.Add(entity);
             }
-
-            // Log.Error("Adding " + entity.ToString() + "to collidables.", this.GetType().Name);
-            collidables.Add(entity);
         }
 
         public void OnDetach(Entity entity)

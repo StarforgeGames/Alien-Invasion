@@ -11,7 +11,7 @@ namespace Game.Behaviors
         public AwardsPointsBehavior(Entity entity)
             : base(entity)
         {
-            entity.AddAttribute(Key_PointsAwarded, new Attribute<int>(0));
+            entity.AddAttribute(Key_PointsAwarded, 0);
 
             initializeHandledEventTypes();
         }
@@ -30,13 +30,13 @@ namespace Game.Behaviors
                 case DestroyEntityEvent.DESTROY_ENTITY: {
                     DestroyEntityEvent msg = (DestroyEntityEvent)evt;
                     if (this.entity.ID == msg.EntityID && msg.DestroyedByEntityID > 0) {
-                        Attribute<int> points = entity[Key_PointsAwarded];
-                        if (points.Value <= 0) {
+                        int points = entity[Key_PointsAwarded];
+                        if (points <= 0) {
                             break;
                         }
 
                         AwardPointsEvent awardPointsEvent = new AwardPointsEvent(AwardPointsEvent.AWARD_POINTS,
-                            (int)msg.DestroyedByEntityID, points.Value, this.entity.ID);
+                            (int)msg.DestroyedByEntityID, points, this.entity.ID);
                         eventManager.QueueEvent(awardPointsEvent);
                     }
 

@@ -17,8 +17,8 @@ namespace Game.Behaviors
         public DyingBehavior(Entity entity)
             : base(entity)
         {
-            entity.AddAttribute(Key_HasDeathAnimation, new Attribute<bool>(true));
-            entity.AddAttribute(Key_DeathAnimation, new Attribute<ResourceHandle>(null));
+            entity.AddAttribute(Key_HasDeathAnimation, true);
+            entity.AddAttribute(Key_DeathAnimation, (ResourceHandle)null);
 
             initializeHandledEventTypes();
         }
@@ -35,10 +35,10 @@ namespace Game.Behaviors
                 return;
             }
 
-            Attribute<bool> hasDeathAnimation = entity[Key_HasDeathAnimation];
+            bool hasDeathAnimation = entity[Key_HasDeathAnimation];
             if (hasDeathAnimation)
             {
-                Attribute<ResourceHandle> deathAnimation = entity[Key_DeathAnimation];
+                ResourceHandle deathAnimation = entity[Key_DeathAnimation];
                 // TODO: Start Death Animation explicitly, not just any animation
                 var evt = AnimationEvent.Play(entity.ID);
                 evt.ResetOnStop = false;

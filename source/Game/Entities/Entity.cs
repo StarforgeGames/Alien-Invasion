@@ -77,14 +77,13 @@ namespace Game.Entities
             foreach (XmlNode node in attributeNode.ChildNodes) {
                 if (node.Attributes != null) // used to handle comment nodes
                 {
-                    object attribute = this[node.Attributes["key"].Value];
-                    if (attribute == null) {
+                    if (!HasAttribute(node.Attributes["key"].Value)) 
+                    {
                         continue;
                     }
-                    PropertyInfo valueProp = attribute.GetType().GetProperty("Value");
-                    object value = extractValue(attributeLoader, node);
 
-                    valueProp.SetValue(attribute, value, null);
+                    dynamic value = extractValue(attributeLoader, node);
+                    this[node.Attributes["key"].Value] = value;
                 }
             }
         }
@@ -147,13 +146,33 @@ namespace Game.Entities
         }
 
         /// <summary>
+        /// Checks if this entity has the a behavior of the given type.
+        /// </summary>
+        /// <param name="type">Type of behavior</param>
+        /// <returns>True if it has the behavior</returns>
+        public bool HasBehavior(Type type)
+        {
+            return behaviors.Exists(b => b.GetType() == type);
+        }
+
+        /// <summary>
         /// Adds a new attribute to this entity.
         /// </summary>
         /// <param name="value">Value of the new attribute</param>
         /// <returns>Unique identifier for this attribute</returns>
-        public void AddAttribute<T>(string key, Attribute<T> value)
+        public void AddAttribute<T>(string key, T value)
         {
             attributes.Add(key, value);
+        }
+
+        /// <summary>
+        /// Checks if this entity has an attribute for the given key
+        /// </summary>
+        /// <param name="key">Name of the attribute</param>
+        /// <returns>True if it has the attribute</returns>
+        public bool HasAttribute(string key)
+        {
+            return attributes.ContainsKey(key);
         }
 
         public void Update(float deltaTime)

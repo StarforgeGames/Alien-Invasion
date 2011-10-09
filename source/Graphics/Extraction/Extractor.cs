@@ -41,22 +41,22 @@ namespace Graphics
 
         public void ExtractSingle(Entity entity)
         {
-            var material = entity[RenderBehavior.Key_Material] as Attribute<ResourceHandle>;
-            var mesh = entity[RenderBehavior.Key_Mesh] as Attribute<ResourceHandle>;
-            var position = entity[SpatialBehavior.Key_Position] as Attribute<Vector2D>;
-            var dimensions = entity[SpatialBehavior.Key_Dimensions] as Attribute<Vector2D>;
-            var frame = entity[RenderBehavior.Key_Frame] as Attribute<float>;
+            ResourceHandle material = entity[RenderBehavior.Key_Material];
+            ResourceHandle mesh = entity[RenderBehavior.Key_Mesh];
+            Vector2D position = entity[SpatialBehavior.Key_Position];
+            Vector2D dimensions = entity[SpatialBehavior.Key_Dimensions];
+            float frame = entity[RenderBehavior.Key_Frame];
 
             Matrix mat = new Matrix();
-            mat.M11 = dimensions.Value.X;
-            mat.M22 = dimensions.Value.Y;
+            mat.M11 = dimensions.X;
+            mat.M22 = dimensions.Y;
             mat.M33 = 1.0f;
             mat.M44 = 1.0f;
-            mat.M41 = position.Value.X;
-            mat.M42 = position.Value.Y;
+            mat.M41 = position.X;
+            mat.M42 = position.Y;
 
             frontObjects.Add(
-                new RenderObject(material.Value, mesh.Value, mat, frame.Value));
+                new RenderObject(material, mesh, mat, frame));
         }
 
 

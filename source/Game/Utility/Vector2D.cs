@@ -5,18 +5,20 @@ namespace Game.Utility
     /// <summary>
     /// Represents a 2 dimensional Vector usable for positioning and stuff.
     /// </summary>
-    public class Vector2D
+    public struct Vector2D
     {
         public float X { get; set; }
         public float Y { get; set; }
 
         public Vector2D(float x, float y)
+            : this()
         {
             this.X = x;
             this.Y = y;
         }
 
         public Vector2D(Vector2D other)
+            : this()
         {
             this.X = other.X;
             this.Y = other.Y;

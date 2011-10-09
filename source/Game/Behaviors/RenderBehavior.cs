@@ -17,10 +17,10 @@ namespace Game.Behaviors
         public RenderBehavior(Entity entity)
             : base(entity)
         {
-            entity.AddAttribute(Key_Material, new Attribute<ResourceHandle>(null));
-            entity.AddAttribute(Key_Mesh, new Attribute<ResourceHandle>(null));
-            entity.AddAttribute(Key_IsRenderable, new Attribute<bool>(true));
-            entity.AddAttribute(Key_Frame, new Attribute<float>(0.0f));
+            entity.AddAttribute(Key_Material, (ResourceHandle)null);
+            entity.AddAttribute(Key_Mesh, (ResourceHandle)null);
+            entity.AddAttribute(Key_IsRenderable, true);
+            entity.AddAttribute(Key_Frame, 0.0f);
 
             initializeHandledEventTypes();
         }

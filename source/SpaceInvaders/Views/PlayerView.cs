@@ -196,7 +196,7 @@ namespace SpaceInvaders.Views
                         if (entity.Type == "player") {
                             OnAttach(entity);
 
-                            Attribute<int> lifes = playerEntity[HealthBehavior.Key_Lifes];
+                            int lifes = playerEntity[HealthBehavior.Key_Lifes];
                             hud.Reset(lifes);
                         }
                         break;
@@ -288,11 +288,7 @@ namespace SpaceInvaders.Views
                 case GameState.Quit:
                     RenderForm.Close();
                     break;
-                default:
-                    break;
             }
-
-            //RenderForm.Focus(); // Always focus RenderForm, else Key input won't be captured
         }
 
         public void Dispose()

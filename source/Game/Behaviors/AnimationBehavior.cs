@@ -21,7 +21,7 @@ namespace Game.Behaviors
             : base(entity)
         {
             //entity.AddAttribute(Key_Frame, new Attribute<float>(0.0f)); // this variable is owned by render behaviour
-            entity.AddAttribute(Key_FrameCount, new Attribute<float>(1.0f));
+            entity.AddAttribute(Key_FrameCount, 1.0f);
 
             initializeHandledEventTypes();
         }
@@ -46,7 +46,7 @@ namespace Game.Behaviors
 
                 if (frame < entity[Key_FrameCount] - 1.0f)
                 {
-                    entity[Key_Frame] = new Attribute<float>(frame + 1.0f);
+                    entity[Key_Frame] = frame + 1.0f;
                 }
                 else
                 {
@@ -57,7 +57,7 @@ namespace Game.Behaviors
                     }
                     if (resetOnStopped || loop)
                     {
-                        entity[Key_Frame] = new Attribute<float>(0.0f);
+                        entity[Key_Frame] = 0.0f;
                     }
                 }
             }
@@ -75,12 +75,12 @@ namespace Game.Behaviors
                     break;
                 case AnimationEvent.STOP_ANIMATION:
                     isPlaying = false;
-                    entity[Key_Frame] = new Attribute<float>(0.0f);
+                    entity[Key_Frame] = 0.0f;
                     eventManager.QueueEvent(AnimationEvent.Stopped(entity.ID));
                     break;
                 case AnimationEvent.PAUSE_ANIMATION:
                     isPlaying = false;
-                    entity[Key_Frame] = new Attribute<float>(0.0f);
+                    entity[Key_Frame] = 0.0f;
                     eventManager.QueueEvent(AnimationEvent.Stopped(entity.ID));
                     break;
                 default:

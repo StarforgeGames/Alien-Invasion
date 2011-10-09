@@ -34,7 +34,7 @@ namespace SpaceInvaders.Views
 
 
         private Entity mysteryShip;
-        private readonly int minMysteryShipSpawnTime = 5;
+        private readonly int minMysteryShipSpawnTime = 2;
         private readonly int maxMysteryShipSpawnTime = 15;
         private float timeSinceLastMysteryShipSpawn;
         private float timeToNextMysteryShipSpawn;
@@ -62,7 +62,8 @@ namespace SpaceInvaders.Views
 
         public void OnUpdate(float deltaTime)
         {
-            if (Game.IsPaused || invaders.Count < 1) {
+            if (Game.IsPaused || invaders.Count < 1) 
+            {
                 return;
             }
 
@@ -75,9 +76,10 @@ namespace SpaceInvaders.Views
         {
             timeSinceLastShot += deltaTime;
             Entity shooter = invaders[rng.Next(invaders.Count - 1)];
-            Attribute<float> firingSpeed = shooter[CombatBehavior.Key_FiringSpeed];
+            float firingSpeed = shooter[CombatBehavior.Key_FiringSpeed];
 
-            if (timeSinceLastShot * rng.NextDouble() + (1 - firingSpeed) >= firingThreshold) {
+            if (timeSinceLastShot * rng.NextDouble() + (1 - firingSpeed) >= firingThreshold) 
+            {
                 timeSinceLastShot = 0.0f;
                 firingThreshold = 0.5f + ((float)rng.NextDouble() * 1f);
                 EventManager.Trigger(new FireWeaponEvent(FireWeaponEvent.FIRE_SINGLE_SHOT, shooter.ID));
@@ -86,8 +88,10 @@ namespace SpaceInvaders.Views
 
         private void handleMovement(float deltaTime)
         {
-            if (currentDirection.Y < 0) {
-                if (moveDownTime >= totalMoveDownTime) {
+            if (currentDirection.Y < 0) 
+            {
+                if (moveDownTime >= totalMoveDownTime) 
+                {
                     currentDirection.Y = 0.0f;
                     moveDownTime = 0.0f;
                     movementDirectionChanged = true;
@@ -96,7 +100,8 @@ namespace SpaceInvaders.Views
                 moveDownTime += deltaTime;
             }
 
-            if (!movementDirectionChanged) {
+            if (!movementDirectionChanged) 
+            {
                 return;
             }
 
@@ -110,30 +115,37 @@ namespace SpaceInvaders.Views
 
         private void handleMysteryShip(float deltaTime)
         {
-            timeSinceLastMysteryShipSpawn += deltaTime;
+            if (mysteryShip != null)
+            {
+                return;
+            }
 
-            if (timeSinceLastMysteryShipSpawn >= timeToNextMysteryShipSpawn && mysteryShip == null) {
+            timeSinceLastMysteryShipSpawn += deltaTime;
+            if (timeSinceLastMysteryShipSpawn >= timeToNextMysteryShipSpawn) 
+            {
                 var createEntity = new CreateEntityEvent(CreateEntityEvent.CREATE_ENTITY, "mystery_ship");
 
                 bool isSpawningOnTheRight = rng.Next(2) == 1;
 
-                if (isSpawningOnTheRight) {
-                    var position = new Attribute<Vector2D>(new Vector2D(Game.World.Width, Game.World.Height - 100));
+                if (isSpawningOnTheRight) 
+                {
+                    Vector2D position = new Vector2D(Game.World.Width, Game.World.Height - 100);
                     createEntity.AddAttribute(SpatialBehavior.Key_Position, position);
-                    var direction = new Attribute<Vector2D>(new Vector2D(-1, 0));
+                    Vector2D direction = new Vector2D(-1, 0);
                     createEntity.AddAttribute(SpatialBehavior.Key_MoveDirection, direction);
                 }
-                else {
-                    var position = new Attribute<Vector2D>(new Vector2D(-70, Game.World.Height - 100));
+                else 
+                {
+                    Vector2D position = new Vector2D(-70, Game.World.Height - 100);
                     createEntity.AddAttribute(SpatialBehavior.Key_Position, position);
-                    var direction = new Attribute<Vector2D>(new Vector2D(1, 0));
+                    Vector2D direction = new Vector2D(1, 0);
                     createEntity.AddAttribute(SpatialBehavior.Key_MoveDirection, direction);
                 }
                 
 
                 EventManager.QueueEvent(createEntity);
 
-                timeSinceLastMysteryShipSpawn = 0f;
+                timeSinceLastMysteryShipSpawn = 0.0f;
                 timeToNextMysteryShipSpawn = minMysteryShipSpawnTime + rng.Next(maxMysteryShipSpawnTime);
             }
         }
@@ -144,10 +156,12 @@ namespace SpaceInvaders.Views
                 case NewEntityEvent.NEW_ENTITY: {
                     var newEntityEvent = (NewEntityEvent)evt;
                     Entity entity = Game.World.Entities[newEntityEvent.EntityID];
-                    if (entity.Type.StartsWith("alien_")) {
+                    if (entity.Type.StartsWith("alien_")) 
+                    {
                         OnAttach(entity);
                     }
-                    else if (entity.Type.Equals("mystery_ship")) {
+                    else if (entity.Type.Equals("mystery_ship")) 
+                    {
                         mysteryShip = entity;
                     }
                     break;
@@ -155,10 +169,12 @@ namespace SpaceInvaders.Views
                 case DestroyEntityEvent.DESTROY_ENTITY: {
                     var destroyEntityEvent = (DestroyEntityEvent)evt;
                     Entity entity = Game.World.Entities[destroyEntityEvent.EntityID];
-                    if (entity.Type.StartsWith("alien_")) {
+                    if (entity.Type.StartsWith("alien_")) 
+                    {
                         OnDetach(entity);
                     }
-                    else if (entity.Type.Equals("mystery_ship")) {
+                    else if (entity.Type.Equals("mystery_ship")) 
+                    {
                         mysteryShip = null;
 
                     }
@@ -174,7 +190,8 @@ namespace SpaceInvaders.Views
 
                     Vector2D borderData = aiMovementUpdateEvent.BorderData;
 
-                    if (borderData.Y < 0) {
+                    if (borderData.Y < 0) 
+                    {
                         // Victory for the Invaders!
                         EventManager.Trigger(new GameStateChangedEvent(GameStateChangedEvent.GAME_STATE_CHANGED,
                             GameState.GameOver));

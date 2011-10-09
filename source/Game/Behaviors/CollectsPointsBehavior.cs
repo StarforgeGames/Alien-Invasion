@@ -15,7 +15,7 @@ namespace Game.Behaviors
         public CollectsPointsBehavior(Entity entity)
             : base(entity)
         {
-            entity.AddAttribute(Key_PointsCollected, new Attribute<int>(0));
+            entity.AddAttribute(Key_PointsCollected, 0);
 
             initializeHandledEventTypes();
         }
@@ -33,13 +33,13 @@ namespace Game.Behaviors
             switch (evt.Type) {
                 case AwardPointsEvent.AWARD_POINTS: {
                     AwardPointsEvent msg = (AwardPointsEvent)evt;
-                    Attribute<int> points = entity[Key_PointsCollected];
 
-                    points.Value += msg.Points;
+                    int points = entity[Key_PointsCollected];
+                    points += msg.Points;
+                    entity[Key_PointsCollected] = points;
 
                     HudEvent hudEvent = HudEvent.UpdateScore(points);
                     eventManager.QueueEvent(hudEvent);
-
 
                     Console.WriteLine("[" + this.GetType().Name + "] " + entity + " collected " + msg.Points
                         + " points for destroying " + msg.SourceEntityID + " (total points: " + points + " )");
