@@ -2,7 +2,7 @@ Texture2D tex2D;
 
 SamplerState linearSampler
 {
-    Filter = ANISOTROPIC;
+    Filter = MIN_MAG_MIP_POINT;
     AddressU = Clamp;
     AddressV = Clamp;
 };
