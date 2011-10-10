@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Entity>
+	<behaviors>
+		<SpatialBehavior />
+		<RenderBehavior />
+		<HealthBehavior />
+		<AnimationBehavior />
+		<DyingBehavior />
+	</behaviors>
+	<attributes>
+		<Vector2D key="Dimensions">			
+			<x>256</x>
+			<y>256</y>
+		</Vector2D>
+		<Resource key="Material" type="material" name="player_death"/>
+		<Resource key="Mesh" type="mesh" name="quad"/>
+		<string key="Faction">player</string>
+		<float key="FrameCount">20.0</float>
+	</attributes>
+</Entity>

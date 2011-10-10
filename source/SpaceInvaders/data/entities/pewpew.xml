@@ -8,6 +8,10 @@
 		<AudioEmitterBehavior />
 	</behaviors>
 	<attributes>
+		<Vector2D key="Dimensions">			
+			<x>5</x>
+			<y>15</y>
+		</Vector2D>
 		<Resource key="Material" type="material" name="pewpew"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
 		<Resource key="CreateEntitySound" type="audio" name="player_shot"/>

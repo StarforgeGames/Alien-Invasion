@@ -95,9 +95,6 @@ namespace Game.Behaviors
             Vector2D pewpewPosition = new Vector2D(startX, startY);
             evt.AddAttribute(SpatialBehavior.Key_Position, pewpewPosition);
 
-            Vector2D pewpewDimensions = new Vector2D(5, 15);
-            evt.AddAttribute(SpatialBehavior.Key_Dimensions, pewpewDimensions);
-
             eventManager.QueueEvent(evt);
         }
 

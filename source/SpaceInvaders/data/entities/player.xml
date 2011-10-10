@@ -11,6 +11,10 @@
 		<AnimationBehavior />
 	</behaviors>
 	<attributes>
+		<Vector2D key="Dimensions">			
+			<x>75</x>
+			<y>75</y>
+		</Vector2D>
 		<Resource key="Material" type="material" name="player"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
 		<Resource key="DestroyEntitySound" type="audio" name="explosion"/>

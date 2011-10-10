@@ -66,7 +66,7 @@ namespace Graphics
             {
                 frontObjects.Clear();
                 var view = Matrix.LookAtLH(
-                    new Vector3(game.World.Width/2.0f,game.World.Height/2.0f, -1.0f),
+                    new Vector3(game.World.Width / 2.0f,game.World.Height / 2.0f, -1.0f),
                     new Vector3(game.World.Width / 2.0f, game.World.Height / 2.0f, 0.0f), 
                     Vector3.UnitY);
                 
@@ -76,7 +76,7 @@ namespace Graphics
 
                 foreach (var GameObject in game.World.Entities)
                 {
-                    if (GameObject.Value[RenderBehavior.Key_IsRenderable] != null) 
+                    if (GameObject.Value[RenderBehavior.Key_IsRenderable] ?? false) 
                     {
                         ExtractSingle(GameObject.Value);
                     }
