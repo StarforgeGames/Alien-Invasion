@@ -11,9 +11,16 @@ namespace Game.Behaviors
         public const string Key_FiringSpeed = "FiringSpeed";
         public const string Key_ProjectileType = "ProjectileType";
 
-        private float timeSinceLastShot;
+        private float timeSinceLastShot = 99.0f;    // set to high value so first shot is instantly fired
         private bool isFiring;
         private bool isSingleShot;
+        
+        // Allow that a shot can be fired faster when the fire button is hit again in rapid succession
+        private const float RapidFireThreshold = 0.1f;
+        private const float RapidFireBonus = -0.3f;
+
+        private float timeSinceLastKeyPress = 99.0f;
+        private bool hasRapidFireBonus;
 
         public CombatBehavior(Entity entity)
             : base(entity)
@@ -36,10 +43,15 @@ namespace Game.Behaviors
                 return;
             }
 
+            timeSinceLastShot += deltaTime;
+            timeSinceLastKeyPress += deltaTime;
             if (isFiring || isSingleShot) 
             {
                 float firingSpeed = entity[Key_FiringSpeed];
-                timeSinceLastShot += deltaTime;
+                if (hasRapidFireBonus)
+                {
+                    firingSpeed += RapidFireBonus;
+                }
 
                 if (timeSinceLastShot >= firingSpeed || isSingleShot) 
                 {
@@ -98,17 +110,23 @@ namespace Game.Behaviors
                     isSingleShot = true;
                     break;
                 }
-                case FireWeaponEvent.START_FIRING: 
+                case FireWeaponEvent.START_FIRING:
                 {
+                    if (timeSinceLastKeyPress <= RapidFireThreshold)
+                    {
+                        hasRapidFireBonus = true;
+                    }
+                    else
+                    {
+                        hasRapidFireBonus = false;
+                    }
                     isFiring = true;
                     break;
                 }
                 case FireWeaponEvent.STOP_FIRING: 
                 {
                     isFiring = false;
-                        
-                    // Allow that a shot can be fired faster when the fire button is hit again in rapid succession
-                    timeSinceLastShot += 0.3f;
+                    timeSinceLastKeyPress = 0.0f;
                     break;
                 }
             }

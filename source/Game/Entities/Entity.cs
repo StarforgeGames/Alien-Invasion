@@ -39,12 +39,16 @@ namespace Game.Entities
 
         public dynamic this[string key]
         { 
-            get {
+            get 
+            {
                 dynamic result = null;
                 attributes.TryGetValue(key, out result);
                 return result;
             }
-            set { attributes[key] = value;  } 
+            set 
+            {
+                attributes[key] = value;  
+            } 
         }
 
         public Entity(GameLogic game, string type)

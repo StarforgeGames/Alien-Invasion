@@ -39,7 +39,7 @@ namespace Game.Behaviors
             }
 
             elapsedTime += deltaTime;
-            if (elapsedTime > 0.040f)
+            if (elapsedTime > 0.033f)
             {
                 elapsedTime = 0.0f;
                 float frame = entity[Key_Frame];

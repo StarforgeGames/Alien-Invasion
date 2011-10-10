@@ -19,6 +19,6 @@
 		<string key="ProjectileType">pewpew</string>
 		<int key="Lifes">3</int>
 		<string key="Faction">player</string>
-		<float key="FrameCount">3.0</float>
+		<float key="FrameCount">20.0</float>
 	</attributes>
 </Entity>

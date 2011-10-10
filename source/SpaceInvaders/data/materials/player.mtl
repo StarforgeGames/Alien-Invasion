@@ -6,7 +6,7 @@
 	)
 	(constants
 		(vector2 "frameDimensions"
-			3.0f 1.0f
+			5.0f 4.0f
 		)
 	)
 	(framelayout
