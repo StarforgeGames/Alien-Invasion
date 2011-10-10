@@ -11,6 +11,7 @@ namespace Game.Behaviors
     {
         public const string Key_Frame = "Frame";
         public const string Key_FrameCount = "FrameCount"; // this has to be removed in a future version!
+        public const string Key_FrameRate = "FrameRate"; // this has to be removed in a future version!
 
         private bool isPlaying = false;
         private float elapsedTime;
@@ -22,6 +23,7 @@ namespace Game.Behaviors
         {
             //entity.AddAttribute(Key_Frame, new Attribute<float>(0.0f)); // this variable is owned by render behaviour
             entity.AddAttribute(Key_FrameCount, 1.0f);
+            entity.AddAttribute(Key_FrameRate, 30.0f);
 
             initializeHandledEventTypes();
         }
@@ -39,7 +41,7 @@ namespace Game.Behaviors
             }
 
             elapsedTime += deltaTime;
-            if (elapsedTime > 0.033f)
+            if (elapsedTime > (1.0f / entity[Key_FrameRate]))
             {
                 elapsedTime = 0.0f;
                 float frame = entity[Key_Frame];
