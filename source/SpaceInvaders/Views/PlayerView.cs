@@ -16,6 +16,7 @@ using SpaceInvaders.Controls;
 using SpaceInvaders.Input;
 using Audio.Loaders;
 using Game.Behaviors;
+using System.Diagnostics;
 
 namespace SpaceInvaders.Views
 {
@@ -150,6 +151,7 @@ namespace SpaceInvaders.Views
             extractor.OnUpdate(deltaTime);
         }
 
+        [Conditional("DEBUG")]
         private void updateDebugOutput(float deltaTime)
         {
             Renderer.DebugOutput["cycle time"] = string.Format("{0:0} µs", deltaTime * 1000000.0f);

@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using Graphics.Resources;
+using ResourceManagement;
 using SlimDX;
 using SlimDX.Direct3D10;
 using SlimDX.DXGI;
-using Device = SlimDX.Direct3D10.Device;
-using ResourceManagement.Resources;
-using Graphics.Resources;
-using System.Collections.Generic;
-using ResourceManagement;
-using System.Runtime.InteropServices;
-using System.Collections.Concurrent;
 using Utility.Threading;
+using Device = SlimDX.Direct3D10.Device;
 
 namespace Graphics
 {
@@ -360,11 +360,11 @@ namespace Graphics
                                     }
                                     /*
                                     switch ((string)constant.Value.GetType().Name)
-	                                {
-		                                default:
+                                    {
+                                        default:
                                             throw new NotSupportedException("Constant type: " + constant.Value.GetType() + )
                                         break;
-	                                }
+                                    }
                                     .*/
                                 }
                                 //effect.Value.GetVariableByName("frameDimensions").AsVector().Set(material.frameDimensions);
@@ -430,6 +430,7 @@ namespace Graphics
             swapChain.Present(0, PresentFlags.None);         
         }
 
+        [Conditional("DEBUG")]
         private void calcPerformanceMetrics()
         {
             long tick;
