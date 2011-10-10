@@ -122,11 +122,9 @@ namespace Game
             CreateEntityEvent evt = CreateEntityEvent.New("player");
 
             float startX = Width / 2f - (75f / 2f);
-            float startY = 50;
+            float startY = 75 - (75f / 2f);
             Vector2D position = new Vector2D(startX, startY);
             evt.AddAttribute(SpatialBehavior.Key_Position, position);
-            Vector2D dimensions = new Vector2D(75, 75);
-            evt.AddAttribute(SpatialBehavior.Key_Dimensions, dimensions);
 
             EventManager.QueueEvent(evt);
         }

@@ -16,6 +16,10 @@ namespace Game.Behaviors
         public DyingBehavior(Entity entity)
             : base(entity)
         {
+            if (entity.Type == "player_death")
+            {
+                entity.State = EntityState.Dying;
+            }
             entity.AddAttribute(Key_DeathAnimation, (ResourceHandle)null);
 
             initializeHandledEventTypes();

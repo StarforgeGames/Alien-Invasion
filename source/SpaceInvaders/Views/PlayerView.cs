@@ -157,7 +157,7 @@ namespace SpaceInvaders.Views
             {
                 Renderer.DebugOutput["#Gen" + i] = GC.CollectionCount(i).ToString();
             }
-            Renderer.DebugOutput["Memory"] = GC.GetTotalMemory(false).ToString();
+            Renderer.DebugOutput["Memory"] = (GC.GetTotalMemory(false) / (1024 * 1024)) + " MiB";
         }
 
         public void OnAttach(Entity entity)

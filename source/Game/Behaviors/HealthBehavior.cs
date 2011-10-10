@@ -76,6 +76,15 @@ namespace Game.Behaviors
                 {
                     HudEvent hudEvent = HudEvent.UpdateLifes(lifes);
                     eventManager.QueueEvent(hudEvent);
+
+                    CreateEntityEvent createEvt = CreateEntityEvent.New("player_death");
+                    Vector2D position = entity[SpatialBehavior.Key_Position];
+                    position.X -= 90;
+                    position.Y -= 90;
+                    createEvt.AddAttribute(SpatialBehavior.Key_Position, position);
+                    eventManager.QueueEvent(createEvt);
+
+                    entity[RenderBehavior.Key_IsRenderable] = false;
                 }
 
                 if (lifes <= 0) 
@@ -104,6 +113,7 @@ namespace Game.Behaviors
 
         private void respawn()
         {
+            entity[RenderBehavior.Key_IsRenderable] = true;
             entity[Key_Health] = 1;
             entity.State = EntityState.Active;
 
@@ -112,7 +122,7 @@ namespace Game.Behaviors
 
             Vector2D position = entity[SpatialBehavior.Key_Position];
             position.X = world.Width / 2f - (75f / 2f);
-            position.Y = 100 - (75f / 2f);
+            position.Y = 75 - (75f / 2f);
             entity[SpatialBehavior.Key_Position] = position;
 
             entity.State = EntityState.Active;
