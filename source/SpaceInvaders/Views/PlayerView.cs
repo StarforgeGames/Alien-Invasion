@@ -145,8 +145,19 @@ namespace SpaceInvaders.Views
 
         public void OnUpdate(float deltaTime)
         {
-            Renderer.DebugOutput["cycle time"] = string.Format("{0:0} µs", deltaTime * 1000000.0f);
+            updateDebugOutput(deltaTime);
+
             extractor.OnUpdate(deltaTime);
+        }
+
+        private void updateDebugOutput(float deltaTime)
+        {
+            Renderer.DebugOutput["cycle time"] = string.Format("{0:0} µs", deltaTime * 1000000.0f);
+            for (int i = 0; i < GC.MaxGeneration; ++i)
+            {
+                Renderer.DebugOutput["#Gen" + i] = GC.CollectionCount(i).ToString();
+            }
+            Renderer.DebugOutput["Memory"] = GC.GetTotalMemory(false).ToString();
         }
 
         public void OnAttach(Entity entity)
