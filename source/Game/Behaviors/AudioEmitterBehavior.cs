@@ -33,7 +33,7 @@ namespace Game.Behaviors
         public override void OnUpdate(float deltaTime)
         {
             foreach (var audioEvent in audioQueue) {
-                eventManager.QueueEvent(audioEvent);
+                eventManager.Queue(audioEvent);
             }
             audioQueue.Clear();
         }

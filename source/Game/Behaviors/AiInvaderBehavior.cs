@@ -20,7 +20,7 @@ namespace Game.Behaviors
             Vector2D atBoundary = entity[SpatialBehavior.Key_AtBoundary];
 
             if (atBoundary.X < 0 || atBoundary.X > 0 || atBoundary.Y < 0 || atBoundary.Y > 0) {
-                eventManager.QueueEvent(AiUpdateMovementEvent.AtBorder(entity.ID, atBoundary));
+                eventManager.Queue(AiUpdateMovementEvent.AtBorder(entity.ID, atBoundary));
             }
         }
 

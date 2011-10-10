@@ -60,11 +60,11 @@ namespace Game
                             + other.Type + "!");
 
                         CollisionEvent collisionMsg = CollisionEvent.Collides(other.ID, entity.ID);
-                        EventManager.QueueEvent(collisionMsg);
+                        EventManager.Queue(collisionMsg);
 
                         int collisionDmg = entity[CollisionBehavior.Key_CollisionDamage];
                         DamageEvent dmgMsg = DamageEvent.Receive(collisionDmg, entity.ID, other.ID);
-                        EventManager.QueueEvent(dmgMsg);
+                        EventManager.Queue(dmgMsg);
                     }
                 }
             }

@@ -74,7 +74,7 @@ namespace Game.Behaviors
 
         private void startAnimation()
         {
-            eventManager.QueueEvent(AnimationEvent.Play(entity.ID));
+            eventManager.Queue(AnimationEvent.Play(entity.ID));
         }
 
         private void createProjectileAtCurrentPosition()
@@ -95,7 +95,7 @@ namespace Game.Behaviors
             Vector2D pewpewPosition = new Vector2D(startX, startY);
             evt.AddAttribute(SpatialBehavior.Key_Position, pewpewPosition);
 
-            eventManager.QueueEvent(evt);
+            eventManager.Queue(evt);
         }
 
         public override void OnEvent(Event evt)

@@ -16,5 +16,6 @@
 		<Resource key="Mesh" type="mesh" name="quad"/>
 		<string key="Faction">player</string>
 		<float key="FrameCount">8.0</float>
+		<float key="FrameRate">15.0</float>
 	</attributes>
 </Entity>

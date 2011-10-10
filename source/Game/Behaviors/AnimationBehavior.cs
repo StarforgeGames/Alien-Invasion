@@ -55,7 +55,7 @@ namespace Game.Behaviors
                     if (!loop)
                     {
                         isPlaying = false;
-                        eventManager.QueueEvent(AnimationEvent.Stopped(entity.ID));
+                        eventManager.Queue(AnimationEvent.Stopped(entity.ID));
                     }
                     if (resetOnStopped || loop)
                     {
@@ -78,12 +78,12 @@ namespace Game.Behaviors
                 case AnimationEvent.STOP_ANIMATION:
                     isPlaying = false;
                     entity[Key_Frame] = 0.0f;
-                    eventManager.QueueEvent(AnimationEvent.Stopped(entity.ID));
+                    eventManager.Queue(AnimationEvent.Stopped(entity.ID));
                     break;
                 case AnimationEvent.PAUSE_ANIMATION:
                     isPlaying = false;
                     entity[Key_Frame] = 0.0f;
-                    eventManager.QueueEvent(AnimationEvent.Stopped(entity.ID));
+                    eventManager.Queue(AnimationEvent.Stopped(entity.ID));
                     break;
                 default:
                     break;

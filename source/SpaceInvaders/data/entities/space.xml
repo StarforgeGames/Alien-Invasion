@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Entity>
+	<behaviors>
+		<SpatialBehavior />
+		<RenderBehavior />
+	</behaviors>
+	<attributes>
+		<Vector2D key="Dimensions">			
+			<x>1024</x>
+			<y>768</y>
+		</Vector2D>
+		<Resource key="Material" type="material" name="space"/>
+		<Resource key="Mesh" type="mesh" name="quad"/>
+	</attributes>
+</Entity>

@@ -86,7 +86,7 @@ namespace Game.EventManagement
 
         }
 
-        public bool QueueEvent(Event evt)
+        public bool Queue(Event evt)
         {
             if (!listenerMap.ContainsKey(evt.GetType())) {
                 return false;
