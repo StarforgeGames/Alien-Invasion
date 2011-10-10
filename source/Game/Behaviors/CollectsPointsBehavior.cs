@@ -39,7 +39,7 @@ namespace Game.Behaviors
                     entity[Key_PointsCollected] = points;
 
                     HudEvent hudEvent = HudEvent.UpdateScore(points);
-                    eventManager.QueueEvent(hudEvent);
+                    eventManager.Queue(hudEvent);
 
                     Console.WriteLine("[" + this.GetType().Name + "] " + entity + " collected " + msg.Points
                         + " points for destroying " + msg.SourceEntityID + " (total points: " + points + " )");

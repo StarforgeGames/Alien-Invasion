@@ -32,10 +32,10 @@ namespace SpaceInvaders.Input
                 case Keys.P:
                     goto case Keys.Pause;
                 case Keys.Pause:
-                    eventManager.QueueEvent(GameStateChangedEvent.To(GameState.Paused));
+                    eventManager.Queue(GameStateChangedEvent.To(GameState.Paused));
                     break;
                 case Keys.Escape:
-                    eventManager.QueueEvent(GameStateChangedEvent.To(GameState.Menu));
+                    eventManager.Queue(GameStateChangedEvent.To(GameState.Menu));
                     break;
 
                 // Debug Keys

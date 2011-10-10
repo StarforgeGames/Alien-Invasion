@@ -16,10 +16,6 @@ namespace Game.Behaviors
         public DyingBehavior(Entity entity)
             : base(entity)
         {
-            if (entity.Type == "player_death")
-            {
-                entity.State = EntityState.Dying;
-            }
             entity.AddAttribute(Key_DeathAnimation, (ResourceHandle)null);
 
             initializeHandledEventTypes();
@@ -39,7 +35,7 @@ namespace Game.Behaviors
 
             var evt = AnimationEvent.Play(entity.ID); // TODO: Start Death Animation explicitly, not just any animation
             evt.ResetOnStop = false;
-            eventManager.QueueEvent(evt);
+            eventManager.Queue(evt);
         }
 
         public override void OnEvent(Event evt)
@@ -49,7 +45,8 @@ namespace Game.Behaviors
                 case AnimationEvent.ANIMATION_STOPPED:
                 {
                     AnimationEvent aniMsg = (AnimationEvent)evt;
-                    this.entity.State = EntityState.Dead;
+                    entity.State = EntityState.Dead;
+                    entity[RenderBehavior.Key_IsRenderable] = false;
                     break;
                 }
             }

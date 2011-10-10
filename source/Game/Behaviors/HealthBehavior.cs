@@ -75,14 +75,14 @@ namespace Game.Behaviors
                 if (entity.Type == "player")
                 {
                     HudEvent hudEvent = HudEvent.UpdateLifes(lifes);
-                    eventManager.QueueEvent(hudEvent);
+                    eventManager.Queue(hudEvent);
 
                     CreateEntityEvent createEvt = CreateEntityEvent.New("player_death");
                     Vector2D position = entity[SpatialBehavior.Key_Position];
                     position.X -= 90;
                     position.Y -= 90;
                     createEvt.AddAttribute(SpatialBehavior.Key_Position, position);
-                    eventManager.QueueEvent(createEvt);
+                    eventManager.Queue(createEvt);
 
                     entity[RenderBehavior.Key_IsRenderable] = false;
                 }
@@ -98,13 +98,13 @@ namespace Game.Behaviors
                         destroyedByEntityID = projectileOwner.ID;
                     }
 
-                    eventManager.QueueEvent(DestroyEntityEvent.Destroy(entity.ID, destroyedByEntityID));
+                    eventManager.Queue(DestroyEntityEvent.Destroy(entity.ID, destroyedByEntityID));
                     Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type + " died a horrible "
                         + "death!");
                 }
                 else {
                     RespawnEntityEvent respawnEvent = RespawnEntityEvent.Respawn(entity.ID);
-                    eventManager.QueueEvent(respawnEvent);
+                    eventManager.Queue(respawnEvent);
                     Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type + " lost a life. " 
                         + lifes + " lifes remaining. Respawning...");
                 }

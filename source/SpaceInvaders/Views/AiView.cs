@@ -107,7 +107,7 @@ namespace SpaceInvaders.Views
 
             foreach (Entity invader in invaders) {
                 var move = MoveEvent.Start(invader.ID, currentDirection);
-                EventManager.QueueEvent(move);
+                EventManager.Queue(move);
             }
 
             movementDirectionChanged = false;
@@ -143,7 +143,7 @@ namespace SpaceInvaders.Views
                 }
                 
 
-                EventManager.QueueEvent(createEntity);
+                EventManager.Queue(createEntity);
 
                 timeSinceLastMysteryShipSpawn = 0.0f;
                 timeToNextMysteryShipSpawn = minMysteryShipSpawnTime + rng.Next(maxMysteryShipSpawnTime);

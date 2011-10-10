@@ -37,9 +37,16 @@ namespace Game.Behaviors
                             break;
                         }
 
+                        Entity otherEntity;
+                        game.World.Entities.TryGetValue(msg.DestroyedByEntityID, out otherEntity);
+                        if (otherEntity == null || otherEntity.IsDead)
+                        {
+                            break;
+                        }
+
                         AwardPointsEvent awardPointsEvent = AwardPointsEvent.Award(msg.DestroyedByEntityID, points,
                             this.entity.ID);
-                        eventManager.QueueEvent(awardPointsEvent);
+                        eventManager.Queue(awardPointsEvent);
                     }
 
                     break;

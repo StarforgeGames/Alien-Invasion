@@ -58,7 +58,7 @@ namespace SpaceInvaders.Input
                     determineDirectionAndIssueMove(Direction.West, true);
                     break;
                 case Keys.Space:
-                    eventManager.QueueEvent(FireWeaponEvent.Start(playerEntity.ID));
+                    eventManager.Queue(FireWeaponEvent.Start(playerEntity.ID));
                     break;
                 default:
                     e.Handled = false;
@@ -92,7 +92,7 @@ namespace SpaceInvaders.Input
             }
 
             string type = startMovingIntoDirection ? MoveEvent.START_MOVING : MoveEvent.STOP_MOVING;
-            eventManager.QueueEvent(new MoveEvent(type, playerEntity.ID, direction));
+            eventManager.Queue(new MoveEvent(type, playerEntity.ID, direction));
         }
 
         private void setMoveDirection(ref Vector2D vec, Direction direction)
@@ -140,7 +140,7 @@ namespace SpaceInvaders.Input
                     determineDirectionAndIssueMove(Direction.West, false);
                     break;
                 case Keys.Space:
-                    eventManager.QueueEvent(FireWeaponEvent.Stop(playerEntity.ID));
+                    eventManager.Queue(FireWeaponEvent.Stop(playerEntity.ID));
                     break;
 
                 default:

@@ -35,7 +35,7 @@ namespace Game.Behaviors
 
             if (position.X < -100 || position.X > game.World.Width + 100) {
                 var destroyEntity = DestroyEntityEvent.Destroy(entity.ID);
-                eventManager.QueueEvent(destroyEntity);
+                eventManager.Queue(destroyEntity);
             }
         }
 

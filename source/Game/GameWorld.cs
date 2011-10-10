@@ -51,6 +51,7 @@ namespace Game
         private void registerGameEventListeners()
         {
             EventManager.AddListener(this, typeof(CreateEntityEvent));
+            EventManager.AddListener(this, typeof(NewEntityEvent));
             EventManager.AddListener(this, typeof(DestroyEntityEvent));
         }
 
@@ -74,7 +75,7 @@ namespace Game
                 Entities.Add(entity.ID, entity);
 
                 NewEntityEvent newEntityEvent = NewEntityEvent.Announce(entity.ID);
-                EventManager.QueueEvent(newEntityEvent);
+                EventManager.Queue(newEntityEvent);
 
                 System.Console.WriteLine("[" + this.GetType().Name + "] Added entity " + entity);
             }
@@ -102,6 +103,9 @@ namespace Game
 
         public void Initialize()
         {
+            CreateEntityEvent evt = CreateEntityEvent.New("space");
+            EventManager.Queue(evt);
+
             createAndInitializePlayer();
             createAndInitializeAliens();
         }
@@ -126,7 +130,7 @@ namespace Game
             Vector2D position = new Vector2D(startX, startY);
             evt.AddAttribute(SpatialBehavior.Key_Position, position);
 
-            EventManager.QueueEvent(evt);
+            EventManager.Queue(evt);
         }
 
         private void createAndInitializeAliens()
@@ -154,7 +158,7 @@ namespace Game
             Vector2D position = new Vector2D(x, y);
             evt.AddAttribute(SpatialBehavior.Key_Position, position);
 
-            EventManager.QueueEvent(evt);
+            EventManager.Queue(evt);
         }
         
         public void OnEvent(Event evt)
@@ -163,13 +167,24 @@ namespace Game
             {
                 case CreateEntityEvent.CREATE_ENTITY:
                 {
-                    CreateEntityEvent createEvent = evt as CreateEntityEvent;
+                    CreateEntityEvent createEvent = (CreateEntityEvent)evt;
                     addEntity(createEvent.EntityType, createEvent.Attributes);
+                    break;
+                }
+                case NewEntityEvent.NEW_ENTITY:
+                {
+                    NewEntityEvent newEvent = (NewEntityEvent)evt;
+                    Entity entity = Entities[newEvent.EntityID];
+                    if (entity.Type == "player_death")
+                    {
+                        DestroyEntityEvent destroyEvent = DestroyEntityEvent.Destroy(entity.ID);
+                        EventManager.Queue(destroyEvent);
+                    }
                     break;
                 }
                 case DestroyEntityEvent.DESTROY_ENTITY:
                 {
-                    DestroyEntityEvent destroyEvent = evt as DestroyEntityEvent;
+                    DestroyEntityEvent destroyEvent = (DestroyEntityEvent)evt;
                     removeEntity(destroyEvent.EntityID);
                     break;
                 }
@@ -191,6 +206,7 @@ namespace Game
         {
             if (entity.HasBehavior(typeof(DyingBehavior)))
             {
+                entity.State = EntityState.Dying;
                 entityDyingQueue.Add(entity);
             }
             else 
