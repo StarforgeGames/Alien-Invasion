@@ -8,3 +8,4 @@ test-software/
 *.orig
 *.user
 *.suo
+*.vsp
