@@ -25,7 +25,7 @@
 		<string key="ProjectileType">pewpew_alien</string>
 		<string key="Faction">ai</string>
 		<int key="PointsAwarded">50</int>
-		<float key="FrameCount">4.0</float>
+		<float key="FrameCount">8.0</float>
 		<bool key="HasDeathAnimation">true</bool>
 	</attributes>
 </Entity>

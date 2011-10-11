@@ -21,6 +21,6 @@
 		<float key="MovementSpeed">200</float>
 		<bool key="RespectsBoundary">false</bool>
 		<string key="Faction">ai</string>
-		<int key="PointsAwarded">500</int>
+		<int key="PointsAwarded">250</int>
 	</attributes>
 </Entity>
