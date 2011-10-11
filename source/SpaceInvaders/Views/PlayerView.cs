@@ -52,6 +52,9 @@ namespace SpaceInvaders.Views
         private List<IResourceLoader> rendererLoaders = new List<IResourceLoader>();
         private SoundLoader soundLoader;
 
+        private float timeSinceLastDebugUpdate;
+        private int[] numOfGcCollectedObjects;
+
         public PlayerView(GameLogic game)
         {
             this.Game = game;
@@ -68,12 +71,7 @@ namespace SpaceInvaders.Views
             RenderForm.FormBorderStyle = FormBorderStyle.FixedSingle;   // Disable resizing of window
             RenderForm.Leave += (s, e) => {
                 this.RenderForm.Focus();
-            };
-
-            gameController = new GameController(EventManager);
-            RenderForm.KeyDown += new KeyEventHandler(gameController.OnKeyDown);
-            RenderForm.KeyUp += new KeyEventHandler(gameController.OnKeyUp);
-            
+            };            
 
             extractor = new Extractor(game);
             Renderer = new Graphics.Renderer(RenderForm, extractor);
@@ -86,20 +84,24 @@ namespace SpaceInvaders.Views
             foreach (var rendererLoader in rendererLoaders)
             {
                 game.ResourceManager.AddLoader(rendererLoader);
-            }
-            
+            }            
 
             game.ResourceManager.AddLoader(new MaterialLoader(game.ResourceManager));
-            
 
+            /**
+            * Initialize Input Subsystem 
+            **/
+            gameController = new GameController(EventManager);
+            RenderForm.KeyDown += new KeyEventHandler(gameController.OnKeyDown);
+            RenderForm.KeyUp += new KeyEventHandler(gameController.OnKeyUp);
+            
             /**
             * Initialize Audio Subsystem 
             **/
             audioPlayer = new DefaultAudioPlayer();
             audioPlayer.Start();
             soundLoader = new SoundLoader(audioPlayer);
-            game.ResourceManager.AddLoader(soundLoader);
-                                  
+            game.ResourceManager.AddLoader(soundLoader);            
 
             /**
             * Initialize GUI 
@@ -133,6 +135,9 @@ namespace SpaceInvaders.Views
             RenderForm.Controls.Add(hud);
 
 
+            numOfGcCollectedObjects = new int[GC.MaxGeneration];
+
+
             registerGameEventListeners();
         }
 
@@ -154,10 +159,19 @@ namespace SpaceInvaders.Views
         [Conditional("DEBUG")]
         private void updateDebugOutput(float deltaTime)
         {
-            Renderer.DebugOutput["cycle time"] = string.Format("{0:0} µs", deltaTime * 1000000.0f);
+            timeSinceLastDebugUpdate += deltaTime;
+            if (timeSinceLastDebugUpdate < 0.1f)
+            {
+                return;
+            }
+            timeSinceLastDebugUpdate = 0.0f;
+
+            Renderer.DebugOutput["Cycle Time"] = string.Format("{0,4:0} µs", deltaTime * 1000000.0f);
             for (int i = 0; i < GC.MaxGeneration; ++i)
             {
-                Renderer.DebugOutput["#Gen" + i] = GC.CollectionCount(i).ToString();
+                int diff = GC.CollectionCount(i) - numOfGcCollectedObjects[i];
+                Renderer.DebugOutput["#Gen" + i] = String.Format("{0,2} (total: {1})", diff, GC.CollectionCount(i));
+                numOfGcCollectedObjects[i] = GC.CollectionCount(i);
             }
             Renderer.DebugOutput["Memory"] = (GC.GetTotalMemory(false) / (1024 * 1024)) + " MiB";
         }

@@ -12,9 +12,14 @@ namespace Game.Behaviors
         public const string Key_Health = "Health";
         public const string Key_Lifes = "Lifes";
         public const string Key_RespawnTime = "RespawnTime";
+        public const string Key_IsInvulnerable = "IsInvulnerable";
 
-        private float elapsedTime;
         private bool isRespawning;
+        private float elapsedTime;
+
+        private bool hasRespawned;
+        private const float InvulnerableTimeAfterRespawn = 2.0f;
+        private float timeSinceRespawn;
 
         private List<DamageEvent> damageReceivedSinceLastUpdate = new List<DamageEvent>();
 
@@ -24,6 +29,7 @@ namespace Game.Behaviors
             entity.AddAttribute(Key_Health, 1);
             entity.AddAttribute(Key_Lifes, 1);
             entity.AddAttribute(Key_RespawnTime, 2.0f);
+            entity.AddAttribute(Key_IsInvulnerable, false);
 
             initializeHandledEventTypes();
         }
@@ -36,7 +42,8 @@ namespace Game.Behaviors
 
         public override void OnUpdate(float deltaTime)
         {
-            foreach(DamageEvent evt in damageReceivedSinceLastUpdate) {            
+            foreach(DamageEvent evt in damageReceivedSinceLastUpdate) 
+            {            
                 handleDamage(evt);
             }
             damageReceivedSinceLastUpdate.Clear();
@@ -46,17 +53,27 @@ namespace Game.Behaviors
                 elapsedTime += deltaTime;
                 float respawnTime = entity[Key_RespawnTime];
 
-                if (elapsedTime >= respawnTime) 
+                if (elapsedTime >= respawnTime)
                 {
                     respawn();
                 }
             }
 
+            if (hasRespawned)
+            {
+                timeSinceRespawn += deltaTime;
+                if (timeSinceRespawn > InvulnerableTimeAfterRespawn)
+                {
+                    entity[Key_IsInvulnerable] = false;
+                    hasRespawned = false;
+                    timeSinceRespawn = 0.0f;
+                }
+            }
         }
 
         private void handleDamage(DamageEvent evt)
         {
-            if (entity.IsDead) 
+            if (entity.IsDead || entity[Key_IsInvulnerable]) 
             {
                 return;
             }
@@ -99,12 +116,14 @@ namespace Game.Behaviors
                     }
 
                     eventManager.Queue(DestroyEntityEvent.Destroy(entity.ID, destroyedByEntityID));
+
                     Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type + " died a horrible "
                         + "death!");
                 }
                 else {
                     RespawnEntityEvent respawnEvent = RespawnEntityEvent.Respawn(entity.ID);
                     eventManager.Queue(respawnEvent);
+
                     Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type + " lost a life. " 
                         + lifes + " lifes remaining. Respawning...");
                 }
@@ -117,15 +136,14 @@ namespace Game.Behaviors
             entity[Key_Health] = 1;
             entity.State = EntityState.Active;
 
-            elapsedTime = 0f;
-            isRespawning = false;
-
             Vector2D position = entity[SpatialBehavior.Key_Position];
             position.X = world.Width / 2f - (75f / 2f);
             position.Y = 75 - (75f / 2f);
             entity[SpatialBehavior.Key_Position] = position;
 
-            entity.State = EntityState.Active;
+            elapsedTime = 0.0f;
+            isRespawning = false;
+            hasRespawned = true;
 
             Console.WriteLine("[" + this.GetType().Name + "] Entity " + entity.Type + " respawned.");
         }
@@ -147,6 +165,7 @@ namespace Game.Behaviors
                 }
                 case RespawnEntityEvent.RESPAWN_ENTITY: {
                     isRespawning = true;
+                    entity[Key_IsInvulnerable] = true;
                     break;
                 }
             }
