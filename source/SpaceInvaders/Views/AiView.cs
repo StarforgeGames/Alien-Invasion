@@ -29,7 +29,7 @@ namespace SpaceInvaders.Views
         private bool movementDirectionChanged = false;
 
         private float timeSinceLastShot = 0.0f;
-        private float firingThreshold;
+        private Entity shooter;
         private Random rng = new Random();
 
 
@@ -46,8 +46,6 @@ namespace SpaceInvaders.Views
         {
             this.Game = game;
             this.EventManager = game.EventManager;
-
-            this.firingThreshold = 0.5f + ((float)rng.NextDouble() * 1.5f);
 
             this.timeToNextMysteryShipSpawn = minMysteryShipSpawnTime + rng.Next(maxMysteryShipSpawnTime);
 
@@ -77,14 +75,15 @@ namespace SpaceInvaders.Views
         private void handleShooting(float deltaTime)
         {
             timeSinceLastShot += deltaTime;
-            Entity shooter = invaders[rng.Next(invaders.Count)];
+            shooter = shooter ?? invaders[rng.Next(invaders.Count)];
             float firingSpeed = shooter[CombatBehavior.Key_FiringSpeed];
 
-            if (timeSinceLastShot * rng.NextDouble() + (1 - firingSpeed) >= firingThreshold) 
+            if (timeSinceLastShot + rng.NextDouble() >= firingSpeed) 
             {
+                EventManager.Queue(FireWeaponEvent.SingleShot(shooter.ID));
+
                 timeSinceLastShot = 0.0f;
-                firingThreshold = 0.5f + ((float)rng.NextDouble() * 1f);
-                EventManager.Trigger(FireWeaponEvent.SingleShot(shooter.ID));
+                shooter = null;
             }
         }
 
@@ -173,6 +172,7 @@ namespace SpaceInvaders.Views
                 }
                 case DestroyEntityEvent.DESTROY_ENTITY: {
                     var destroyEntityEvent = (DestroyEntityEvent)evt;
+                   
                     Entity entity = Game.World.Entities[destroyEntityEvent.EntityID];
                     if (entity.Type.StartsWith("alien_")) 
                     {
@@ -182,6 +182,11 @@ namespace SpaceInvaders.Views
                     {
                         mysteryShip = null;
 
+                    }
+
+                    if (entity.ID == shooter.ID)
+                    {
+                        shooter = null;
                     }
                     break;
                 }
