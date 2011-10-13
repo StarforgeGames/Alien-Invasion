@@ -24,7 +24,7 @@ namespace SpaceInvaders.Views
         private Vector2D currentDirection;
 
         private float moveDownTime;
-        private const float totalMoveDownTime = 0.5f;
+        private float totalMoveDownTime = 0.5f;
 
         private bool movementDirectionChanged = false;
 
@@ -39,6 +39,8 @@ namespace SpaceInvaders.Views
         private float timeSinceLastMysteryShipSpawn;
         private float timeToNextMysteryShipSpawn;
 
+        private readonly float speedIncreasePerDownTurn = 0.03f;
+        private readonly float firingRateDecreasePerDownTurn = 0.01f;
 
         public AiView(GameLogic game)
         {
@@ -75,7 +77,7 @@ namespace SpaceInvaders.Views
         private void handleShooting(float deltaTime)
         {
             timeSinceLastShot += deltaTime;
-            Entity shooter = invaders[rng.Next(invaders.Count - 1)];
+            Entity shooter = invaders[rng.Next(invaders.Count)];
             float firingSpeed = shooter[CombatBehavior.Key_FiringSpeed];
 
             if (timeSinceLastShot * rng.NextDouble() + (1 - firingSpeed) >= firingThreshold) 
@@ -108,8 +110,11 @@ namespace SpaceInvaders.Views
             foreach (Entity invader in invaders) {
                 var move = MoveEvent.Start(invader.ID, currentDirection);
                 EventManager.Queue(move);
-            }
 
+                invader[CombatBehavior.Key_FiringSpeed] -= firingRateDecreasePerDownTurn;
+                invader[SpatialBehavior.Key_MovementSpeed] *= 1 + speedIncreasePerDownTurn;              
+            }
+            totalMoveDownTime /= 1 + speedIncreasePerDownTurn;
             movementDirectionChanged = false;
         }
 
