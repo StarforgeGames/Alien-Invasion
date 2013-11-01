@@ -6,123 +6,137 @@ using Game.EventManagement.Events;
 namespace Game.EventManagement
 {
 
-    public class SwappingEventManager : IEventManager
-    {
-        private readonly int NumOfQueues = 2;
+	public class SwappingEventManager : IEventManager
+	{
+		private readonly int NumOfQueues = 2;
 
-        private int activeQueueId = 0;
-        public List<Event> ActiveQueue {
-            get { return queues[activeQueueId]; }
-        }
+		private int activeQueueId = 0;
+		public List<Event> ActiveQueue {
+			get { return queues[activeQueueId]; }
+		}
 
-        private Dictionary<Type, List<IEventListener>> listenerMap = new Dictionary<Type, List<IEventListener>>();
-        private List<Event>[] queues;
+		private Dictionary<Type, List<IEventListener>> listenerMap = new Dictionary<Type, List<IEventListener>>();
+		private List<Event>[] queues;
 
-        private GameLogic game;
+		private GameLogic game;
 
-        public SwappingEventManager(GameLogic game)
-        {
-            this.game = game;
+		public SwappingEventManager(GameLogic game)
+		{
+			this.game = game;
 
-            queues = new List<Event>[NumOfQueues];
-            for (int i = 0; i < NumOfQueues; i++) {
-                queues[i] = new List<Event>();
-            }
-        }
+			queues = new List<Event>[NumOfQueues];
+			for (int i = 0; i < NumOfQueues; i++) {
+				queues[i] = new List<Event>();
+			}
+		}
 
-        public bool AddListener(IEventListener listener, Type eventType)
-        {
-            if (!listenerMap.ContainsKey(eventType)) {
-                listenerMap.Add(eventType, new List<IEventListener>());
-            }
-            
-            foreach (IEventListener l in listenerMap[eventType]) {
-                if (l == listener) {
-                    return false;
-                }
-            }
+		public bool AddListener(IEventListener listener, Type eventType)
+		{
+			if (!listenerMap.ContainsKey(eventType)) {
+				listenerMap.Add(eventType, new List<IEventListener>());
+			}
+			
+			foreach (IEventListener l in listenerMap[eventType]) {
+				if (l == listener) {
+					return false;
+				}
+			}
 
-            listenerMap[eventType].Add(listener);
-            return true;
-        }
+			listenerMap[eventType].Add(listener);
+			return true;
+		}
 
-        public bool RemoveListener(IEventListener listener, Type eventType)
-        {
-            if (!listenerMap.ContainsKey(eventType)) {
-                return false;
-            }
+		public bool RemoveListener(IEventListener listener, Type eventType)
+		{
+			if (!listenerMap.ContainsKey(eventType)) {
+				return false;
+			}
 
-            return listenerMap[eventType].Remove(listener);
-        }
+			return listenerMap[eventType].Remove(listener);
+		}
 
-        public void Trigger(Event evt)
-        {
-            if (!listenerMap.ContainsKey(evt.GetType())) {
-                return;
-            }
+		public void Trigger(Event evt)
+		{
+			if (!listenerMap.ContainsKey(evt.GetType())) {
+				return;
+			}
 
-            sendEventToGeneralListeners(evt);
+			sendEventToGeneralListeners(evt);
 
-            if (evt.RecipientID != 0) {
-                Entity entity = game.World.Entities[evt.RecipientID];
-                entity.OnEvent(evt);
-                return;
-            }
+			if (evt.RecipientID != 0) {
+				Entity entity = game.World.Entities[evt.RecipientID];
+				entity.OnEvent(evt);
+				return;
+			}
 
-            foreach (IEventListener listener in listenerMap[evt.GetType()]) {
-                listener.OnEvent(evt);
-            }
-        }
+			foreach (IEventListener listener in listenerMap[evt.GetType()]) {
+				listener.OnEvent(evt);
+			}
+		}
 
-        private void sendEventToGeneralListeners(Event evt)
-        {
-            if (!listenerMap.ContainsKey(typeof(Event))) {
-                return;
-            }
+		private void sendEventToGeneralListeners(Event evt)
+		{
+			if (!listenerMap.ContainsKey(typeof(Event))) {
+				return;
+			}
 
-            foreach (IEventListener listener in listenerMap[typeof(Event)]) {
-                listener.OnEvent(evt);
-            }
+			foreach (IEventListener listener in listenerMap[typeof(Event)]) {
+				listener.OnEvent(evt);
+			}
 
-        }
+		}
 
-        public bool Queue(Event evt)
-        {
-            if (!listenerMap.ContainsKey(evt.GetType())) {
-                return false;
-            }
+		public bool Queue(Event evt)
+		{
+			if (!listenerMap.ContainsKey(evt.GetType())) {
+				return false;
+			}
 
-            ActiveQueue.Add(evt);
-            return true;
-        }
+			ActiveQueue.Add(evt);
+			return true;
+		}
 
-        public bool AbortEvent(Event evt)
-        {
-            return ActiveQueue.Remove(evt);
-        }
+		public bool AbortEvent(Event evt)
+		{
+			return ActiveQueue.Remove(evt);
+		}
 
-        public bool Tick()
-        {
-            List<Event> queueToProcess = ActiveQueue;
-            swapActiveQueue();
-            ActiveQueue.Clear();
+		public bool Tick()
+		{
+			List<Event> queueToProcess = ActiveQueue;
+			swapActiveQueue();
+			ActiveQueue.Clear();
 
-            foreach (Event evt in queueToProcess) {
-                Trigger(evt);
-            }
+			foreach (Event evt in queueToProcess)
+			{
+				Trigger(evt);
 
-            return true;
-        }
+				// Otherwise queueToProcess will be cleared while iterating over it, which will cause an Exception
+				if (evt is GameStateChangedEvent)
+				{
+					GameStateChangedEvent e = (GameStateChangedEvent)evt;
+					if (e.NewState == GameState.Loading)
+					{
+						break;
+					}
+				}
+			}
 
-        private void swapActiveQueue()
-        {
-            activeQueueId = ++activeQueueId % NumOfQueues;
-        }
+			return true;
+		}
 
-        public void Reset()
-        {
-            ActiveQueue.Clear();
-        }
-    }
+		private void swapActiveQueue()
+		{
+			activeQueueId = ++activeQueueId % NumOfQueues;
+		}
+
+		public void Reset()
+		{
+			foreach (var queue in queues)
+			{
+				queue.Clear();
+			}
+		}
+	}
 
 }

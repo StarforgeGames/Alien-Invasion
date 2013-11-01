@@ -65,12 +65,13 @@ namespace SpaceInvaders.Views
              **/
             RenderForm = new Form();
             RenderForm.ClientSize = new Size(Game.World.Width, Game.World.Height);
-            RenderForm.Text = "Alien Invasion v0.9";
+            RenderForm.Text = "Alien Invasion v1.0";
             RenderForm.BackColor = Color.Empty;
             RenderForm.KeyPreview = true;
             RenderForm.FormBorderStyle = FormBorderStyle.FixedSingle;   // Disable resizing of window
+            RenderForm.MaximizeBox = false;                             // Disable maximizing
             RenderForm.Leave += (s, e) => {
-                this.RenderForm.Focus();
+                this.RenderForm.Focus();    // When RenderForm loses focus player input won't be processed correctly
             };            
 
             extractor = new Extractor(game);
