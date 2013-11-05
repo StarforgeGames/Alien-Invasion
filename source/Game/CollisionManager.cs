@@ -59,10 +59,9 @@ namespace Game
 					}
 
 					if (AreColliding(entity, other)) {
-						Console.WriteLine("[" + this.GetType().Name + "] " + entity.Type + " collided with " 
-							+ other.Type + "!");
+						Console.WriteLine("[" + this.GetType().Name + "] " + entity + " collided with " + other + "!");
 
-						CollisionEvent collisionMsg = CollisionEvent.Collides(other.ID, entity.ID);
+						CollisionEvent collisionMsg = CollisionEvent.Collides(entity.ID, other.ID);
 						EventManager.Queue(collisionMsg);
 
 						int collisionDmg = entity[CollisionBehavior.Key_CollisionDamage];

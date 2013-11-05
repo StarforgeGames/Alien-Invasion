@@ -18,6 +18,7 @@ namespace Game
 		Paused,
 		GameOver,
 		Victory,
+		Highscore,
 		Quit
 
 	}
@@ -27,6 +28,7 @@ namespace Game
 		public GameState State { get; private set; }
 		public GameWorld World { get; private set; }
 
+		// TODO: Use different EventManager for GUI stuff!
 		public IEventManager EventManager { get; private set; }
 		public ProcessManager ProcessManager { get; private set; }
 		public ResourceManager ResourceManager { get; private set; }
@@ -82,8 +84,6 @@ namespace Game
 						State = GameState.Running;
 						EventManager.Queue(GameStateChangedEvent.To(GameState.Running));
 					}
-					break;
-				case GameState.GameOver:
 					break;
 			}
 		}

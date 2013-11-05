@@ -8,7 +8,7 @@ namespace SpaceInvaders.Controls
 {
 	public partial class GameMainMenu : UserControl
 	{
-		private IEventManager eventManager { get; set; }
+		private IEventManager eventManager;
 
 		public GameMainMenu(IEventManager eventManager)
 		{
@@ -20,6 +20,11 @@ namespace SpaceInvaders.Controls
 		private void NewGameButton_Click(object sender, EventArgs e)
 		{
 			eventManager.Queue(GameStateChangedEvent.To(GameState.Loading));
+		}
+
+		private void HighscoreButton_Click(object sender, EventArgs e)
+		{
+			eventManager.Queue(GameStateChangedEvent.To(GameState.Highscore));
 		}
 
 		private void QuitButton_Click(object sender, EventArgs e)

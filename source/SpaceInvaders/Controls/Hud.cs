@@ -51,7 +51,7 @@ namespace SpaceInvaders.Controls
 
         protected override bool IsInputKey(Keys keyData)
         {
-            // Workaround: Otherweise arrow keys won't be treated is input keys but as special keys and won't work
+            // Workaround: Otherweise arrow keys won't be treated as input keys but as special keys and won't work
             // when the HUD is displayed.
             if (keyData == Keys.Up
                 || keyData == Keys.Right
