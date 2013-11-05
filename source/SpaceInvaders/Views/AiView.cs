@@ -34,8 +34,8 @@ namespace SpaceInvaders.Views
 
 
 		private Entity mysteryShip;
-		private readonly int minMysteryShipSpawnTime = 2;
-		private readonly int maxMysteryShipSpawnTime = 15;
+		private readonly int minMysteryShipSpawnTime = 5;
+		private readonly int maxMysteryShipSpawnTime = 20;
 		private float timeSinceLastMysteryShipSpawn;
 		private float timeToNextMysteryShipSpawn;
 
@@ -110,6 +110,7 @@ namespace SpaceInvaders.Views
 				var move = MoveEvent.Start(invader.ID, currentDirection);
 				EventManager.Queue(move);
 
+				// TODO: Extract game speedup into its own function that is called at regular timing intervals
 				invader[CombatBehavior.Key_FiringSpeed] -= firingRateDecreasePerDownTurn;
 				invader[SpatialBehavior.Key_MovementSpeed] *= 1 + speedIncreasePerDownTurn;              
 			}
@@ -184,7 +185,7 @@ namespace SpaceInvaders.Views
 
 					}
 
-					if (entity.ID == shooter.ID)
+					if (shooter != null && entity.ID == shooter.ID)
 					{
 						shooter = null;
 					}

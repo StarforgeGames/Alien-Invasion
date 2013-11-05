@@ -27,30 +27,30 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pausedLabel = new System.Windows.Forms.Label();
-            this.SuspendLayout();
-            // 
-            // pausedLabel
-            // 
-            this.pausedLabel.AutoSize = true;
-            this.pausedLabel.Font = new System.Drawing.Font("Arial", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pausedLabel.ForeColor = System.Drawing.SystemColors.Info;
-            this.pausedLabel.Location = new System.Drawing.Point(3, 0);
-            this.pausedLabel.Name = "pausedLabel";
-            this.pausedLabel.Size = new System.Drawing.Size(219, 56);
-            this.pausedLabel.TabIndex = 0;
-            this.pausedLabel.Text = "PAUSED";
-            // 
-            // PauseScreen
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.WindowText;
-            this.Controls.Add(this.pausedLabel);
-            this.Name = "PauseScreen";
-            this.Size = new System.Drawing.Size(220, 55);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+			this.pausedLabel = new System.Windows.Forms.Label();
+			this.SuspendLayout();
+			// 
+			// pausedLabel
+			// 
+			this.pausedLabel.AutoSize = true;
+			this.pausedLabel.Font = new System.Drawing.Font("Algerian", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.pausedLabel.ForeColor = System.Drawing.Color.White;
+			this.pausedLabel.Location = new System.Drawing.Point(9, 0);
+			this.pausedLabel.Name = "pausedLabel";
+			this.pausedLabel.Size = new System.Drawing.Size(208, 54);
+			this.pausedLabel.TabIndex = 0;
+			this.pausedLabel.Text = "PAUSED";
+			// 
+			// PauseScreen
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BackColor = System.Drawing.SystemColors.WindowText;
+			this.Controls.Add(this.pausedLabel);
+			this.Name = "PauseScreen";
+			this.Size = new System.Drawing.Size(220, 55);
+			this.ResumeLayout(false);
+			this.PerformLayout();
 
         }
 

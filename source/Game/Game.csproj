@@ -130,6 +130,8 @@
     <Compile Include="Processes\Process.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\Highscore.cs" />
+    <Compile Include="Utility\HighscoreEntry.cs" />
     <Compile Include="Utility\Vector2D.cs" />
   </ItemGroup>
   <ItemGroup>

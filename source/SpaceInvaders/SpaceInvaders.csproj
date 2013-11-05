@@ -182,6 +182,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application.cs" />
+    <Compile Include="Controls\HighscoreScreen.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HighscoreScreen.Designer.cs">
+      <DependentUpon>HighscoreScreen.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Hud.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -194,11 +200,11 @@
     <Compile Include="Controls\VictoryScreen.Designer.cs">
       <DependentUpon>VictoryScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\GameOverScreen.cs">
+    <Compile Include="Controls\DefeatScreen.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\GameOverScreen.Designer.cs">
-      <DependentUpon>GameOverScreen.cs</DependentUpon>
+    <Compile Include="Controls\DefeatScreen.Designer.cs">
+      <DependentUpon>DefeatScreen.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\PauseScreen.cs">
       <SubType>UserControl</SubType>
@@ -224,6 +230,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\libs\fmodex64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\audio\alien_hammerhead_death.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\audio\alien_pincher_death.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\audio\alien_ray_death.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="data\entities\space.xml">
@@ -271,6 +286,9 @@
     <None Include="Resources\gap.png" />
     <None Include="Resources\exitOver.png" />
     <None Include="Resources\exit.png" />
+    <EmbeddedResource Include="Controls\HighscoreScreen.resx">
+      <DependentUpon>HighscoreScreen.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\Hud.resx">
       <DependentUpon>Hud.cs</DependentUpon>
     </EmbeddedResource>
@@ -280,8 +298,8 @@
     <EmbeddedResource Include="Controls\GameMainMenu.resx">
       <DependentUpon>GameMainMenu.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\GameOverScreen.resx">
-      <DependentUpon>GameOverScreen.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\DefeatScreen.resx">
+      <DependentUpon>DefeatScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PauseScreen.resx">
       <DependentUpon>PauseScreen.cs</DependentUpon>

@@ -1,4 +1,6 @@
 syntax:glob
+documents/
+media/
 obj/
 release/
 release-software/
