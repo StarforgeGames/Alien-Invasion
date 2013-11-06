@@ -51,7 +51,8 @@ namespace SpaceInvaders.Views
 		private PlayerController playerController;
 
 		private List<IResourceLoader> rendererLoaders = new List<IResourceLoader>();
-		private SoundLoader soundLoader;
+		private AudioLoader audioLoader;
+		private StreamLoader streamLoader;
 
 		private float timeSinceLastDebugUpdate;
 		private int[] numOfGcCollectedObjects;
@@ -102,8 +103,12 @@ namespace SpaceInvaders.Views
 			**/
 			audioPlayer = new DefaultAudioPlayer();
 			audioPlayer.Start();
-			soundLoader = new SoundLoader(audioPlayer);
-			game.ResourceManager.AddLoader(soundLoader);            
+
+			audioLoader = new AudioLoader(audioPlayer);
+			game.ResourceManager.AddLoader(audioLoader);
+
+			streamLoader = new StreamLoader(audioPlayer);
+			game.ResourceManager.AddLoader(streamLoader);
 
 			/**
 			* Initialize GUI 
@@ -217,11 +222,11 @@ namespace SpaceInvaders.Views
 					AudioEvent audioEvent = (AudioEvent)evt;
 					if (audioEvent.Loop)
 					{
-						audioPlayer.StartLoopingSound(audioEvent.SoundResource);
+						audioPlayer.CreateLoopingSound(SoundGroup.InGameEffect, audioEvent.SoundResource);
 					}
 					else
 					{
-						audioPlayer.PlaySound(audioEvent.SoundResource);
+						audioPlayer.PlayEffect(audioEvent.SoundResource);
 					}
 					break;
 				}
@@ -244,7 +249,7 @@ namespace SpaceInvaders.Views
 						}
 						else if (entity.Type == "mystery_ship")
 						{
-							audioPlayer.StopLoopingSound();
+							audioPlayer.StopLoopingSounds(SoundGroup.InGameEffect);
 						}
 						break;
 					}
@@ -266,6 +271,8 @@ namespace SpaceInvaders.Views
 					victoryControl.Hide();
 					gameOverControl.Hide();
 					hud.Hide();
+					
+					audioPlayer.CreateLoopingSound(SoundGroup.Menu, @"data\audio\menu.ogg", true);
 					break;
 				case GameState.Menu:
 					mainMenuControl.Show();
@@ -275,7 +282,9 @@ namespace SpaceInvaders.Views
 					gameOverControl.Hide();
 					hud.Hide();
 
-					audioPlayer.PauseLoopingSounds();
+					audioPlayer.UnpauseLoopingSounds(SoundGroup.Menu);
+					audioPlayer.PauseLoopingSounds(SoundGroup.InGameEffect);
+					audioPlayer.PauseLoopingSounds(SoundGroup.InGameMusic);
 					break;
 				case GameState.Highscore:
 					mainMenuControl.Hide();
@@ -284,8 +293,10 @@ namespace SpaceInvaders.Views
 					victoryControl.Hide();
 					gameOverControl.Hide();
 					hud.Hide();
-
-					audioPlayer.PauseLoopingSounds();
+					
+					audioPlayer.UnpauseLoopingSounds(SoundGroup.Menu);
+					audioPlayer.PauseLoopingSounds(SoundGroup.InGameEffect);
+					audioPlayer.PauseLoopingSounds(SoundGroup.InGameMusic);
 					break;
 				case GameState.Loading:
 					mainMenuControl.Hide();
@@ -296,7 +307,9 @@ namespace SpaceInvaders.Views
 					hud.Hide();
 
 					OnDetach();
-					audioPlayer.StopLoopingSound();
+
+					audioPlayer.StopLoopingSounds(SoundGroup.InGameMusic);
+					audioPlayer.CreateLoopingSound(SoundGroup.InGameMusic, @"data\audio\ingame.ogg", true);
 					break;
 				case GameState.Running:
 					mainMenuControl.Hide();
@@ -306,7 +319,9 @@ namespace SpaceInvaders.Views
 					gameOverControl.Hide();
 					hud.Show();
 
-					audioPlayer.UnpauseLoopingSounds();
+					audioPlayer.PauseLoopingSounds(SoundGroup.Menu);
+					audioPlayer.UnpauseLoopingSounds(SoundGroup.InGameEffect);
+					audioPlayer.UnpauseLoopingSounds(SoundGroup.InGameMusic);
 					break;
 				case GameState.Paused:
 					pauseControl.Show();
@@ -314,7 +329,8 @@ namespace SpaceInvaders.Views
 					gameOverControl.Hide();
 					hud.Hide();
 
-					audioPlayer.PauseLoopingSounds();
+					audioPlayer.PauseLoopingSounds(SoundGroup.InGameEffect);
+					audioPlayer.PauseLoopingSounds(SoundGroup.InGameMusic);
 					break;
 				case GameState.Victory:
 					int remainingLifes = playerEntity[HealthBehavior.Key_Lifes];
@@ -328,7 +344,8 @@ namespace SpaceInvaders.Views
 					gameOverControl.Hide();
 					hud.Hide();
 
-					audioPlayer.StopLoopingSound();
+					audioPlayer.StopLoopingSounds(SoundGroup.InGameEffect);
+					audioPlayer.StopLoopingSounds(SoundGroup.InGameMusic);
 					break;
 				case GameState.GameOver:
 					mainMenuControl.Hide();
@@ -338,9 +355,11 @@ namespace SpaceInvaders.Views
 					gameOverControl.Show();
 					hud.Hide();
 
-					audioPlayer.StopLoopingSound();
+					audioPlayer.StopLoopingSounds(SoundGroup.InGameEffect);
+					audioPlayer.StopLoopingSounds(SoundGroup.InGameMusic);
 					break;
 				case GameState.Quit:
+					audioPlayer.StopLoopingSounds(SoundGroup.Menu);
 					RenderForm.Close();
 					break;
 			}
@@ -366,8 +385,8 @@ namespace SpaceInvaders.Views
 			
 			Renderer.Dispose();
 
-			Game.ResourceManager.RemoveLoader(soundLoader.Type);
-			soundLoader.Dispose();
+			Game.ResourceManager.RemoveLoader(audioLoader.Type);
+			audioLoader.Dispose();
 
 			audioPlayer.Stop();
 			audioPlayer.Dispose();
