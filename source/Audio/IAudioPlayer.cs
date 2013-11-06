@@ -5,21 +5,23 @@ using Utility.Threading;
 
 namespace Audio
 {
-    public interface IAudioPlayer : IDisposable
-    {
-        IAsyncExecutor Queue { get; }
+	public interface IAudioPlayer : IDisposable
+	{
+		IAsyncExecutor Queue { get; }
 
-        void Start();
-        void Stop();
+		void Start();
+		void Stop();
 
-        void PlaySound(ResourceHandle handle);
+		void PlayEffect(ResourceHandle handle, SoundGroup group = SoundGroup.InGameEffect);
 
-        void StartLoopingSound(ResourceHandle handle);
-        void StopLoopingSound();
+		void CreateLoopingSound(SoundGroup group, string file, bool paused = false);
+		void CreateLoopingSound(SoundGroup group, ResourceHandle handle, bool paused = false);
 
-        void PauseLoopingSounds();
-        void UnpauseLoopingSounds();
+		void StopLoopingSounds(SoundGroup group);
+		void PauseLoopingSounds(SoundGroup group);
+		void UnpauseLoopingSounds(SoundGroup group);
 
-        Sound CreateSoundFrom(byte[] data);
-    }
+		Sound CreateSoundFrom(byte[] data);
+		Sound CreateStreamFrom(byte[] data);
+	}
 }

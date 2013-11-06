@@ -11,137 +11,205 @@ using System.Runtime.InteropServices;
 
 namespace Audio
 {
-    public class DefaultAudioPlayer : IAudioPlayer, IDisposable
-    {
-        public IAsyncExecutor Queue
-        {
-            get { return queue; }
-        }
-        private CommandQueue queue = new CommandQueue();
+	public enum SoundGroup
+	{
+		Menu,
+		InGameEffect,
+		InGameMusic
+	}
 
-        private FMOD.System system;
+	public class DefaultAudioPlayer : IAudioPlayer, IDisposable
+	{
+		public IAsyncExecutor Queue
+		{
+			get { return queue; }
+		}
+		private CommandQueue queue = new CommandQueue();
 
-        private const int ChannelCount = 32;
-        private Channel[] channels;
-        private Channel loopChannel;
-        private int currentChannel;
+		private FMOD.System system;
+		
+		private const int ChannelCount = 32;
 
-        private Thread audioThread;
-        private bool isRunning = false;
+		private ChannelGroup groupMenuMusic;
+		private ChannelGroup groupInGameEffects;
+		private ChannelGroup groupInGameMusic;
 
-        public DefaultAudioPlayer()
-        {
-            RESULT result = Factory.System_Create(ref system);
-            if (result != RESULT.OK)
-            {
-                // TODO: Check result, error handling. Show Popup message or something the like
-            }
-            system.init(ChannelCount, INITFLAGS.NORMAL, (IntPtr)null);
+		private Dictionary<SoundGroup, ChannelGroup> groupMap = new Dictionary<SoundGroup, ChannelGroup>();
 
-            channels = new Channel[ChannelCount];
-            loopChannel = channels[ChannelCount - 1];
+		private Thread audioThread;
+		private bool isRunning = false;
 
-            audioThread = new Thread(audioLoop);
-            audioThread.Name = "Audio";
-        }
+		public DefaultAudioPlayer()
+		{
+			RESULT result = Factory.System_Create(ref system);
+			if (result != RESULT.OK)
+			{
+				// TODO: Check result, error handling. Show Popup message or something the like
+			}
+			system.init(ChannelCount, INITFLAGS.NORMAL, (IntPtr)null);
+			
+			system.createChannelGroup("menu_music", ref groupMenuMusic);
+			system.createChannelGroup("ingame_effects", ref groupInGameEffects);
+			system.createChannelGroup("ingame_music", ref groupInGameMusic);
 
-        public void Start()
-        {
-            isRunning = true;
-            audioThread.Start();
-        }
+			groupMap[SoundGroup.Menu] = groupMenuMusic;
+			groupMap[SoundGroup.InGameEffect] = groupInGameEffects;
+			groupMap[SoundGroup.InGameMusic] = groupInGameMusic;
 
-        public void Stop()
-        {
-            isRunning = false;
-            queue.Cancel();
+			audioThread = new Thread(audioLoop);
+			audioThread.Name = "Audio";
+		}
 
-        }
+		public void Start()
+		{
+			isRunning = true;
+			audioThread.Start();
+		}
 
-        private void audioLoop()
-        {
-            while (isRunning)
-            {
-                queue.Execute();
-            }
-        }
+		public void Stop()
+		{
+			isRunning = false;
+			queue.Cancel();
+
+		}
+
+		private void audioLoop()
+		{
+			while (isRunning)
+			{
+				queue.Execute();
+			}
+		}
 
 
-        public void PlaySound(ResourceHandle handle)
-        {
-            Queue.Add(() =>
-                {
-                    using (var resource = (SoundResource)handle.Acquire())
-                    {
-                        system.playSound(CHANNELINDEX.REUSE, resource.Sound, false, ref channels[currentChannel]);
-                    }
-                    currentChannel = (currentChannel + 1) % (ChannelCount - 1);
-                });
-        }
+		public void PlayEffect(ResourceHandle handle, SoundGroup group = SoundGroup.InGameEffect)
+		{
+			Queue.Add(() =>
+				{
+					using (var resource = (SoundResource)handle.Acquire())
+					{
+						Channel channel = null;
+						system.playSound(CHANNELINDEX.FREE, resource.Sound, true, ref channel);
+						
+						channel.setChannelGroup(groupMap[group]);
+						channel.setPaused(false);
+					}
+				});
+		}
 
-        public void StartLoopingSound(ResourceHandle handle)
-        {
-            Queue.Add(() => {
-                   using (var resource = (SoundResource)handle.Acquire())
-                   {
-                       resource.Sound.setMode(MODE.LOOP_NORMAL);
-                       system.playSound(FMOD.CHANNELINDEX.REUSE, resource.Sound, false, ref loopChannel);
-                   }
-               });
-        }
+		public void CreateLoopingSound(SoundGroup group, ResourceHandle handle, bool paused = false)
+		{
+			Queue.Add(() => {
+				   using (var resource = (SoundResource)handle.Acquire())
+				   {
+					   Channel channel = null;
+					   system.playSound(FMOD.CHANNELINDEX.FREE, resource.Sound, true, ref channel);
+					   
+					   channel.setChannelGroup(groupMap[group]);
+					   channel.setMode(MODE.LOOP_NORMAL);
+					   channel.setLoopCount(-1);
 
-        public void StopLoopingSound()
-        {
-            if (loopChannel == null)
-            {
-                return;
-            }
+					   channel.setPaused(paused);
+				   }
+			   });
+		}
 
-            loopChannel.stop();
-        }
+		public void CreateLoopingSound(SoundGroup group, string file, bool paused = false)
+		{
+			Queue.Add(() =>
+			{
+				Sound sound = null;
+				system.createStream(file, MODE.CREATESTREAM, ref sound);
 
-        public void PauseLoopingSounds()
-        {
-            if (loopChannel == null)
-            {
-                return;
-            }
+				Channel channel = null;
+				system.playSound(FMOD.CHANNELINDEX.FREE, sound, true, ref channel);
 
-            loopChannel.setPaused(true);
-        }
+				channel.setChannelGroup(groupMap[group]);
+				channel.setMode(MODE.LOOP_NORMAL);
+				channel.setLoopCount(-1);
 
-        public void UnpauseLoopingSounds()
-        {
-            if (loopChannel == null)
-            {
-                return;
-            }
+				channel.setPaused(paused);
+			});
+		}
 
-            loopChannel.setPaused(false);
-        }
+		public void StopLoopingSounds(SoundGroup group)
+		{
+			Queue.Add(() =>
+			{
+				ChannelGroup cGroup = groupMap[group];
+				int numOfChannels = 0;
+				cGroup.getNumChannels(ref numOfChannels);
 
-        public Sound CreateSoundFrom(byte[] data)
-        {
-            Sound sound = null;
-            CREATESOUNDEXINFO info = new CREATESOUNDEXINFO();
-            info.cbsize = Marshal.SizeOf(info);
-            info.length = (uint)data.Length;
-            //info.format = SOUND_FORMAT.MPEG;
+				for (int i = 0; i < numOfChannels; i++)
+				{
+					Channel channel = null;
+					cGroup.getChannel(i, ref channel);
+					channel.stop();
+				}
+			});
+		}
 
-            RESULT res = system.createSound(data, MODE.HARDWARE | MODE.OPENMEMORY, ref info, ref sound); // hier läufts schief, muss ich mal schaun
-            return sound;
-        }
+		public void PauseLoopingSounds(SoundGroup group)
+		{
+			setLoopingSoundPause(group, true);
+		}
 
-        public void Dispose()
-        {
-            Stop();
-            audioThread.Join();
-            FMOD.RESULT result;
+		public void UnpauseLoopingSounds(SoundGroup group)
+		{
+			setLoopingSoundPause(group, false);
+		}
 
-            if (system != null) {
-                result = system.close();
-                result = system.release();
-            }
-        }
-    }
+		private void setLoopingSoundPause(SoundGroup group, bool isPaused)
+		{
+			Queue.Add(() =>
+			{
+				ChannelGroup cGroup = groupMap[group];
+				int numOfChannels = 0;
+				cGroup.getNumChannels(ref numOfChannels);
+
+				for (int i = 0; i < numOfChannels; i++)
+				{
+					Channel channel = null;
+					cGroup.getChannel(i, ref channel);
+					channel.setPaused(isPaused);
+				}
+			});
+		}
+
+		public Sound CreateSoundFrom(byte[] data)
+		{
+			CREATESOUNDEXINFO info = new CREATESOUNDEXINFO();
+			info.cbsize = Marshal.SizeOf(info);
+			info.length = (uint)data.Length;
+
+			Sound sound = null;
+			RESULT res = system.createSound(data, (MODE.HARDWARE | MODE.OPENMEMORY), ref info, ref sound);
+
+			return sound;
+		}
+
+		public Sound CreateStreamFrom(byte[] data)
+		{
+			CREATESOUNDEXINFO info = new CREATESOUNDEXINFO();
+			info.cbsize = Marshal.SizeOf(info);
+			info.length = (uint)data.Length;
+
+			Sound sound = null;
+			RESULT res = system.createStream(data, (MODE.CREATESTREAM | MODE.HARDWARE | MODE.OPENMEMORY), ref info, ref sound);
+
+			return sound;
+		}
+
+		public void Dispose()
+		{
+			Stop();
+			audioThread.Join();
+			FMOD.RESULT result;
+
+			if (system != null) {
+				result = system.close();
+				result = system.release();
+			}
+		}
+	}
 }

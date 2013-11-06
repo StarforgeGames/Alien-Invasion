@@ -47,7 +47,8 @@
     <Compile Include="FMOD\fmod_errors.cs" />
     <Compile Include="FMOD\fmod_memoryinfo.cs" />
     <Compile Include="IAudioPlayer.cs" />
-    <Compile Include="Loaders\SoundLoader.cs" />
+    <Compile Include="Loaders\StreamLoader.cs" />
+    <Compile Include="Loaders\AudioLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\SoundResource.cs" />
   </ItemGroup>

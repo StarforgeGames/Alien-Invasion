@@ -11,16 +11,16 @@ using System.IO;
 
 namespace Audio.Loaders
 {
-    public class SoundLoader : ASingleThreadedLoader<byte[], bool>, IFileLoader
+    public class AudioLoader : ASingleThreadedLoader<byte[], bool>, IFileLoader
     {
         private IAudioPlayer player;
 
-        public SoundLoader(IAudioPlayer player) : base(player.Queue)
+        public AudioLoader(IAudioPlayer player) : base(player.Queue)
         {
             this.player = player;
         }
 
-        ~SoundLoader()
+        ~AudioLoader()
         {
         }
 
@@ -29,8 +29,7 @@ namespace Audio.Loaders
             get { return converter; }
         }
 
-        private readonly ResourceNameConverter converter =
-            new ResourceNameConverter(@"data\audio\", @".wav");
+        private readonly ResourceNameConverter converter = new ResourceNameConverter(@"data\audio\", @".ogg");
 
         public override string Type
         {

@@ -63,6 +63,9 @@ namespace Game
 			this.State = newState;
 
 			switch (newState) {
+				case GameState.StartUp:
+					loadResources();
+					break;
 				case GameState.Menu:
 					if (oldState == GameState.Menu) 
 					{
@@ -86,6 +89,29 @@ namespace Game
 					}
 					break;
 			}
+		}
+
+		private void loadResources()
+		{
+			ResourceManager.GetResource("player_shot", "audio").Preload();
+			ResourceManager.GetResource("alien_shot", "audio").Preload();
+			ResourceManager.GetResource("explosion", "audio").Preload();
+			ResourceManager.GetResource("alien_hammerhead_death", "audio").Preload();
+			ResourceManager.GetResource("alien_pincher_death", "audio").Preload();
+			ResourceManager.GetResource("alien_ray_death", "audio").Preload();
+			ResourceManager.GetResource("mystery_ship_loop", "audio").Preload();
+
+			ResourceManager.GetResource("quad", "mesh").Preload();
+
+			ResourceManager.GetResource("space", "material").Preload();
+			ResourceManager.GetResource("pewpew", "material").Preload();
+			ResourceManager.GetResource("pewpew_alien", "material").Preload();
+			ResourceManager.GetResource("player", "material").Preload();
+			ResourceManager.GetResource("player_death", "material").Preload();
+			ResourceManager.GetResource("alien_hammerhead", "material").Preload();
+			ResourceManager.GetResource("alien_pincher", "material").Preload();
+			ResourceManager.GetResource("alien_ray", "material").Preload();
+			ResourceManager.GetResource("mystery_ship", "material").Preload();
 		}
 
 		private void reset()
