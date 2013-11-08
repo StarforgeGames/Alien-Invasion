@@ -11,16 +11,16 @@ using System.IO;
 
 namespace Audio.Loaders
 {
-	public class StreamLoader : ASingleThreadedLoader<byte[], bool>, IFileLoader
+	public class SoundStreamLoader : ASingleThreadedLoader<byte[], bool>, IFileLoader
 	{
 		private IAudioPlayer player;
 
-		public StreamLoader(IAudioPlayer player) : base(player.Queue)
+		public SoundStreamLoader(IAudioPlayer player) : base(player.Queue)
 		{
 			this.player = player;
 		}
 
-		~StreamLoader()
+		~SoundStreamLoader()
 		{
 		}
 

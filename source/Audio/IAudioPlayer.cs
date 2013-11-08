@@ -12,10 +12,10 @@ namespace Audio
 		void Start();
 		void Stop();
 
-		void PlayEffect(ResourceHandle handle, SoundGroup group = SoundGroup.InGameEffect);
+		void Play(Sound sound, float volume = 1.0f, SoundGroup group = SoundGroup.InGameEffect);
 
-		void CreateLoopingSound(SoundGroup group, string file, bool paused = false);
-		void CreateLoopingSound(SoundGroup group, ResourceHandle handle, bool paused = false);
+		void CreateLoopingSound(SoundGroup group, string file, bool paused = false, float volume = 1.0f);
+		void CreateLoopingSound(SoundGroup group, Sound sound, bool paused = false, float volume = 1.0f);
 
 		void StopLoopingSounds(SoundGroup group);
 		void PauseLoopingSounds(SoundGroup group);

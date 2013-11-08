@@ -52,6 +52,8 @@ namespace Audio
 			system.createChannelGroup("ingame_effects", ref groupInGameEffects);
 			system.createChannelGroup("ingame_music", ref groupInGameMusic);
 
+			groupInGameMusic.setVolume(0.7f);
+
 			groupMap[SoundGroup.Menu] = groupMenuMusic;
 			groupMap[SoundGroup.InGameEffect] = groupInGameEffects;
 			groupMap[SoundGroup.InGameMusic] = groupInGameMusic;
@@ -62,15 +64,25 @@ namespace Audio
 
 		public void Start()
 		{
+			if (isRunning)
+			{
+				return;
+			}
+
 			isRunning = true;
 			audioThread.Start();
 		}
 
 		public void Stop()
 		{
+			if (!isRunning)
+			{
+				return;
+			}
+
 			isRunning = false;
 			queue.Cancel();
-
+			audioThread.Join();
 		}
 
 		private void audioLoop()
@@ -82,39 +94,35 @@ namespace Audio
 		}
 
 
-		public void PlayEffect(ResourceHandle handle, SoundGroup group = SoundGroup.InGameEffect)
+		public void Play(Sound sound, float volume = 1.0f, SoundGroup group = SoundGroup.InGameEffect)
 		{
 			Queue.Add(() =>
 				{
-					using (var resource = (SoundResource)handle.Acquire())
-					{
-						Channel channel = null;
-						system.playSound(CHANNELINDEX.FREE, resource.Sound, true, ref channel);
+					Channel channel = null;
+					system.playSound(CHANNELINDEX.FREE, sound, true, ref channel);
 						
-						channel.setChannelGroup(groupMap[group]);
-						channel.setPaused(false);
-					}
+					channel.setChannelGroup(groupMap[group]);
+					channel.setVolume(volume);
+					channel.setPaused(false);
 				});
 		}
 
-		public void CreateLoopingSound(SoundGroup group, ResourceHandle handle, bool paused = false)
+		public void CreateLoopingSound(SoundGroup group, Sound sound, bool paused = false, float volume = 1.0f)
 		{
 			Queue.Add(() => {
-				   using (var resource = (SoundResource)handle.Acquire())
-				   {
-					   Channel channel = null;
-					   system.playSound(FMOD.CHANNELINDEX.FREE, resource.Sound, true, ref channel);
+					Channel channel = null;
+					system.playSound(FMOD.CHANNELINDEX.FREE, sound, true, ref channel);
 					   
-					   channel.setChannelGroup(groupMap[group]);
-					   channel.setMode(MODE.LOOP_NORMAL);
-					   channel.setLoopCount(-1);
+					channel.setChannelGroup(groupMap[group]);
+					channel.setMode(MODE.LOOP_NORMAL);
+					channel.setLoopCount(-1);
+					channel.setVolume(volume);
 
-					   channel.setPaused(paused);
-				   }
+					channel.setPaused(paused);
 			   });
 		}
 
-		public void CreateLoopingSound(SoundGroup group, string file, bool paused = false)
+		public void CreateLoopingSound(SoundGroup group, string file, bool paused = false, float volume = 1.0f)
 		{
 			Queue.Add(() =>
 			{
@@ -127,6 +135,7 @@ namespace Audio
 				channel.setChannelGroup(groupMap[group]);
 				channel.setMode(MODE.LOOP_NORMAL);
 				channel.setLoopCount(-1);
+				channel.setVolume(volume);
 
 				channel.setPaused(paused);
 			});
@@ -196,16 +205,15 @@ namespace Audio
 
 			Sound sound = null;
 			RESULT res = system.createStream(data, (MODE.CREATESTREAM | MODE.HARDWARE | MODE.OPENMEMORY), ref info, ref sound);
-
+			
 			return sound;
 		}
 
 		public void Dispose()
 		{
 			Stop();
-			audioThread.Join();
-			FMOD.RESULT result;
 
+			FMOD.RESULT result;
 			if (system != null) {
 				result = system.close();
 				result = system.release();
