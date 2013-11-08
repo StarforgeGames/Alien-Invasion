@@ -56,7 +56,7 @@ namespace Game.Behaviors
                     
                     if (entity.Type == "mystery_ship")
                     {
-                        audioEvent = AudioEvent.LoopSound(entity.ID, sound);
+                        audioEvent = AudioEvent.LoopSound(entity.ID, sound, 0.5f);
                     }
                     else
                     {
@@ -81,13 +81,12 @@ namespace Game.Behaviors
                         break;
                     }
 
-                    audioEvent = AudioEvent.PlaySound(entity.ID, sound);
+                    audioEvent = AudioEvent.PlaySound(entity.ID, sound, 0.5f);
                     break;
                 }
             }
 
             if (audioEvent != null) {
-                using (audioEvent.SoundResource.Acquire()) { }// Workaround: Acquire right away so sound is played first time
                 audioQueue.Add(audioEvent);
             }
         }

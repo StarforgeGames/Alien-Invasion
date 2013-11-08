@@ -17,6 +17,7 @@ using SpaceInvaders.Input;
 using Audio.Loaders;
 using Game.Behaviors;
 using System.Diagnostics;
+using Audio.Resources;
 
 namespace SpaceInvaders.Views
 {
@@ -51,8 +52,8 @@ namespace SpaceInvaders.Views
 		private PlayerController playerController;
 
 		private List<IResourceLoader> rendererLoaders = new List<IResourceLoader>();
-		private AudioLoader audioLoader;
-		private StreamLoader streamLoader;
+		private SoundEffectLoader audioLoader;
+		private SoundStreamLoader streamLoader;
 
 		private float timeSinceLastDebugUpdate;
 		private int[] numOfGcCollectedObjects;
@@ -104,10 +105,10 @@ namespace SpaceInvaders.Views
 			audioPlayer = new DefaultAudioPlayer();
 			audioPlayer.Start();
 
-			audioLoader = new AudioLoader(audioPlayer);
+			audioLoader = new SoundEffectLoader(audioPlayer);
 			game.ResourceManager.AddLoader(audioLoader);
 
-			streamLoader = new StreamLoader(audioPlayer);
+			streamLoader = new SoundStreamLoader(audioPlayer);
 			game.ResourceManager.AddLoader(streamLoader);
 
 			/**
@@ -222,11 +223,17 @@ namespace SpaceInvaders.Views
 					AudioEvent audioEvent = (AudioEvent)evt;
 					if (audioEvent.Loop)
 					{
-						audioPlayer.CreateLoopingSound(SoundGroup.InGameEffect, audioEvent.SoundResource);
+						using (SoundResource res = (SoundResource)audioEvent.SoundResource.Acquire())
+						{
+							audioPlayer.CreateLoopingSound(SoundGroup.InGameEffect, res.Sound, false, audioEvent.Volume);
+						}
 					}
 					else
 					{
-						audioPlayer.PlayEffect(audioEvent.SoundResource);
+						using (SoundResource res = (SoundResource)audioEvent.SoundResource.Acquire())
+						{
+							audioPlayer.Play(res.Sound, audioEvent.Volume);
+						}
 					}
 					break;
 				}
@@ -388,7 +395,6 @@ namespace SpaceInvaders.Views
 			Game.ResourceManager.RemoveLoader(audioLoader.Type);
 			audioLoader.Dispose();
 
-			audioPlayer.Stop();
 			audioPlayer.Dispose();
 		}
 	}

@@ -30,7 +30,10 @@
 		{
 			this.highscorePictureBox = new System.Windows.Forms.PictureBox();
 			this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-			this.placeLabel7 = new System.Windows.Forms.Label();
+			this.playerNameLabel10 = new System.Windows.Forms.Label();
+			this.placeLabel10 = new System.Windows.Forms.Label();
+			this.scoreLabel10 = new System.Windows.Forms.Label();
+			this.dateLabel10 = new System.Windows.Forms.Label();
 			this.playerNameLabel2 = new System.Windows.Forms.Label();
 			this.placeLabel2 = new System.Windows.Forms.Label();
 			this.scoreLabel1 = new System.Windows.Forms.Label();
@@ -59,6 +62,7 @@
 			this.playerNameLabel6 = new System.Windows.Forms.Label();
 			this.dateLabel6 = new System.Windows.Forms.Label();
 			this.scoreLabel6 = new System.Windows.Forms.Label();
+			this.placeLabel7 = new System.Windows.Forms.Label();
 			this.playerNameLabel7 = new System.Windows.Forms.Label();
 			this.dateLabel7 = new System.Windows.Forms.Label();
 			this.scoreLabel7 = new System.Windows.Forms.Label();
@@ -70,10 +74,6 @@
 			this.playerNameLabel9 = new System.Windows.Forms.Label();
 			this.dateLabel9 = new System.Windows.Forms.Label();
 			this.scoreLabel9 = new System.Windows.Forms.Label();
-			this.dateLabel10 = new System.Windows.Forms.Label();
-			this.scoreLabel10 = new System.Windows.Forms.Label();
-			this.placeLabel10 = new System.Windows.Forms.Label();
-			this.playerNameLabel10 = new System.Windows.Forms.Label();
 			this.backButton = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.highscorePictureBox)).BeginInit();
 			this.tableLayoutPanel.SuspendLayout();
@@ -139,7 +139,7 @@
 			this.tableLayoutPanel.Controls.Add(this.playerNameLabel9, 1, 9);
 			this.tableLayoutPanel.Controls.Add(this.dateLabel9, 2, 9);
 			this.tableLayoutPanel.Controls.Add(this.scoreLabel9, 3, 9);
-			this.tableLayoutPanel.Location = new System.Drawing.Point(170, 150);
+			this.tableLayoutPanel.Location = new System.Drawing.Point(172, 122);
 			this.tableLayoutPanel.Name = "tableLayoutPanel";
 			this.tableLayoutPanel.RowCount = 11;
 			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
@@ -156,17 +156,51 @@
 			this.tableLayoutPanel.Size = new System.Drawing.Size(680, 440);
 			this.tableLayoutPanel.TabIndex = 1;
 			// 
-			// placeLabel7
+			// playerNameLabel10
 			// 
-			this.placeLabel7.AutoSize = true;
-			this.placeLabel7.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.placeLabel7.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.placeLabel7.Location = new System.Drawing.Point(3, 280);
-			this.placeLabel7.Name = "placeLabel7";
-			this.placeLabel7.Size = new System.Drawing.Size(74, 40);
-			this.placeLabel7.TabIndex = 28;
-			this.placeLabel7.Text = "7th";
-			this.placeLabel7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.playerNameLabel10.AutoSize = true;
+			this.playerNameLabel10.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.playerNameLabel10.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.playerNameLabel10.Location = new System.Drawing.Point(83, 400);
+			this.playerNameLabel10.Name = "playerNameLabel10";
+			this.playerNameLabel10.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+			this.playerNameLabel10.Size = new System.Drawing.Size(294, 40);
+			this.playerNameLabel10.TabIndex = 43;
+			this.playerNameLabel10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// placeLabel10
+			// 
+			this.placeLabel10.AutoSize = true;
+			this.placeLabel10.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.placeLabel10.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.placeLabel10.Location = new System.Drawing.Point(3, 400);
+			this.placeLabel10.Name = "placeLabel10";
+			this.placeLabel10.Size = new System.Drawing.Size(74, 40);
+			this.placeLabel10.TabIndex = 42;
+			this.placeLabel10.Text = "10th";
+			this.placeLabel10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// scoreLabel10
+			// 
+			this.scoreLabel10.AutoSize = true;
+			this.scoreLabel10.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.scoreLabel10.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.scoreLabel10.Location = new System.Drawing.Point(583, 400);
+			this.scoreLabel10.Name = "scoreLabel10";
+			this.scoreLabel10.Size = new System.Drawing.Size(94, 40);
+			this.scoreLabel10.TabIndex = 41;
+			this.scoreLabel10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// dateLabel10
+			// 
+			this.dateLabel10.AutoSize = true;
+			this.dateLabel10.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.dateLabel10.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.dateLabel10.Location = new System.Drawing.Point(383, 400);
+			this.dateLabel10.Name = "dateLabel10";
+			this.dateLabel10.Size = new System.Drawing.Size(194, 40);
+			this.dateLabel10.TabIndex = 40;
+			this.dateLabel10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// playerNameLabel2
 			// 
@@ -497,6 +531,18 @@
 			this.scoreLabel6.TabIndex = 27;
 			this.scoreLabel6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
+			// placeLabel7
+			// 
+			this.placeLabel7.AutoSize = true;
+			this.placeLabel7.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.placeLabel7.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.placeLabel7.Location = new System.Drawing.Point(3, 280);
+			this.placeLabel7.Name = "placeLabel7";
+			this.placeLabel7.Size = new System.Drawing.Size(74, 40);
+			this.placeLabel7.TabIndex = 28;
+			this.placeLabel7.Text = "7th";
+			this.placeLabel7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
 			// playerNameLabel7
 			// 
 			this.playerNameLabel7.AutoSize = true;
@@ -622,52 +668,6 @@
 			this.scoreLabel9.Size = new System.Drawing.Size(94, 40);
 			this.scoreLabel9.TabIndex = 39;
 			this.scoreLabel9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// dateLabel10
-			// 
-			this.dateLabel10.AutoSize = true;
-			this.dateLabel10.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.dateLabel10.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.dateLabel10.Location = new System.Drawing.Point(383, 400);
-			this.dateLabel10.Name = "dateLabel10";
-			this.dateLabel10.Size = new System.Drawing.Size(194, 40);
-			this.dateLabel10.TabIndex = 40;
-			this.dateLabel10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// scoreLabel10
-			// 
-			this.scoreLabel10.AutoSize = true;
-			this.scoreLabel10.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.scoreLabel10.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.scoreLabel10.Location = new System.Drawing.Point(583, 400);
-			this.scoreLabel10.Name = "scoreLabel10";
-			this.scoreLabel10.Size = new System.Drawing.Size(94, 40);
-			this.scoreLabel10.TabIndex = 41;
-			this.scoreLabel10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// placeLabel10
-			// 
-			this.placeLabel10.AutoSize = true;
-			this.placeLabel10.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.placeLabel10.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.placeLabel10.Location = new System.Drawing.Point(3, 400);
-			this.placeLabel10.Name = "placeLabel10";
-			this.placeLabel10.Size = new System.Drawing.Size(74, 40);
-			this.placeLabel10.TabIndex = 42;
-			this.placeLabel10.Text = "10th";
-			this.placeLabel10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// playerNameLabel10
-			// 
-			this.playerNameLabel10.AutoSize = true;
-			this.playerNameLabel10.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.playerNameLabel10.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.playerNameLabel10.Location = new System.Drawing.Point(83, 400);
-			this.playerNameLabel10.Name = "playerNameLabel10";
-			this.playerNameLabel10.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-			this.playerNameLabel10.Size = new System.Drawing.Size(294, 40);
-			this.playerNameLabel10.TabIndex = 43;
-			this.playerNameLabel10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// backButton
 			// 
