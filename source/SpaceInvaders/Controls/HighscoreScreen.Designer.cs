@@ -139,7 +139,7 @@
 			this.tableLayoutPanel.Controls.Add(this.playerNameLabel9, 1, 9);
 			this.tableLayoutPanel.Controls.Add(this.dateLabel9, 2, 9);
 			this.tableLayoutPanel.Controls.Add(this.scoreLabel9, 3, 9);
-			this.tableLayoutPanel.Location = new System.Drawing.Point(172, 122);
+			this.tableLayoutPanel.Location = new System.Drawing.Point(172, 134);
 			this.tableLayoutPanel.Name = "tableLayoutPanel";
 			this.tableLayoutPanel.RowCount = 11;
 			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
@@ -672,7 +672,7 @@
 			// backButton
 			// 
 			this.backButton.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.backButton.Location = new System.Drawing.Point(874, 638);
+			this.backButton.Location = new System.Drawing.Point(874, 700);
 			this.backButton.Name = "backButton";
 			this.backButton.Size = new System.Drawing.Size(150, 65);
 			this.backButton.TabIndex = 2;
@@ -689,7 +689,7 @@
 			this.Controls.Add(this.highscorePictureBox);
 			this.Margin = new System.Windows.Forms.Padding(0);
 			this.Name = "HighscoreScreen";
-			this.Size = new System.Drawing.Size(1024, 703);
+			this.Size = new System.Drawing.Size(1024, 768);
 			((System.ComponentModel.ISupportInitialize)(this.highscorePictureBox)).EndInit();
 			this.tableLayoutPanel.ResumeLayout(false);
 			this.tableLayoutPanel.PerformLayout();
