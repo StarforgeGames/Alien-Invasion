@@ -279,7 +279,7 @@ namespace SpaceInvaders.Views
 					gameOverControl.Hide();
 					hud.Hide();
 					
-					audioPlayer.CreateLoopingSound(SoundGroup.Menu, @"data\audio\menu.ogg", true);
+					audioPlayer.CreateLoopingSound(SoundGroup.Menu, @"data\audio\menu.ogg", true, 0.8f);
 					break;
 				case GameState.Menu:
 					mainMenuControl.Show();
@@ -316,7 +316,7 @@ namespace SpaceInvaders.Views
 					OnDetach();
 
 					audioPlayer.StopLoopingSounds(SoundGroup.InGameMusic);
-					audioPlayer.CreateLoopingSound(SoundGroup.InGameMusic, @"data\audio\ingame.ogg", true);
+					audioPlayer.CreateLoopingSound(SoundGroup.InGameMusic, @"data\audio\ingame.ogg", true, 0.8f);
 					break;
 				case GameState.Running:
 					mainMenuControl.Hide();

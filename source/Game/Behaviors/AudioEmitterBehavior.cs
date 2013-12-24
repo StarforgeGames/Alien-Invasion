@@ -60,7 +60,7 @@ namespace Game.Behaviors
                     }
                     else
                     {
-                        audioEvent = AudioEvent.PlaySound(entity.ID, sound);
+                        audioEvent = AudioEvent.PlaySound(entity.ID, sound, 0.5f);
                     }
                     break;
                 }
@@ -81,7 +81,7 @@ namespace Game.Behaviors
                         break;
                     }
 
-                    audioEvent = AudioEvent.PlaySound(entity.ID, sound, 0.5f);
+                    audioEvent = AudioEvent.PlaySound(entity.ID, sound, 0.9f);
                     break;
                 }
             }
