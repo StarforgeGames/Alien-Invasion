@@ -36,7 +36,7 @@ namespace Game.Behaviors
 			entity[SpatialBehavior.Key_Position] = position;
 
 			if (position.X < -100 || position.X > game.World.Width + 100) {
-				var destroyEntity = DestroyEntityEvent.Destroy(entity.ID);
+				var destroyEntity = DestroyEntityEvent.Destroy(entity.ID, 0, true);
 				eventManager.Queue(destroyEntity);
 			}
 		}
@@ -53,8 +53,8 @@ namespace Game.Behaviors
 						break;
 					}
 
-					AudioEvent audioEvent = AudioEvent.StopSound(entity.ID, "mystery_ship_loop", "aliens");
-					eventManager.Queue(audioEvent);
+					AudioEvent stopLoopAudioEvent = AudioEvent.StopSound(entity.ID, "mystery_ship_loop", "aliens");
+					eventManager.Queue(stopLoopAudioEvent);
 					break;
 			}
 		}

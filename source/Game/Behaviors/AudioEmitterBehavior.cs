@@ -53,12 +53,16 @@ namespace Game.Behaviors
 
 			switch (evt.Type)
 			{
-				case CreateEntityEvent.CREATE_ENTITY:
-					CreateEntityEvent createEntityEvent = (CreateEntityEvent)evt;
+				case NewEntityEvent.NEW_ENTITY:
+					NewEntityEvent newEntityEvent = (NewEntityEvent)evt;
+					if (entity.ID != newEntityEvent.EntityID)
+					{
+						return;
+					}
 					break;
 				case DestroyEntityEvent.DESTROY_ENTITY:
 					DestroyEntityEvent destroyEntityEvent = (DestroyEntityEvent)evt;
-					if(entity.ID != destroyEntityEvent.EntityID)
+					if(entity.ID != destroyEntityEvent.EntityID || destroyEntityEvent.IsCausedByCleanup)
 					{
 						return;
 					}
