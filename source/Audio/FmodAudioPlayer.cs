@@ -20,12 +20,14 @@ namespace Audio
 
 		//private Dictionary<string, FMOD.Event> soundEventMap = new Dictionary<string, Event>();
 
-		public FmodAudioPlayer()
+		public FmodAudioPlayer(string mediaPath)
 		{
 			RESULT result = FMOD.Event_Factory.EventSystem_Create(ref eventSystem);
+			fmodErrorCheck(result);
 			result = eventSystem.init(ChannelCount, FMOD.INITFLAGS.NORMAL, (IntPtr)null, FMOD.EVENT_INITFLAGS.NORMAL);
-			result = eventSystem.setMediaPath("./data/audio/");
-			result = eventSystem.load("audio.fev");
+			fmodErrorCheck(result);
+			result = eventSystem.setMediaPath(mediaPath);
+			fmodErrorCheck(result);
 		}
 
 		private void fmodErrorCheck(RESULT result)
@@ -38,18 +40,20 @@ namespace Audio
 			}
 		}
 
-		public void LoadGroup(string name)
+		public void LoadFile(string file)
+		{
+			RESULT result = eventSystem.load(file);
+			fmodErrorCheck(result);
+		}
+
+		public void PreloadGroup(string name)
 		{
 			EventGroup group = null;
 			RESULT result = eventSystem.getGroup(name, true, ref group);
 			fmodErrorCheck(result);
+
 			result = group.loadEventData();
 			fmodErrorCheck(result);
-		}
-
-		public void LoadFile(string file)
-		{
-			throw new NotImplementedException();
 		}
 
 		public void OnUpdate()
@@ -76,6 +80,13 @@ namespace Audio
 			fmodErrorCheck(result);
 
 			return evt;
+		}
+
+		public void StopEvent(string soundEvent)
+		{
+			Event evt = getEvent(soundEvent);
+
+			RESULT result = evt.stop();
 		}
 
 		public void PauseEvent(string soundEvent)
@@ -105,11 +116,11 @@ namespace Audio
 			return isPaused;
 		}
 
-		public void StopEvent(string soundEvent)
+		public void StopCategory(string name)
 		{
-			Event evt = getEvent(soundEvent);
-
-			RESULT result = evt.stop();
+			EventCategory category = getEventCategory(name);
+			RESULT result = category.stopAllEvents();
+			fmodErrorCheck(result);
 		}
 
 		public void PauseCategory(string name)
@@ -126,11 +137,15 @@ namespace Audio
 			fmodErrorCheck(result);
 		}
 
-		public void StopCategory(string name)
+		public bool IsCategoryPaused(string name)
 		{
 			EventCategory category = getEventCategory(name);
-			RESULT result = category.stopAllEvents();
+
+			bool isPaused = false;
+			RESULT result = category.getPaused(ref isPaused);
 			fmodErrorCheck(result);
+
+			return isPaused;
 		}
 
 		private EventCategory getEventCategory(string name)
