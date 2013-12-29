@@ -7,7 +7,7 @@ namespace Game.EventManagement.Events
     public class CreateEntityEvent : Event
     {
         // Event Message Types
-        public const string CREATE_ENTITY = "create_entity";
+        public const string CREATE_ENTITY = "CREATE_ENTITY";
 
         public string EntityType { get; private set; }
         public Dictionary<string, object> Attributes { get; private set; }

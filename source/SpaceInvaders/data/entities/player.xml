@@ -15,9 +15,11 @@
 			<x>75</x>
 			<y>75</y>
 		</Vector2D>
+		<AudioInfo key="SoundEffects">
+			<Sound onGameEvent="DESTROY_ENTITY" project="misc">explosion</Sound>
+		</AudioInfo>
 		<Resource key="Material" type="material" name="player"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
-		<Resource key="DestroyEntitySound" type="audio" name="explosion"/>
 		<float key="MovementSpeed">300</float>
 		<float key="FiringSpeed">1.0</float>
 		<string key="ProjectileType">pewpew</string>

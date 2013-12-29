@@ -12,9 +12,11 @@
 			<x>5</x>
 			<y>15</y>
 		</Vector2D>
+		<AudioInfo key="SoundEffects">
+			<Sound onGameEvent="NEW_ENTITY" project="player">shot</Sound>
+		</AudioInfo>
 		<Resource key="Material" type="material" name="pewpew"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
-		<Resource key="CreateEntitySound" type="audio" name="player_shot"/>
 		<float key="MovementSpeed">600</float>
 		<Vector2D key="MoveDirection">
 			<x>0</x>

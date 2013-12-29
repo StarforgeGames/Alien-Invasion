@@ -93,14 +93,6 @@ namespace Game
 
 		private void loadResources()
 		{
-			ResourceManager.GetResource("player_shot", "audio").Preload();
-			ResourceManager.GetResource("alien_shot", "audio").Preload();
-			ResourceManager.GetResource("explosion", "audio").Preload();
-			ResourceManager.GetResource("alien_hammerhead_death", "audio").Preload();
-			ResourceManager.GetResource("alien_pincher_death", "audio").Preload();
-			ResourceManager.GetResource("alien_ray_death", "audio").Preload();
-			ResourceManager.GetResource("mystery_ship_loop", "audio").Preload();
-
 			ResourceManager.GetResource("quad", "mesh").Preload();
 
 			ResourceManager.GetResource("space", "material").Preload();
