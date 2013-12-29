@@ -98,7 +98,8 @@ namespace SpaceInvaders.Views
 			/**
 			* Initialize Audio Subsystem 
 			**/
-			audioPlayer = new FmodAudioPlayer();
+			audioPlayer = new FmodAudioPlayer(@"./data/audio/");
+			audioPlayer.LoadFile("audio.fev");
 			audioPlayer.IsPaused = false;
 
 			/**

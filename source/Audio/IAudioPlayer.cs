@@ -9,8 +9,8 @@ namespace Audio
 	{
 		bool IsPaused { get; set; }
 
-		void LoadGroup(string group);
 		void LoadFile(string file);
+		void PreloadGroup(string group);
 
 		void OnUpdate();
 
@@ -20,8 +20,9 @@ namespace Audio
 		void UnpauseEvent(string soundEvent);
 		bool IsEventPaused(string soundEvent);
 
-		void PauseCategory(string category);
-		void UnpauseCategory(string category);
-		void StopCategory(string category);
+		void StopCategory(string name);
+		void PauseCategory(string name);
+		void UnpauseCategory(string name);
+		bool IsCategoryPaused(string name);
 	}
 }
