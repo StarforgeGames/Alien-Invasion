@@ -10,41 +10,48 @@ namespace Game.EventManagement.Events
 	{
 		 // Event Message Types
 		public const string PLAY_SOUND = "play_sound";
+		public const string PAUSE_SOUND = "pause_sound";
 		public const string STOP_SOUND = "stop_sound";
 
-		public ResourceHandle SoundResource { get; private set; }
 		public int EntityID { get; private set; }
+
+		public string Project { get; private set; }
+		public string SoundEvent { get; private set; }
+
 		public bool Loop { get; private set; }
 		public float Volume { get; private set; }
 
-		private AudioEvent(string type, int entityID, ResourceHandle soundResource, bool loop = false, float volume = 1.0f)
+		private AudioEvent(string type, int entityID, string soundEvent, string project, bool loop = false, 
+			float volume = 1.0f)
 			: base(type)
 		{
 			this.EntityID = entityID;
-			this.SoundResource = soundResource;
+
+			this.Project = project;
+			this.SoundEvent = soundEvent;
+
 			this.Loop = loop;
 			this.Volume = volume;
 		}
 
-		public static AudioEvent PlaySound(int entityID, ResourceHandle soundResource, float volume = 1.0f)
+		public static AudioEvent PlaySound(int entityID, string soundEvent, string project,	float volume = 1.0f)
 		{
-			return new AudioEvent(PLAY_SOUND, entityID, soundResource, false, volume);
+			return new AudioEvent(PLAY_SOUND, entityID, soundEvent, project, false, volume);
 		}
 
-		public static AudioEvent LoopSound(int entityID, ResourceHandle soundResource, float volume = 1.0f)
+		public static AudioEvent LoopSound(int entityID, string soundEvent, string project, float volume = 1.0f)
 		{
-			return new AudioEvent(PLAY_SOUND, entityID, soundResource, true, volume);
+			return new AudioEvent(PLAY_SOUND, entityID, soundEvent, project, true, volume);
 		}
 
-		public static AudioEvent StopSound(int entityID, ResourceHandle soundResource)
+		public static AudioEvent StopSound(int entityID, string soundEvent, string project)
 		{
-			return new AudioEvent(STOP_SOUND, entityID, soundResource);
+			return new AudioEvent(STOP_SOUND, entityID, soundEvent, project);
 		}
 
 		public override string ToString()
 		{
-			return base.ToString() + " [" + SoundResource + " is being issued to " + Type + " by SourceEntityID "
-				+ EntityID + "]";
+			return String.Format("audio/{0}/{1}", Project, SoundEvent);
 		}
 	}
 }

@@ -8,87 +8,68 @@ using ResourceManagement;
 
 namespace Game.Behaviors
 {
-    public class AudioEmitterBehavior : AEntityBasedBehavior
-    {
-        public const string Key_CreateEntitySound = "CreateEntitySound";
-        public const string Key_DestroyEntitySound = "DestroyEntitySound";
+	public class AudioEmitterBehavior : AEntityBasedBehavior
+	{
+		public const string Key_SoundEffects = "SoundEffects";
 
-        List<AudioEvent> audioQueue = new List<AudioEvent>();
+		private List<AudioEvent> audioQueue = new List<AudioEvent>();
 
-        public AudioEmitterBehavior(Entity entity)
-            : base(entity)
-        {
-            entity.AddAttribute(Key_CreateEntitySound, (ResourceHandle)null);
-            entity.AddAttribute(Key_DestroyEntitySound, (ResourceHandle)null);
+		public AudioEmitterBehavior(Entity entity)
+			: base(entity)
+		{
+			entity.AddAttribute(Key_SoundEffects, (AudioInfo)null);
 
-            initializeHandledEventTypes();
-        }
+			initializeHandledEventTypes();
+		}
 
-        protected override void initializeHandledEventTypes()
-        {
-            handledEventTypes.Add(typeof(NewEntityEvent));
-            handledEventTypes.Add(typeof(DestroyEntityEvent));
-        }
+		protected override void initializeHandledEventTypes()
+		{
+			handledEventTypes.Add(typeof(NewEntityEvent));
+			handledEventTypes.Add(typeof(DestroyEntityEvent));
+		}
 
-        public override void OnUpdate(float deltaTime)
-        {
-            foreach (var audioEvent in audioQueue) {
-                eventManager.Queue(audioEvent);
-            }
-            audioQueue.Clear();
-        }
+		public override void OnUpdate(float deltaTime)
+		{
+			foreach (var audioEvent in audioQueue) {
+				eventManager.Queue(audioEvent);
+			}
+			audioQueue.Clear();
+		}
 
-        public override void OnEvent(Event evt)
-        {
-            AudioEvent audioEvent = null;
+		public override void OnEvent(Event evt)
+		{
+			AudioEvent audioEvent = null;
+			AudioInfo sounds = entity[Key_SoundEffects];
 
-            switch (evt.Type) {
-                case NewEntityEvent.NEW_ENTITY: {
-                    NewEntityEvent newEntityEvent = (NewEntityEvent)evt;
-                    if (entity.ID != newEntityEvent.EntityID) {
-                        break;
-                    }
+			if (sounds == null)
+			{
+				throw new Exception(String.Format("No sound effects defined for Entity '{0}'", entity.ToString()));
+			}
+			AudioInfo.Sound sound = sounds.GetSoundForEvent(evt.Type);
+			if (sound == null)
+			{
+				return;
+			}
 
-                    ResourceHandle sound = entity[Key_CreateEntitySound];
-                    if (sound == null) {
-                        break;
-                    }
-                    
-                    if (entity.Type == "mystery_ship")
-                    {
-                        audioEvent = AudioEvent.LoopSound(entity.ID, sound, 0.5f);
-                    }
-                    else
-                    {
-                        audioEvent = AudioEvent.PlaySound(entity.ID, sound, 0.5f);
-                    }
-                    break;
-                }
-                case DestroyEntityEvent.DESTROY_ENTITY: {
-                    DestroyEntityEvent destroyEntityEvent = (DestroyEntityEvent)evt;
-                    if (entity.ID != destroyEntityEvent.EntityID) {
-                        break;
-                    }
-                    
-                    // No explosion sound when mystery ship is not killed by player!
-                    if (entity.Type == "mystery_ship" && destroyEntityEvent.DestroyedByEntityID == 0)
-                    {
-                        break;
-                    }
+			switch (evt.Type)
+			{
+				case CreateEntityEvent.CREATE_ENTITY:
+					CreateEntityEvent createEntityEvent = (CreateEntityEvent)evt;
+					break;
+				case DestroyEntityEvent.DESTROY_ENTITY:
+					DestroyEntityEvent destroyEntityEvent = (DestroyEntityEvent)evt;
+					if(entity.ID != destroyEntityEvent.EntityID)
+					{
+						return;
+					}
+					break;
+			}
 
-                    ResourceHandle sound = entity[Key_DestroyEntitySound];
-                    if (sound == null) {
-                        break;
-                    }
+			audioEvent = AudioEvent.PlaySound(entity.ID, sound.EventName, sound.Project);
 
-                    audioEvent = AudioEvent.PlaySound(entity.ID, sound, 0.9f);
-                    break;
-                }
-            }
-
-            if (audioEvent != null) {
-                audioQueue.Add(audioEvent);
-            }
-        }
-    }
+			if (audioEvent != null) {
+				audioQueue.Add(audioEvent);
+			}
+		}
+	}
 }

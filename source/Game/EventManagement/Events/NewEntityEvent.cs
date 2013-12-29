@@ -4,7 +4,7 @@
     public class NewEntityEvent : Event
     {
         // Event Message Types
-        public const string NEW_ENTITY = "new_entity";
+        public const string NEW_ENTITY = "NEW_ENTITY";
 
         public int EntityID { get; private set; }
 

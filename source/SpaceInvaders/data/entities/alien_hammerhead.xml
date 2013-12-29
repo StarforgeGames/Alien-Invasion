@@ -16,9 +16,11 @@
 			<x>80</x>
 			<y>75</y>
 		</Vector2D>
+		<AudioInfo key="SoundEffects">
+			<Sound onGameEvent="DESTROY_ENTITY" project="aliens">hammerhead_death</Sound>
+		</AudioInfo>
 		<Resource key="Material" type="material" name="alien_hammerhead"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
-		<Resource key="DestroyEntitySound" type="audio" name="alien_hammerhead_death"/>
 		<float key="MovementSpeed">50</float>
 		<float key="FiringSpeed">4.0</float>
 		<string key="ProjectileType">pewpew_alien</string>

@@ -13,11 +13,13 @@
 		<Vector2D key="Dimensions">			
 			<x>64</x>
 			<y>64</y>
-		</Vector2D>		
+		</Vector2D>
+		<AudioInfo key="SoundEffects">
+			<Sound onGameEvent="NEW_ENTITY" project="aliens">mystery_ship_loop</Sound>
+			<Sound onGameEvent="DESTROY_ENTITY" project="misc">explosion</Sound>
+		</AudioInfo>
 		<Resource key="Material" type="material" name="mystery_ship"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
-		<Resource key="CreateEntitySound" type="audio" name="mystery_ship_loop"/>
-		<Resource key="DestroyEntitySound" type="audio" name="explosion"/>
 		<float key="MovementSpeed">200</float>
 		<bool key="RespectsBoundary">false</bool>
 		<string key="Faction">ai</string>

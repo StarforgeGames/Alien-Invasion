@@ -4,7 +4,7 @@
     public class DestroyEntityEvent : Event
     {
         // Event Message Types
-        public const string DESTROY_ENTITY = "destroy_entity";
+        public const string DESTROY_ENTITY = "DESTROY_ENTITY";
 
         public int EntityID { get; private set; }
         public int DestroyedByEntityID { get; private set; }

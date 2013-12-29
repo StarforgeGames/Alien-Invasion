@@ -9,7 +9,7 @@ namespace Game.EventManagement.Events
     public class AiUpdateMovementEvent : Event
     {
          // Event Message Types
-        public const string AT_BORDER = "at_border";
+        public const string AT_BORDER = "AT_BORDER";
 
         public int EntityID { get; private set; }
         public Vector2D BorderData { get; private set; }

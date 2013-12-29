@@ -15,9 +15,11 @@
 			<x>50</x>
 			<y>70</y>
 		</Vector2D>
+		<AudioInfo key="SoundEffects">
+			<Sound onGameEvent="DESTROY_ENTITY" project="aliens">pincher_death</Sound>
+		</AudioInfo>
 		<Resource key="Material" type="material" name="alien_pincher"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
-		<Resource key="DestroyEntitySound" type="audio" name="alien_pincher_death"/>
 		<float key="MovementSpeed">50</float>
 		<float key="FiringSpeed">3.5</float>
 		<string key="ProjectileType">pewpew_alien</string>

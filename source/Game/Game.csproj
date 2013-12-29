@@ -30,6 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -100,6 +101,7 @@
     <Compile Include="CollisionManager.cs" />
     <Compile Include="Entities\AttributeLoader\DefaultAttributeLoader.cs" />
     <Compile Include="Entities\AttributeLoader\IAttributeLoader.cs" />
+    <Compile Include="Entities\AttributeParser\AudioInfoParser.cs" />
     <Compile Include="Entities\AttributeParser\IAttributeParser.cs" />
     <Compile Include="Entities\AttributeParser\ResourceParser.cs" />
     <Compile Include="Entities\AttributeParser\Vector2DParser.cs" />
@@ -130,6 +132,7 @@
     <Compile Include="Processes\Process.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\AudioInfo.cs" />
     <Compile Include="Utility\Highscore.cs" />
     <Compile Include="Utility\HighscoreEntry.cs" />
     <Compile Include="Utility\Vector2D.cs" />

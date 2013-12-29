@@ -7,21 +7,21 @@ namespace Audio
 {
 	public interface IAudioPlayer : IDisposable
 	{
-		IAsyncExecutor Queue { get; }
+		bool IsPaused { get; set; }
 
-		void Start();
-		void Stop();
+		void LoadGroup(string group);
+		void LoadFile(string file);
 
-		void Play(Sound sound, float volume = 1.0f, SoundGroup group = SoundGroup.InGameEffect);
+		void OnUpdate();
 
-		void CreateLoopingSound(SoundGroup group, string file, bool paused = false, float volume = 1.0f);
-		void CreateLoopingSound(SoundGroup group, Sound sound, bool paused = false, float volume = 1.0f);
+		void PlayEvent(string soundEvent, float volume = 1.0f);
+		void StopEvent(string soundEvent);
+		void PauseEvent(string soundEvent);
+		void UnpauseEvent(string soundEvent);
+		bool IsEventPaused(string soundEvent);
 
-		void StopLoopingSounds(SoundGroup group);
-		void PauseLoopingSounds(SoundGroup group);
-		void UnpauseLoopingSounds(SoundGroup group);
-
-		Sound CreateSoundFrom(byte[] data);
-		Sound CreateStreamFrom(byte[] data);
+		void PauseCategory(string category);
+		void UnpauseCategory(string category);
+		void StopCategory(string category);
 	}
 }
