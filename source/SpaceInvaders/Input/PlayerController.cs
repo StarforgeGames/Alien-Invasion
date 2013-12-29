@@ -40,7 +40,7 @@ namespace SpaceInvaders.Input
                 case Keys.W:
                     goto case Keys.Up;
                 case Keys.Up:
-                    //determineDirectionAndIssueMove(Direction.North, true);
+                    determineDirectionAndIssueMove(Direction.North, true);
                     break;
                 case Keys.D:
                     goto case Keys.Right;
@@ -50,7 +50,7 @@ namespace SpaceInvaders.Input
                 case Keys.S:
                     goto case Keys.Down;
                 case Keys.Down:
-                    //determineDirectionAndIssueMove(Direction.South, true);
+                    determineDirectionAndIssueMove(Direction.South, true);
                     break;
                 case Keys.A:
                     goto case Keys.Left;

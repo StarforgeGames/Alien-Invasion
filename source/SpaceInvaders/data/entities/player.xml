@@ -7,7 +7,6 @@
 		<CollisionBehavior />
 		<HealthBehavior />
 		<CollectsPointsBehavior />
-		<AudioEmitterBehavior />
 		<AnimationBehavior />
 	</behaviors>
 	<attributes>
@@ -15,9 +14,6 @@
 			<x>75</x>
 			<y>75</y>
 		</Vector2D>
-		<AudioInfo key="SoundEffects">
-			<Sound onGameEvent="DESTROY_ENTITY" project="misc">explosion</Sound>
-		</AudioInfo>
 		<Resource key="Material" type="material" name="player"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
 		<float key="MovementSpeed">300</float>

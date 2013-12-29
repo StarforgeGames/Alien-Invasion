@@ -5,6 +5,7 @@
 		<RenderBehavior />
 		<HealthBehavior />
 		<AnimationBehavior />
+		<AudioEmitterBehavior />
 		<DyingBehavior />
 	</behaviors>
 	<attributes>
@@ -12,6 +13,9 @@
 			<x>256</x>
 			<y>256</y>
 		</Vector2D>
+		<AudioInfo key="SoundEffects">
+			<Sound onGameEvent="NEW_ENTITY" project="misc">explosion</Sound>
+		</AudioInfo>
 		<Resource key="Material" type="material" name="player_death"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
 		<string key="Faction">player</string>
