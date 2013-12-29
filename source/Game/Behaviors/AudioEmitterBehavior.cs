@@ -40,11 +40,11 @@ namespace Game.Behaviors
 		{
 			AudioEvent audioEvent = null;
 			AudioInfo sounds = entity[Key_SoundEffects];
-
 			if (sounds == null)
 			{
 				throw new Exception(String.Format("No sound effects defined for Entity '{0}'", entity.ToString()));
 			}
+
 			AudioInfo.Sound sound = sounds.GetSoundForEvent(evt.Type);
 			if (sound == null)
 			{

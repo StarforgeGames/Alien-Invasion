@@ -8,7 +8,7 @@ namespace Game.EventManagement.Events
     public class HudEvent : Event
     {
         // Event Message Types
-        public const string UPDATE = "update_hud";
+        public const string UPDATE = "UPDATE_HUD";
 
         public int? Lifes { get; private set; }
         public int? Score { get; private set; }

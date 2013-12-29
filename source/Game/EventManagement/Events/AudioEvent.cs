@@ -9,9 +9,9 @@ namespace Game.EventManagement.Events
 	public class AudioEvent : Event
 	{
 		 // Event Message Types
-		public const string PLAY_SOUND = "play_sound";
-		public const string PAUSE_SOUND = "pause_sound";
-		public const string STOP_SOUND = "stop_sound";
+		public const string PLAY_SOUND = "PLAY_SOUND";
+		public const string PAUSE_SOUND = "PAUSE_SOUND";
+		public const string STOP_SOUND = "STOP_SOUND";
 
 		public int EntityID { get; private set; }
 

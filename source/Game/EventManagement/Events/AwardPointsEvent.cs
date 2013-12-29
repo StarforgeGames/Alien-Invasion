@@ -10,7 +10,7 @@ namespace Game.EventManagement.Events
         // TODO: Add Factory Methods to simplify construction
 
         // Event Message Types
-        public const string AWARD_POINTS = "actor_awarded_points";
+        public const string AWARD_POINTS = "ACTOR_AWARDED_POINTS";
 
         public int Points { get; set; }
         public int SourceEntityID { get; set; }

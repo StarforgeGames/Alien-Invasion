@@ -13,8 +13,8 @@ namespace Game.EventManagement.Events
     public class MoveEvent : Event
     {
         // Event Message Types
-        public const string START_MOVING = "actor_start_moving";
-        public const string STOP_MOVING = "actor_stop_moving";
+        public const string START_MOVING = "ACTOR_START_MOVING";
+        public const string STOP_MOVING = "ACTOR_STOP_MOVING";
 
         public Vector2D Direction { get; set; }
 

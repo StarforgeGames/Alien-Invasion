@@ -4,7 +4,7 @@
     public class DamageEvent : Event
     {
         // Event Message Types
-        public const string RECEIVE_DAMAGE = "actor_receive_damage";
+        public const string RECEIVE_DAMAGE = "ACTOR_RECEIVE_DAMAGE";
 
         public int Damage { get; set; }
         public int SourceEntityID { get; set; }
