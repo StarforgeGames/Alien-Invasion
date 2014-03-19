@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\IntegerExtensions.cs" />
     <Compile Include="GarbageCollection\GCInformation.cs" />
     <Compile Include="Measurement\GameClock.cs" />
