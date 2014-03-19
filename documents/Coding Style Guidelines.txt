@@ -8,4 +8,4 @@ Additions & Deviations
 * Guidelines for Names 
   » Capitalization Conventions 
     » Capitalization Rules for Identifiers
-      - Do use Camel casing for all private methods and fields.
+      - Do use lower-case Camel casing for all private methods and fields.

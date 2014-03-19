@@ -24,7 +24,8 @@ namespace Game.Behaviors
 		public override void OnUpdate(float deltaTime)
 		{
 			Vector2D position = entity[SpatialBehavior.Key_Position];
-			if (oldXPosition == 0) {
+			if (oldXPosition == 0) 
+			{
 				oldXPosition = position.X;
 			}
 
@@ -35,7 +36,8 @@ namespace Game.Behaviors
 			position.Y += (float)(75 * Math.Sin(phasePosition * Math.PI / 180)) * deltaTime;
 			entity[SpatialBehavior.Key_Position] = position;
 
-			if (position.X < -100 || position.X > game.World.Width + 100) {
+			if (position.X < -100 || position.X > game.World.Width + 100) 
+			{
 				var destroyEntity = DestroyEntityEvent.Destroy(entity.ID, 0, true);
 				eventManager.Queue(destroyEntity);
 			}

@@ -91,7 +91,7 @@ namespace SpaceInvaders.Views
 			/**
 			* Initialize Input Subsystem 
 			**/
-			gameController = new GameController(EventManager);
+			gameController = new GameController(EventManager, game);
 			RenderForm.KeyDown += new KeyEventHandler(gameController.OnKeyDown);
 			RenderForm.KeyUp += new KeyEventHandler(gameController.OnKeyUp);
 			
@@ -322,7 +322,11 @@ namespace SpaceInvaders.Views
 					audioPlayer.PauseCategory("menu");
 					break;
 				case GameState.Victory:
-					int remainingLifes = playerEntity[HealthBehavior.Key_Lifes];
+					int remainingLifes = 0;
+					if (playerEntity != null)	// Happens on a draw
+					{
+						remainingLifes = playerEntity[HealthBehavior.Key_Lifes];
+					}
 					int totalScore = 100 * remainingLifes + playerEntity[CollectsPointsBehavior.Key_PointsCollected];
 					victoryControl.CurrentScore = totalScore;
 

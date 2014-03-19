@@ -68,6 +68,7 @@ namespace Audio
 		public void PlayEvent(string soundEvent, float volume = 1.0f)
 		{
 			Event evt = getEvent(soundEvent);
+			evt.setVolume(volume);
 
 			RESULT result = evt.start();
 			fmodErrorCheck(result);

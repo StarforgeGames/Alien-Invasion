@@ -58,8 +58,8 @@ namespace SpaceInvaders
 		{
 			clock.Reset();
 
-			using (PlayerView playerView = Views.Find(x => x.Type == GameViewType.PlayerView) as PlayerView) {
-
+			using (PlayerView playerView = Views.Find(x => x.Type == GameViewType.PlayerView) as PlayerView)
+			{
 				MessagePump.Run(playerView.RenderForm, () => {
 					clock.Tick();
 					float deltaTime = clock.DeltaTime;
@@ -75,7 +75,8 @@ namespace SpaceInvaders
 		{
 			Game.Update(deltaTime);
 
-			foreach (IGameView view in Views) {
+			foreach (IGameView view in Views) 
+			{
 				view.OnUpdate(deltaTime);
 			}
 		}
@@ -83,22 +84,27 @@ namespace SpaceInvaders
 		public void OnEvent(Event evt)
 		{
 			switch (evt.Type) {
-				case GameStateChangedEvent.GAME_STATE_CHANGED: {
+				case GameStateChangedEvent.GAME_STATE_CHANGED: 
+				{
 					GameStateChangedEvent stateChangedEvent = evt as GameStateChangedEvent;
 
-					if (stateChangedEvent.NewState != GameState.Running) {
+					if (stateChangedEvent.NewState != GameState.Running) 
+					{
 						clock.Stop();
 					}
-					else {
+					else 
+					{
 						clock.Start();
 					}
 					break;
-					}
-				case DebugEvent.SINGLE_STEP: {
-						clock.SingleStep();
-						break;
-					}
-				case DebugEvent.DECREASE_SPEED: {
+				}
+				case DebugEvent.SINGLE_STEP: 
+				{
+					clock.SingleStep();
+					break;
+				}
+				case DebugEvent.DECREASE_SPEED: 
+				{
 					clock.TimeScale -= 0.1f;
 					break;
 				}

@@ -39,8 +39,7 @@ namespace SpaceInvaders.Views
 		private float timeSinceLastMysteryShipSpawn;
 		private float timeToNextMysteryShipSpawn;
 
-		private readonly float speedIncreasePerDownTurn = 0.03f;
-		private readonly float firingRateDecreasePerDownTurn = 0.01f;
+		private readonly float speedIncreasePerDownTurn = 0.04f;
 
 		public AiView(GameLogic game)
 		{
@@ -110,11 +109,16 @@ namespace SpaceInvaders.Views
 				var move = MoveEvent.Start(invader.ID, currentDirection);
 				EventManager.Queue(move);
 
-				// TODO: Extract game speedup into its own function that is called at regular timing intervals
-				invader[CombatBehavior.Key_FiringSpeed] -= firingRateDecreasePerDownTurn;
-				invader[SpatialBehavior.Key_MovementSpeed] *= 1 + speedIncreasePerDownTurn;              
+
+				if (invader[SpatialBehavior.Key_MovementSpeed] < 400.0f)
+				{
+					invader[SpatialBehavior.Key_MovementSpeed] *= 1 + speedIncreasePerDownTurn;   
+				}           
 			}
-			totalMoveDownTime /= 1 + speedIncreasePerDownTurn;
+			if (totalMoveDownTime > 0.1f)
+			{
+				totalMoveDownTime /= 1 + speedIncreasePerDownTurn;
+			}
 			movementDirectionChanged = false;
 		}
 

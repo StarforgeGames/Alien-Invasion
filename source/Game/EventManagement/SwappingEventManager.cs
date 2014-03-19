@@ -25,19 +25,23 @@ namespace Game.EventManagement
 			this.game = game;
 
 			queues = new List<Event>[NumOfQueues];
-			for (int i = 0; i < NumOfQueues; i++) {
+			for (int i = 0; i < NumOfQueues; i++) 
+			{
 				queues[i] = new List<Event>();
 			}
 		}
 
 		public bool AddListener(IEventListener listener, Type eventType)
 		{
-			if (!listenerMap.ContainsKey(eventType)) {
+			if (!listenerMap.ContainsKey(eventType)) 
+			{
 				listenerMap.Add(eventType, new List<IEventListener>());
 			}
 			
-			foreach (IEventListener l in listenerMap[eventType]) {
-				if (l == listener) {
+			foreach (IEventListener l in listenerMap[eventType]) 
+			{
+				if (l == listener) 
+				{
 					return false;
 				}
 			}
@@ -48,7 +52,8 @@ namespace Game.EventManagement
 
 		public bool RemoveListener(IEventListener listener, Type eventType)
 		{
-			if (!listenerMap.ContainsKey(eventType)) {
+			if (!listenerMap.ContainsKey(eventType)) 
+			{
 				return false;
 			}
 
@@ -57,30 +62,35 @@ namespace Game.EventManagement
 
 		public void Trigger(Event evt)
 		{
-			if (!listenerMap.ContainsKey(evt.GetType())) {
+			if (!listenerMap.ContainsKey(evt.GetType())) 
+			{
 				return;
 			}
 
 			sendEventToGeneralListeners(evt);
 
-			if (evt.RecipientID != 0) {
+			if (evt.RecipientID != 0) 
+			{
 				Entity entity = game.World.Entities[evt.RecipientID];
 				entity.OnEvent(evt);
 				return;
 			}
 
-			foreach (IEventListener listener in listenerMap[evt.GetType()]) {
+			foreach (IEventListener listener in listenerMap[evt.GetType()]) 
+			{
 				listener.OnEvent(evt);
 			}
 		}
 
 		private void sendEventToGeneralListeners(Event evt)
 		{
-			if (!listenerMap.ContainsKey(typeof(Event))) {
+			if (!listenerMap.ContainsKey(typeof(Event))) 
+			{
 				return;
 			}
 
-			foreach (IEventListener listener in listenerMap[typeof(Event)]) {
+			foreach (IEventListener listener in listenerMap[typeof(Event)]) 
+			{
 				listener.OnEvent(evt);
 			}
 
@@ -88,7 +98,8 @@ namespace Game.EventManagement
 
 		public bool Queue(Event evt)
 		{
-			if (!listenerMap.ContainsKey(evt.GetType())) {
+			if (!listenerMap.ContainsKey(evt.GetType())) 
+			{
 				return false;
 			}
 
