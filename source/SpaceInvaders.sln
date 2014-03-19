@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceInvaders", "SpaceInvaders\SpaceInvaders.csproj", "{D0C1E553-1429-4490-B25A-05C55B019E46}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5B991C83-B0B6-4736-9DB7-7AFC2A6B81E6} = {5B991C83-B0B6-4736-9DB7-7AFC2A6B81E6}
@@ -15,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphics", "Graphics\Graphi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceManagement", "ResourceManagement\ResourceManagement.csproj", "{5B991C83-B0B6-4736-9DB7-7AFC2A6B81E6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BF0D5B1D-5674-4EBB-9B17-FDB5CEDA6B4B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{BF0D5B1D-5674-4EBB-9B17-FDB5CEDA6B4B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LispInterpreter", "LispInterpreter\LispInterpreter.csproj", "{00AFD410-E213-4E19-AC18-BE3F4FAABDB3}"
 EndProject
@@ -180,5 +182,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0AECEF08-A15D-46AE-AC07-540BAF489490} = {BF0D5B1D-5674-4EBB-9B17-FDB5CEDA6B4B}
+		{00AFD410-E213-4E19-AC18-BE3F4FAABDB3} = {BF0D5B1D-5674-4EBB-9B17-FDB5CEDA6B4B}
+		{B42D1477-891C-429B-8B68-47E47E1DCC8C} = {BF0D5B1D-5674-4EBB-9B17-FDB5CEDA6B4B}
+		{5B991C83-B0B6-4736-9DB7-7AFC2A6B81E6} = {BF0D5B1D-5674-4EBB-9B17-FDB5CEDA6B4B}
+		{05683535-F9B9-4050-8C7F-8AE57A761022} = {BF0D5B1D-5674-4EBB-9B17-FDB5CEDA6B4B}
+		{272620DF-6615-4809-AFD8-B9F277307120} = {BF0D5B1D-5674-4EBB-9B17-FDB5CEDA6B4B}
 	EndGlobalSection
 EndGlobal

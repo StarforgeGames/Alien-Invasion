@@ -21,8 +21,8 @@
 		</AudioInfo>
 		<Resource key="Material" type="material" name="alien_ray"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
-		<float key="MovementSpeed">50</float>
-		<float key="FiringSpeed">3.0</float>
+		<float key="MovementSpeed">40</float>
+		<float key="FiringSpeed">2</float>
 		<string key="ProjectileType">pewpew_alien</string>
 		<string key="Faction">ai</string>
 		<int key="PointsAwarded">100</int>

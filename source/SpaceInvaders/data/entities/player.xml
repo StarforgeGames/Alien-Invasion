@@ -16,7 +16,7 @@
 		</Vector2D>
 		<Resource key="Material" type="material" name="player"/>
 		<Resource key="Mesh" type="mesh" name="quad"/>
-		<float key="MovementSpeed">300</float>
+		<float key="MovementSpeed">350</float>
 		<float key="FiringSpeed">1.0</float>
 		<string key="ProjectileType">pewpew</string>
 		<int key="Lifes">3</int>
