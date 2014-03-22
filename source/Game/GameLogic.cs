@@ -19,6 +19,7 @@ namespace Game
 		GameOver,
 		Victory,
 		Highscore,
+		Credits,
 		Quit
 
 	}

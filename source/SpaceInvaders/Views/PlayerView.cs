@@ -16,6 +16,7 @@ using SpaceInvaders.Controls;
 using SpaceInvaders.Input;
 using Game.Behaviors;
 using System.Diagnostics;
+using Utility;
 
 namespace SpaceInvaders.Views
 {
@@ -29,10 +30,13 @@ namespace SpaceInvaders.Views
 		private Extractor extractor;
 		public Form RenderForm { get; private set; }
 
+		private GameClock menuClock;
+
 		private IAudioPlayer audioPlayer;
 
 		private GameMainMenu mainMenuControl;
 		private HighscoreScreen highscoreControl;
+		private Credits creditsControl;
 		private PauseScreen pauseControl;
 		private VictoryScreen victoryControl;
 		private DefeatScreen gameOverControl;
@@ -58,6 +62,9 @@ namespace SpaceInvaders.Views
 		{
 			this.Game = game;
 			this.EventManager = game.EventManager;
+
+			menuClock = new GameClock();
+			menuClock.Start();
 
 			/**
 			 * Initialize Graphics Subsystem 
@@ -117,6 +124,12 @@ namespace SpaceInvaders.Views
 				(RenderForm.ClientSize.Height - highscoreControl.Height) / 2);
 			RenderForm.Controls.Add(highscoreControl);
 
+			creditsControl = new Credits(EventManager);
+			creditsControl.Location = new Point(
+				(RenderForm.ClientSize.Width - creditsControl.Width) / 2,
+				(RenderForm.ClientSize.Height - creditsControl.Height) / 2);
+			RenderForm.Controls.Add(creditsControl);
+
 			pauseControl = new PauseScreen();
 			pauseControl.Location = new Point(
 				(RenderForm.ClientSize.Width - pauseControl.Width) / 2,
@@ -159,6 +172,9 @@ namespace SpaceInvaders.Views
 			updateDebugOutput(deltaTime);
 			extractor.OnUpdate(deltaTime);
 			audioPlayer.OnUpdate();
+
+			menuClock.Tick();
+			creditsControl.OnUpdate(menuClock.DeltaTime);
 		}
 
 		[Conditional("DEBUG")]
@@ -260,6 +276,7 @@ namespace SpaceInvaders.Views
 				case GameState.StartUp:
 					mainMenuControl.Hide();
 					highscoreControl.Hide();
+					creditsControl.Hide();
 					pauseControl.Hide();
 					victoryControl.Hide();
 					gameOverControl.Hide();
@@ -270,6 +287,7 @@ namespace SpaceInvaders.Views
 				case GameState.Menu:
 					mainMenuControl.Show();
 					highscoreControl.Hide();
+					creditsControl.Hide();
 					pauseControl.Hide();
 					victoryControl.Hide();
 					gameOverControl.Hide();
@@ -281,6 +299,7 @@ namespace SpaceInvaders.Views
 				case GameState.Highscore:
 					mainMenuControl.Hide();
 					highscoreControl.Show();
+					creditsControl.Hide();
 					pauseControl.Hide();
 					victoryControl.Hide();
 					gameOverControl.Hide();
@@ -289,9 +308,24 @@ namespace SpaceInvaders.Views
 					audioPlayer.PauseCategory("ingame");
 					audioPlayer.UnpauseCategory("menu");
 					break;
+				case GameState.Credits:
+					mainMenuControl.Hide();
+					highscoreControl.Hide();
+					creditsControl.Show();
+					pauseControl.Hide();
+					victoryControl.Hide();
+					gameOverControl.Hide();
+					hud.Hide();
+
+					creditsControl.Start();
+
+					audioPlayer.PauseCategory("ingame");
+					audioPlayer.UnpauseCategory("menu");
+					break;
 				case GameState.Loading:
 					mainMenuControl.Hide();
 					highscoreControl.Hide();
+					creditsControl.Hide();
 					pauseControl.Hide();
 					victoryControl.Hide();
 					gameOverControl.Hide();;
@@ -304,6 +338,7 @@ namespace SpaceInvaders.Views
 				case GameState.Running:
 					mainMenuControl.Hide();
 					highscoreControl.Hide();
+					creditsControl.Hide();
 					pauseControl.Hide();
 					victoryControl.Hide();
 					gameOverControl.Hide();
@@ -332,6 +367,7 @@ namespace SpaceInvaders.Views
 
 					mainMenuControl.Hide();
 					highscoreControl.Hide();
+					creditsControl.Hide();
 					pauseControl.Hide();
 					victoryControl.Show();
 					gameOverControl.Hide();
@@ -343,6 +379,7 @@ namespace SpaceInvaders.Views
 				case GameState.GameOver:
 					mainMenuControl.Hide();
 					highscoreControl.Hide();
+					creditsControl.Hide();
 					pauseControl.Hide();
 					victoryControl.Hide();
 					gameOverControl.Show();

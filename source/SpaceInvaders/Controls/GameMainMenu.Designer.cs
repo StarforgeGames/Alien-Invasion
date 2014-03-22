@@ -33,6 +33,7 @@
 			this.HighscoreButton = new System.Windows.Forms.Button();
 			this.NewGameButton = new System.Windows.Forms.Button();
 			this.backgroundPictureBox = new System.Windows.Forms.PictureBox();
+			this.CreditsButton = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.backgroundPictureBox)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -99,11 +100,23 @@
 			this.backgroundPictureBox.TabIndex = 10;
 			this.backgroundPictureBox.TabStop = false;
 			// 
+			// CreditsButton
+			// 
+			this.CreditsButton.Font = new System.Drawing.Font("Calibri Light", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.CreditsButton.Location = new System.Drawing.Point(559, 703);
+			this.CreditsButton.Name = "CreditsButton";
+			this.CreditsButton.Size = new System.Drawing.Size(280, 65);
+			this.CreditsButton.TabIndex = 11;
+			this.CreditsButton.Text = "CREDITS";
+			this.CreditsButton.UseVisualStyleBackColor = true;
+			this.CreditsButton.Click += new System.EventHandler(this.CreditsButton_Click);
+			// 
 			// GameMainMenu
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.WindowFrame;
+			this.Controls.Add(this.CreditsButton);
 			this.Controls.Add(this.backgroundPictureBox);
 			this.Controls.Add(this.QuitButton);
 			this.Controls.Add(this.OptionsButton);
@@ -124,5 +137,6 @@
         public System.Windows.Forms.Button HighscoreButton;
 		public System.Windows.Forms.Button QuitButton;
         private System.Windows.Forms.PictureBox backgroundPictureBox;
+		private System.Windows.Forms.Button CreditsButton;
     }
 }

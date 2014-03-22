@@ -27,6 +27,11 @@ namespace SpaceInvaders.Controls
 			eventManager.Queue(GameStateChangedEvent.To(GameState.Highscore));
 		}
 
+		private void CreditsButton_Click(object sender, EventArgs e)
+		{
+			eventManager.Queue(GameStateChangedEvent.To(GameState.Credits));
+		}
+
 		private void QuitButton_Click(object sender, EventArgs e)
 		{
 			eventManager.Queue(GameStateChangedEvent.To(GameState.Quit));
