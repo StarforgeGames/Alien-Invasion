@@ -180,6 +180,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application.cs" />
+    <Compile Include="Controls\Credits.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Credits.Designer.cs">
+      <DependentUpon>Credits.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\HighscoreScreen.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -290,6 +296,9 @@
     <None Include="Resources\gap.png" />
     <None Include="Resources\exitOver.png" />
     <None Include="Resources\exit.png" />
+    <EmbeddedResource Include="Controls\Credits.resx">
+      <DependentUpon>Credits.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\HighscoreScreen.resx">
       <DependentUpon>HighscoreScreen.cs</DependentUpon>
     </EmbeddedResource>

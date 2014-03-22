@@ -62,8 +62,7 @@ namespace SpaceInvaders
 			{
 				MessagePump.Run(playerView.RenderForm, () => {
 					clock.Tick();
-					float deltaTime = clock.DeltaTime;
-					Update(deltaTime);
+					Update(clock.DeltaTime);
 				});
 
 			}
