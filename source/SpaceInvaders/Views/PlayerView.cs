@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
-using Audio;
+﻿using Audio;
 using Game;
+using Game.Behaviors;
 using Game.Entities;
 using Game.EventManagement;
 using Game.EventManagement.Events;
@@ -14,8 +11,11 @@ using Graphics.Loaders.Mesh;
 using ResourceManagement.Loaders;
 using SpaceInvaders.Controls;
 using SpaceInvaders.Input;
-using Game.Behaviors;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.Windows.Forms;
 using Utility;
 
 namespace SpaceInvaders.Views
@@ -152,9 +152,7 @@ namespace SpaceInvaders.Views
 			hud.Location = new Point(RenderForm.ClientSize.Width - hud.Width, 0);
 			RenderForm.Controls.Add(hud);
 
-
 			numOfGcCollectedObjects = new int[GC.MaxGeneration];
-
 
 			registerGameEventListeners();
 		}

@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using FMOD;
-using ResourceManagement;
-using Utility.Threading;
-using System.Threading;
-using System.Runtime.InteropServices;
 
 namespace Audio
 {
@@ -22,9 +15,9 @@ namespace Audio
 
 		public FmodAudioPlayer(string mediaPath)
 		{
-			RESULT result = FMOD.Event_Factory.EventSystem_Create(ref eventSystem);
+			RESULT result = Event_Factory.EventSystem_Create(ref eventSystem);
 			fmodErrorCheck(result);
-			result = eventSystem.init(ChannelCount, FMOD.INITFLAGS.NORMAL, (IntPtr)null, FMOD.EVENT_INITFLAGS.NORMAL);
+			result = eventSystem.init(ChannelCount, INITFLAGS.NORMAL, (IntPtr)null, EVENT_INITFLAGS.NORMAL);
 			fmodErrorCheck(result);
 			result = eventSystem.setMediaPath(mediaPath);
 			fmodErrorCheck(result);
@@ -34,9 +27,9 @@ namespace Audio
 		{
 			if (result != RESULT.OK)
 			{
-				Console.WriteLine(FMOD.Error.String(result));
-				Console.Error.WriteLine(FMOD.Error.String(result));
-				throw new Exception(FMOD.Error.String(result));
+				Console.WriteLine(Error.String(result));
+				Console.Error.WriteLine(Error.String(result));
+				throw new Exception(Error.String(result));
 			}
 		}
 
@@ -77,7 +70,7 @@ namespace Audio
 		private Event getEvent(string eventName)
 		{
 			Event evt = null;
-			RESULT result = eventSystem.getEvent(eventName, FMOD.EVENT_MODE.DEFAULT, ref evt);
+			RESULT result = eventSystem.getEvent(eventName, EVENT_MODE.DEFAULT, ref evt);
 			fmodErrorCheck(result);
 
 			return evt;
@@ -162,7 +155,7 @@ namespace Audio
 		{
 			IsPaused = true;
 
-			FMOD.RESULT result;
+			RESULT result;
 			if (eventSystem != null) {
 				result = eventSystem.unload();
 				fmodErrorCheck(result);
