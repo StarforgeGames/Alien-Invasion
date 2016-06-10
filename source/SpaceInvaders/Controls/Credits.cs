@@ -61,5 +61,18 @@ namespace SpaceInvaders.Controls
 				Stop();
 			}
 		}
+
+		private void BackButton_Click(object sender, EventArgs e)
+		{
+			Stop();
+		}
+		private void BackButton_MouseEnter(object sender, EventArgs e)
+		{
+			this.BackButton.Image = Properties.Resources.backOver;
+		}
+		private void BackButton_MouseLeave(object sender, EventArgs e)
+		{
+			this.BackButton.Image = Properties.Resources.back;
+		}
 	}
 }

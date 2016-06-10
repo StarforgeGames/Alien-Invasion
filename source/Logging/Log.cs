@@ -17,7 +17,8 @@ namespace Logging
 
         public static void WriteLine(string message, TraceLevel level, string subsystem = null)
         {
-            if (Switch == null) {
+            if (Switch == null)
+            {
                 return;
             }
 

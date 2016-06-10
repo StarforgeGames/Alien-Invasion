@@ -9,6 +9,7 @@
 		<HealthBehavior />
 		<AwardsPointsBehavior />
 		<AudioEmitterBehavior />
+		<AnimationBehavior />
 	</behaviors>
 	<attributes>
 		<Vector2D key="Dimensions">			
@@ -25,5 +26,6 @@
 		<string key="ProjectileType">pewpew_alien</string>
 		<string key="Faction">ai</string>
 		<int key="PointsAwarded">75</int>
+		<float key="FrameCount">44.0</float>
 	</attributes>
 </Entity>

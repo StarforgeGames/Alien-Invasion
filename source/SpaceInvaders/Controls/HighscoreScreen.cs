@@ -51,9 +51,19 @@ namespace SpaceInvaders.Controls
 			}
 		}
 
-		private void backButton_Click(object sender, EventArgs e)
+		private void BackButton_Click(object sender, EventArgs e)
 		{
 			eventManager.Queue(GameStateChangedEvent.To(GameState.Menu));
+		}
+
+		private void BackButton_MouseEnter(object sender, EventArgs e)
+		{
+			this.BackButton.Image = Properties.Resources.backOver;
+		}
+
+		private void BackButton_MouseLeave(object sender, EventArgs e)
+		{
+			this.BackButton.Image = Properties.Resources.back;
 		}
 	}
 }

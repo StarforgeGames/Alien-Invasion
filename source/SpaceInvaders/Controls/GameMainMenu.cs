@@ -62,14 +62,14 @@ namespace SpaceInvaders.Controls
 			this.HighscoreButton.Image = Properties.Resources.highscore;
 		}
 
-		private void OptionsButton_MouseEnter(object sender, EventArgs e)
+		private void CreditsButton_MouseEnter(object sender, EventArgs e)
 		{
-			this.OptionsButton.Image = Properties.Resources.optionsOver;
+			this.CreditsButton.Image = Properties.Resources.creditsOver;
 		}
 
-		private void OptionsButton_MouseLeave(object sender, EventArgs e)
+		private void CreditsButton_MouseLeave(object sender, EventArgs e)
 		{
-			this.OptionsButton.Image = Properties.Resources.options;
+			this.CreditsButton.Image = Properties.Resources.credits;
 		}
 
 		private void QuitButton_MouseEnter(object sender, EventArgs e)
