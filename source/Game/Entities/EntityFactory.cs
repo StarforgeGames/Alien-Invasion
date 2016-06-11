@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using Game.Entities.AttributeLoader;
 using Game.EventManagement;
-using Game.EventManagement.Events;
-using Game.Entities.AttributeParser;
 
 namespace Game.Entities
 {

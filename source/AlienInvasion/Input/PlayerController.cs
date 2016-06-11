@@ -1,12 +1,10 @@
 ﻿using System.Windows.Forms;
-using Game;
 using Game.Entities;
 using Game.EventManagement;
 using Game.EventManagement.Events;
 using System.Collections.Generic;
 using System;
 using Game.Utility;
-using Game.EventManagement.Debug;
 
 namespace AlienInvasion.Input
 {

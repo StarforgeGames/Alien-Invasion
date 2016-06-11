@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Game.Entities;
 using Game.Behaviors;
 using Game.EventManagement.Events;
 using Game.EventManagement;
 using Game.Utility;
-using System.Diagnostics;
-//using Logging;
 
 namespace Game
 {
@@ -112,9 +108,7 @@ namespace Game
 
 		public void OnAttach(Entity entity)
 		{
-			if (entity.HasBehavior(typeof(CollisionBehavior)))
-			{
-				// Log.Error("Adding " + entity.ToString() + "to collidables.", this.GetType().Name);
+			if (entity.HasBehavior(typeof(CollisionBehavior))) {
 				collidables.Add(entity);
 			}
 		}
@@ -122,7 +116,6 @@ namespace Game
 		public void OnDetach(Entity entity)
 		{
 			if (collidables.Contains(entity)) {
-				//Log.Error("Removing " + entity.ToString() + "from collidables.", this.GetType().Name);
 				collidables.Remove(entity);
 			}
 		}

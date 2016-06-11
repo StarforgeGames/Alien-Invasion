@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using LispInterpreter;
 using SlimDX.Direct3D10;
 using Graphics.Resources;
-using SlimDX;
 using System.IO;
 
 namespace Graphics.Loaders.Mesh

@@ -1,5 +1,4 @@
-﻿using System;
-namespace ResourceManagement
+﻿namespace ResourceManagement
 {
     public interface ILoader
     {

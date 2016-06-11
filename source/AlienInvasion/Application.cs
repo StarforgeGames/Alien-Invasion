@@ -25,8 +25,8 @@ namespace AlienInvasion
 		public GameLogic Game { get; private set; }
 		public List<IGameView> Views { get; private set; }
 
-		private GameClock clock = new GameClock();
-		private ResourceManager resourceManager = new ResourceManager(new ThreadPoolExecutor());
+		private readonly GameClock clock = new GameClock();
+		private readonly ResourceManager resourceManager = new ResourceManager(new ThreadPoolExecutor());
 
 		public Application()
 		{

@@ -1,7 +1,4 @@
 ﻿using System;
-using FMOD;
-using ResourceManagement;
-using Utility.Threading;
 
 namespace Audio
 {

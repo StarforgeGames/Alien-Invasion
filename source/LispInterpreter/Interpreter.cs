@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Reflection;
-using System.Linq.Expressions;
-using System.Globalization;
 using LispInterpreter.BuiltIns;
 using System.IO;
 
