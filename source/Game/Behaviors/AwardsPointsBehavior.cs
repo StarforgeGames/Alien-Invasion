@@ -1,5 +1,4 @@
-﻿using System;
-using Game.Entities;
+﻿using Game.Entities;
 using Game.EventManagement.Events;
 
 namespace Game.Behaviors

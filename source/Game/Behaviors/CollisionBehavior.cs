@@ -1,7 +1,5 @@
-﻿using System;
-using Game.Entities;
+﻿using Game.Entities;
 using Game.EventManagement.Events;
-using Game.Utility;
 
 namespace Game.Behaviors
 {

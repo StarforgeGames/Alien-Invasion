@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using LispInterpreter;
 using Graphics.Resources;
 using ResourceManagement;
-using ResourceManagement.Resources;
 using SlimDX;
 
 namespace Graphics.Loaders.Material

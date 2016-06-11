@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ResourceManagement;
+﻿using ResourceManagement;
 using ResourceManagement.Loaders;
 using ResourceManagement.Resources;
 using SlimDX.Direct3D10;

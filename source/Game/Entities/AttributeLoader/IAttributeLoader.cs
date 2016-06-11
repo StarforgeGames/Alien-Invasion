@@ -1,5 +1,4 @@
 ﻿using System.Xml;
-using Game.Entities.AttributeParser;
 
 namespace Game.Entities.AttributeLoader
 {

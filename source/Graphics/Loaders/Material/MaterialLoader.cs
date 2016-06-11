@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ResourceManagement;
+﻿using ResourceManagement;
 using ResourceManagement.Loaders;
 using ResourceManagement.Resources;
 using System.IO;
-using Graphics.Resources;
 using LispInterpreter;
-using SlimDX;
 
 namespace Graphics.Loaders.Material
 {

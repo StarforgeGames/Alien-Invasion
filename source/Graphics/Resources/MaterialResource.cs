@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using ResourceManagement;
 using ResourceManagement.Resources;
-using SlimDX.Direct3D10;
 using SlimDX;
-using System.Collections.ObjectModel;
 
 namespace Graphics.Resources
 {
